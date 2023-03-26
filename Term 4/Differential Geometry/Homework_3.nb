@@ -1,0 +1,247 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8827,        239]
+NotebookOptionsPosition[      8071,        217]
+NotebookOutlinePosition[      8522,        234]
+CellTagsIndexPosition[      8479,        231]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   SubscriptBox["\[Rho]", "0"], "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Alpha]", "=", 
+   FractionBox["\[Pi]", "3"]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"x", "[", "t_", "]"}], "=", 
+   RowBox[{
+    SubscriptBox["\[Rho]", "0"], 
+    RowBox[{"Exp", "[", 
+     FractionBox["t", 
+      RowBox[{"Tan", "[", "\[Alpha]", "]"}]], "]"}], 
+    RowBox[{"Cos", "[", "t", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"y", "[", "t_", "]"}], "=", 
+   RowBox[{
+    SubscriptBox["\[Rho]", "0"], 
+    RowBox[{"Exp", "[", 
+     FractionBox["t", 
+      RowBox[{"Tan", "[", "\[Alpha]", "]"}]], "]"}], 
+    RowBox[{"Sin", "[", "t", "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Animate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Show", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ParametricPlot", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"x", "[", "t", "]"}], ",", 
+         RowBox[{"y", "[", "t", "]"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "0", ",", 
+         RowBox[{"2", "\[Pi]"}]}], "}"}], ",", 
+       RowBox[{"PlotTheme", "->", "\"\<Scientific\>\""}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Graphics", "[", 
+      RowBox[{"Text", "[", 
+       RowBox[{
+        RowBox[{"VectorAngle", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"D", "[", 
+              RowBox[{
+               RowBox[{"x", "[", "t", "]"}], ",", "t"}], "]"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{"t", "->", "\[Beta]"}], "}"}]}], ",", 
+            RowBox[{
+             RowBox[{"D", "[", 
+              RowBox[{
+               RowBox[{"y", "[", "t", "]"}], ",", "t"}], "]"}], "/.", 
+             RowBox[{"{", 
+              RowBox[{"t", "->", "\[Beta]"}], "}"}]}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Cos", "[", "\[Beta]", "]"}], ",", 
+            RowBox[{"Sin", "[", "\[Beta]", "]"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"0.5", ",", "0.5"}], "}"}]}], "]"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ParametricPlot", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"50", 
+          RowBox[{"Cos", "[", "\[Beta]", "]"}], "t"}], ",", 
+         RowBox[{"50", 
+          RowBox[{"Sin", "[", "\[Beta]", "]"}], "t"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "0", ",", 
+         RowBox[{"2", "\[Pi]"}]}], "}"}], ",", 
+       RowBox[{"PlotStyle", "->", 
+        RowBox[{"{", 
+         RowBox[{"Red", ",", "Dashed", ",", 
+          RowBox[{"Thickness", "[", "0.01", "]"}]}], "}"}]}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"\[Beta]", ",", "0", ",", 
+     RowBox[{"2", "\[Pi]"}]}], "}"}], ",", 
+   RowBox[{"AnimationRunning", "->", "False"}]}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.887041306797473*^9, 3.887041420868423*^9}, {
+  3.8870414623383512`*^9, 3.887041469126704*^9}, {3.887041516702011*^9, 
+  3.887041549195222*^9}, {3.887041580790717*^9, 3.887041738547274*^9}, {
+  3.8870417902271557`*^9, 3.887041959917263*^9}, {3.887042004995138*^9, 
+  3.8870420660551033`*^9}, {3.8870421044397163`*^9, 3.887042276921028*^9}, {
+  3.887345401862109*^9, 3.887345402028817*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"e54806f0-2b0b-4aa1-aa42-96934e432345"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`\[Beta]$$ = 5.353273881717008, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`\[Beta]$$], 0, 2 Pi}}, Typeset`size$$ = {
+    360., {83., 86.81742393967909}}, Typeset`update$$ = 0, Typeset`initDone$$,
+     Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`\[Beta]$$ = 0}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Show[
+        ParametricPlot[{
+          $CellContext`x[$CellContext`t], 
+          $CellContext`y[$CellContext`t]}, {$CellContext`t, 0, 2 Pi}, 
+         PlotTheme -> "Scientific"], 
+        Graphics[
+         Text[
+          VectorAngle[{
+            ReplaceAll[
+             D[
+              $CellContext`x[$CellContext`t], $CellContext`t], \
+{$CellContext`t -> $CellContext`\[Beta]$$}], 
+            ReplaceAll[
+             D[
+              $CellContext`y[$CellContext`t], $CellContext`t], \
+{$CellContext`t -> $CellContext`\[Beta]$$}]}, {
+            Cos[$CellContext`\[Beta]$$], 
+            Sin[$CellContext`\[Beta]$$]}], {0.5, 0.5}]], 
+        ParametricPlot[{
+         50 Cos[$CellContext`\[Beta]$$] $CellContext`t, 50 
+          Sin[$CellContext`\[Beta]$$] $CellContext`t}, {$CellContext`t, 0, 2 
+          Pi}, PlotStyle -> {Red, Dashed, 
+           Thickness[0.01]}]], 
+      "Specifications" :> {{$CellContext`\[Beta]$$, 0, 2 Pi, AnimationRunning -> 
+         False, AppearanceElements -> {
+          "ProgressSlider", "PlayPauseButton", "FasterSlowerButtons", 
+           "DirectionButton"}}}, 
+      "Options" :> {
+       ControlType -> Animator, AppearanceElements -> None, DefaultBaseStyle -> 
+        "Animate", DefaultLabelStyle -> "AnimateLabel", SynchronousUpdating -> 
+        True, ShrinkingDelay -> 10.}, "DefaultOptions" :> {}],
+     ImageSizeCache->{706., {103.7203125, 109.2796875}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Animate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.887042155385415*^9, 3.887042207652564*^9}, 
+   3.8870422774941177`*^9, 3.887345402783142*^9},
+ CellLabel->"Out[5]=",ExpressionUUID->"b0fa71a5-8705-4c5b-a26a-3da1fd9594e6"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"n", "=", 
+  RowBox[{"Simplify", "[", 
+   RowBox[{"Cross", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Sin", "[", "t", "]"}]}], ",", 
+       RowBox[{"Cos", "[", "t", "]"}], ",", "h"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Cos", "[", "t", "]"}]}], ",", 
+       RowBox[{"-", 
+        RowBox[{"Sin", "[", "t", "]"}]}], ",", "0"}], "}"}]}], "]"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.8870440716924973`*^9, 3.88704415713599*^9}},
+ CellLabel->
+  "In[373]:=",ExpressionUUID->"782afeae-becd-46bf-80d5-e43dc306f4ca"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"h", " ", 
+    RowBox[{"Sin", "[", "t", "]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "h"}], " ", 
+    RowBox[{"Cos", "[", "t", "]"}]}], ",", "1"}], "}"}]], "Output",
+ CellChangeTimes->{{3.8870441290699787`*^9, 3.887044157492581*^9}},
+ CellLabel->
+  "Out[373]=",ExpressionUUID->"62c43d29-6cd5-40af-bb87-b94494ab53a8"]
+}, Open  ]]
+},
+WindowSize->{1106.3999999999999`, 604.8},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+TaggingRules-><|"TryRealOnly" -> False|>,
+FrontEndVersion->"13.2 for Linux x86 (64-bit) (January 31, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"9ea45d2e-760d-4816-b075-99e6e2fca1f7"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 3531, 93, 319, "Input",ExpressionUUID->"e54806f0-2b0b-4aa1-aa42-96934e432345"],
+Cell[4114, 117, 2901, 61, 232, "Output",ExpressionUUID->"b0fa71a5-8705-4c5b-a26a-3da1fd9594e6"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7052, 183, 634, 19, 29, "Input",ExpressionUUID->"782afeae-becd-46bf-80d5-e43dc306f4ca"],
+Cell[7689, 204, 366, 10, 37, "Output",ExpressionUUID->"62c43d29-6cd5-40af-bb87-b94494ab53a8"]
+}, Open  ]]
+}
+]
+*)
+
