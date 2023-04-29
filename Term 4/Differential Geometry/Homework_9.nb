@@ -1,0 +1,436 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     17249,        426]
+NotebookOptionsPosition[     16528,        405]
+NotebookOutlinePosition[     16937,        421]
+CellTagsIndexPosition[     16894,        418]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"R", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Animate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Show", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ContourPlot3D", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["x", "2"], "+", 
+         SuperscriptBox["y", "2"], "+", 
+         SuperscriptBox["z", "2"]}], "==", 
+        SuperscriptBox["R", "2"]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", 
+         RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"z", ",", "0", ",", "3"}], "}"}], ",", 
+       RowBox[{"Mesh", "->", "None"}], ",", 
+       RowBox[{"PlotTheme", "->", "\"\<Business\>\""}], ",", 
+       RowBox[{"AspectRatio", "->", "0.8"}], ",", 
+       RowBox[{"ContourStyle", "->", 
+        RowBox[{"Opacity", "[", "0.8", "]"}]}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ParametricPlot3D", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"t", ",", 
+           RowBox[{"c", "+", 
+            RowBox[{"p", "/", "5"}]}], ",", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{
+             SuperscriptBox["R", "2"], "-", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"c", "+", 
+                RowBox[{"p", "/", "5"}]}], ")"}], "2"], "-", 
+             SuperscriptBox["t", "2"]}], "]"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"p", ",", "0", ",", "5"}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", 
+         RowBox[{"-", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{
+            SuperscriptBox["R", "2"], "-", 
+            SuperscriptBox["c", "2"]}], "]"}]}], ",", 
+         RowBox[{"+", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{
+            SuperscriptBox["R", "2"], "-", 
+            SuperscriptBox["c", "2"]}], "]"}]}]}], "}"}], ",", 
+       RowBox[{"PlotStyle", "->", 
+        RowBox[{"Directive", "[", 
+         RowBox[{"Red", ",", 
+          RowBox[{"Thickness", "[", "0.01", "]"}]}], "]"}]}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ParametricPlot3D", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"c", "+", 
+            RowBox[{"p", "/", "5"}]}], ",", "t", ",", 
+           RowBox[{"Sqrt", "[", 
+            RowBox[{
+             SuperscriptBox["R", "2"], "-", 
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"c", "+", 
+                RowBox[{"p", "/", "5"}]}], ")"}], "2"], "-", 
+             SuperscriptBox["t", "2"]}], "]"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"p", ",", "0", ",", "5"}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", 
+         RowBox[{"-", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{
+            SuperscriptBox["R", "2"], "-", 
+            SuperscriptBox["c", "2"]}], "]"}]}], ",", 
+         RowBox[{"+", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{
+            SuperscriptBox["R", "2"], "-", 
+            SuperscriptBox["c", "2"]}], "]"}]}]}], "}"}], ",", 
+       RowBox[{"PlotStyle", "->", 
+        RowBox[{"Directive", "[", 
+         RowBox[{"Green", ",", 
+          RowBox[{"Thickness", "[", "0.01", "]"}]}], "]"}]}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"c", ",", 
+     RowBox[{"-", "R"}], ",", "R"}], "}"}]}], "\[IndentingNewLine]", 
+  "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.891569529197584*^9, 3.891569579380728*^9}, {
+  3.891569627951511*^9, 3.891569633614726*^9}, {3.891569675931569*^9, 
+  3.891569920730372*^9}, {3.8915699825701647`*^9, 3.891569994445981*^9}, {
+  3.8915700391115627`*^9, 3.891570075300571*^9}, {3.891570420267037*^9, 
+  3.891570437241558*^9}, {3.8915710311656437`*^9, 3.8915711362625093`*^9}},
+ CellLabel->"In[76]:=",ExpressionUUID->"19e2dad2-a7d2-4092-8708-15bf5ab5f1bf"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`c$$ = -1.1053510665893553`, Typeset`show$$ =
+     True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`c$$], -3, 3}}, Typeset`size$$ = {
+    360., {147., 150.92568658330458`}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`c$$ = -3}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Show[
+        ContourPlot3D[$CellContext`x^2 + $CellContext`y^2 + $CellContext`z^2 == \
+$CellContext`R^2, {$CellContext`x, -3, 3}, {$CellContext`y, -3, 
+          3}, {$CellContext`z, 0, 3}, Mesh -> None, PlotTheme -> "Business", 
+         AspectRatio -> 0.8, ContourStyle -> Opacity[0.8]], 
+        ParametricPlot3D[
+         Table[{$CellContext`t, $CellContext`c$$ + $CellContext`p/5, 
+           
+           Sqrt[$CellContext`R^2 - ($CellContext`c$$ + $CellContext`p/
+              5)^2 - $CellContext`t^2]}, {$CellContext`p, 0, 
+           5}], {$CellContext`t, -Sqrt[$CellContext`R^2 - $CellContext`c$$^2], 
+          Plus[
+           Sqrt[$CellContext`R^2 - $CellContext`c$$^2]]}, PlotStyle -> 
+         Directive[Red, 
+           Thickness[0.01]]], 
+        ParametricPlot3D[
+         Table[{$CellContext`c$$ + $CellContext`p/5, $CellContext`t, 
+           
+           Sqrt[$CellContext`R^2 - ($CellContext`c$$ + $CellContext`p/
+              5)^2 - $CellContext`t^2]}, {$CellContext`p, 0, 
+           5}], {$CellContext`t, -Sqrt[$CellContext`R^2 - $CellContext`c$$^2], 
+          Plus[
+           Sqrt[$CellContext`R^2 - $CellContext`c$$^2]]}, PlotStyle -> 
+         Directive[Green, 
+           Thickness[0.01]]]], 
+      "Specifications" :> {{$CellContext`c$$, -3, 3, 
+         AppearanceElements -> {
+          "ProgressSlider", "PlayPauseButton", "FasterSlowerButtons", 
+           "DirectionButton"}}}, 
+      "Options" :> {
+       ControlType -> Animator, AppearanceElements -> None, DefaultBaseStyle -> 
+        "Animate", DefaultLabelStyle -> "AnimateLabel", SynchronousUpdating -> 
+        True, ShrinkingDelay -> 10.}, "DefaultOptions" :> {}],
+     ImageSizeCache->{706., {167.7203125, 173.2796875}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Animate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.891569833809832*^9, {3.8915698769347143`*^9, 3.891569921137847*^9}, 
+   3.891569994704265*^9, {3.891570044459613*^9, 3.891570075583947*^9}, {
+   3.8915704211793337`*^9, 3.8915704379264793`*^9}, 3.891571094744711*^9, {
+   3.89157112829255*^9, 3.891571136605566*^9}},
+ CellLabel->"Out[77]=",ExpressionUUID->"9fc02b29-7fe5-4940-b39e-9c7e300f3d28"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"R", "=", "3"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Animate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Show", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ContourPlot3D", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["x", "2"], "+", 
+         SuperscriptBox["y", "2"], "+", 
+         SuperscriptBox["z", "2"]}], "==", 
+        SuperscriptBox["R", "2"]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", 
+         RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"z", ",", "0", ",", "3"}], "}"}], ",", 
+       RowBox[{"Mesh", "->", "None"}], ",", 
+       RowBox[{"PlotTheme", "->", "\"\<Business\>\""}], ",", 
+       RowBox[{"ContourStyle", "->", 
+        RowBox[{"Opacity", "[", "0.7", "]"}]}], ",", 
+       RowBox[{"AspectRatio", "->", "0.8"}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ParametricPlot3D", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           FractionBox[
+            RowBox[{"R", " ", 
+             RowBox[{"(", 
+              RowBox[{"c", "+", 
+               RowBox[{"p", "/", "5"}]}], ")"}]}], 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"1", "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"c", "+", 
+                 RowBox[{"p", "/", "5"}]}], ")"}], "2"], "+", 
+              SuperscriptBox["t", "2"]}], "]"}]], ",", 
+           FractionBox[
+            RowBox[{"R", " ", "t"}], 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"1", "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"c", "+", 
+                 RowBox[{"p", "/", "5"}]}], ")"}], "2"], "+", 
+              SuperscriptBox["t", "2"]}], "]"}]], ",", 
+           FractionBox["R", 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"1", "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"c", "+", 
+                 RowBox[{"p", "/", "5"}]}], ")"}], "2"], "+", 
+              SuperscriptBox["t", "2"]}], "]"}]]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"p", ",", "0", ",", "5"}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", 
+         RowBox[{"-", "30"}], ",", 
+         RowBox[{"+", "30"}]}], "}"}], ",", 
+       RowBox[{"PlotStyle", "->", 
+        RowBox[{"Directive", "[", 
+         RowBox[{"Red", ",", 
+          RowBox[{"Thickness", "[", "0.01", "]"}]}], "]"}]}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"ParametricPlot3D", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           FractionBox[
+            RowBox[{"R", " ", "t"}], 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"1", "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"c", "+", 
+                 RowBox[{"p", "/", "5"}]}], ")"}], "2"], "+", 
+              SuperscriptBox["t", "2"]}], "]"}]], ",", 
+           FractionBox[
+            RowBox[{"R", " ", 
+             RowBox[{"(", 
+              RowBox[{"c", "+", 
+               RowBox[{"p", "/", "5"}]}], ")"}]}], 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"1", "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"c", "+", 
+                 RowBox[{"p", "/", "5"}]}], ")"}], "2"], "+", 
+              SuperscriptBox["t", "2"]}], "]"}]], ",", 
+           FractionBox["R", 
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"1", "+", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"c", "+", 
+                 RowBox[{"p", "/", "5"}]}], ")"}], "2"], "+", 
+              SuperscriptBox["t", "2"]}], "]"}]]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"p", ",", "0", ",", "5"}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", 
+         RowBox[{"-", "30"}], ",", 
+         RowBox[{"+", "30"}]}], "}"}], ",", 
+       RowBox[{"PlotStyle", "->", 
+        RowBox[{"Directive", "[", 
+         RowBox[{"Green", ",", 
+          RowBox[{"Thickness", "[", "0.01", "]"}]}], "]"}]}]}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"c", ",", 
+     RowBox[{"-", "R"}], ",", "R"}], "}"}]}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.8915701054723673`*^9, 3.89157012778319*^9}, {
+  3.891570166010137*^9, 3.891570229823752*^9}, {3.891570269336336*^9, 
+  3.891570314289172*^9}, {3.8915703979802313`*^9, 3.8915704120724916`*^9}, {
+  3.8915708561115093`*^9, 3.891571009743327*^9}},
+ CellLabel->"In[70]:=",ExpressionUUID->"cbfcea05-7390-4904-8a26-e81332198e15"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`c$$ = -2.000962257385254, Typeset`show$$ = 
+    True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`c$$], -3, 3}}, Typeset`size$$ = {
+    360., {147., 150.92568658330458`}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {$CellContext`c$$ = -3}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Show[
+        ContourPlot3D[$CellContext`x^2 + $CellContext`y^2 + $CellContext`z^2 == \
+$CellContext`R^2, {$CellContext`x, -3, 3}, {$CellContext`y, -3, 
+          3}, {$CellContext`z, 0, 3}, Mesh -> None, PlotTheme -> "Business", 
+         ContourStyle -> Opacity[0.7], AspectRatio -> 0.8], 
+        ParametricPlot3D[
+         Table[{$CellContext`R ($CellContext`c$$ + $CellContext`p/5)/Sqrt[
+           1 + ($CellContext`c$$ + $CellContext`p/
+               5)^2 + $CellContext`t^2], $CellContext`R $CellContext`t/Sqrt[
+           1 + ($CellContext`c$$ + $CellContext`p/
+               5)^2 + $CellContext`t^2], $CellContext`R/Sqrt[
+           1 + ($CellContext`c$$ + $CellContext`p/
+               5)^2 + $CellContext`t^2]}, {$CellContext`p, 0, 
+           5}], {$CellContext`t, -30, 
+          Plus[30]}, PlotStyle -> Directive[Red, 
+           Thickness[0.01]]], 
+        ParametricPlot3D[
+         Table[{$CellContext`R $CellContext`t/Sqrt[
+           1 + ($CellContext`c$$ + $CellContext`p/
+               5)^2 + $CellContext`t^2], $CellContext`R ($CellContext`c$$ + \
+$CellContext`p/5)/Sqrt[
+           1 + ($CellContext`c$$ + $CellContext`p/
+               5)^2 + $CellContext`t^2], $CellContext`R/Sqrt[
+           1 + ($CellContext`c$$ + $CellContext`p/
+               5)^2 + $CellContext`t^2]}, {$CellContext`p, 0, 
+           5}], {$CellContext`t, -30, 
+          Plus[30]}, PlotStyle -> Directive[Green, 
+           Thickness[0.01]]]], 
+      "Specifications" :> {{$CellContext`c$$, -3, 3, 
+         AppearanceElements -> {
+          "ProgressSlider", "PlayPauseButton", "FasterSlowerButtons", 
+           "DirectionButton"}}}, 
+      "Options" :> {
+       ControlType -> Animator, AppearanceElements -> None, DefaultBaseStyle -> 
+        "Animate", DefaultLabelStyle -> "AnimateLabel", SynchronousUpdating -> 
+        True, ShrinkingDelay -> 10.}, "DefaultOptions" :> {}],
+     ImageSizeCache->{706., {167.7203125, 173.2796875}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Animate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.891570289736518*^9, 3.8915703152476673`*^9}, {
+   3.891570398393837*^9, 3.891570412581812*^9}, {3.8915709032066383`*^9, 
+   3.8915709145600843`*^9}, {3.8915709555504837`*^9, 3.891570979859659*^9}, 
+   3.891571009933036*^9},
+ CellLabel->"Out[71]=",ExpressionUUID->"545749e5-48c9-489e-a526-b098e36a7868"]
+}, Open  ]]
+},
+WindowSize->{1106.3999999999999`, 604.8},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"13.2 for Linux x86 (64-bit) (January 31, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"69438704-4ead-454e-8a75-6da0917d1cd1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 4116, 108, 273, "Input",ExpressionUUID->"19e2dad2-a7d2-4092-8708-15bf5ab5f1bf"],
+Cell[4699, 132, 3371, 66, 383, "Output",ExpressionUUID->"9fc02b29-7fe5-4940-b39e-9c7e300f3d28"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8107, 203, 4853, 129, 336, "Input",ExpressionUUID->"cbfcea05-7390-4904-8a26-e81332198e15"],
+Cell[12963, 334, 3549, 68, 360, "Output",ExpressionUUID->"545749e5-48c9-489e-a526-b098e36a7868"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
