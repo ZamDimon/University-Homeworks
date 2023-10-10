@@ -12,8 +12,8 @@ from rich.table import Table
 if __name__ == "__main__":
     # Defining the task parameters
     interval = (-2.0, 2.0)
-    segments_number = 4
-    alpha = 0.3
+    segments_number = 20
+    alpha = 0.0
     fn = lambda x: exp(x / 10.0) * sin(x) + x**3 + cos(x)
     
     # Defining the generator and defining a set of points
