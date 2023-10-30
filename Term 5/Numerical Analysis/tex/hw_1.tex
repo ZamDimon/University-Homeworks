@@ -1,0 +1,152 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\title{Домашня робота з курсу ``Чисельний аналіз''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+Нехай маємо вузли $\{x_j\}_{j=0}^n$ та значення функції $f: \mathbb{R} \to \mathbb{R}$ в них $\{f_j\}_{j=0}^n := \{f(x_j)\}_{j=0}^n$. Інтерполяційний поліном Лагранжа має вигляд:
+\[
+L_n(x) = \sum_{i=0}^n f_i\ell_i(x), \; \ell_i(x) = \prod_{j \neq i}^n \frac{x-x_j}{x_i-x_j}
+\]
+
+У якості вузлів для прикладу візьмемо $\widetilde{x}_1:=\frac{x_1+x_2}{2}$ та $\widetilde{x}_2 := \frac{x_2+x_3}{2}$ і після знаходження $L_n(x)$, обрахуємо $L_n(\widetilde{x}_1),L_n(\widetilde{x}_2)$.
+
+Абсолютна похибка обраховується за допомогою:
+\[
+|f(x^*) - L_n(x^*)| \leq \frac{M_{n+1}}{(n+1)!}\left|\prod_{i=0}^n (x^*-x_i)\right|, \; \text{де} \; M_{n+1} = \max_{x \in [a,b]}\left|f^{[n+1]}(x)\right|
+\]
+
+Обрахунок полінома Лагранжа та $n+1$ похідної $f$ було здійснено за допомогою бібліотеки \texttt{sympy} мови \texttt{Python}, яка прикріплена до цього завдання.
+
+\section*{Завдання 1. $f(x) = \sin 2\pi x$}  
+
+\textbf{Частина 1.} 
+\[
+\ell_1 = (1 - 8x)(1 - 4x), \; \ell_2 = 16x(1-4x), \; \ell_3 = 4x(8x-1)
+\]
+\[
+L_n(x) = 0 + 8\sqrt{2}x(1-4x) + 4x(8x-1) = 32(1-\sqrt{2})x^2 + 4(2\sqrt{2} - 1)x
+\]
+
+\textbf{Частина 2.} Обираємо $\widetilde{x}_1 := 1/16, \widetilde{x}_2 := 3/16$. Тоді:
+\[
+L_n(\widetilde{x}_1) = -\frac{1}{8} + \frac{3\sqrt{2}}{8}, \; L_n(\widetilde{x}_2) = \frac{3}{8} + \frac{3\sqrt{2}}{8}
+\]
+
+\textbf{Частина 3.} Маємо $f^{[n+1]}(x) = -8\pi^3 \cos 2\pi x$. Оскільки $\forall x \in [0,1/4]: \cos 2\pi x \geq 0$, то $|f^{[n+1]}(x)| = 8\pi^3 \cos 2\pi x$. Максимум, очевидно, досягається при $x=0$. Отже, 
+\[
+\max_{x \in [0,1/4]} |f^{[n+1]}(x)| = 8\pi^3
+\]
+
+Таким чином,
+\[
+|f(x^*)-L_n(x^*)| \leq \frac{8\pi^3}{3!}\left|x^*\left(x^*-\frac{1}{8}\right)\left(x^*-\frac{1}{4}\right)\right| = \frac{4\pi^3}{3}|x^*(x^*-1/8)(x^*-1/4)|
+\]
+
+\section*{Завдання 2. $f(x) = e^x$}
+
+\textbf{Частина 1.}
+\[
+\ell_1 = \frac{1}{2}x(1-x), \; \ell_2 = 1-x^2, \; \ell_3=\frac{1}{2}x(1+x)
+\]
+
+$L_n(x) \approx 0.543x^2 + 1.175x + 1$
+
+\textbf{Частина 2.} Обираємо $\widetilde{x}_1 := -1/2, \widetilde{x}_2 := 1/2$. Тоді:
+\[
+L_n(\widetilde{x}_1) \approx 0.548, \; L_n(\widetilde{x}_2) \approx 1.723
+\]
+
+\textbf{Частина 3.} $|f^{[n+1]}(x)| = e^x$, максимум на відрізку $[-1,1]$ досягається, очевидно, для $x=1$ і дорівнює $e$. Отже:
+\[
+|f(x^*) - L_n(x^*)| \leq \frac{e}{6}|x(x-1)(x+1)|
+\]
+
+\section*{Завдання 3. $f(x) = \sqrt{x}$}
+
+\textbf{Частина 1.}
+\begin{align*}
+\ell_1 \approx (3.273 - 0.023x)\cdot (5.761 - 0.048x), \; \ell_2 \approx (6.261 - 0.043x)\cdot (0.048x - 4.762), \; \ell_3 \approx (0.023x - 2.273)\cdot (0.043x - 5.261)
+\end{align*}
+
+$L_n(x) \approx -9.411x^2 + 0.068x + 4.1$.
+
+\textbf{Частина 2.} Обираємо $\widetilde{x}_1 := 110.5, \widetilde{x}_2 := 132.5$. Тоді:
+\[
+L_n(\widetilde{x}_1) \approx 10.51, \; L_n(\widetilde{x}_2) \approx 11.51
+\]
+
+\textbf{Частина 3.} $|f^{[n+1]}(x)| = \frac{3}{8}x^{-5/2}$, отже бачимо, що функція монотонно спадає на $\mathbb{R}^+$. Тому $\max_{x \in [100,144]}|f^{[n+1]}(x)| = f^{[n+1]}(100)= \frac{3}{8 \cdot 10^5}$. Тому:
+\[
+|f(x^*)-L_n(x^*)| \leq \frac{1}{16 \cdot 10^5}|(x-100)(x-121)(x-144)|
+\]
+
+\section*{Завдання 4. $f(x) = e^{-x^2}/\sqrt{2\pi}$}
+
+\textbf{Частина 1.} 
+\begin{align*}
+\ell_1 = \frac{10}{3}\left(\frac{7}{10} - x\right)(1-2x), \; \ell_2 = \frac{10}{3}\left(\frac{7}{10}-x\right)(5x-1),\\
+\ell_3 = 10\left(x-\frac{1}{5}\right)\left(x - \frac{1}{2}\right)
+\end{align*}
+\[
+L_n(x) \approx -0.18x^2 - 0.12x + 0.41
+\]
+
+\textbf{Частина 2.} Обираємо $\widetilde{x}_1 = 0.35, \widetilde{x}_2 = 0.6$. Маємо:
+\[
+L_n(\widetilde{x}_1) \approx 0.351, \; L_n(\widetilde{x}_2) \approx 0.279
+\]
+
+\textbf{Частина 3.} Беремо похідні:
+\[
+f'(x) = -\sqrt{\frac{2}{\pi}}xe^{-x^2}, \; f''(x) = -\sqrt{\frac{2}{\pi}}(e^{-x^2} - 2x^2 e^{-x^2}) = -\sqrt{\frac{2}{\pi}}(1-2x^2)e^{-x^2}
+\]
+\[
+f'''(x) = -\sqrt{\frac{2}{\pi}}(-4xe^{-x^2} - 2x(1-2x^2)e^{-x^2}) = -\frac{2x\sqrt{2}}{\sqrt{\pi}}(2x^2-3)e^{-x^2}
+\]
+
+Отже, модуль:
+\[
+|f^{[n+1]}(x)| = \frac{2\sqrt{2}e^{-x^2}}{\sqrt{\pi}}|2x^3-3x|
+\]
+
+Для підозрілих точок знімемо модуль і візьмемо похідну:
+\[
+f^{[n+1]}'(x) = e^{-x^2}(-4x^4+12x^2-3)
+\]
+
+Маємо єдину додатню підозрілу точку: $x_? = \sqrt{(3-\sqrt{6})/2}$. Якщо її підставити:
+\[
+|f^{[n+1]}(x_?)| = \sqrt{\frac{6\sqrt{6}-12}{\pi}} e^{\sqrt{3/2}-3/2} \approx 1.56
+\]
+
+Це значення виявляється більшим ніж при $x=0.2,0.7$. Отже, маємо оцінку:
+\[
+|f(x^*)-L_n(x^*)| \leq 0.26|(x-0.2)(x-0.5)(x-0.7)|
+\]
+
+\end{document}
+

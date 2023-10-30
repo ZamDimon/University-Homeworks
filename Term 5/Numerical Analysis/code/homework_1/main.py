@@ -1,10 +1,19 @@
-import math
+# Some packages for decoration
 import typing
 from typing import Any
 from collections.abc import Callable
+
+# Math packages
+import math
 import scipy
 import sympy as sym
-from rich import print
+
+from rich import print # Just for better printing
+
+# Include package from the subdirectory
+import sys
+import os
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
 import utils.logger as my_logger
 
 def get_lagrange_product(interpolation_points: list[float], term_id: int, x: Any, verbose=True) -> Any:

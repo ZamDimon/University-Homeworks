@@ -1,9 +1,9 @@
-## Lab 1
+## :one: Lab 1
 
 This folder contains materials and files for lab 1. Task is simple:
 
-1. Build Lagrange, Newton forward and backward polynomials for the given set of points $\\{x_i\\}_{i=1}$ and function $f: [\alpha,\beta] \to \mathbb{R}$.
-2. At specified points $\\{x^\*\_i\\}_{i=1}$, compare $P(x^\*\_i)$ and $f(x^\*\_i)$. Calculate the error (absolute difference $|P(x^\*\_i)-f(x^\*\_i)|$).
+1. Build Lagrange, Newton forward and backwards polynomials given interval and function $f$ defined on this interval.
+2. At specified points, find values of polynomials and a given function. Calculate the error (absolute difference between value of polynomial and a function).
 
 ### Prerequisites
 
