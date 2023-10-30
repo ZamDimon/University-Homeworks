@@ -10,10 +10,7 @@ import sympy as sym
 
 from rich import print # Just for better printing
 
-# Include package from the subdirectory
-import sys
-import os
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+# Use internal package
 import utils.logger as my_logger
 
 def get_lagrange_product(interpolation_points: list[float], term_id: int, x: Any, verbose=True) -> Any:
