@@ -1,0 +1,121 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 1}
+
+\textbf{Умова.} Нехай
+\[
+X = \{1,2,3,4\}, \; \mathcal{H} = \{\emptyset, \{1\}, \{1,2\}, \{3,4\}, \{1, 2, 3, 4\}\}
+\]
+
+\begin{enumerate}
+    \item Чи є $\mathcal{H}$ півалгеброю?
+    \item Якщо ні, то доповніть $\mathcal{H}$ до $\widetilde{\mathcal{H}}$ так, щоб $\mathcal{H} \subset \widetilde{\mathcal{H}}$ і $\widetilde{\mathcal{H}}$ була півалгеброю.
+\end{enumerate}
+
+\textbf{Розвʼязок.} 
+
+\textbf{Пункт 1.} За означенням, аби множина $\mathcal{H}$ була півалгеброю, потрібно $X \in \mathcal{H}$ та щоб $\mathcal{H}$ була півкільцем. Дійсно, $X \in \mathcal{H}$. Отже перевіряємо, чи перед нами півкільце. Для цього має виконуватись:
+\begin{enumerate}
+    \item $\forall A,B \in \mathcal{H}: A \cap B \in \mathcal{H}$
+    \item $\forall A,B \in \mathcal{H} \; \exists \{C_k\}_{k=1}^n \subset \mathcal{H}: (A \setminus B = \bigcup_{k=1}^n C_k \wedge \{C_k\}_{k=1}^n \;\text{є неперетинними})$
+\end{enumerate}
+
+Перша властивість дійсно виконується, для цього достатньо попарно перетнути елементи і перевірити, що вони будуть в $\mathcal{H}$:
+\[
+\emptyset \cap \{1\} = \emptyset \in \mathcal{H},\; \emptyset \cap \{1,2\} = \emptyset \in \mathcal{H}, \dots
+\]
+\[
+\{1\} \cap \{1,2\} = \{1\} \in \mathcal{H}, \; \{1\} \cap \{3,4\} = \emptyset \in \mathcal{H}, \; \{1\} \cap \{1,2,3,4\} = \{1\} \in \mathcal{H}
+\]
+\[
+\{1,2\} \cap \{3,4\} = \emptyset \in \mathcal{H}, \; \{1,2\} \cap \{1,2,3,4\} = \{1,2\} \in \mathcal{H}
+\]
+\[
+\{3,4\} \cap \{1,2,3,4\} = \{3,4\} \in \mathcal{H}
+\]
+
+А ось з другою властивістю є проблеми. Наприклад, візьмемо $A:=\{1,2,3,4\}, B=\{1\}$. Тоді $A \setminus B = \{2,3,4\}$. В нас залишаються $\{1,2\},\{3,4\}, \emptyset$ і, хоча вони неперетинні, їх об'єднання не дасть $\{2,3,4\}$. Отже, перед нами не півкільце, а отже і не півалгебра.
+
+\textbf{Пункт 2.} Найпростіший спосіб це звичайно доповнити $\mathcal{H}$ до $2^X$, в такому разі $2^X$ буде півкільцем (оскільки $\forall A,B \in 2^X: A \cap B \in 2^X$, а також $\forall A,B \in 2^X: A \setminus B \in 2^X$).
+
+Але давайте знайдемо менш тривіальний варіант. Для початку, повернімося до вибору $A = \{1,2,3,4\}, \; B = \{1\}$. Нам би допомогло скласти $A \setminus B$ з інших елементів, якщо б в нас було ще $\{2\}$, оскільки ми б взяли $\{C_k\}_{k=1}^2 := \{\{2\}, \{3,4\}\}$. Тому, додамо його.
+
+Тепер перевіримо, чи цього достатньо, тобто чи буде тепер такий клас множин півалгеброю:
+\[
+\widetilde{\mathcal{H}} = \mathcal{H} \cup \{\{2\}\}= \{\emptyset, \{1\}, \{2\}, \{1,2\}, \{3,4\}, \{1,2,3,4\}\}
+\]
+
+Із перетинів додалися перетини $\{2\}$ з усіма іншими елементами. Неважко переконатись, що всі перетини будуть лежати в $\widetilde{\mathcal{H}}$.
+
+Тепер розглянемо усі різниці. Спочатку віднімемо від $\{1,2,3,4\}$ всі інші елементи:
+\[
+\{1,2,3,4\} \setminus \{3,4\} = \{1,2\} \in \widetilde{\mathcal{H}}
+\]
+\[
+\{1,2,3,4\} \setminus \{1,2\} = \{3,4\} \in \widetilde{\mathcal{H}}
+\]
+\[
+\{1,2,3,4\} \setminus \{2\} = \{1,3,4\} = \underbrace{\{1\}}_{\in \widetilde{\mathcal{H}}} \cup \underbrace{\{3,4\}}_{\in \widetilde{\mathcal{H}}}, \; \{1\} \cap \{3,4\} = \emptyset
+\]
+\[
+\{1,2,3,4\} \setminus \{1\} = \{2,3,4\} = \underbrace{\{2\}}_{\in \widetilde{\mathcal{H}}} \cup \underbrace{\{3,4\}}_{\in \widetilde{\mathcal{H}}}, \; \{2\} \cap \{3,4\} = \emptyset
+\]
+
+Якщо віднімати в зворотній бік, то будемо отримувати $\emptyset \in \widetilde{\mathcal{H}}$. 
+
+Тепер $\{3,4\}$:
+\[
+\{3,4\} \setminus \{1,2\} = \{3,4\} \setminus \{1\} = \{3,4\} \setminus \{2\} = \{3,4\} \in \widetilde{\mathcal{H}}
+\]
+В зворотній бік ситуація аналогічна:
+\[
+\{1,2\} \setminus \{3,4\} = \{1,2\} \in \widetilde{\mathcal{H}}, \; \{2\} \setminus \{3,4\} = \{2\} \in \widetilde{\mathcal{H}}, \; \{1\} \setminus \{3,4\} = \{1\} \in \widetilde{\mathcal{H}}
+\]
+
+Тепер $\{1,2\}$:
+\[
+\{1,2\} \setminus \{2\} = \{1\} \in \widetilde{\mathcal{H}}, \; \{1,2\} \setminus \{1\} = \{2\} \in \widetilde{\mathcal{H}}
+\]
+\[
+\{1\} \setminus \{1,2\} = \{2\} \setminus \{1,2\} = \emptyset \in \widetilde{\mathcal{H}}
+\]
+
+Нарешті, $\{1\} \setminus \{2\} = \{1\} \in \widetilde{\mathcal{H}}, \{2\} \setminus \{1\} = \{2\} \in \widetilde{\mathcal{H}}$. 
+
+Отже, як перша, так і друга умови означення півкільця виконуються, а також $X \in \widetilde{\mathcal{H}}$, тому дійсно маємо півалгебру. 
+
+\textbf{Відповідь.} 
+
+1. Не є, не виконується 2 умова означення півкільця для $\{1,2,3,4\} \setminus \{1\}$.
+
+2. $\widetilde{\mathcal{H}} = \mathcal{H} \cup \{\{2\}\}$ або $\widetilde{\mathcal{H}} = 2^X$
+
+\end{document}
+
