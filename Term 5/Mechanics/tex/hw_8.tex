@@ -1,0 +1,115 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Домашня робота з курсу ``Теоретична механіка''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 3.}
+\textbf{Умова.} Тіло з масою $m$ рухається під дією сили земного тяжіння і сили опору повітря $R = kmgv$, де $v$ -- швидкість тіла. На яку максимальну висоту $H_{\max}$ підніметься тіло і яким буде його закон руху $x(t),y(t)$, якщо початкова швидкість $v_0$ направлена під кутом $\alpha$ до горизонту?
+
+\textbf{Розв'язок.} Запишемо диференціальні рівняння руху по вісям:
+\[
+m\ddot{x} = -kmg \dot{x}, \; m\ddot{y} = -mg - kmg\dot{y}
+\]
+Або:
+\[
+\dot{v}_x = -kgv_x, \; \dot{v}_y = -g(1+kv_y)
+\]
+Рівняння по $Ox$ розв'язати нескладно:
+\[
+v_x(t) = v_0 \cos\alpha \cdot e^{-kgt}
+\]
+Для знаходження максимальної висоти, розділимо друге рівняння на $v_y$:
+\[
+\frac{\dot{v}_y}{v_y} = -g\left(k + \frac{1}{v_y}\right)
+\]
+Помітимо, що $\frac{\dot{v}_y}{v_y} = \frac{dv_y}{dt} \cdot \frac{dt}{dy} = \frac{dv_y}{dy} = v_y'$. Таким чином,
+\[
+v_y' = -g\left(k+\frac{1}{v_y}\right) \implies \frac{dv_y}{k+\frac{1}{v_y}} = -gdy
+\]
+Проінтегруємо обидві частини:
+\[
+\int \frac{dv_y}{k+\frac{1}{v_y}} = \frac{1}{k}\int \frac{kv_ydv_y}{kv_y+1} = \frac{1}{k}\left(\int dv_y - \int\frac{dv_y}{1+kv_y}\right)= \frac{v_y}{k} - \frac{\ln(1+kv_y)}{k^2} + C
+\]
+Отже:
+\[
+\frac{v_y}{k} - \frac{\ln(1+kv_y)}{k^2} = -gy + C
+\]
+Помітимо, що $v_y(0) = v_0 \sin \alpha$, тому:
+\[
+C = \frac{v_0 \sin\alpha}{k} - \frac{\ln(1+kv_0\sin\alpha)}{k^2}
+\]
+Отже:
+\[
+y(v_y) = -\frac{1}{g}\left(\frac{v_y - v_0\sin\alpha}{k} + \frac{1}{k^2} \ln \frac{1+kv_0\sin\alpha}{1+kv_y}\right)
+\]
+Або:
+\[
+y(v_y) = \frac{v_0\sin\alpha - v_y}{kg} + \frac{1}{k^2g} \ln \frac{1+kv_y}{1+kv_0\sin\alpha}
+\]
+Оскільки $H_{\max} = y(0)$, то маємо:
+\[
+H_{\max} = \frac{v_0 \sin\alpha}{kg} + \frac{1}{k^2g} \ln \frac{1}{1+kv_0\sin\alpha} = \frac{kv_0\sin\alpha - \ln(1+kv_0\sin\alpha)}{k^2g}
+\]
+Залишилося знайти $x(t)$ та $y(t)$. Перше знайти легко:
+\[
+x(t) = \int_0^t v_x(\tau)d\tau = v_0\cos\alpha \int_0^{t} e^{-kg\tau}d\tau = -\frac{v_0\cos\alpha}{kg}e^{-kg\tau}\Big|_{\tau=0}^{\tau=t} = \frac{v_0\cos\alpha}{kg}(1-e^{-kgt})
+\]
+Для знаходження $y(t)$ потрібно лише знайти $v_y(t)$, оскільки $y(v_y)$ ми вже знаємо. Для знаходження $v_y(t)$ розв'яжемо початкове диференціальне рівняння:
+\[
+\dot{v}_y = -g(1+kv_y) \implies \frac{dv_y}{1+kv_y} = -gdt \implies \frac{1}{k}\ln (1+kv_y) = -gt + C
+\]
+Підставивши $t=0$, маємо $C=\frac{1}{k}\ln(1+kv_0\sin\alpha)$, тому
+\[
+\frac{1}{k}\ln \frac{1+kv_y}{1+kv_0\sin\alpha} = -gt \implies \frac{1+kv_y}{1+kv_0\sin\alpha} = e^{-kgt}
+\]
+Остаточно:
+\[
+v_y(t) = \frac{1}{k}\left((1+kv_0\sin\alpha)e^{-kgt}-1\right)
+\]
+Підставляючи у вираз $y(v_y)$, маємо:
+\[
+y(t) = \frac{v_0\sin\alpha}{kg} - \frac{1}{k^2g}\left((1+kv_0\sin\alpha)e^{-kgt}-1\right) - \frac{t}{k}
+\]
+
+\section*{Завдання 4.}
+
+\textbf{Умова.} Заряджена частинка з масою $m$ і зарядом $e$ рухається в однорідному магнітному полі з магнітною індукцією $\mathbf{B}$, маючи початкову швидкість $\mathbf{v}_0$, перпендикулярну до $\mathbf{B}$. Визначте траєкторію частинки, якщо на неї діє сила Лоренца $\mathbf{F}_L = e[\mathbf{v},\mathbf{B}]$.
+
+\textbf{Розв'язок.} Оскільки сила Лоренца спрямована перпендикулярно швидкості, то вона не виконує роботу, а отже не змінює кінетичну енергію частинки. Це означає, що впродовж польоту, швидкість не змінюється. 
+
+Також, кут між $\mathbf{F}_L$ та $\mathbf{B}$ впродовж польоту залишається $\pi/2$, тому і модуль сили $F_L=ev_0B$ залишається постійним. 
+
+Отже, якщо на частку діє постійна сила, перпендикулярна швидкості, то маємо рух по колу. Радіус кола можна знайти з рівняння рівноваги:
+\[
+m \frac{v_0^2}{r} = ev_0B \implies r = \frac{mv_0}{eB}
+\]
+
+Отже, маємо рух по колу радіуса $\frac{mv_0}{eB}$. 
+
+\end{document}
+
