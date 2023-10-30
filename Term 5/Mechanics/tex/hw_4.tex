@@ -1,0 +1,112 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Домашня робота з курсу ``Теоретична механіка''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 2.}
+
+\textbf{Розв'язок (прискорення точки $B$)} Скористаємося рівнянням Рівальса взявши точку $A$ за полюс:
+\[
+\boldsymbol{a}_B = \boldsymbol{a}_A + [\boldsymbol{\varepsilon} \times \vec{AB}] - \Omega^2 \cdot \vec{AB}
+\]
+
+Прискорення $\boldsymbol{a}_A = -\omega^2\vec{OA}$ -- лише доцентрове. Вектор $[\boldsymbol{\varepsilon} \times \vec{AB}] = \varepsilon \cdot AB \cdot \vec{OA}$. Таким чином:
+\[
+\boldsymbol{a}_B = (\varepsilon \cdot AB - \omega^2) \cdot \vec{OA} - \Omega^2 \cdot \vec{AB}
+\]
+
+Оскільки вектора $\vec{OA}$ та $\vec{AB}$ перпендикулярні, то
+\[
+a_B^2 = (\varepsilon \cdot AB - \omega^2)^2 + \Omega^4
+\]
+
+Всі ці значення ми знаходили. Підставивши, отримаємо $a_B = 4\sqrt{2} \; \text{м}/\text{с}^2$.
+
+\section*{Завдання 4.}
+
+\textbf{Розв'язок.} 
+
+Швидкість точки $A$ знаходимо як (миттєвий центр швидкості колеса це точка дотику $D$):
+\[
+v_A = \omega \cdot AD = \omega \cdot R \sqrt{3} = v_0\sqrt{3}
+\]
+
+Оскільки кут $ABD$ дорівнює $30$ градусів, то можемо спроектувати обидві швидкості на стрижень $AB$. Швидкість точки $A$ цілком лежить на стрижні, а проєкція $v_B$ на стрижень дорівнює $v_B \cdot \cos \frac{\pi}{6} = \frac{\sqrt{3}v_B}{2}$. 
+
+Таким чином $\frac{\sqrt{3}v_B}{2} = v_0\sqrt{3} \implies v_B = 2v_0$. 
+
+Для визначення кутової швидкості потрібно знайти миттєвий центр швидкості. З геометрії можна отримати, що ця точка знаходиться на відстані $6R$ над точкою $B$, а отже кутова швидкість $\Omega = \frac{v_B}{6R} = \frac{v_0}{3R}$. 
+
+Знайдемо прискорення. У точки $A$ є лише доцентрова компонента, що дорівнює $a_A = \frac{v_0^2}{R}$ і направлена до центру. Обираємо її у якості полюсу, маємо:
+\[
+\boldsymbol{a}_B = \boldsymbol{a}_A + \boldsymbol{a}_{BA}
+\]
+
+Нехай кутове прискорення стрижня $\varepsilon$. Тоді у вектора $\boldsymbol{a}_{AB}$ є дві компоненти:
+\[
+(\boldsymbol{a}_{AB})_n = \Omega^2 \cdot 3R, \; (\boldsymbol{a}_{AB})_{\tau} = \varepsilon \cdot 3R
+\]
+
+Далі проєктуємо рівняння поля прискорень на вісь, що направлена вздовж $AB$ та перпендикулярну їй. Отримаємо:
+\[
+-a_B \sin \frac{\pi}{6} = -a_A \cos \frac{\pi}{6} + 3R\varepsilon, \; a_B \cos \frac{\pi}{6} = a_A \sin \frac{\pi}{6} + \Omega^2 \cdot 3R
+\]
+
+Розв'язуючи це рівняння відносно $a_B$ та $\varepsilon$, отримуємо:
+\[
+a_B = \frac{5\sqrt{3}v_0^2}{9R}, \; \varepsilon = \frac{2\sqrt{3}v_0^2}{27R^2}
+\]
+
+\section*{Завдання 3.}
+
+\textbf{Розв'язок.} Спочатку застосовуємо формулу поля прискорень для точок $AB$, це дасть нам змогу знайти кутову швидкість та прискорення тіла. Нехай $A$ -- полюс, тоді:
+\[
+\boldsymbol{a}_B = \boldsymbol{a}_A + \boldsymbol{a}_{BA}
+\]
+
+Прискорення $\boldsymbol{a}_{BA}$ складається з двох компонент:
+\[
+(\boldsymbol{a}_{BA})_{n} = \omega^2 \cdot AB, \; (\boldsymbol{a}_{BA})_{\tau} = \varepsilon \cdot AB
+\]
+
+Далі проєктуємо наше рівняння поля прискорень на сторону $AB$ та на перпендикулярну вісь до неї. Отримаємо
+\[
+\varepsilon \cdot AB = a_A \sin \frac{\pi}{3}, \; a_B = -a_A \cos \frac{\pi}{3} + \omega^2 \cdot AB 
+\]
+
+Враховуючи $a_A=a_B=:a$, $AB = AC = BC := L$ маємо:
+\[
+\varepsilon = \frac{a \sqrt{3}}{2L}, \; \omega = \sqrt{\frac{3a}{2L}}
+\]
+
+Знаючи ці дві величини, можемо так само взяти, наприклад, точки $C$ та $A$, спроєктувати їх прискорення на $AC$ та перпендикулярну вісь.
+
+Тоді проєкція $\boldsymbol{a}_C$ на сторону $CA$ буде дорівнювати $\frac{a}{2}$, а на перпендикулярну вісь $a \frac{\sqrt{3}}{2}$. Отже модуль $a_C=a$, а якщо знайти векторну суму, то вона буде направлена вздовж $CB$.
+
+\end{document}
+

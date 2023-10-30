@@ -1,0 +1,164 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Домашня робота з курсу ``Теоретична механіка''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 3}
+
+\textbf{Умова.} Точка рухається у площині так, що $r=3t^2,\varphi=2t$. Знайти кут між швидкістю та прискоренням в момент $t=1$.
+
+\textbf{Розв'язок.} Нехай $\boldsymbol{e}_r \triangleq [\cos\varphi, \sin\varphi]^{\top}, \boldsymbol{e}_{\varphi} \triangleq [-\sin\varphi, \cos\varphi]^{\top}$. Тоді вектор швидкості:
+\[
+\boldsymbol{v}\Big|_{t=1} = \frac{dr}{dt}\Big|_{t=1}\boldsymbol{e}_r + r \frac{d\varphi}{dt}\Big|_{t=1}\boldsymbol{e}_\varphi = 6t\boldsymbol{e}_r + 3t^2 \cdot 2 \boldsymbol{e}_{\varphi}\Big|_{t=1} = 6(\boldsymbol{e}_r + \boldsymbol{e}_{\varphi})
+\]
+
+Прискорення:
+\[
+\boldsymbol{a} = (\ddot{r}-r\dot{\varphi}^2)\boldsymbol{e}_r + (r\ddot{\varphi} + 2\dot{r}\dot{\varphi})\boldsymbol{e}_{\varphi}
+\]
+
+Підставляємо $t=1$:
+\[
+\boldsymbol{a}\Big|_{t=1} = (6 - 3t^2 \cdot 4)\boldsymbol{e}_r + 2 \cdot 6t \cdot 2 \boldsymbol{e}_{\varphi}\Big|_{t=1} = -6\boldsymbol{e}_r + 24\boldsymbol{e}_{\varphi} = 6(-\boldsymbol{e}_r + 4\boldsymbol{e}_{\varphi})
+\]
+
+Знаходимо модулі векторів:
+\[
+\|\boldsymbol{v}(t=1)\| = 6\sqrt{2}, \; \|\boldsymbol{a}(t=1)\| = 6\sqrt{17}
+\]
+
+Скалярний добуток:
+\[
+\langle \boldsymbol{v}(t=1),\boldsymbol{a}(t=1) \rangle = -36\boldsymbol{e}_r^2 + 6 \cdot 24 \boldsymbol{e}_{\varphi}^2 = 108
+\]
+
+Тут ми скористалися тим, що $\langle\boldsymbol{e}_r,\boldsymbol{e}_r\rangle=\langle\boldsymbol{e}_{\varphi},\boldsymbol{e}_{\varphi}\rangle = 1, \langle\boldsymbol{e}_r,\boldsymbol{e}_{\varphi}\rangle = 0$. Отже:
+\[
+\cos \alpha = \frac{108}{36\sqrt{34}} = \frac{3}{\sqrt{34}}
+\]
+
+\section*{Завдання 5}
+
+\textbf{Умова.} Рух точки задано в полярних координатах компонентами її швидкості:
+\[
+v_r = \frac{1}{r^2}, \; v_{\varphi} = \frac{1}{\alpha r}
+\]
+
+Визначити траєкторію, а також тангенсальне та нормальне прискорення.
+
+\textbf{Розв'язок.} Швидкість у полярних координатах:
+\[
+\boldsymbol{v} = \frac{dr}{dt} \boldsymbol{e}_r + r \frac{d\varphi}{dt} \boldsymbol{e}_{\varphi}
+\]
+
+Отже:
+\[
+\frac{dr}{dt} = \frac{1}{r^2}, \; \frac{1}{\alpha r} = r \frac{d \varphi}{dt}
+\]
+
+З першого рівняння $r^2dr = dt$ звідки $r^3 = 3t + C$, отже $r(t)=\sqrt[3]{3(t-t_0)}$. Підставляємо це у друге рівняння:
+\[
+\frac{d\varphi}{dt} = \frac{1}{\alpha r^2} \to d\varphi = \frac{1}{\alpha} \cdot \frac{dt}{(3(t-t_0))^{2/3}}
+\]
+
+Проінтегруємо обидві частини:
+\[
+\varphi - \varphi_0 = \frac{1}{\alpha \cdot \sqrt[3]{9}} \cdot \frac{\sqrt[3]{t-t_0}}{1/3} \to \varphi(t) = \varphi_0 + \frac{3}{\alpha} \cdot \sqrt[3]{\frac{t-t_0}{9}}
+\]
+
+Для аналізу типу траєкторії підставимо $t_0=\varphi_0=0$. Тоді:
+\[
+r(t) = \sqrt[3]{3} \cdot \sqrt[3]{t}, \; \varphi(t) = \frac{3}{\sqrt[3]{9}\alpha} \cdot \sqrt[3]{t}
+\]
+
+Звідси:
+\[
+r(\varphi) = \sqrt[3]{3} \cdot \frac{\alpha \sqrt[3]{9}}{3} \cdot \varphi = \alpha\varphi
+\]
+
+Що є архімедовою спіраллю. Цей факт можна було отримати одразу, підставивши $dt=r^2dr$ у вираз $\frac{1}{\alpha r} = r \frac{d\varphi}{dt}$, але тоді в нас не було б функцій від часу.
+
+Знайдемо прискорення:
+\[
+\boldsymbol{a} = (\ddot{r} - r\dot{\varphi}^2)\boldsymbol{e}_r + (r\ddot{\varphi} + 2\dot{r}\dot{\varphi})\boldsymbol{e}_{\varphi}
+\]
+
+Будемо все виражати через $r$. Отже:
+\[
+\ddot{r} = \frac{d}{dt} \frac{1}{r^2} = 2r\dot{r} \cdot \left(-\frac{1}{r^4}\right) = -\frac{2\dot{r}}{r^3} = -\frac{2}{r^5}
+\]
+\[
+\dot{\varphi} = \frac{1}{\alpha r^2}, \; \ddot{\varphi} = \frac{\ddot{r}}{\alpha} = -\frac{2}{\alpha r^5}
+\]
+
+Тому радіальна компонента:
+\[
+a_r = \ddot{r} - r\dot{\varphi}^2 = -\frac{2}{r^5} - r \cdot \frac{1}{\alpha^2r^4} = -\frac{1}{r^3}\left(\frac{2}{r^2} + \frac{1}{\alpha^2}\right)
+\]
+
+А кутова:
+\[
+a_{\varphi} = r\ddot{\varphi} + 2\dot{r}\dot{\varphi} = -\frac{2}{\alpha r^4} + 2 \cdot \frac{1}{r^2} \cdot \frac{1}{\alpha r^2} = 0
+\]
+
+Отже бачимо, що:
+\[
+\boldsymbol{a} = -\frac{1}{r^3}\left(\frac{2}{r^2} + \frac{1}{\alpha^2}\right)\boldsymbol{e}_r
+\]
+
+Для знаходження тангенсального прискорення, знайдемо модуль швидкості:
+\[
+v^2 = \dot{r}^2 + r^2\dot{\varphi}^2 = \frac{1}{r^4} + r^2 \cdot \frac{1}{\alpha^2r^4} = \frac{1}{r^4} + \frac{1}{\alpha^2r^2}
+\]
+
+Отже:
+\[
+a_{\tau} \triangleq \frac{dv}{dt} = \frac{d}{dt}\left(\frac{1}{r}\sqrt{\frac{1}{r^2} + \frac{1}{\alpha^2}}\right) = -\frac{\dot{r}}{r^2}\sqrt{\frac{1}{r^2} + \frac{1}{\alpha^2}} + \frac{1}{r} \cdot \frac{-\frac{2}{r^3}\dot{r}}{2\sqrt{\frac{1}{r^2} + \frac{1}{\alpha^2}}}
+\]
+
+Підставляємо той факт, що $\dot{r}=1/r^2$:
+\[
+a_{\tau} = -\frac{1}{r^4}\sqrt{\frac{1}{r^2}+\frac{1}{\alpha^2}} - \frac{1}{r^6\sqrt{\frac{1}{r^2}+\frac{1}{\alpha^2}}} = -\frac{1}{r^6\sqrt{\frac{1}{r^2}+\frac{1}{\alpha^2}}}\left(r^2\left(\frac{1}{r^2}+\frac{1}{\alpha^2}\right) + 1\right)
+\]
+
+Отже остаточно:
+\[
+a_{\tau} = -\frac{2+r^2/\alpha^2}{r^6\sqrt{1/r^2+1/\alpha^2}} = -\frac{2\alpha^2+r^2}{\alpha r^5\sqrt{r^2+\alpha^2}} = -\frac{\alpha}{r^3\sqrt{r^2+\alpha^2}}\left(\frac{2}{r^2}+\frac{1}{\alpha^2}\right)
+\]
+
+
+Якщо позначити $\cos\theta = \frac{\alpha}{\sqrt{r^2+\alpha^2}}$, то $a_{\tau} = a \cos\theta$, тому $a_n = a\sin\theta$.
+
+\textbf{Відповідь.} 
+
+1. Траєкторія -- Архімедова спіраль.
+
+2. $a_{\tau}=a \cos\theta, a_n = a\sin\theta$, де $\tan\theta = \frac{r}{\alpha}$, $a= \frac{1}{r^3}\left(\frac{2}{r^2}+\frac{1}{\alpha^2}\right)$
+
+\end{document}
+

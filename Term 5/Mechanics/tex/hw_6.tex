@@ -1,0 +1,156 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Домашня робота з курсу ``Теоретична механіка''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 2.}
+
+\textbf{Умова.} Тіло з масою $m=1 \, \text{kg}$ рухається під дією сили $F(t)=f\left(1-\frac{t}{\tau}\right)$ (де $f=10 \, \text{N}, \, \tau=1 \, \text{s}$). Визначте момент зупинки тіла, а також шлях, пройдений тілом до цього моменту. Початкова швидкість тіла дорівнює $v_0=20 \, \frac{\text{m}}{\text{s}}$ і збігається за напрямом із силою.
+
+\textbf{Розв'язок.} Запишемо другий закон Ньютона:
+\[
+m \frac{dv}{dt} = f\left(1 - \frac{t}{\tau}\right) \implies dv = \frac{f}{m}\left(1 - \frac{t}{\tau}\right)dt
+\]
+
+Проінтегруємо обидві частини від $0$ до $t$:
+\[
+v(t) - v_0 = \frac{f}{m}\left(t - \frac{t^2}{2\tau}\right) \implies v(t) = v_0 + \frac{ft}{m}\left(1 - \frac{t}{2\tau}\right)
+\]
+
+Тіло зупиниться у момент $T$ тоді, коли $v(T)=0$. Отже:
+\[
+-\frac{f}{2m\tau}T^2 + \frac{f}{m}T + v_0 = 0 \implies T^2 - 2\tau T - \frac{2mv_0\tau}{f} = 0
+\]
+
+Це є квадратним рівнянням. Його розв'язки:
+\[
+T_{\pm} = \tau \pm \sqrt{\tau^2 + \frac{2mv_0\tau}{f}}
+\]
+
+Оскільки корінь більший за $\tau$, то обираємо додатній розв'язок, що має вид
+\[
+T = \tau + \sqrt{\tau^2 + \frac{2mv_0\tau}{f}}
+\]
+
+Підставимо числа:
+\[
+T = 1 \, \text{s} + \sqrt{1 + \frac{2 \cdot 20}{10}} \, \text{s} = (1 + \sqrt{5}) \, \text{s} \approx 3.236 \, \text{s}
+\]
+
+Знайдемо шлях, котре пройшло тіло:
+\begin{align*}
+s = \int_0^T v(t)dt = \int_0^T \left(v_0 + \frac{ft}{m}\left(1 - \frac{t}{2\tau}\right)\right)dt = v_0T + \frac{fT^2}{2m} - \frac{fT^3}{6m\tau}
+\end{align*}
+
+Підставивши числа, маємо $s\approx 60.6 \, \text{m}$.
+
+\textbf{Відповідь.} Тіло зупиниться через $3.236 \, \text{s}$ на відстані $60.6 \, \text{m}$ від початку.
+
+\section*{Завдання 4.}
+
+\textbf{Умова.} Визначте закон руху важкої кульки вздовж прямолінійного каналу, який проходить крізь центр Землі, якщо всередині земної кулі сила гравітаційного тяжіння пропорційна відстані від центру Землі. Початкова швидкість кульки дорівнює $v_0 = 0$. Якою буде швидкість кульки у центрі Землі та за який час вона потрапить до цього центру? Радіус земної кулі становить приблизно $R=6400 \,\text{км}$, прискорення вільного падіння на земній поверхні $g_0 = 9.8 \, \frac{\text{м}}{\text{с}^2}$.
+
+\textbf{Розв'язок.} За умовою прискорення, що діє на тіло, дорівнює $g(r) = g_0 \cdot \frac{r}{R}$. За другим законом Ньютона:
+\[
+m\ddot{r} = -mg(r) \implies \ddot{r} = -\frac{g_0}{R}r
+\]
+
+Або, можемо записати як:
+\[
+\ddot{r} + \frac{g_0}{R}\cdot r = 0
+\]
+
+Бачимо, що перед нами рівняння гармонічних коливань з частотою $\omega^2 = \frac{g_0}{R}$. Якщо початкова швидкість $0$, то рівняння руху:
+\[
+r(t) = r_m \cos \omega t
+\]
+
+де $r_m$ -- амплітуда та одночасно відстань в початковий момент часу. За умовою $r_m=R$, тому маємо:
+\[
+r(t) = R \cos \left(\sqrt{\frac{g_0}{R}}t\right)
+\]
+
+Кулька досягне центр за чверть періоду, тобто за $\frac{T}{4} = \frac{\pi}{2\omega} = \frac{\pi}{2}\sqrt{\frac{R}{g_0}}$. Швидкість у цей момент часу дорівнює $\omega R = \sqrt{g_0R}$. 
+
+\textbf{Відповідь.} За час $\frac{\pi}{2}\sqrt{\frac{R}{g_0}}$ зі швидкістю $\sqrt{g_0R}$. 
+
+\section*{Завдання 5.}
+
+\textbf{Умова.} Визначте, за який час $T$ і на яку висоту $H$ підніметься тіло, що підкинуто вгору зі швидкістю $v_0$, якщо сила опору повітря $R = k^2 mg v^2$. 
+
+\textbf{Розв'язок.} Запишемо другий закон Ньютона:
+\[
+m \frac{dv}{dt} = -mg - k^2 mg v^2 \implies \frac{dv}{dt} = -g(1 + k^2v^2)
+\]
+
+Розділяємо змінні:
+\[
+\frac{dv}{1+k^2v^2} = -gdt
+\]
+
+Проінтегруємо. Права частина має первісну $-gt$, а ліва частина:
+\[
+\int \frac{dv}{1+k^2v^2} = \begin{vmatrix}
+    \xi = kv \\ dv = \frac{d\xi}{k}
+\end{vmatrix} = \frac{1}{k}\int \frac{d\xi}{1+\xi^2} = \frac{\arctan \xi}{k}+C = \frac{\arctan kv}{k}+C
+\]
+
+Отже:
+\[
+\arctan kv = -kgt + C'
+\]
+
+Підставимо початковий момент часу: $\arctan kv_0 = C'$. Отже:
+\[
+\arctan kv = \arctan kv_0 - kgt
+\]
+
+Потрібно знайти, через який час $\tau$ швидкість стане нульовою. Отже:
+\[
+\arctan kv_0 = kg\tau \implies \tau = \frac{\arctan kv_0}{kg}
+\]
+
+Знайдемо висоту. Помітимо, що:
+\[
+\arctan kv(t) = kg\tau - kgt = kg(\tau - t) \implies v(t) = \frac{1}{k}\tan\left(kg(\tau-t)\right)
+\]
+
+Отже, висота:
+\[
+H = \frac{1}{k}\int_0^{\tau} \tan kg(\tau - t)dt = \frac{1}{k} \cdot \frac{-\log \cos kg\tau}{gk} = -\frac{\log \cos kg\tau}{k^2g}
+\]
+
+Згадаємо, що $kg\tau = \arctan kv_0$, тому:
+\[
+H = -\frac{1}{k^2 g} \cdot \log \cos \arctan kv_0 = -\frac{1}{k^2g} \log \frac{1}{\sqrt{1+k^2v_0^2}} = \frac{\log(1+k^2v_0^2)}{2k^2g}
+\]
+
+\textbf{Відповідь.} За час $\tau=\frac{\arctan kv_0}{kg}$ на висоту $H=\frac{\log(1+k^2v_0^2)}{2k^2g}$. 
+
+\end{document}
+
