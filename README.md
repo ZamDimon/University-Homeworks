@@ -1,4 +1,4 @@
-# :mortar_board: University Homeworks
+# :mortar_board: University Homework Material
 
 <p align="center">
   <img width="10%" src="https://github.com/ZamDimon/University-Homeworks/assets/29094239/0db5a6ba-0962-411e-8608-f73bed223a81">
@@ -6,7 +6,7 @@
 
 This repository contains my homework from _V.N. Karazin Kharkiv National University_, **Applied Mathematics** major.
 
-All homework is written in *Ukrainian* (except for foreign language classes). 
+All homework is written in *Ukrainian* (except for foreign language classes and programming classes). 
 
 ## :100: Classes and Scores
 
