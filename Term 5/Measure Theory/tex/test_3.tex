@@ -1,0 +1,143 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 1}
+
+\textbf{Умова.} Знайти верхню і нижню границі послідовності $\{A_n\}_{n=0}^{\infty}$, якщо:
+\[
+A_n = \begin{cases}
+    [1,n^3+3), & n = 2k, \\
+    \left(1 - \frac{1}{n},\ln^2 n\right], & n = 2k+1
+\end{cases}, \; n \in \mathbb{Z}^+
+\]
+
+\textit{Коментар.} Тут і далі позначатимемо $\mathbb{Z}^+ \triangleq \mathbb{N} \cup \{0\}$.
+
+\textbf{Розв'язок.} Як було доведено на практиці,
+\[
+\underset{n \to \infty}{\overline{\lim}} A_n = \bigcap_{n=0}^{\infty}\bigcup_{k=n}^{\infty}A_k, \; \underset{n \to \infty}{\underline{\lim}}A_n = \bigcup_{n=0}^{\infty}\bigcap_{k=n}^{\infty}A_k
+\]
+
+Отже, акуратно застосуємо ці формули. Розіб'ємо розв'язок на дві частини: обрахунок верхньої та нижньої границі послідовності.
+
+\textbf{Знаходження верхньої границі.} Для початку, знайдемо $\textcolor{red}{W_n} \triangleq \bigcup_{k=n}^{\infty}A_k$. 
+
+Помітимо, що
+\[
+\textcolor{red}{W_n} \triangleq \bigcup_{k=n}^{\infty}A_k = \underbrace{\left(\bigcup_{k=0}^{\infty}A_{n+2k}\right)}_{\textcolor{orange}{U_n}} \cup \underbrace{\left(\bigcup_{k=0}^{\infty}A_{n+2k+1}\right)}_{\textcolor{blue}{V_n}}
+\]
+
+Таким чином, ми розбили одне ціле об'єднання на два окремих, для яких індекси мають однакову парність. Нехай для конкретності $n=2m$. В такому разі маємо \textcolor{orange}{парну} суму, позначену $\textcolor{orange}{U_{2m}}$ та \textcolor{blue}{непарну}, позначену $\textcolor{blue}{V_{2m}}$.
+
+В такому разі:
+\[
+\textcolor{orange}{U_{2m}} \triangleq \bigcup_{k=0}^{\infty}A_{2m+2k} = \bigcup_{k=0}^{\infty} [1,8(m+k)^3+3)
+\]
+
+Маємо об'єднання відрізків виду $[1, x_k)$ де $x_k \triangleq 8(m+k)^3+3$. Ця послідовність необмежена зверху, бо $\lim_{k \to \infty}x_k = +\infty$. Окрім цього, монотонно зростає, починаючи з $x_0 = 8m^3+3$. Отже, якщо взяти об'єднання усіх таких відрізків, то отримаємо 
+\[
+\textcolor{orange}{U_{2m}} = [1, +\infty).
+\]
+
+Що стосується другого доданку,
+\[
+\textcolor{blue}{V_{2m}} \triangleq \bigcup_{k=0}^{\infty} A_{2m+2k+1} = \bigcup_{k=0}^{\infty} \left(1 - \frac{1}{2m+2k+1}, \ln^2\left(2m+2k+1\right)\right].
+\]
+
+Тут проаналізуємо акуратніше. Позначимо $\ell_k \triangleq 1 - \frac{1}{2m+2k+1}$ та $r_k \triangleq \ln^2(2m+2k+1)$. 
+
+Ліва межа відрізка починається з $\ell_0 = 1-\frac{1}{2m+1}$ та монотонно збільшується, наближаючись до $1$ ($\lim_{k \to \infty}\ell_k = 1$). Права ж межа починається з $r_0 = \ln^2(2m+1)$ та монотонно необмежено збільшується ($\lim_{k \to \infty}r_k = +\infty$). 
+
+Отже, об'єднання зліва буде починатися з $1-\frac{1}{2m+1}$ не включно, оскільки це ``найлішіва'' точка, а праворуч буде $+\infty$. Таким чином:
+\[
+\textcolor{blue}{V_{2m}} = \left(1-\frac{1}{2m+1}, +\infty\right)
+\]
+
+Якщо $n=2m+1$, то вирази не змінюються. Дійсно, в такому разі $\textcolor{orange}{U_{2m+1}}=\textcolor{blue}{V_{2m}}=\left(1-\frac{1}{2m+1},+\infty\right)$, а $\textcolor{blue}{V_{2m+1}} = \textcolor{orange}{U_{2m+2}} = [1,+\infty)$. 
+
+Отже, узагальнити об'єднання можна таким чином:
+\[
+\textcolor{orange}{U_n} \cup \textcolor{blue}{V_n} = [1,+\infty) \cup \left(1 - \frac{1}{2\left\lfloor\frac{n}{2}\right\rfloor + 1},+\infty\right) = \left(1 - \frac{1}{2\left\lfloor\frac{n}{2}\right\rfloor + 1},+\infty\right)
+\]
+Таким чином, $\textcolor{red}{W_n} = \left(1 - \frac{1}{2\left\lfloor\frac{n}{2}\right\rfloor + 1},+\infty\right)$. Тому
+\[
+\underset{n \to \infty}{\overline{\lim}} A_n = \bigcap_{n=0}^{\infty} \left(1 - \frac{1}{2\left\lfloor\frac{n}{2}\right\rfloor + 1},+\infty\right) = \bigcap_{k=0}^{\infty} \left(1 - \frac{1}{2k+1}, +\infty\right)
+\]
+
+Для обрахунку, потрібно знайти $\sup_{k \in \mathbb{Z}^+} \left(1 - \frac{1}{2k+1}\right)$. Послідовність монотонно зростає від $0$ і наближається до $1$, тобто $\sup_{k \in \mathbb{Z}^+} \left(1 - \frac{1}{2k+1}\right) = 1$. Супремум варто включити, оскільки $1$ належить будь-якому відрізку виду $(1-\frac{1}{2k+1},+\infty)$, а отже і перетину усіх таких відрізків. Остаточно:
+\[
+\underset{n \to \infty}{\overline{\lim}} A_n = [1, +\infty)
+\]
+
+\textbf{Знаходження нижньої границі.} Спочатку знаходимо $\textcolor{red}{W_n} \triangleq \bigcap_{k=n}^{\infty}A_k$:
+\[
+\textcolor{red}{W_n} \triangleq\bigcap_{k=n}^{\infty}A_k = \underbrace{\left(\bigcap_{k=0}^{\infty}A_{n+2k}\right)}_{\textcolor{orange}{U_n}} \cap \underbrace{\left(\bigcap_{k=0}^{\infty}A_{n+2k+1}\right)}_{\textcolor{blue}{V_n}}
+\]
+
+Нехай знову для конкретики $n=2m$. Тоді:
+\[
+\textcolor{orange}{U_{2m}} = \bigcap_{k=0}^{\infty}A_{2m+2k} = \bigcap_{k=0}^{\infty}[1,8(m+k)^3+3) = [1,8m^3+3)
+\]
+
+Це випливає з того, що перший відрізок $[1,8m^3+3] \subset [1,8(m+k)^3+3]$ для будь-якого $k \in \mathbb{Z}^+$, тому перетин усіх відрізків дасть лише перший. 
+
+Друга границя:
+\[
+\textcolor{blue}{V_{2m}} = \bigcap_{k=0}^{\infty}A_{2m+2k+1} = \bigcap_{k=0}^{\infty}\left(1 - \frac{1}{2m+2k+1}, \ln^2\left(2m+2k+1\right)\right]
+\]
+
+Тут знову проаналізуємо акуратніше. Нам, по суті, потрібно знайти супремум лівої границі та інфінум правої. Позначимо наші відрізки $\{(\ell_k, r_k]\}_{k \in \mathbb{Z}^+}$. Ліва границя відрізка, як ми казали раніше, починається з $1 - \frac{1}{2m+1}$ і монотонно зростає до $1$ не включно. Права границя необмеженно зростає від $\ln^2(2m+1)$ до $+\infty$. 
+
+Отже, супремум лівої частини дорівнює $1$, а інфінум лівої $\ln^2(2m+1)$. Таким чином:
+\[
+\textcolor{blue}{V_{2m}} = [1, \ln^2(2m+1)]
+\]
+Якщо $n=2m+1$, то перший доданок $\textcolor{orange}{U_{2m+1}} = \textcolor{blue}{V_{2m}} = [1,\ln^2(2m+1)]$, а другий $\textcolor{blue}{V_{2m+1}} = \textcolor{orange}{U_{2m+2}} = [1,8(m+1)^3+3)$. 
+
+Таким чином, можемо узагальнити перетин:
+\[
+\textcolor{orange}{U_n} \cap \textcolor{blue}{V_n} = \left[1,\ln^2\left(2\left\lfloor\frac{n}{2}\right\rfloor+1\right)\right] \cap \left[1,8\left\lfloor\frac{n+1}{2}\right\rfloor^3+3\right)
+\]
+
+Проте, $\forall n \in \mathbb{Z}^+: 8\left\lfloor\frac{n+1}{2}\right\rfloor^3+3 > \ln^2\left(2\left\lfloor\frac{n}{2}\right\rfloor+1\right)$, тому
+\[
+\textcolor{red}{W_n} = \textcolor{orange}{U_n} \cap \textcolor{blue}{V_n} = \left[1,\ln^2\left(2\left[\frac{n}{2}\right]+1\right)\right]
+\]
+
+Отже,
+\[
+\underset{n \to \infty}{\underline{\lim}}A_n = \bigcup_{n=0}^{\infty}\textcolor{red}{W_n} = \bigcup_{n=0}^{\infty}\left[1,\ln^2\left(2\left[\frac{n}{2}\right]+1\right)\right] = \bigcup_{k=0}^{\infty} [1,\ln^2(2k+1)]
+\]
+
+Оскільки права границя відрізків прямує на $+\infty$, аналогічно першій границі, отримуємо $\underset{n \to \infty}{\underline{\lim}}A_n = [1,+\infty)$.
+
+\textbf{Відповідь.} $\underset{n \to \infty}{\overline{\lim}} = \underset{n \to \infty}{\underline{\lim}}A_n=[1,+\infty)$.
+
+\end{document}
+

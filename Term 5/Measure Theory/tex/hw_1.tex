@@ -1,0 +1,138 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Домашня робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання О3}
+
+\textbf{Умова.} 
+
+Довести, що
+
+\begin{enumerate}
+    \item кільце є замкненим відносно операцій $\cap$ та $\Delta$;
+    \item об'єднання та перетин скінченної сукупності елементів кільця належать до кільця.
+\end{enumerate}
+
+\textbf{Розв'язок.} 
+
+1. Нехай маємо кільце $\mathcal{H}$. Тоді, згідно означенню, справедливо:
+\begin{enumerate}
+    \item $\forall A, B \in \mathcal{H}: A \cup B \in \mathcal{H}$
+    \item $\forall A, B \in \mathcal{H}: A \setminus B \in \mathcal{H}$
+\end{enumerate}
+
+Кільце є замкненим відносно $\cap$ якщо $\forall A, B \in \mathcal{H}$ буде справедливо $A \cap B \in \mathcal{H}$. Цю властивість було доведено на лекції наступним чином: запишемо
+\[
+A \cap B = A \setminus (A \setminus B)
+\]
+
+Згідно означенню $1$ різниця множин буде належати $\mathcal{H}$, а отже після двічі застосування різниці знову опиняємось у $\mathcal{H}$.
+
+Доведемо тепер, що $\forall A, B \in \mathcal{H}: A \,\Delta\, B \in \mathcal{H}$. Згідно означенню:
+\[
+A \, \Delta \, B = (B \setminus A) \cup (A \setminus B)
+\]
+
+Згідно властивості 2, маємо $B \setminus A \in \mathcal{H}, A \setminus B \in \mathcal{H}$. Згідно властивості 1, об'єднання елементів з кільця дасть елемент кільця, а отже весь вираз $A \Delta B$ знаходиться в кільці. 
+
+2. Нехай маємо $\{H_k\}_{k=1}^n \subset \mathcal{H}, n>1$. Потрібно довести $\bigcup_{k=1}^n H_k, \bigcap_{k=1}^n H_k \in \mathcal{H}$. 
+
+Випадок $n=2$ доведений з поперднього пункту (для операції $\cap$) та з означення (для операції $\cup$). 
+
+Якщо $n>2$, то можна довести, наприклад, за індукцією. База в нас вже є. Отже, нехай твердження справедливе для $m>2$, тобто $\bigcup_{k=1}^m H_k =: S_m \in \mathcal{H}$. Тоді це справедливо і для $m+1$, оскільки $\bigcup_{k=1}^{m+1} H_k = S_m \cup H_{m+1} \in \mathcal{H}$, що випливає з означення кільця. Аналогічно можна довести і для $\cap$.
+
+\section*{Завдання С3}
+
+\textbf{Умова.} Довести, що сукупність усіх обмежених підмножин прямої $\mathbb{R}$ утворює кільце, але не є ані $\sigma$-кільцем, ані $\sigma$-алгеброю. 
+
+\textbf{Розв'язок.} Нехай маємо сукупність обмежених підмножин $\mathcal{H}$ прямої $\mathbb{R}$. Тоді
+\[
+\forall H \in \mathcal{H} \; \exists \rho > 0 \; \forall x, y \in H: d(x,y) < \rho 
+\]
+
+Доведемо, що $\mathcal{H}$ є кільцем. Спочатку доведемо, що $\forall A, B \in \mathcal{H}: A \cup B \in \mathcal{H}$. Тобто, нехай ми знаємо, що
+\[
+\exists \rho_A > 0 \; \forall x,y \in A: d(x,y) < \rho_A
+\]
+\[
+\exists \rho_B > 0 \; \forall x,y \in B: d(x,y) < \rho_B
+\]
+
+Нам потрібно знайти таке $\rho_{A \cup B} > 0$, що $\forall x,y \in A \cup B: d(x,y) < \rho_{A \cup B}$. Для цього покладемо $\rho_{A \cup B} := \rho_A + \rho_B$. Тоді, який елемент б ми не взяли, будь це з $A$ або $B$, все одно відстань між ними буде менша за $\rho_A + \rho_B$. 
+
+Тепер покажемо, що $A \setminus B \in \mathcal{H}$. Тобто знайдемо таке $\rho_{A\setminus B} > 0$, що $\forall x,y \in A \setminus B: d(x,y)<\rho_{A \setminus B}$. Для цього достатньо покласти $\rho_{A \setminus B} := \rho_A$, оскільки віднімання від $A$ якоїсь частини не збільшує ``радіус'' множини. 
+
+Доведемо, що $\mathcal{H}$ не є $\sigma$-кільцем. Згідно означенню, має виконуватись:
+\begin{enumerate}
+    \item $\forall \{H_k\}_{k=1}^{\infty} \subset \mathcal{H}: \bigcup_{k=1}^{\infty}H_k \in \mathcal{H}$
+    \item $\forall A,B \in \mathcal{H}: A \setminus B \in \mathcal{H}$
+\end{enumerate}
+
+Друга властивість, як ми довели вище, виконується. Доведемо, що
+\[
+\exists \{H_k\}_{k=1}^{\infty} \subset \mathcal{H}: \bigcup_{k=1}^{\infty} H_k \notin \mathcal{H}
+\]
+
+Дійсно, візьмем $H_k := [k,k+1]$. Тоді якщо позначити $S_n := \bigcup_{k=1}^{n}H_k$, то $S_n = [1,n+1]$. В такому разі $\lim_{n\to\infty}S_n = [1,+\infty)$, що звичайно не є обмеженою множиною, тобто вона не належить $\mathcal{H}$. 
+
+Оскільки $\mathcal{H}$ не є $\sigma$-кільцем, то вона і не є $\sigma$-алгеброю. Окрім цього, $\mathbb{R} \notin \mathcal{H}$, оскільки $\mathbb{R}$ не є обмеженою. 
+
+\section*{Завдання Д1}
+
+\textbf{Умова.} Довести, що клас множин є кільцем, якщо він замкнений відносно 1. $(\cup, \Delta)$ та 2. $(\cap, \Delta)$. 
+
+\textbf{Розв'язок.} 
+
+1. Нехай маємо $\mathcal{H}$, що є замкненою відносно $(\cup,\Delta)$. Нам потрібно довести замкнення відносно $(\cup,\setminus)$, тобто лише відносно $\setminus$. Візьмемо дві множини $A, B \in \mathcal{H}$. Тоді помітимо, що:
+\[
+A \setminus B = (A \cup B) \Delta B
+\]
+
+Дійсно,
+\[
+(A \cup B) \Delta B = ((A \cup B) \setminus B) \cup (B \setminus (A \cup B)) = (A \setminus B) \cup \emptyset = A \setminus B
+\]
+
+Оскільки $A \cup B \in \mathcal{H}$, то і $A\setminus B = (A \cup B) \Delta B \in \mathcal{H}$.
+
+2. Нехай $\mathcal{H}$ замкнена відносно $(\cap, \Delta)$. Доведемо замкнення відносно $\setminus$. Маємо
+\[
+A \setminus B = (A \Delta B) \cap A
+\]
+
+Знову, ми виразили все через операції $(\Delta,\cap)$, тому звідси випливає замкненість через $\setminus$. 
+
+Об'єднання можемо записати як:
+\[
+A \cup B = \underbrace{(A \Delta B)}_{\in \mathcal{H}} \Delta \underbrace{(A \cap B)}_{\in \mathcal{H}} \in \mathcal{H}
+\]
+
+Отже, ми довели замкненість по $(\cup, \setminus)$, що означає, що $\mathcal{H}$ є кільцем.
+
+\end{document}
+

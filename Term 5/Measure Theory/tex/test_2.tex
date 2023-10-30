@@ -1,0 +1,60 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 1}
+
+\textbf{Умова.} Нехай $X = \mathbb{N}$, а також
+\[
+\mathcal{H} = \{ \{2k\}: k \in \mathbb{N}\} \cup \{\emptyset\}
+\]
+
+Чи є $\mathcal{H}$ кільцем? Якщо ні, то знайдіть $k(\mathcal{H})$.
+
+\textbf{Розв'язок.} За означенням кільця, має виконуватись наступні дві умови:
+\begin{enumerate}
+    \item $\forall A,B \in \mathcal{H}: A \cup B \in \mathcal{H}$
+    \item $\forall A,B \in \mathcal{H}: A \setminus B \in \mathcal{H}$
+\end{enumerate}
+
+Одразу бачимо, що перша умова не виконується. Наприклад, нехай $A = \{2\} \in \mathcal{H}, B = \{10\} \in \mathcal{H}$. В такому разі $A \cup B = \{2,10\} \not\in \mathcal{H}$. 
+
+Знайдемо кільце, породжене класом $\mathcal{H}$. За означенням:
+\[
+k(\mathcal{H}) \triangleq \bigcap_{\mathcal{H} \subset \mathcal{K}_{\alpha},\; \mathcal{K}_{\alpha} \, \text{є кільцем}} \mathcal{K}_{\alpha}
+\]
+
+$k(\mathcal{H})$ є кільцем і окрім того, має містити $\mathcal{H}$. Значить, нам потрібно якимось чином мінімально доповнити $\mathcal{H}$ до кільця. 
+
+Наприклад, таким доповненням може бути просто множина усіх скінченних множин з парних чисел. Дійсно, $\mathcal{H}$ треба доповнити, додавши усі можливі об'єднання елементів з $\mathcal{H}$ (включно з тими, що ми ``потенціально'' додамо). Якщо в нас будуть усі скінченні множини з парних чисел, то як би ми не об'єднували або віднімали дві скінченні множини з парних чисел, ми все ще будемо отримувати якусь іншу скінченну множину парних чисел. Так само очевидно, що сам $\mathcal{H}$ міститься в $k(\mathcal{H})$, оскільки $\mathcal{H}$ це просто множина з множин, що містять одне парне число, що теж є скінченною множиною парних чисел (просто лише одного).
+
+\textbf{Відповідь.} $\mathcal{H}$ не є кільцем. $k(\mathcal{H}) = \{A \in 2^{2\mathbb{N}}: A \text{ -- скінченна}\}$
+
+
+\end{document}
+
