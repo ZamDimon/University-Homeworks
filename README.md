@@ -1,11 +1,16 @@
-# University-Homeworks
-Repostiory that contains my homeworks from V.N. Karazin Kharkiv National University, **Applied Mathematics** major.
+# :mortar_board: University Homeworks
 
-All homeworks are written in *Ukrainian* (except for foreign language classes). 
+<p align="center">
+  <img width="10%" src="https://github.com/ZamDimon/University-Homeworks/assets/29094239/0db5a6ba-0962-411e-8608-f73bed223a81">
+</p>
 
-## Classes and Scores
+This repository contains my homework from _V.N. Karazin Kharkiv National University_, **Applied Mathematics** major.
 
-### Term 1
+All homework is written in *Ukrainian* (except for foreign language classes). 
+
+## :100: Classes and Scores
+
+### Term :one:
 | Name      | Credits | Score (max=100) |
 | ---       | ---     | ---   |
 | Elements of Algebra and Number Theory | 6 | **99** |
@@ -16,7 +21,7 @@ All homeworks are written in *Ukrainian* (except for foreign language classes).
 | History of Ukraine | 3 | **100** |
 |English Language|3|**97**|
 
-### Term 2
+### Term :two:
 | Name      | Credits | Score (max=100) |
 | ---       | ---     | ---   |
 | Linear Algebra | 6 | **98** |
@@ -27,7 +32,7 @@ All homeworks are written in *Ukrainian* (except for foreign language classes).
 |English Language|3|**100**|
 |[Introduction to Machine Learning](https://github.com/ZamDimon/ML-Wikipedia-Runner) (provided by *University of Macerata*)|6|**100**|
 
-### Term 3
+### Term :three:
 | Name      | Credits | Score (max=100) |
 | ---       | ---     | ---   |
 | Linear Algebra | 6 | 89 |
