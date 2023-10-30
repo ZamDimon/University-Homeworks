@@ -1,0 +1,149 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Домашня робота з курсу ``Теорія Ймовірності''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\section*{Вправа 1.}
+
+\textbf{Теорема.} Нехай на дискретному ймовірністному просторі $(\Omega,p)$ задано випадковий вектор $\boldsymbol{\xi}: \Omega \to \mathbb{R}^n$. Нехай $f:\boldsymbol{\xi}(\Omega) \to \mathbb{R}$. Якщо $|\boldsymbol{\xi}(\Omega)| \in \mathbb{N}$, то завжди існує математичне сподівання:
+\[
+\mathbb{E}[f(\boldsymbol{\xi})] = \sum_{\boldsymbol{x} \in \boldsymbol{\xi}(\Omega)} f(\boldsymbol{x})p(\boldsymbol{\xi} = \boldsymbol{x})
+\]
+Якщо ж $\boldsymbol{\xi}(\Omega)$ зліченна, то це математичне очікування існує, якщо ряд $\sum_{\boldsymbol{x} \in \boldsymbol{\xi}(\Omega)} f(\boldsymbol{x})p(\boldsymbol{\xi}=\boldsymbol{x})$ збігається абсолютно.
+
+\textbf{Доведення.} Розглянемо випадок, коли множина $\boldsymbol{\xi}(\Omega)$ скінченна. Нехай $f(\boldsymbol{\xi}(\Omega)) = \{y_1,\dots,y_m\}$ і позначимо $\mathcal{X}_i := \{\boldsymbol{x} \in \boldsymbol{\xi}(\Omega): f(\boldsymbol{x}) = y_i\}$. Тоді, за означенням,
+\[
+\mathbb{E}[f(\boldsymbol{\xi})] \triangleq \sum_{i=1}^m y_i p(f(\boldsymbol{\xi}) = y_i)
+\]
+Проте, цей вираз можна записати так:
+\[
+\mathbb{E}[f(\boldsymbol{\xi})] = \sum_{i=1}^m y_i p (\boldsymbol{\xi} \in \mathcal{X}_i) = \sum_{i=1}^m y_i \sum_{\boldsymbol{x} \in \mathcal{X}_i}p(\boldsymbol{\xi} = \boldsymbol{x}) = \sum_{i=1}^m \sum_{\boldsymbol{x} \in \mathcal{X}_i} y_i p(\boldsymbol{\xi}=\boldsymbol{x})
+\]
+
+Оскільки $\forall \boldsymbol{x} \in \mathcal{X}_i: f(\boldsymbol{x}) = y_i$, то
+\[
+\mathbb{E}[f(\boldsymbol{\xi})] = \sum_{i=1}^m \sum_{\boldsymbol{x} \in \mathcal{X}_i} f(\boldsymbol{x})p(\boldsymbol{\xi}=\boldsymbol{x})
+\]
+Нарешті помічаємо, що $\sum_{i=1}^m\sum_{\boldsymbol{x} \in \mathcal{X}_i} = \sum_{\boldsymbol{x} \in \boldsymbol{\xi}(\Omega)}$ (оскільки $\bigcap_{i=1}^m \mathcal{X}_i = \emptyset$ і при цьому $\bigcup_{i=1}^m \mathcal{X}_i=\boldsymbol{\xi}(\Omega)$), тому остаточно
+\[
+\mathbb{E}[f(\boldsymbol{\xi})] = \sum_{\boldsymbol{x} \in \boldsymbol{\xi}(\Omega)} f(\boldsymbol{x})p(\boldsymbol{\xi}=\boldsymbol{x})
+\]
+Як бачимо, у разі скінченності $\boldsymbol{\xi}(\Omega)$ усі переходи справедливі. Якщо ж $\boldsymbol{\xi}(\Omega)$ зліченна, то для останнього переходу має виконуватись абсолютна збіжність $\sum_{\boldsymbol{x} \in \boldsymbol{\xi}(\Omega)} f(\boldsymbol{x})p(\boldsymbol{\xi}=\boldsymbol{x})$.
+
+\pagebreak
+\section*{Вправа 2.}
+
+\textbf{Умова.} Нехай на дискретному ймовiрнiсному просторi $(\Omega,p)$ задано дискретнi випадковi величини $\xi$, $\eta$, причому iснують $\mathbb{E}[\xi],\mathbb{E}[\eta]$. Тодi для будь-яких $a,b \in \mathbb{R}$ iснує
+\[
+\mathbb{E}[a\xi + b\eta] = a\mathbb{E}[\xi] + b\mathbb{E}[\eta]
+\]
+
+\textbf{Розв'язок.} Якщо існують $\mathbb{E}[\xi],\mathbb{E}[\eta]$, то існують і $\mathbb{E}[a\xi]$ та $\mathbb{E}[b\eta]$. Таким чином, якщо розглянути випадкові величини $\widetilde{\xi}=a\xi,\widetilde{\eta}=b\eta$, то маємо:
+\[
+\mathbb{E}[a\xi+b\eta] = \mathbb{E}[\widetilde{\xi}+\widetilde{\eta}]
+\]
+Використаємо лінійність математичного очікування ($\mathbb{E}[\widetilde{\xi}]$ та $\mathbb{E}[\widetilde{\eta}]$ існують, як показано вище):
+\[
+\mathbb{E}[\widetilde{\xi} + \widetilde{\eta}] = \mathbb{E}[\widetilde{\xi}] + \mathbb{E}[\widetilde{\eta}]
+\]
+Таким чином,
+\[
+\mathbb{E}[a\xi + b\eta] = \mathbb{E}[a\xi] + \mathbb{E}[b\eta] = a\mathbb{E}[\xi] + b \mathbb{E}[\eta]
+\]
+В останьому переході ми використали $\mathbb{E}[a\xi]=a\mathbb{E}[\xi]$ та $\mathbb{E}[b\eta]=b\mathbb{E}[\eta]$ оскільки за умовою $\mathbb{E}[\xi]$ та $\mathbb{E}[\eta]$ існують.
+\pagebreak
+\section*{Вправа 3.}
+
+Довести, що
+\[
+m_n \triangleq \mathbb{E}[\xi^n]\;\;\text{існує} \iff \mu_n \triangleq \mathbb{E}[(\xi-\mathbb{E}[\xi])^n] \;\; \text{існує}
+\]
+
+\textbf{Розв'язок.} Доведемо теорему у бік $\rightarrow$. Оскільки існує $m_n$, то існує і $m_{n-1},\dots,m_0$ (це було доведено в лекції). Таким чином:
+\begin{align*}
+\mu_n \triangleq \mathbb{E}[(\xi - \mathbb{E}[\xi])^n] = \mathbb{E}\left[\sum_{k=0}^n (-1)^k C_n^k \cdot \mathbb{E}[\xi]^{n-k}\xi^k\right]  \\
+=\sum_{k=0}^n (-1)^k C_n^k \cdot \mathbb{E}[\xi^{k}]\mathbb{E}[\xi]^{n-k} = \sum_{k=0}^n (-1)^k C_n^k \cdot m_km_1^{n-k}
+\end{align*}
+
+Оскільки всі $m_j, j \in \{0,\dots,n\}$ існують, то існує і вираз $\sum_{k=0}^n (-1)^k C_n^k m_{n-k}m_1^k$, отже існує і $\mu_n$.
+
+Доводимо у бік $\leftarrow$ за індукцією. Нехай виконується
+\[
+\mu_n \; \; \text{існує} \implies m_n \; \; \text{існує}
+\]
+Доведемо, що це справедливо і для $n+1$. Отже:
+\begin{align*}
+\mu_{n+1} = \mathbb{E}[(\xi-\mathbb{E}[\xi])^{n+1}] = \mathbb{E}\left[\sum_{k=0}^{n+1} (-1)^k C_{n+1}^k \cdot \mathbb{E}[\xi]^{n+1-k}\xi^{k}\right] \\
+= \sum_{k=0}^{n+1} (-1)^k C_{n+1}^k \cdot m_km_1^{n+1-k} = \underbrace{\sum_{k=0}^n (-1)^kC_{n+1}^k \cdot m_k m_1^{n+1-k}}_{=: R_n} + (-1)^{n+1} \cdot m_{n+1} \\
+= R_n + (-1)^{n+1}m_{n+1}
+\end{align*}
+Звідси, можемо виразити $m_{n+1}$:
+\[
+m_{n+1} = (-1)^{n+1}(\mu_{n+1}-R_n)
+\]
+Ми знаємо, що $R_n:=\sum_{k=0}^n (-1)^kC_{n+1}^k \cdot m_k m_1^{n+1-k}$ існує, оскільки воно містить лише $m_0,m_1,\dots,m_n$, а вони існують, оскільки $m_n$ існує. Також, за припущенням індукції, існує $\mu_{n+1}$, тому і $\mu_{n+1}-R_n$ існує, звідки випливає існування $m_{n+1}$. Твердження доведено.
+\pagebreak
+\section*{Вправа 4.}
+
+\textbf{Умова.} Довести наступні властивості середнього квадратичного відхилення:
+\begin{enumerate}
+    \item $\sigma(\xi) \geq 0$
+    \item $\sigma(\xi) = 0 \iff \exists c \in \mathbb{R}: p(\xi=c)=1$
+    \item $\sigma(\xi+c)=\sigma(\xi)$
+    \item $\sigma(c\xi) = |c|\sigma(\xi)$
+    \item $\sigma(\xi) = \sqrt{\mathbb{E}[\xi^2] - \mathbb{E}^2[\xi]}$
+\end{enumerate}
+
+\textbf{Розв'язок.} 
+
+\textit{Властивість 1.} За означенням $\sigma(\xi) \triangleq \sqrt{\text{Var}[\xi]}$. За властивістю дисперсії, $\text{Var}[\xi] \geq 0$, тому і $\sqrt{\text{Var}[\xi]}$ визначено і більше за $0$.
+
+\textit{Властивість 2.} Оскільки $\sigma(\xi) \triangleq \sqrt{\text{Var}[\xi]}=0$, то
+\[
+\sigma(\xi) = 0 \iff \text{Var}[\xi] = 0
+\]
+
+Тоді з першої властивості дисперсії, а саме
+\[
+\text{Var}[\xi] = 0 \iff \exists c \in \mathbb{R}: p(\xi=c)=1
+\]
+випливає така сама еквівалентність для $\sigma(\xi)$.
+
+\textit{Пункт 3.} Маємо:
+\[
+\sigma(\xi+c) \triangleq \sqrt{\text{Var}[\xi+c]} = \sqrt{\text{Var}[\xi]} = \sigma(\xi)
+\]
+
+\textit{Пункт 4.} Маємо:
+\[
+\sigma(c\xi) \triangleq \sqrt{\text{Var}[c\xi]} = \sqrt{c^2\text{Var}[\xi]} = |c|\sqrt{\text{Var}[\xi]} = |c|\sigma(\xi)
+\]
+
+\textit{Пункт 5.} Оскільки $\text{Var}[\xi] = \mathbb{E}[\xi^2] - \mathbb{E}^2[\xi]$, а $\sigma(\xi) \triangleq \sqrt{\text{Var}[\xi]}$, маємо $\sigma(\xi) = \sqrt{\mathbb{E}[\xi^2] - \mathbb{E}^2[\xi]}$.
+
+\end{document}
+
