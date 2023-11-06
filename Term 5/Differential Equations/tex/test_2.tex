@@ -1,0 +1,213 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{chngcntr}
+\usepackage{esint}
+\usepackage{subfig}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Контрольна робота \#1 з курсу ``Диференціальні рівняння''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Варіант 5}
+
+\section*{Завдання 1.} 
+
+\textbf{Умова.} Розв'язати рівняння за допомогою степеневих рядів
+\[
+y'' - xy' + 2y = 0
+\]
+
+\textbf{Розв'язок.} Отже, нехай $y(x)=\sum_{k=0}^{\infty}c_kx^k$. В такому разі
+\[
+xy' = x\sum_{k=1}^{\infty}kc_kx^{k-1} = \sum_{k=1}^{\infty}kc_kx^k = \sum_{k=0}^{\infty}kc_kx^k
+\]
+І для другої похідної маємо:
+\[
+y'' = \sum_{k=2}^{\infty}k(k-1)c_k x^{k-2} = \sum_{k=0}^{\infty} (k+2)(k+1)c_{k+2}x^k
+\]
+Підставляємо це у наше початкове рівняння:
+\[
+\sum_{k=0}^{\infty}(k+2)(k+1)c_{k+2}x^k - \sum_{k=0}^{\infty}kc_kx^k + 2\sum_{k=0}^{\infty}c_kx^k = 0
+\]
+Заносимо все під знак суми:
+\[
+\sum_{k=0}^{\infty}\left((k+2)(k+1)c_{k+2} - kc_k + 2c_k\right)x^k = 0
+\]
+Якщо сума зліва тотожньо $0$, то усі коефіцієнти при $x^k$ для будь-якого $k\in\mathbb{Z}^+$ мають бути нулевими. Таким чином, отримуємо рекурентне рівняння:
+\[
+(k+2)(k+1)c_{k+2} = (k-2)c_k \implies c_{k+2} = \frac{k-2}{(k+1)(k+2)}c_k
+\]
+Виведемо формулу для розрахунку $c_k$, якщо маємо $c_0$ та $c_1$. Отже:
+\[
+c_2 = -c_0, \; c_4 = 0, \; c_6 = 0, \dots
+\]
+Бачимо, що $c_{2k}=0 \, \forall k > 0$. Вже сильно спросили задачу. 
+
+Розглянемо тепер непарні коефіцієнти. Маємо:
+\[
+c_3 = -\frac{1}{6}c_1, \; c_5 = \frac{1}{20}c_3 = -\frac{1}{120}c_1, \dots
+\]
+Написати явну формулу не вийде, але можна зазначити, що
+\[
+c_{2k+1} = c_1\prod_{j=1}^{k} \frac{2j-3}{2j(2j+1)}
+\]
+Таким чином, 
+\[
+y(x) = c_0(1 - x^2) + c_1\sum_{k=0}^{\infty}\prod_{j=1}^{k} \frac{2j-3}{2j(2j+1)}x^{2k+1}
+\]
+
+\textbf{Відповідь.} $y(x) = c_0(1 - x^2) + c_1\sum_{k=0}^{\infty}\prod_{j=1}^{k} \frac{2j-3}{2j(2j+1)}x^{2k+1}$.
+
+\section*{Завдання 2.}
+\textbf{Умова.} Розв'язати рівняння за допомогою степеневих рядів
+\[
+xy'' + \left(\frac{4}{5}-x\right)y' + y = 0
+\]
+
+\textbf{Розв'язок.} Нехай $y=\sum_{k=0}^{\infty}c_kx^k$. В такому разі $\frac{4}{5}y'=\frac{4}{5}\sum_{k=0}^{\infty}(k+1)c_{k+1}x^k$, аналогічно минулій задачі $xy' = \sum_{k=0}^{\infty}kc_kx^k$, і нарешті
+\[
+xy'' = x\sum_{k=0}^{\infty} k(k-1)c_kx^{k-2} = \sum_{k=1}^{\infty} k(k+1)c_{k+1}x^k = \sum_{k=0}^{\infty} k(k+1)c_{k+1}x^k
+\]
+Тому комбінуючи усе, маємо:
+\[
+\sum_{k=0}^{\infty} k(k+1)c_{k+1}x^k + \frac{4}{5}\sum_{k=0}^{\infty}(k+1)c_{k+1}x^k - \sum_{k=0}^{\infty}kc_kx^k + \sum_{k=0}^{\infty}c_kx^k
+ = 0\]
+ Отже:
+ \[
+ k(k+1)c_{k+1} + \frac{4}{5}(k+1)c_{k+1} - kc_k + c_k = 0
+ \]
+ Звідки отримуємо:
+ \[
+ c_k(k-1) = (k+1)\left(k+\frac{4}{5}\right)c_{k+1} \implies c_{k+1} = \frac{k-1}{(k+1)\left(k+\frac{4}{5}\right)}c_k
+ \]
+ Оскільки в такому разі $c_2=0$, то і $c_j=0$ для всіх $j\geq2$. Також, оскільки $c_1=-\frac{5}{4}c_0$, то якщо підставимо $c_0=-\frac{4}{5}$, то маємо частковий розв'язок: $y_1(x) = x - \frac{4}{5}$.
+
+Тепер використовуємо формулу Ліувіля, для цього перепишемо початкове рівняння у вигляді
+\[
+y'' + \left(\frac{4}{5x}-1\right)y' + \frac{y}{x} = 0
+\]
+Якщо позначити $a(x):=\frac{4}{5x}-1$, то другий розв'язок $y_2$ через $y_1$ можна знайти як:
+\[
+y_2 = y_1\int \frac{\exp\left(-\int a(x)dx\right)}{y_1^2}dx
+\]
+Отже, спочатку знаходимо інтеграл під експонентою:
+\[
+\int a(x)dx = \int \left(\frac{4}{5x} - 1\right)dx = \frac{4}{5}\ln x - x + C
+\]
+Отже $\exp\left(-\int a(x)dx\right)=\exp(-4\ln x/5 + x + C)=Cx^{-4/5}e^x$. Тому:
+\[
+y_2(x) = C\left(x-\frac{4}{5}\right) \int \frac{x^{-4/5}e^x}{\left(x-\frac{4}{5}\right)^2}dx
+\]
+Отже, загальний розв'язок можна записати у вигляді:
+\[
+y = \left(x - \frac{4}{5}\right)\left(C_1 + C_2\int \frac{x^{-4/5}e^x}{\left(x-\frac{4}{5}\right)^2}dx\right)
+\]
+
+\section*{Завдання 3.}
+
+\textbf{Умова.} Знайти загальний розв'язок та розв'язати задачі Коші:
+\[
+x \frac{\partial z}{\partial x} + y \frac{\partial z}{\partial y} = z - x^2 - y^2
+\]
+Умови Коші:
+\begin{enumerate}
+    \item $\begin{cases}
+        y+2=0 \\ z = x - x^2
+    \end{cases}$
+    \item $\begin{cases}
+        y = 2x \\ z + x^2 + y^2 = 0
+    \end{cases}$
+\end{enumerate}
+
+\textbf{Розв'язок.} Запишемо характеристичну систему:
+\[
+\frac{dx}{x} = \frac{dy}{y} = \frac{dz}{z-x^2-y^2}
+\]
+З першої рівності дістаємо перший інтеграл $C_1=\frac{y}{x}$.
+
+Далі підставляємо у $\frac{dx}{x}=\frac{dz}{z-x^2-y^2}$, врахувавши $y=C_1x$:
+\[
+\frac{dx}{x} = \frac{dz}{z-(1+C_1^2)x^2}
+\]
+Далі треба розв'язати це рівняння. Маємо:
+\[
+zdx - (1+C_1^2)x^2dx = xdz \implies (1+C_1^2)dx = \frac{zdx - xdz}{x^2}
+\]
+Помітимо, що $d\left(\frac{z}{x}\right) = \frac{xdz-zdx}{x^2}$, тому
+\[
+-d\left(\frac{z}{x}\right) = (1+C_1^2)dx \implies \frac{z}{x} = -(1+C_1^2)x + C_2
+\]
+Отже, ще один перший інтеграл $\frac{z}{x} + (1+\frac{y^2}{x^2})x$. Тому розв'язок в загальному випадку:
+\[
+\Phi\left(\frac{y}{x},\frac{z}{x}+\left(1+\frac{y^2}{x^2}\right)x\right) = 0
+\]
+
+Тепер знайдемо розв'язки задачі Коші.
+
+\textit{Пункт 1.} Перші інтеграли:
+\[
+\begin{cases}
+    C_1 = \frac{y}{x} \\
+    C_2 = \frac{z}{x} + \left(1+\frac{y^2}{x^2}\right) x
+\end{cases}
+\]
+Підставляємо $y=-2,z=x-x^2$:
+\[
+\begin{cases}
+    C_1 = \frac{-2}{x} \\
+    C_2 = \frac{x-x^2}{x} + x\left(1 + \frac{4}{x^2}\right)
+\end{cases}
+\]
+Або, якщо простимо:
+\[
+\begin{cases}
+    C_1 = -\frac{2}{x} \\
+    C_2 = 1 + \frac{4}{x}
+\end{cases}
+\]
+Звідси $C_2 = 1-2C_1$. Далі підставляємо вирази для $C_1,C_2$:
+\[
+\frac{z}{x} + \left(1+\frac{y^2}{x^2}\right)x = 1 - \frac{2y}{x}
+\]
+І далі множимо обидві частини на $x$:
+\[
+z + x^2 + y^2 = x-2y
+\]
+
+\textit{Пункт 2.} З умов маємо $y=2x, z=-5x^2$. Підставляємо у перші інтеграли:
+\[
+\begin{cases}
+    C_1 = 2 \\
+    C_2 = -5x + 5x = 0
+\end{cases}
+\]
+Отже, маємо нескінченну кількість розв'язків, оскільки рівняння $\Phi(2,0)=0$ має безліч розв'язків. 
+
+Наприклад, $\Phi(C_1,C_2)=C_1+C_2-2$ задає $z=2x-1-y^2-y$.
+
+\textbf{Відповідь.} $\Phi\left(\frac{y}{x},\frac{z}{x}+\left(1+\frac{y^2}{x^2}\right)x\right) = 0$. Розв'язок задачі Коші $z+x^2+y^2=x-2y$ для першого випадку, для другого маємо нескінченну кількість розв'язків.
+
+\end{document}
+

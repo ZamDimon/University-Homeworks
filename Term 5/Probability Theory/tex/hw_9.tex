@@ -1,0 +1,229 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{statement}{Твердження}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+\title{Домашня робота з курсу ``Теорія Ймовірності''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 1.} 
+
+\textbf{Умова.} Дано таблицю розподілу двовимірного випадкового вектору $(\xi,\eta)^{\top}$.
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ -- & $\eta=0$ & $\eta=1$ & $\eta=2$ \\ 
+ \hline
+ $\xi=0$ & $0.0$ & $0.1$ & $0.2$ \\ 
+ \hline
+ $\xi=1$ & $0.1$ & $0.2$ & $0.1$ \\ 
+ \hline
+ $\xi=2$ & $0.2$ & $0.1$ & $0.0$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+Знайти коефіцієнт кореляції випадкових величин $\text{cov}[\xi,\eta]$. Чи є незалежними випадкові
+величини $\xi$ та $\eta$?
+
+\textbf{Розв'язок.} За означенням,
+\[
+\text{cov}[\xi,\eta] \triangleq \mathbb{E}[\xi\eta] - \mathbb{E}[\xi]\mathbb{E}[\eta]
+\]
+Отже, знаходимо математичні сподівання. Знайдемо $\mathbb{E}[\xi]$:
+\[
+\mathbb{E}[\xi] \triangleq \sum_{k=0}^2 p(\xi=k)k = 0.4 \cdot 1 + 0.3 \cdot 2 = 1.0
+\]
+\[
+\mathbb{E}[\eta] \triangleq \sum_{k=0}^2 p(\eta=k)k = 0.4 \cdot 1 + 0.3 \cdot 2 = 1.0
+\]
+Залишилось знайти $\mathbb{E}[\xi\eta]$:
+\[
+\mathbb{E}[\xi\eta] = \sum_{i,j=0}^2 p(\xi=i)p(\eta=j)ij = 0.2 + 2 \cdot 0.1 + 0.1 \cdot 2 = 0.6
+\]
+Отже:
+\[
+\text{cov}[\xi,\eta] = 0.6 - 1.0 \cdot 1.0 = -0.4
+\]
+Оскільки $\text{cov}[\xi,\eta] \neq 0$, то $\xi$ та $\eta$ є залежними.
+
+\textbf{Відповідь.} $\text{cov}[\xi,\eta]=-0.4$.
+
+\section*{Завдання 2.}
+
+\textbf{Умова.} Кидають 2 гральні кубики. Нехай $X$ -- число очок, які випали на першому кубику, $Y$ -- є
+більшим з двох очок, що випали. Знайдіть таблицю сумісного розподілення випадкових величин $X$ та $Y$, а також їх середнє, дисперсії та коефіцієнт кореляції.
+
+\textbf{Розв'язок.} Нехай $\xi_1,\xi_2 \sim \mathcal{U}[1,6]$ є випадкові величини, що випали на першому та другому кубіках, відповідно. Тоді $X = \xi_1, Y = \max\{\xi_1,\xi_2\}$, відповідно до умови. Розглянемо значення $(X,Y)$ відповідно до значень $\xi_1,\xi_2$ у вигляді таблиці
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c|c|c| } 
+ \hline
+ -- & $\xi_2=1$ & $\xi_2=2$ & $\xi_2=3$ & $\xi_2=4$ & $\xi_2=5$ & $\xi_2=6$ \\ 
+ \hline
+ $\xi_1=1$ & $(1,1)$ & $(1,2)$ & $(1,3)$ & $(1,4)$ & $(1,5)$ & $(1,6)$ \\ 
+ \hline
+ $\xi_1=2$ & $(2,2)$ & $(2,2)$ & $(2,3)$ & $(2,4)$ & $(2,5)$ & $(2,6)$ \\ 
+ \hline
+ $\xi_1=3$ & $(3,3)$ & $(3,3)$ & $(3,3)$ & $(3,4)$ & $(3,5)$ & $(3,6)$ \\
+ \hline
+ $\xi_1=4$ & $(4,4)$ & $(4,4)$ & $(4,4)$ & $(4,4)$ & $(4,5)$ & $(4,6)$ \\
+ \hline
+ $\xi_1=5$ & $(5,5)$ & $(5,5)$ & $(5,5)$ & $(5,5)$ & $(5,5)$ & $(5,6)$ \\
+ \hline
+ $\xi_1=6$ & $(6,6)$ & $(6,6)$ & $(6,6)$ & $(6,6)$ & $(6,6)$ & $(6,6)$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+По цій таблиці побудуємо розподіл $p_{XY}$:
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c|c|c| } 
+ \hline
+ -- & $Y=1$ & $Y=2$ & $Y=3$ & $Y=4$ & $Y=5$ & $Y=6$ \\ 
+ \hline
+ $X=1$ & $\frac{1}{36}$ & $\frac{1}{36}$ & $\frac{1}{36}$ & $\frac{1}{36}$ & $\frac{1}{36}$ & $\frac{1}{36}$ \\ 
+ \hline
+ $X=2$ & $0$ & $\frac{1}{18}$ & $\frac{1}{36}$ & $\frac{1}{36}$ & $\frac{1}{36}$ & $\frac{1}{36}$ \\ 
+ \hline
+ $X=3$ & $0$ & $0$ & $\frac{1}{12}$ & $\frac{1}{36}$ & $\frac{1}{36}$ & $\frac{1}{36}$ \\
+ \hline
+ $X=4$ & $0$ & $0$ & $0$ & $\frac{1}{9}$ & $\frac{1}{36}$ & $\frac{1}{36}$ \\
+ \hline
+ $X=5$ & $0$ & $0$ & $0$ & $0$ & $\frac{5}{36}$ & $\frac{1}{36}$ \\
+ \hline
+ $X=6$ & $0$ & $0$ & $0$ & $0$ & $0$ & $\frac{1}{6}$ \\
+ \hline
+\end{tabular}
+\end{center}
+Формально, можемо записати:
+\[
+p(X=x,Y=y) = \begin{cases}
+    0, & X > Y \\
+    \frac{X}{36}, & X = Y \\ 
+    \frac{1}{36}, & X < Y
+\end{cases}, \; (X,Y) \in \{1,\dots,6\} \times \{1,\dots,6\}
+\]
+Знайдемо математичні сподівання:
+\[
+\mathbb{E}[X] = \sum_{k=1}^6 p(X=k)k = \frac{\sum_{k=1}^6 k}{6} = \frac{7}{2}
+\]
+\[
+\mathbb{E}[Y] = \sum_{k=1}^6 p(Y=k)k = \sum_{k=1}^6 \frac{k(2k-1)}{36} = \frac{161}{36}
+\]
+Щоб знайти дисперсії, треба знайте математичне сподівання квадратів:
+\[
+\mathbb{E}[X^2] = \sum_{k=1}^6 p(X=k)k^2 = \frac{91}{6}
+\]
+\[
+\mathbb{E}[Y^2] = \sum_{k=1}^6 p(Y=k)k^2 = \frac{791}{36}
+\]
+Таким чином, дисперсії:
+\[
+\sigma_X^2 = \mathbb{E}[X^2] - \mathbb{E}[X]^2 = \frac{35}{12}, \; \sigma_Y^2 = \mathbb{E}[Y^2] - \mathbb{E}[Y]^2 = \frac{2555}{1296}
+\]
+
+Для коефіцієнта кореляції треба знайти коваріацію, а для коваріації -- математичне сподівання $\mathbb{E}[XY]$, отже:
+\[
+\mathbb{E}[XY] = \sum_{x,y=1}^6 p(X=x,Y=y)xy = \frac{154}{9}
+\]
+Таким чином:
+\[
+\text{cov}[X,Y] \triangleq \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = \frac{154}{9} - \frac{7}{2} \times \frac{161}{36} = \frac{35}{24}
+\]
+Отже коефіцієнт кореляції:
+\[
+r[X,Y] \triangleq \frac{\text{cov}[X,Y]}{\sigma_X\sigma_Y} = \frac{\frac{35}{24}}{\sqrt{\frac{35}{12} \times \frac{2555}{1296}}} = \frac{3\sqrt{3}}{\sqrt{73}} \approx 0.608
+\]
+
+\section*{Завдання 3.}
+
+\textbf{Умова.} Випадкові величини $\xi$ та $\eta$ мають математичне сподівання $\mathbb{E}[\xi]=\mu_{\xi},\mathbb{E}[\eta]=\mu_{\eta}$, дисперсії $\text{Var}[\xi]=\sigma_{\xi}^2,\text{Var}[\eta]=\sigma_{\eta}^2$ та коефіцієнти кореляції $r$. Знайти математичне сподівання $\mu_{\zeta}$ та дисперсію $\sigma_{\zeta}^2$ величини $\zeta=\alpha\xi + \beta\eta + \gamma$ де $\alpha,\beta,\gamma \in \mathbb{R}$. 
+
+\textbf{Розв'язок.} Користуючись лінійністю математичного сподівання,
+\[
+\mu_{\zeta} = \alpha \mu_{\xi} + \beta\mu_{\eta} + \gamma
+\]
+З дисперсією ситуація трошки складніша. Використаємо наступне твердження:
+
+\begin{statement*}{Про суму випадкових величин}
+  Нехай маємо випадкові величини $\xi_1,\xi_2,\dots,\xi_n$ та дійсні числа $\alpha_1,\dots,\alpha_n \in \mathbb{R}$. Тоді:
+    \[
+    \text{var}\left[\sum_{i=1}^n \alpha_i\xi_i\right] = \sum_{i,j=1}^n \alpha_i\alpha_j \text{cov}[\xi_i,\xi_j]
+    \]
+\end{statement*}
+
+Отже, скориставшись цим твердженням, маємо:
+\[
+\text{var}[\alpha \xi + \beta \eta + \gamma] = \text{var}[\alpha\xi + \beta\eta] = \alpha^2\sigma_{\xi}^2 + \beta^2\sigma_{\eta}^2 + 2\alpha\beta \text{cov}[\xi,\eta]
+\]
+Залишилось визначити $\text{cov}[\xi,\eta]$. Скориставшись означенням коефіцієнта кореляції,
+\[
+r \triangleq \frac{\text{cov}[\xi,\eta]}{\sigma_{\xi}\sigma_{\eta}} \implies \text{cov}[\xi,\eta]=r\sigma_{\xi}\sigma_{\eta}
+\]
+Тому остаточно:
+\[
+\sigma_{\zeta}^2 = \alpha^2\sigma_{\xi}^2 + \beta^2\sigma_{\eta}^2 + 2r\alpha\beta \sigma_{\xi}\sigma_{\eta}
+\]
+
+\textbf{Відповідь.} $\mu_{\zeta}=\alpha\mu_{\xi}+\beta\mu_{\eta}+\gamma,\sigma_{\zeta}^2 = \alpha^2\sigma_{\xi}^2 + \beta^2\sigma_{\eta}^2 + 2r\alpha\beta \sigma_{\xi}\sigma_{\eta}$.
+
+\section*{Завдання 4.}
+
+\textbf{Умова.} Випадкова величина $X$ є сумою трьох випадкових величин: $X = \xi+\eta+\zeta$. $\mathbb{E}[\xi]=1,\mathbb{E}[\eta]=2,\mathbb{E}[\zeta]=0$, $\text{var}[\xi]=0.01,\text{var}[\eta]=4,\text{var}[\zeta]=0.36$, $r[\xi,\eta]=0.2,r[\xi,\zeta]=0.3,r[\eta,\zeta]=0.1$. Знайти $\mathbb{E}[X],\text{var}[X]$.
+
+\textbf{Розв'язок.} З математичним сподіванням ситуація найлегша:
+\[
+\mathbb{E}[X] = \mathbb{E}[\xi]+\mathbb{E}[\eta]+\mathbb{\zeta} = 3
+\]
+Щодо дисперсії, використовуємо твердження з минулої задачі:
+\[
+\text{var}[X] = \text{var}[\xi] + \text{var}[\eta] + \text{var}[\zeta] + 2 \text{cov}[\xi,\eta] + 2\text{cov}[\xi,\zeta]+2\text{cov}[\eta,\zeta]
+\]
+Знаходимо коваріації:
+\[
+\text{cov}[\xi,\eta] = r[\xi,\eta]\sqrt{\text{var}[\xi]\times\text{var}[\eta]} = 0.2 \times 0.1 \times 2 = 0.04
+\]
+\[
+\text{cov}[\xi,\zeta] = r[\xi,\zeta]\sqrt{\text{var}[\xi]\times\text{var}[\zeta]} = 0.3 \times 0.1 \times 0.6 = 0.018
+\]
+\[
+\text{cov}[\eta,\zeta] = r[\eta,\zeta]\sqrt{\text{var}[\eta] \times \text{var}[\zeta]} = 0.1 \times 2 \times 0.6 = 0.12
+\]
+Отже,
+\[
+\text{var}[X] = 0.01 + 4 + 0.36 + 0.08 + 0.036 + 0.24 = 4.726
+\]
+
+\textbf{Відповідь.} $\mathbb{E}[X]=3,\text{var}[X] = 4.726$.
+
+\end{document}
+

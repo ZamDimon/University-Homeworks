@@ -1,0 +1,174 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Індивідуальне завдання з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Варіант 5}
+
+\section*{Завдання 1}
+
+\textbf{Умова.} Нехай $X = \mathbb{Z}$ є основною множиною,
+\[
+B = \{3k+2: k \in \mathbb{N}\}, \; \mathcal{H} = 2^X \cap B
+\]
+З'ясувати,
+\begin{enumerate}
+    \item чи є $\mathcal{H}$ $\sigma$-кільцем;
+    \item чи є $\mathcal{H}$ $\sigma$-алгеброю.
+\end{enumerate}
+Відповіді обгрунтувати.
+
+\textbf{Розв'язок.} 
+
+\textbf{Пункт 1.} За означенням, оскільки $2^X$ і $B$ є різними за структурами множинами, перетин ми визначаємо наступним чином:
+\[
+2^X \cap B \triangleq \{A \cap B: A \in 2^X\}
+\]
+Тобто, ми беремо будь-яку множину, що складається з цілих чисел, обираємо серед них ті додатні, що дають остачу $2$ за модулем $3$ окрім $2$, і складаємо з цього набір $\mathcal{H}$. Наприклад, множина $\{5, 11\}$ або $\{6k+2: k \in \mathbb{Z} \wedge k > 10\}$ належать до $\mathcal{H}$. Також, очевидно, пуста множина також входить до $\mathcal{H}$.
+
+З'ясуємо, чи буде $\mathcal{H}$ $\sigma$-кільцем. Якщо так, то мають виконуватись наступні дві умови:
+\begin{enumerate}
+    \item $\forall \{A_n\}_{n \in \mathbb{N}} \subset \mathcal{H}: \bigcup_{n \in \mathbb{N}}A_n \in \mathcal{H}$
+    \item $\forall A, B \in \mathcal{H}: A \setminus B \in \mathcal{H}$
+\end{enumerate}
+
+Розглянемо умову на об'єднання. Якщо об'єднати будь-які дві множини, які складаються з чисел множини $B$, то всі елементи отриманої множини також будуть належати $B$, а також будуть множиною з цілих чисел. Якщо ми будемо і далі додавати множини, то все ще будемо отримувати множину з елементів $B$, де всі числа цілі. Якщо візьмемо нескінченну послідовність множин $\{A_n\}_{n \in \mathbb{N}}$, то можемо таким чином отримати або скінченну множину елементів $B$, або нескінченну, але оскільки при цьому всі числа будуть залишатися цілими, то отримана множина все одно буде належати $2^{X}$. Отже, проблем не виникає і дійсно маємо замкнення відносно нескінченного об'єднання елементів множини.
+
+Тепер візьмемо операцію віднімання. Якщо від множини, що складається з елементів з $B$, відняти якісь елементи, що теж є з $B$, то ми або отримаємо пусту множину, що входить до $\mathcal{H}$, або знову ж таки будемо мати лише елементи з $B$. Ця множина також буде складатися з цілих чисел, тому знову отримуємо замкнення відсноно $\setminus$.
+
+Отже, бачимо, що є замикання по обом операціям, що дає право стверджувати, що $\mathcal{H}$ є $\sigma$-кільцем.
+
+\textbf{Пункт 2.} Якщо $\mathcal{H}$ є $\sigma$-алгеброю, то окрім умови на $\sigma$-кільце ще має виконуватись, що $X \in \mathcal{H}$. Проте, звичайно, множина усіх цілих чисел не входять до $\mathcal{H}$, оскільки існує безліч елементів, котрі дають остачу не $2$ з $\mathbb{Z}$. 
+
+\textbf{Відповідь.} 1. Так. 2. Ні
+
+\section*{Завдання 2}
+
+\textbf{Умова.} Нехай $X$ є основною множиною, функція $\varphi: 2^X \to [0,+\infty)$ є адитивною на $2^X$, $A,B,C \in 2^X$. Виразити значення
+\[
+\varphi((A \cup B) \cap \overline{C})
+\]
+через $\varphi(X),\varphi(A),\varphi(B),\varphi(C),\varphi(A\cap B),\varphi(A \cap C),\varphi(B \cap C), \varphi(A \cap B \cap C)$ (не обов’язково мають бути задiянi всi перелiченi значення).
+
+\textbf{Розв'язок.} По перше помічаємо, що
+\[
+(A \cup B) \cap \overline{C} = \underbrace{(A \cap \overline{C})}_{:=L} \cup \underbrace{(B \cap \overline{C})}_{:=R}
+\]
+Отже:
+\[
+\varphi((A \cup B) \cap \overline{C}) = \varphi(L \cup R) = \varphi(L) + \varphi(R) - \varphi(L \cap R)
+\]
+Задача значно спростилась. Тепер нам потрібно знайти $\varphi(L),\varphi(R),\varphi(L \cap R)$.
+
+Помітимо, що $\varphi(L)=\varphi(A \cap \overline{C})=\varphi(A \setminus C), \varphi(R)=\varphi(B \cap \overline{C}) = \varphi(B\setminus C)$. 
+
+Скористаємось тим, що для будь-яких $M,N \in X$ виконується $\varphi(M) = \varphi(M\setminus N)+ \varphi(M \cap N)$, тому $\varphi(M \setminus N) = \varphi(M) - \varphi(M \cap N)$. Звідки:
+\[
+\varphi(L) = \varphi(A \setminus C) = \varphi(A) - \varphi(A \cap C), \; \varphi(R) = \varphi(B \setminus C)= \varphi(B) - \varphi(B \cap C)
+\]
+Залишилось лише знайти $\varphi(L \cap R)$:
+\[
+\varphi(L \cap R) = \varphi(A \cap \overline{C} \cap B \cap \overline{C}) = \varphi(A \cap B \cap \overline{C}) = \varphi((A \cap B) \setminus C)
+\]
+Звідси остаточно вираз для $\varphi(L \cap R)$:
+\[
+\varphi(L \cap R) = \varphi(A \cap B) - \varphi(A \cap B \cap C)
+\]
+І тому можемо остаточно записати відповідь.
+
+\textbf{Відповідь.} $\varphi(A)+\varphi(B) - \varphi(A \cap C) - \varphi(B \cap C) - \varphi (A \cap B) + \varphi(A \cap B \cap C)$
+
+\pagebreak
+
+\section*{Завдання 3}
+
+\textbf{Умова.} Для послідовності $\{A_n\}_{n \in \mathbb{Z}^+}$, де для $n \in \mathbb{Z}^+$:
+\[
+A_n = \begin{cases}
+    \left(-4-\frac{1}{1+n^2},2+\frac{1}{1+n^2}\right),& n \; \text{парне},\\
+    \left[-2+e^{-n^2},1-e^{-n^2}\right],& n \; \text{непарне}
+\end{cases}
+\]
+\begin{enumerate}
+    \item Знайти $A = \underset{n \to \infty}{\overline{\lim}} A_n$.
+    \item Довести, що множина $A \setminus \mathbb{Q}$ є борельовою.
+    \item Обчислити міру Лебега множини $A \setminus \mathbb{Q}$, тобто обчислити $\lambda_1(A\setminus \mathbb{Q})$
+\end{enumerate}
+
+\textbf{Розв'язок.} Скористаємося тим, що
+\[
+\underset{n \to \infty}{\overline{\lim}} A_n = \bigcap_{n\in\mathbb{Z}^+}\bigcup_{k=n}^{\infty}A_k
+\]
+Тому спочатку знайдемо $W_n := \bigcup_{k=n}^{\infty}A_k$. Нехай для конкретності $n=2m, m \in \mathbb{Z}^+$. Тоді
+\[
+W_{2m} = \bigcup_{k=m}^{\infty} A_{2k} \cup \bigcup_{k=m}^{\infty}A_{2k+1}
+\]
+Розглянемо кожен з доданків. Почнемо з $\bigcup_{k=m}^{\infty}A_{2k}$:
+\[
+\bigcup_{k=m}^{\infty}A_{2k} = \bigcup_{k=m}^{\infty}\left(-4-\frac{1}{1+4k^2},2+\frac{1}{1+4k^2}\right)
+\]
+Маємо послідовність відрізків виду $\mathcal{I}_k:=(-4-x_k,2+x_k)$ де послідовність $x_k=\frac{1}{1+4k^2}$ завжди додатня та монотонно спадаюча. Таким чином, з кожним новим членом, ліва межа збільшується від $-4-x_m$ до $-4$ асимптотично, а права межа зменшується від $2+x_m$ до $2$ теж асимптотично. При цьому ліва межа завжди залишається лівішою за праву. Тобто, $\{\mathcal{I}_k\}_{k=m}^{\infty}$ є спадною, оскільки $\mathcal{I}_{k+1} \subset \mathcal{I}_k \; \forall k \in \mathbb{Z}^+$. Якщо взяти об'єднання, то тоді просто отримаємо $\mathcal{I}_m$, тобто $\bigcup_{k=m}^{\infty}A_{2k} = \left(-4-\frac{1}{1+4m^2},2+\frac{1}{1+4m^2}\right)$.
+
+Далі, розглядаємо $\bigcup_{k=m}^{\infty}A_{2k+1}$:
+\[
+\bigcup_{k=m}^{\infty}A_{2k+1} = \bigcup_{k=m}^{\infty}[-2+e^{-(2k+1)^2}, 1-e^{-(2k+1)^2}]
+\]
+Маємо послідовність виду $\mathcal{I}_k = [-2+y_k,1-y_k]$, де $y_k=e^{-(2k+1)^2}$ є додатньою і монотонно спадною послідовністю. Ліва межа зменшується від $-2+y_m$ до $-2$ асимптотично. Права межа буде збільшуватись від $1-y_m$ до $1$ асимптотично. Таким чином, маємо монотонно зростаючу послідовність $\{\mathcal{I}_k\}_{k=m}^{\infty}$, що означає, що об'єднання буде дорівнювати $\mathcal{I}_{\infty} = (-2,1)$.
+
+Тому остаточно маємо:
+\[
+W_{2m} = \left(-4 - \frac{1}{1+4m^2},2+\frac{1}{1+4m^2}\right) \cup (-2,1)
+\]
+Оскільки $(-2,1) \subset \left(-4 - \frac{1}{1+4m^2},2+\frac{1}{1+4m^2}\right)$, то $W_{2m}=\left(-4 - \frac{1}{1+4m^2},2+\frac{1}{1+4m^2}\right)$.
+
+Тепер розглядаємо випадок $n=2m+1$. В такому випадку:
+\[
+W_{2m+1} = \bigcup_{k=m}^{\infty}A_{2k+1} \cup \bigcup_{k-m}^{\infty}A_{2k+2} 
+\]
+Перший доданок просто дорівнює $(-2,1)$, а другий $\left(-4-\frac{1}{1+4(m+1)^2},2+\frac{1}{1+4(m+1)^2}\right)$. Отже, $W_{2m+1}=\left(-4-\frac{1}{1+4(m+1)^2},2+\frac{1}{1+4(m+1)^2}\right)$.
+
+Далі, залишається знайти $\bigcap_{n \in \mathbb{Z}^+}W_n$. Отже:
+\[
+\bigcap_{n \in \mathbb{Z}^+}W_n = \bigcap_{n\in\mathbb{Z}^+}W_{2n} \cap \bigcap_{n \in \mathbb{Z}^+}W_{2n+1}
+\]
+Насправді, як лівий, так і правий перетин мають однакове значення. Дійсно, маємо послідовності виду $(-4-z_k,2+z_k)$ де $z_k$ монотонно спадаючі до $0$ від $1$ для випадку $W_{2n}$ і від $\frac{1}{5}$ для випадку $W_{2n+1}$. Тоді, ліва межа при цьому збільшується, а права зменшується, тобто наші відрізки звужуються до $[-4,2]$. Отже, $\underset{n \to \infty}{\overline{\lim}} A_n= [-4,2]$.
+
+\textbf{Пункт 2.} Треба довести, що $[-4,2] \setminus \mathbb{Q} \in \mathcal{B}(\mathbb{R})$. Дійсно, $[-4,2] \in \mathcal{B}(\mathbb{R})$, оскільки $[-4,2]$ є замкненою множиною. Множина $\mathbb{Q}$ є зліченною множиною, тому теж є борельовою. Отже, $[-4,2],\mathbb{Q} \in \mathcal{B}(\mathbb{R})$. Оскільки $\mathcal{B}(\mathbb{R})$ є замкненою відносно операції віднімання, бо є $\sigma$-алгеброю, то і різниця $[-4,2]\setminus \mathbb{Q} \in \mathcal{B}(\mathbb{R})$.
+
+\textbf{Пункт 3.} Помітимо, що
+\[
+\lambda_1([-4,2] \setminus \mathbb{Q}) = \lambda_1([-4,2]) - \lambda_1([-4,2] \cap \mathbb{Q})
+\]
+Множина $\mathbb{Q} \cap [-4,2]$ є множиною раціональних чисел на відрізку $[-4,2]$. Оскільки $\mathbb{Q}$ є зліченною множиною, то і $\mathbb{Q} \cap [-4,2]$ теж. Оскільки міра Лебега зліченних та скінченних множин дорівнює $0$, то $\lambda_1([-4,2] \cap \mathbb{Q})=0$. В такому разі:
+\[
+\lambda_1([-4,2] \setminus \mathbb{Q}) = \lambda_1([-4,2]) = 2 - (-4) = 6
+\]
+
+\textbf{Відповідь.} 1. $A=[-4, 2]$. 2. Див. розв'язок. 3. $\lambda_1(A)=6$.
+
+\end{document}
+
