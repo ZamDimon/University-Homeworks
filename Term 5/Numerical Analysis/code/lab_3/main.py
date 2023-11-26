@@ -146,7 +146,7 @@ if __name__ == '__main__':
     ]
     
     # Using Least Squares Solver to find the coefficients of the polynomial
-    solver = LeastSquaresSolver(degree=3)
+    solver = LeastSquaresSolver(degree=8)
     coefficients = solver.fit(dataset)
     
     # Showing the plot of the dataset and the fitted polynomial of different degrees
