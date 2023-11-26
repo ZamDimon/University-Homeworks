@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # Defining the task parameters
     interval = (0.0, 1.0)
     segments_number = 20
-    alpha = 0.2
+    alpha = 0.0
     fn = lambda x: x**3 + cos(x) + exp(x / 10.0) * sin(x)
     
     # Evaluating the accuracy
