@@ -1,0 +1,54 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\textbf{Умова.} Нехай $\mathcal{A}$ є алгеброю пiдмножин $X$, $\varphi: \mathcal{A} \to [0,+\infty)$ є адитивною. Довести формулу
+\[
+\varphi(\overline{A}\Delta \overline{B}) = \varphi(A) + \varphi(B) - 2\varphi(A \cap B)
+\]
+Формули для $\varphi(A \cup B)$, $\varphi(A \setminus B)$ i $\varphi(A \Delta B)$ можна використовувати без доведення.
+
+\textbf{Розв'язок.} Спочатку скористуємось тим фактом, що $\varphi(A \Delta B) = \varphi(A)+\varphi(B) - 2\varphi(A \cap B)$, тобто
+\[
+\varphi(\overline{A} \Delta \overline{B}) = \varphi(\overline{A}) + \varphi(\overline{B}) - 2\varphi(\overline{A} \cap \overline{B})
+\]
+Оскільки $\overline{A} = X \setminus A$, то $\varphi(\overline{A}) = \varphi(X) - \varphi(A)$. Аналогічно, $\varphi(\overline{B}) = \varphi(X) - \varphi(B)$. 
+
+Нарешті, $\overline{A} \cap \overline{B} = \overline{A \cup B}$, тому
+\[
+\varphi(\overline{A} \cap \overline{B}) = \varphi(X) - \varphi(A \cup B) = \varphi(X) - \varphi(A) - \varphi(B) + \varphi(A \cap B)
+\]
+Таким чином,
+\begin{gather*}
+\varphi(\overline{A} \Delta \overline{B}) = \varphi(X) - \varphi(A) + \varphi(X) - \varphi(B) - 2(\varphi(X) - \varphi(A) - \varphi(B) + \varphi(A \cap B)) \\
+= \varphi(A) + \varphi(B) - 2\varphi(A \cap B),
+\end{gather*}
+що і потрібно було довести.
+
+\end{document}
+

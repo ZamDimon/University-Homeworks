@@ -1,0 +1,105 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання}
+\textbf{Умова.} Нехай
+\[
+F(x) = \begin{cases}
+    1, & x < -3 \\
+    3, & x \geq -3
+\end{cases}, x \in \mathbb{R}
+\]
+$\lambda_F: \mathcal{P}_1 \to [0,+\infty),\lambda_F((a,b])=F(b)-F(a)$. Знайти
+\begin{enumerate}
+    \item $\lambda_F^*(A), A \in 2^{\mathbb{R}}$.
+    \item $\sigma$-алгебру $\mathcal{S}_F$ $\lambda_F^*$-вимірних підмножин $\mathbb{R}$.
+\end{enumerate}
+
+\textbf{Розв'язок.} 
+
+Для наступних пунктів зручно помітити, що
+\[
+\lambda_F((a,b]) = \begin{cases}
+    2, & -3 \in (a,b]\\
+    0, & -3 \not \in (a,b]
+\end{cases} = 2 \cdot \mathds{1}_{(a,b]}(-3)
+\]
+\textit{Пункт 1.}  Візьмемо $X \subset \mathbb{R}$. Розглянемо два випадки: $-3$ належить та не належить $X$.
+
+\textit{Випадок 1.} $-3 \not \in X$. За означенням маємо для $\forall X \subset \mathbb{R} \setminus \{-3\}$:
+\[
+\lambda^*_F(X) = 
+    \inf\left\{\sum_{n \in \mathbb{N}}\lambda_F(A_n): X \subset \bigcup_{n \in \mathbb{N}}A_n \wedge \{A_n\}_{n \in \mathbb{N}} \subset \mathcal{P}_1\right\}
+\]
+Помітимо, що $\mathbb{R} \setminus \{-3\}$ можемо записати як
+\[
+(-\infty,-3) \cup (-3,+\infty) = \bigcup_{n \in \mathbb{N}} (-n, -3-\frac{1}{n}\Big] \cup \bigcup_{n \in \mathbb{N}} (-3,n]
+\]
+В такому разі:
+\begin{gather*}
+0 \leq \lambda_F^*(\mathbb{R} \setminus \{3\}) \leq \lambda_F\left(\bigcup_{n \in \mathbb{N}} (-n, -3-\frac{1}{n}\Big]\right) + \lambda_F\left(\bigcup_{n \in \mathbb{N}}(-3,n]\right) \\
+\leq \sum_{n \in \mathbb{N}}\lambda_F\left((-n,-3-\frac{1}{n}\Big]\right) + \sum_{n \in \mathbb{N}} \lambda_F((-3,n]) \\
+= 2\sum_{n \in \mathbb{N}}\mathds{1}_{(n,-3-1/n]}(-3) + 2\sum_{n \in \mathbb{N}}\mathds{1}_{(-3,n]}(-3) = 0
+\end{gather*}
+Звідси, $\lambda_F^*(\mathbb{R} \setminus \{3\}) = 0$. Оскільки $\lambda_F^*$ є моноотонною, то $\forall X \subset \mathbb{R} \setminus \{-3\}: \lambda_F^*(X)=0$. 
+
+\textit{Випадок 2.} $-3 \in X$. Помітимо, що інфінум відповідає такій побудові $\{A_n\}_{n \in \mathbb{N}}$:
+\[
+\exists m \in \mathbb{N}: \{-3 \in A_m\} \wedge \{-3 \not \in A_n \; \forall n \neq m\} 
+\]
+В такому разі:
+\[
+\lambda_F^*(X) = \sum_{n \in \mathbb{N}} \lambda_F(A_n)=\lambda_F(A_m) + \underbrace{\sum_{n \in \mathbb{N}: n \neq m}\lambda_F(A_n)}_{=0} = \lambda_F(A_m) = 2
+\]
+Відповімо, чому це відповідає інфінуму. Дійсно, нехай ще якийсь номер $p \in \mathbb{N}: -3 \in A_p$. Тоді за аналогією, $\sum_{n \in \mathbb{N}}\lambda_F(A_n) = \lambda_F(A_m)+\lambda_F(A_p)=4 > 2$. Якщо ж не знайдеться номера $m$ з властивістю вище, то тоді $-3 \not\in X$, що суперечить припущенню цього випадку. 
+
+Отже, маємо:
+\[
+\lambda_F^*(X) = 2 \cdot \mathds{1}_X(-3)
+\]
+
+\textit{Пункт 2.} З'ясуємо, коли $X \subset \mathbb{R}$ є $\lambda_F^*$-вимірною множиною. За означенням:
+\[
+\forall E \subset \mathbb{R}: \lambda_F^*(E) = \lambda_F^*(E \cap X) + \lambda_F^*(E \cap \overline{X})
+\]
+Ця умова еквівалентна:
+\[
+\mathds{1}_E(-3) = \mathds{1}_{E \cap X}(-3) + \mathds{1}_{E \cap \overline{X}}(-3)
+\]
+Нехай $-3 \in E$. В такому разі, якщо $-3 \in X$, то $-3 \in E \cap X$, проте $-3 \not \in E \cap \overline{X}$. Аналогічно, якщо $-3 \not\in X$, то $-3 \not \in E \cap X$, але $-3 \in E \cap \overline{X}$. Отже, як ліва, так і права частина буде дорівнювати $2$, що каже про те, що для $-3 \in E$ ця умова виконується для будь-яких $X$.
+
+Тепер нехай $-3 \not\in E$. В такому разі, як $-3 \not\in E \cap X$, так і $-3 \not\in E \cap \overline{X}$. В цьому випадку обидві частини дорівнюють $0$, звідки випливає справедливість цього твердження для будь-яких $-3 \not\in E$ та $X$. 
+
+Отже, це твердження справедливе для будь-якої пари $X,E \subset \mathbb{R}$, а тому будь-яка множина $X \subset \mathbb{R}$ є $\lambda_F^*$-вимірною. Звідси $\mathcal{S}_F = 2^{\mathbb{R}}$.
+
+\textbf{Відповідь.} 1. $\lambda_F^*(X) = 2 \cdot \mathds{1}_X(-3)$. 2. $\mathcal{S}_F=2^{\mathbb{R}}$.
+
+\end{document}
+
