@@ -1,0 +1,71 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання}
+\textbf{Умова.} Довести, що множина $A$ є борельовою та знайти її мiру Лебега $\lambda_2(A)$ для
+\[
+A = ([-4,8] \times (2,4)) \setminus (\mathbb{Q} \times \mathbb{R})
+\]
+
+\textbf{Розв'язок.} 
+
+\textit{Підпункт 1.} Доведемо, що $A \in \mathcal{B}(\mathbb{R}^2)$. Помітимо, що
+\[
+\mathbb{Q} \times \mathbb{R} = \bigcup_{q \in \mathbb{Q}} \{q\} \times \mathbb{R}
+\]
+Помітимо, що $\{q\} \times \mathbb{R} \in \mathcal{B}(\mathbb{R}^2)$, тому і нескінченне об'єднання буде борельовою множиною. Отже, ми маємо, що $\mathbb{Q} \times \mathbb{R} \in \mathcal{B}(\mathbb{R}^2)$.
+
+Далі розберемося з множиною $[-4,8] \times (2,4)$. Запишемо цей добуток наступним чином:
+\begin{gather*}
+[-4,8] \times (2,4) = \bigcup_{n \in \mathbb{N}} \left(\{-4\} \cup (-4,8]\right) \times \left( 2, 4 - \frac{1}{n} \right] \\
+= \bigcup_{n \in \mathbb{N}} \left( \{-4\} \times \left(2,4-\frac{1}{n}\right]\right) \cup \left((-4,8] \times \left(2,4-\frac{1}{n}\right]\right)
+\end{gather*}
+Проаналізуємо тепер цей вираз. $\{-4\}\times (2,4-\frac{1}{n}] \in \mathcal{B}(\mathbb{R}^2)$, а отже і нескінченне об'єднання також буде належати $\mathcal{B}(\mathbb{R}^2)$. 
+
+Для правого виразу $(4,8] \times \left(2,4-\frac{1}{n}\right]$ помічаємо, що він належить $\mathcal{P}_2$, а отже належить і $\mathcal{B}(\mathbb{R}^2)$. 
+
+Отже, маємо об'єднання двох множин $\mathcal{B}(\mathbb{R}^2)$, що теж є борельовою множиною. Таким чином, $[-4,8] \times (2,4) \in \mathcal{B}(\mathbb{R}^2)$.
+
+Отже, $A$ є різницею двох борельових множин, а оскільки $\sigma$-алгебра є замкненою відносно $\setminus$, то і $A \in \mathcal{B}(\mathbb{R}^2)$.
+
+\textit{Підпункт 2.} Знайдемо $\lambda_2(A)$. Помітимо, що з іншого боку
+\[
+A = ([-4,8) \setminus \mathbb{Q}) \times (2,4) = \bigcup_{n \in \mathbb{N}} ([-4,8] \setminus \mathbb{Q}) \times \left(2,4-\frac{1}{n}\right]
+\]
+Отже, якщо позначити $A_n := \left([-4,8] \setminus \mathbb{Q}\right) \times \left(2,4-\frac{1}{n}\right]$, то
+\begin{gather*}
+\lambda_2(A) = \lambda_2(\lim_{n \to \infty}A_n) = \lim_{n \to \infty}\lambda_2(A_n) = \lim_{n \to \infty}\left((8+4) \cdot \left(2 - \frac{1}{n}\right)\right) \\
+= 12 \lim_{n \to \infty}\left(2 - \frac{1}{n}\right) = 24
+\end{gather*}
+
+\textbf{Відповідь.} $\lambda_2(A) = 24$.
+
+\end{document}
+

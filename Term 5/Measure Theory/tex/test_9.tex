@@ -1,0 +1,63 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання}
+\textbf{Умова.} Довести, що функція $f: \mathbb{R}^2 \to \mathbb{R}$ є борельовою:
+\[
+f(x,y) = \frac{\text{sign}\left( \sin (xy)\right)}{1+y^2}, \; (x,y) \in \mathbb{R}^2
+\]
+
+\textbf{Розв'язок.} Помітимо, що $f = \frac{g}{h}$ де
+\[
+g(x,y) = \text{sign}\left(\sin(xy)\right), \; h(y) = 1+y^2
+\]
+
+Доведемо, що як $g$, так і $h$ є борельовою, звідки буде випливати те, що $f$ теж борельова. 
+
+Отже, почнемо з $g$. Ми можемо записати $g$ як композицію $g_1 \circ g_2 \circ g_3$, де
+\[
+g_1(x) = \text{sign}(x), \; g_2(x) = \sin x, \; g_3(x,y) = xy
+\]
+Покажемо, що $g_i$ є борельовими. 
+
+\begin{itemize}
+    \item  $g_1$ є монотонною, тому вона є борельовою.
+    \item $g_2$ є неперервною, тому теж є борельовою.
+    \item $g_3$ також є неперервною на $\mathbb{R}^2$, тому є борельовою. 
+\end{itemize}
+
+Отже, користуючись відповідною теоремою, композиція борельових множин є також борельовою. 
+
+Також легко бачити, що $h$ є борельовою, оскільки є неперервною. 
+
+Згідно теоремі про властивості вимірних функцій, $\frac{g}{h}\mathds{1}_{\{(x,y) \in \mathbb{R}^2: h(y) \neq 0\}}$ є борельовою, проте оскільки $\{(x,y) \in \mathbb{R}^2: h(y)=1+y^2 \neq 0\} = \mathbb{R}^2$, то $\mathds{1}_{\{\dots\}} \equiv 1$ і тому $f=\frac{g}{h}$ теж є борельовою. 
+
+\end{document}
+

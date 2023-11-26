@@ -1,0 +1,105 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання}
+\textbf{Умова.} Нехай
+\[
+X = \{A,B,C\}, \; \mathcal{P} = \{\emptyset, \{A\}, \{B\}\},
+\]
+\[
+\lambda: \mathcal{P} \to [0,+\infty), \; \lambda(\emptyset) = 0, \; \lambda(\{A\}) = 1, \; \lambda(\{B\}) = 1.
+\]
+\begin{enumerate}
+    \item Перевірити, що $\lambda$ є мірою на півкільці $\mathcal{P}$.
+    \item Побудувати зовнішню міру $\lambda^*$ на $2^X$.
+    \item Знайти клас $\mathcal{S}$ вимірних за Каратеодорі відносно міри $\lambda^*$ множин.
+\end{enumerate}
+
+\textbf{Розв'язок.} 
+
+\textit{Пункт 1.} Згідно означенню \textit{міри}, функція $\lambda$ має бути невід'ємною $\sigma$-адитивною функцією множин, заданих на півкільці.
+
+Зрозуміло, що $\mathcal{P}$ є півкільцем. $\lambda$ також є невід'ємною, оскільки за умовою $\lambda(\{A\}) = \lambda(\{B\}) = 1 > 0$ і $\lambda(\emptyset) = 0$. 
+
+Залишилося перевірити $\sigma$-адитивність. За означенням $\lambda$ є $\sigma$-адитивною, якщо
+\begin{gather*}
+\forall \{A_n\}_{n \in \mathbb{N}} \subset \mathcal{P}: \left\{\{A_n\}_{n \in \mathbb{N}} \; \text{неперетинні} \wedge \bigcup_{n \in \mathbb{N}}A_n \in \mathcal{P}\right\} \\ \implies \lambda\left(\bigcup_{n \in \mathbb{N}}A_n\right) = \sum_{n \in \mathbb{N}}\lambda(A_n)
+\end{gather*}
+Оскільки $\bigcup_{n \in \mathbb{N}}A_n \in \mathcal{P}$ і всі елементи є неперетинними, то $\{A_n\}_{n \in \mathbb{N}}$ складається з одного або жодного $\{A\}$, $\{B\}$ і нескінченної кількості $\emptyset$, тобто
+\begin{gather}
+\{A_n\}_{n \in \mathbb{N}} = \{\{A\},\emptyset,\dots\} \; \text{або} \\
+\{A_n\}_{n \in \mathbb{N}} = \{\{B\},\emptyset,\dots\} \; \text{або} \\
+A_n \equiv \emptyset
+\end{gather}
+Випадок (3) тривільний, тому розглянемо випадок (1), що є аналогічним (2). В такому разі, $\bigcup_{n \in \mathbb{N}}A_n = \{A\}$, тому $\lambda(\bigcup_{n \in \mathbb{N}}A_n)=\lambda(\{A\})$. З іншого боку, $\sum_{n \in \mathbb{N}}\lambda(A_n) = \lambda(\{A\}) + \lambda(\emptyset) + \lambda(\emptyset) + \dots = \lambda(\{A\})$. Отже, рівність виконується.
+
+\textit{Пункт 2.} Побудуємо зовнішню міру за допомогою продовження $\lambda$ на $2^X$. Маємо для $\forall H \in 2^X$:
+\[
+\lambda^*(H) = \begin{cases}
+    \inf\left\{\sum_{n \in \mathbb{N}}\lambda(A_n): H \subset \bigcup_{n \in \mathbb{N}}A_n \wedge \{A_n\}_{n \in \mathbb{N}} \subset \mathcal{P}\right\}, \\ \;\;\;\;\;\;\;\;\text{якщо} \; \exists \{A_n\}_{n \in \mathbb{N}} \subset \mathcal{P}: H \subset \bigcup_{n \in\mathbb{N}}A_n \\ +\infty, \; \text{в іншому випадку}
+\end{cases}
+\]
+
+Отже, почнемо розглядати усі елементи з $2^X$. По-перше, $\lambda^*(\emptyset) = 0$ з означення зовнішньої міри. 
+
+Далі $\lambda(\{A\}) = \lambda(\{B\}) = 1$. Що стосується $\lambda(\{C\})$, то тут ми не можемо знайти $\{A_n\}_{n \in \mathbb{N}} \subset \mathcal{P}$ так, щоб $\{C\} \subset \bigcup_{n \in \mathbb{N}}A_n$, оскільки $\mathcal{P}$ не містить $\{C\}$ або інші елементи, що мають в собі $\{C\}$. Тому $\lambda(\{C\})=+\infty$. 
+
+Аналогічно для усіх множин з $2^X$, що містять $C$. Тому залишилося розглянути $\lambda^*(\{A,B\})$. Беремо мінімально $\{A_n\}_{n \in \mathbb{N}} := \{\{A\},\{B\},\emptyset,\dots\}$, тоді $\sum_{n \in \mathbb{N}}\lambda(A_n) = \lambda(\{A\}) + \lambda(\{B\}) = 2$. 
+
+Отже,
+\[
+\forall H \in 2^X: \lambda^*(H) = \begin{cases}
+    |H|, & C \not \in H \\
+    +\infty, & C \in H
+\end{cases}
+\]
+
+\textit{Пункт 3.} Скориставшись означенням вимірності за Каратеодорі, нам потрібно знайти
+\[
+\mathcal{S} = \{H \subset X: \forall E \subset X \; \; \lambda^*(E) = \lambda^*(E \cap H) + \lambda^*(E \cap \overline{H})\}
+\]
+По-перше, $\emptyset \in \mathcal{S}$, оскільки
+\[
+\lambda^*(E) = \lambda^*(E \cap \emptyset) + \lambda^*(E \cap X) = \lambda^*(\emptyset) + \lambda^*(E) = \lambda^*(E)
+\]
+Розглянемо $H \subset X: C \not\in H$. Тоді
+\[
+\forall E \subset X: \lambda^*(E) = \lambda^*(E \cap H) + \lambda^*(E \cap \overline{H}) \iff \forall E: |E| = |E \cap H| + |E \cap \overline{H}|
+\]
+Беремо $H = \{A\}$. Якщо перебрати усі варіанти, то властивість вище виконується. Так само для $H=\{B\}$ і $H=\{A,B\}$. 
+
+Тепер беремо ті множини $H \subset X: C \in H$. Можна переконатись, що тут результат буде такий самий. Отже, $\mathcal{S} = 2^X$.
+
+\textbf{Відповідь.} 1. Див. розв'язок. 2. $\lambda^*(H) = \begin{cases}
+    |H|, & C \not\in H \\
+    +\infty, & C \in H
+\end{cases}$. 3. $\mathcal{S} = 2^X$.
+
+\end{document}
+

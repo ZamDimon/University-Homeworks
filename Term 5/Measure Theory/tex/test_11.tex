@@ -1,0 +1,71 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання}
+\textbf{Умова.} Обчислити інтеграл
+\[
+\mathcal{I} = \int_{[0,100)} \frac{d\lambda_1(x)}{[5x+2][5x+4]}
+\]
+
+\textbf{Розв'язок.} Помітимо, що $[0,100) = \bigcup_{k=0}^{499} \left[ \frac{k}{5}, \frac{k+1}{5} \right)$. В такому разі скористаємося теоремою про $\sigma$-адитивність інтеграла Лебега:
+\[
+\mathcal{I} = \sum_{k=0}^{499} \int_{[\frac{k}{5},\frac{k+1}{5})} \frac{d\lambda_1(x)}{[5x+2][5x+4]}
+\]
+
+Помітимо, що на інтервалі $\left[ \frac{k}{5}, \frac{k+1}{5} \right)$ значення $5x+2$ лежать між $k+2$ до $k+3$ не включно, тому $[5x+2]\Big|_{x \in \left[ \frac{k}{5}, \frac{k+1}{5} \right)} = k+2$. Аналогічно отримуємо $[5x+4]\Big|_{x \in \left[ \frac{k}{5}, \frac{k+1}{5} \right)} = k+4$. Таким чином:
+\[
+\mathcal{I} = \sum_{k=0}^{499}\int_{[\frac{k}{5},\frac{k+1}{5})} \frac{d\lambda_1(x)}{(k+2)(k+4)} = \sum_{k=0}^{499} \frac{1}{(k+2)(k+4)} \cdot \int_{[\frac{k}{5},\frac{k+1}{5})} d\lambda_1(x)
+\]
+Користуючись тим фактом, що $\int_{[\alpha,\beta)} d\lambda_1(x) = \beta - \alpha$, отримуємо:
+\[
+\mathcal{I} = \frac{1}{5} \cdot \sum_{k=0}^{499} \frac{1}{(k+2)(k+4)}
+\]
+Далі розкладаємо $\frac{1}{(k+2)(k+4)}$ на прості дроби:
+\[
+\frac{1}{(k+2)(k+4)} = \frac{\alpha}{k+2} + \frac{\beta}{k+4} \implies (\alpha+\beta)k + (4\alpha+2\beta) \equiv 1
+\]
+Звідси $\beta=-\alpha$, тоді $\alpha=\frac{1}{2}$, а отже $\beta=-\frac{1}{2}$. Остаточно:
+\[
+\mathcal{I} = \frac{1}{10} \cdot \sum_{k=0}^{499} \left(\frac{1}{k+2} - \frac{1}{k+4}\right)
+\]
+Якщо розписати суму
+\begin{gather*}
+\sum_{k=0}^{499}\left(\frac{1}{k+2} - \frac{1}{k+4}\right) = \sum_{k=0}^{499} \frac{1}{k+2} - \sum_{k=0}^{499} \frac{1}{k+4} = \sum_{k=2}^{501} \frac{1}{k} - \sum_{k=4}^{503} \frac{1}{k} \\
+= \frac{1}{2} + \frac{1}{3} - \frac{1}{502} - \frac{1}{503} = \frac{314125}{378759}
+\end{gather*}
+Таким чином:
+\[
+\boxed{\mathcal{I} = \frac{62825}{757518}}
+\]
+
+\textbf{Відповідь.} $\frac{62825}{757518} \approx 0.083$.
+
+\end{document}
+

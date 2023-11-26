@@ -1,0 +1,47 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\title{Самостійна робота з курсу ``Теорія міри''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання}
+\textbf{Умова.} Довести, що множина $A$ є борельовою і обчислити $\lambda_1(A)$ для
+\[
+A = \bigcup_{n \in \mathbb{Z}^+}\left(e^n -\frac{1}{\cosh n + \sinh n},e^n + \frac{1}{\cosh n + \sinh n}\right]
+\]
+
+\textbf{Розв'язок.} З теоретичного матеріалу відомо, що будь-який відрізок $(\alpha,\beta] \in \mathcal{B}(\mathbb{R})$. Отже, нескінченне об'єднання борельових множин теж є борельовою множиною, тому $A \in \mathcal{B}(\mathbb{R})$. 
+
+Обчислимо міру Лебега:
+\begin{gather*}
+\lambda_1(A) = \sum_{n=0}^{\infty}\left(e^n + \frac{1}{\cosh n + \sinh n} - \left(e^n - \frac{1}{\cosh n + \sinh n}\right)\right) \\ = 2\sum_{n=0}^{\infty} \frac{1}{\cosh n + \sinh n} = 2\sum_{n=0}^{\infty} \frac{1}{\frac{e^n+e^{-n}}{2} + \frac{e^n - e^{-n}}{2}} = 2\sum_{n=0}^{\infty}e^{-n} = \frac{2e}{e-1}
+\end{gather*}
+
+\textbf{Відповідь.} $\frac{2e}{e-1}$.
+
+\end{document}
+
