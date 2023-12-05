@@ -1,0 +1,243 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{chngcntr}
+\usepackage{esint}
+
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{dsfont}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\usepackage{ragged2e}
+
+\usepackage{color}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, async, for, const, await},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this, console},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+\title{Залікова робота з курсу ``Основи \textit{web}-програмування''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра Олеговича}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Білет \#5}
+\end{center}
+
+\section*{Питання 1} 
+
+\textbf{Умова.} Що таке асинхронність у \textit{Javascript}? Які методи використовуються для управління асинхронним кодом?
+
+\textbf{Відповідь.} Зазвичай, базові програми працюють таким чином, що є деяка послідовність операцій, котрі виконуються послідовно. Для застосунків це не завжди зручно і, головне, не завжди швидко. \textbf{Асинхронність} дозволяє виконувати деякі операції \textit{паралельно}. 
+
+Як базовий приклад -- нехай нам потрібно зробити API для вебсайту, де, наприклад, ми приймаємо великий \textit{.pdf} файл, і нам потрібно якимось чином його обробити. Обробка -- операція дорога і ми не можемо дозволити одразу прийняти запит і його обробити (інакше після 5-10 запитів наша API повністю зависне). Тому, замість цього, ми можемо створити чергу і запустити декілька процесів для обробки кожного. Таким чином, ми зможемо використати асинхронність.
+
+Для управління асинхронністю в \textit{Javascript} використовуються два ключових слова: \texttt{async} та \texttt{await}. \texttt{async} використовується для позначення методу або функції, що буде використовуватися у асинхронному режимі. Функція в такому разі не буде повертати значення безпосередньо, а так званий \texttt{Promise} -- тобто обгортку навколо значення. 
+
+Наприклад, давайте створимо наступну функцію:
+
+\begin{lstlisting}[language=javascript, caption=Створення асинхронної функції]
+const NUMBERS_TO_DISPLAY = 10
+const MILISECONDS_TO_WAIT = 1000
+
+async function fn(a) {
+    await new Promise(r => setTimeout(r, MILISECONDS_TO_WAIT * (NUMBERS_TO_DISPLAY - a)))
+    return a
+}
+
+for (var i = 0; i < NUMBERS_TO_DISPLAY; i++) {
+    fn(i).then(number => console.log(number))
+}
+\end{lstlisting}
+
+\textit{Коротке пояснення:} ми проходимось по числам від $0$ до \texttt{NUMBERS\_TO\_DISPLAY-1}. Далі викликаємо асинхронну функцію \texttt{fn} для кожного числа \texttt{k}, на початку котрої чекаємо \texttt{NUMBERS\_TO\_DISPLAY-k} секунд (тобто, для числа $0$ ми чекаємо \texttt{NUMBER\_TO\_DISPLAY} секунд, для наступного числа на одну секунду меньше тощо). Для очікування вже бачимо ключове клово \texttt{await}, але поки на нього не звертатимемо увагу.
+
+Якщо б функція не була асинхронною, то ми б спочатку зачекали $10$ секунд і вивели б $0$, потім ще $9$ секунд і вивели б $1$ і так далі до $9$. Тобто сумарно ми б чекали $55$ секунд.
+
+Якщо ж ми використовуємо асинхронність, то ми запускаємо усі процеси і усі числа будуть виведені через $10$ секунд (час найбільшого очікування з усіх процесів). Причому, не у порядку зростання, як б було при послідовному виконанні, а навпаки -- спочатку найбільше (оскільки треба чекати лише $1$ секунду) і до $0$. Для виведення ми використали метод \texttt{.then}, в котрий ми можемо передати анонімну функцію, що виконається при завершенні відповідного процесу.
+
+Розглянемо тепер ключове слово \texttt{await}. Трошки модифікуємо нашу програму наступним чином:
+\begin{lstlisting}[language=javascript, caption=Використання ключового слову \texttt{await}]
+const NUMBERS_TO_DISPLAY = 10
+const MILISECONDS_TO_WAIT = 1000
+
+async function fn(a) {
+    await new Promise(r => setTimeout(r, MILISECONDS_TO_WAIT * (NUMBERS_TO_DISPLAY - a)))
+    return a
+}
+
+async function main() {
+    for (var i = 0; i < NUMBERS_TO_DISPLAY; i++) {
+        let result = await fn(i)
+        console.log(result)
+    }
+}
+
+main()
+\end{lstlisting}
+
+Тепер, для кожної цифри ми будемо очікувати результат з функції \texttt{fn}. Це, по своїй суті, буде відповідати послідовному виконанню операцій і ми будемо чекати $55$ секунд. Часто це використовується тоді, коли ми не можемо розпаралелити процеси і нам потрібно дочекати конкретний результат. 
+
+Також, іноді асинхронні функції можуть повертати помилки і їх треба оброблювати. Приклад можна побачити знизу:
+\begin{lstlisting}[language=javascript, caption=Обробка помилок]
+const NUMBERS_TO_DISPLAY = 10
+const MILISECONDS_TO_WAIT = 1000
+
+async function fn(a) {
+    throw new Error('Error in fn')
+    return a // This will never be returned
+}
+
+async function main() {
+    for (var i = 0; i < NUMBERS_TO_DISPLAY; i++) {
+        fn(i).then(result => {
+            console.log(result)
+        }).catch(error => {
+            console.log('Hey, I know how to handle errors in asynchronous js!')
+            console.log(error)
+        })
+    }
+}
+
+main()
+\end{lstlisting}
+
+На виході отримаємо виведення помилок у консоль разом із повідомленням ``\textit{Hey, I know how to handle errors in asynchronous js!}''.  
+
+\section*{Питання 2}
+
+\textbf{Умова.} Медіа запити в \textit{CSS}.
+
+\textbf{Відповідь.} Найбільш широке використання медіа запитів -- це додавання адаптивності до веб-сайтів. Тобто, ми можемо задавати умови на розмір екрану, і відповідно до цього, задавати унікальні стилі (зменшити розмір шрифта або зробити інше вирівнювання на сторінці тощо). Синтаксис команди має наступний вигляд:
+\[
+\texttt{@media <media-query-list> \{ <rule-list> \}}
+\]
+Для демонстрації надамо наступну програму:
+\begin{lstlisting}[language=html, caption=Повна \texttt{html} сторінка з використанням \texttt{@media} запитів]
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Programming exam</title>
+</head>
+<style>
+    body { background-color: rgb(230.0, 230.0, 230.0); }
+    h1   { color: rgb(20.0, 20.0, 20.0); }
+
+    @media screen and (max-width: 900px) {
+        .small-screen {
+            color: red;
+        }
+    }
+    @media screen and (min-width: 900px) {
+        .huge-screen {
+            color: red;
+        }
+    }
+</style>
+<body>
+    <!-- Will be displayed based on the screen's size -->
+    <h1 class="huge-screen"> Huge screen here! </h1>
+    <h1 class="small-screen"> Small screen here! </h1>
+
+    <!-- This launches a .js script for the first exam question -->
+    <script src="main.js"></script>
+</body>
+</html>
+\end{lstlisting}
+
+Вебсайт складається з двох чорних заголовків: ``\textit{Huge screen here!}'', ``\textit{Small screen here!}''. Якщо екран маленький, то червоним помітиться напис ``\textit{Small screen here!}'', а якщо великий -- ``\textit{Huge screen here!}''. Це досягається за допомогою медіазапиту:
+\begin{lstlisting}[language=css, caption=Використання \texttt{@media} запитів]
+@media screen and (max-width: 900px) {
+    .small-screen {
+        color: red;
+    }
+}
+@media screen and (min-width: 900px) {
+    .huge-screen {
+        color: red;
+    }
+}
+\end{lstlisting}
+
+За допомогою умови \texttt{@media screen and (max-width: 900px) \{ ... \}} ми кажемо \textit{CSS}'у, що те, що в дужках, має застосовуватись лише за умови, що ширина екрану має значення до 900 пікселів. Відповідно, умова на \texttt{min-width} позначає, що зміни відбуваються \textbf{від} ширини екрану в 900 пікселів. 
+
+\end{document}
+

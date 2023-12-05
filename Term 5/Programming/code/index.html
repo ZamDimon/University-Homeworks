@@ -1,0 +1,31 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Programming exam</title>
+</head>
+<style>
+    body { background-color: rgb(230.0, 230.0, 230.0); }
+    h1   { color: rgb(20.0, 20.0, 20.0); }
+
+    @media screen and (max-width: 900px) {
+        .small-screen {
+            color: red;
+        }
+    }
+    @media screen and (min-width: 900px) {
+        .huge-screen {
+            color: red;
+        }
+    }
+</style>
+<body>
+    <!-- Will be displayed based on the screen's size -->
+    <h1 class="huge-screen"> Huge screen here! </h1>
+    <h1 class="small-screen"> Small screen here! </h1>
+
+    <!-- This launches a .js script for the first exam question -->
+    <script src="main.js"></script>
+</body>
+</html>
