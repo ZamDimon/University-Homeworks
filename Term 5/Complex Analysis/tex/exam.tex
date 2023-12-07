@@ -1,0 +1,200 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{lemma}{Лема}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{theorem}{Теорема}%
+{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{def}{Визначення}%
+{colback=red!5,colframe=red!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{coll}{Наслідок}%
+{colback=yellow!5,colframe=yellow!35!black,fonttitle=\bfseries}{th}
+
+\title{Колоквіум з предмету ``Комплексний аналіз''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Питання 1.}
+
+Наслiдки теореми про розклад в степеневий ряд. Нерiвнiсть Кошi. Теорема Лiувiлля.
+
+\textbf{Відповідь.}
+
+Тут і далі будемо позначати $\mathcal{H}(\cdot)$ -- множину голоморфних функцій на заданній множині.
+
+Отже, сформулюємо теорему про розклад в степеневий ряд.
+
+\begin{theorem*}{Розклад в степеневий ряд.}
+    Нехай $f(z) \in \mathcal{H}(D)$ і $B(a,r) \subset D$. Тоді
+\begin{enumerate}
+\item $
+\exists \{c_n\}_{n=0}^{\infty}: f(z) = \sum_{n=0}^{\infty} c_n(z-a)^n \; \text{в $B(a,r)$}
+$
+\item $c_n = \frac{f^{(n)}(a)}{n!}$
+\item $r_{\text{збіжності}} > r$
+\end{enumerate}
+\end{theorem*}
+
+Цю теорему ми залишаємо без доведення і запишемо наслідки цієї теореми. 
+
+\begin{theorem*}{Нерівність Коші}
+Нехай $f(z) \in \mathcal{H}(B(a,r))$, причому $|f(z)| \leq M$. Тоді:
+\[
+|c_n| \leq \frac{M}{r^n},
+\]    
+де $\{c_n\}_{n=0}^{\infty}$ -- це коефіцієнти розкладання $f(z)$ у ряд.
+\end{theorem*}
+
+\textbf{Доведення.} Застосовуємо інтегральну формулу Коші:
+\[
+c_n = \frac{1}{2\pi i}\oint_{\partial B(a,\rho)} \frac{f(\zeta)d\zeta}{(\zeta-a)^{n+1}}
+\]
+Оцінюємо:
+\[
+|c_n| \leq \frac{1}{2\pi} \cdot 2\pi \rho \cdot \frac{\max|f(z)|}{\rho^{n+1}} \leq \frac{M}{\rho^n}
+\]
+Якщо спрямуємо праву частину до $r$, то отримаємо те, що повинні були довести. $\blacksquare$
+
+\begin{theorem*}{Теорема Ліувілля}
+    Нехай $f(z) \in \mathcal{H}(\mathbb{C})$ і $|f(z)| \leq M$. Тоді $f \equiv \text{const}$.
+\end{theorem*}
+
+\textbf{Доведення.} Розкладаємо $f(z)$:
+\[
+f(z) = \sum_{n=0}^{\infty} c_nz^n
+\]
+З нерівності Коші, $|c_n| \leq \frac{M}{\rho^{n}}$. Спрямовуємо $\rho \to \infty$. Для $n \neq 0$ тоді маємо
+\[
+|c_n| \leq \frac{M}{\rho^n} \xrightarrow[\rho \to \infty]{} 0 \implies c_n \equiv 0 \; \forall n > 0
+\]
+Отже $f(z) = c_0 = \text{const}$. 
+
+Також, маємо наступні два наслідки, котрі ідейно доводяться так само, як дві теореми вище:
+
+\begin{coll*}{Розкладу в степеневий ряд}
+    1. $\underline{\lim}_{r \to \infty} \max_{|z|=r}|f(z)| < \infty \implies f(z) \equiv \text{const}$.  
+
+2. $\exists \alpha: \underline{\lim}_{r \to \infty}\max_{|z|=r}|f(z)| \cdot \frac{1}{z^{\alpha}}<\infty \implies f(z) \; \text{поліном} \; P(z)$, $\text{deg}\, P(z) \leq [\alpha]$. 
+\end{coll*}
+
+\section*{Питання 2.}
+
+Чи може лишок у $\infty$ дорівнювати $\infty$?
+
+\textbf{Відповідь.}
+
+Треба знайти таку функцію $f(z)$, щоб
+\[
+\text{Res}_{z=\infty}f(z)=\lim_{z \to \infty} z(f(\infty)-f(z)) = \infty
+\]
+Для цього асимптотично треба мати якусь функцію $f(z) \sim \frac{1}{z^{\alpha}}$, де $\alpha \in (0,1)$. Тоді $f(\infty)=0$ і окрім цього
+\[
+\lim_{z \to \infty} z(f(\infty)-f(z)) = -\lim_{z \to \infty} z^{1-\alpha} = \infty
+\]
+Проте чи існує така функція, я не знаю. Головна проблема в тому, що вирази виду $z^{\alpha}$ погано обумовлені коли мова йде про комплексний простір (як мінімум, це не функції, а їх сімейство).
+
+Тоді скористаємось тим, що щоб лишок був визначеним, $f(z)$ має бути мераморфною. А якщо функція є мераморфною, то вона розкладається в ряд Лорана. За означенням, лишку буде відповідати коефіцієнт $c_{-1}$, котрий не може бути нескінченним, якщо функція розкладається у ряд. Отже, він є скінчениим.
+
+\section*{Питання 3.}
+
+Наслiдки теореми про максимум
+модуля. Лема Шварца.
+
+\textbf{Відповідь.}
+
+Знову ж таки, запишемо теорему про максимум модуля і наведемо наслідки до нього.
+
+\begin{theorem*}{Про максимум модуля}
+    1. Якщо $u(z)$ гармонічна в $D$ та $u(z) \not\equiv \text{const}$, тоді
+    \[
+    \inf_{\zeta \in D} u(\zeta) < u(z) < \sup_{\zeta \in D} u(\zeta) \; \forall z \in D
+    \]
+    
+    2. Якщо $f(z) \in \mathcal{H}(D)$, причому $f \not\equiv \text{const}$. Тоді
+    \[
+    |f(z)| < \sup_{\zeta \in D}|f(\zeta)| \; \forall z \in D
+    \]
+\end{theorem*}
+
+Тепер, наводимо наслідки.
+
+\begin{theorem*}{Головний наслідок}
+    Нехай маємо функцію $f(z) \in \mathcal{H}(D) \cap \mathcal{C}(\overline{D})$, $D$ -- обмежена область. 
+    \[
+    |f(z)| \leq \max_{\zeta \in \partial D}|f(\zeta)| \; \forall z
+    \]
+\end{theorem*}
+
+\textbf{Доведення.} Розглядаємо $|f(z)|$ -- неперервна функція на $\overline{D}$. Оскільки вона неперервна, то вона десь досягає максимума. Скажімо, вона це робить в точці $z_0$. Маємо, що $z_0 \in \partial D$, оскільки вона не може належати $D$, бо це б суперечило теоремі. Тоді, отримуємо результат, котрий треба довести.
+
+\begin{theorem*}{Теорема Вейерштрасса в іншій формі.} 
+Нехай $f_n(z) \in \mathcal{H}(D) \cap \mathcal{C}(\overline{D})$, $D$ обмежена, $f_n(z) \rightrightarrows \varphi(z)$ на $\partial D$. Тоді 
+\[
+\exists f(z) \in \mathcal{H}(D) \cap \overline{C}(\overline{D}): f_n(z) \rightrightarrows f(z) \; \text{в $\overline{D}$}
+\]
+\end{theorem*}
+
+\begin{lemma*}{Лема Шварца.} 
+
+Нехай $f(z) \in \mathcal{H}(\{z \in \mathbb{C}: |z|<1\})$, $|f(z)| < 1$ та $f(0)=0$. Тоді справедливо
+\[
+|f(z)| \leq |z|,
+\]
+
+причому якщо $\exists z_0 \in \mathbb{C}: f(z_0)=z_0$, то $f(z) =e^{i\gamma}z, \; \gamma \in \mathbb{R}$
+\end{lemma*}
+
+\textbf{Відповідь.} Розглядаємо допоміжну функцію
+\[
+g(z) := \frac{f(z)}{z}
+\]
+Щоб проаналізувати характер поведінки у нуля, розглядаємо розкладання $f(z)$ в ряд Тейлора в околі $0$:
+\[
+f(z) = c_0 + c_1 z + c_2z^2 + \dots 
+\]
+Помічаємо, що $c_0=f(0)=0$, тому
+\[
+g(z) = \frac{c_1z + c_2z^2+\dots}{z} = c_1+c_2z + \dots 
+\]
+Отже, в нас немає ніяких проблем з $z=0$ для нашої функції $g(z)$.
+
+Розглядаємо тепер множину $|z| \leq r < 1$. Застосовуємо головний наслідок теореми про максимум модуля:
+\[
+|g(z)| \leq \max_{|z|=r}\frac{|f(z)|}{|z|} \leq \frac{1}{r}
+\]
+Гранично переходячи до $r \to 1$, маємо
+\[
+|g(z)| < 1 \implies \frac{|f(z)|}{|z|} < 1 \implies |f(z)| < |z|.
+\]
+Якщо ж знайшовся $z_0$ такий, що $|g(z_0)|=1$, то $|g(z_0)|\equiv \text{const}$, то $g(z)=ze^{i\gamma},\gamma \in \mathbb{R}$. $\blacksquare$
+
+\end{document}
+

@@ -1,0 +1,230 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{Контрольна робота \#2 з курсу ``Комплексний аналіз''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \textbf{Варіант 5.}
+\end{center}
+
+\section*{Задача 1.} 
+
+\textbf{Умова.} Знайти і класифікувати всі особливі точки, з поясненням
+\[
+f(z) = \frac{z+4}{z+3}
+\]
+
+\textbf{Розв'язок.} По-перше, точка $z=-3$ є полюсом першого порядку, бо це полюс першої кратності знаменника, що не є коренем чисельника (або просто $\lim_{z \to -3} \frac{z+4}{z+3}=\infty$). Окрім цього, перевіряємо $z=\infty$:
+\[
+\lim_{z \to \infty} \frac{z+4}{z+3} = \lim_{z \to \infty} \frac{1+\frac{4}{z}}{1+\frac{3}{z}} = 1
+\]
+Отже, $z = \infty$ є усувною особливістю. 
+
+\textbf{Відповідь.} 
+
+\begin{enumerate}
+    \item $z=-3$ -- полюс першого порядку;
+    \item $z=\infty$ -- усувна особливість.
+\end{enumerate}
+
+\pagebreak
+
+\section*{Задача 2.}
+\textbf{Умова.} Знайти і класифікувати всі особливі точки, з поясненням
+\[
+f(z) = \frac{1}{(z^2+1)(z-1)}
+\] 
+
+\textbf{Розв'язок.} Запишемо функцію у трошки іншому вигляді:
+\[
+f(z) = \frac{1}{(z+i)(z-i)(z-1)}
+\]
+Тут $z=\pm i$ та $z=1$ -- полюси першого порядку (по аналогічним причинам, як і в минулій задачі). 
+
+Розглянемо $z = \infty$:
+\[
+f(z) = \lim_{z \to \infty} \frac{1}{(z+i)(z-i)(z-1)} = 0
+\]
+Отже, $z=\infty$ є усувною особливістю.
+
+\textbf{Відповідь.}
+\begin{enumerate}
+    \item $z=\pm i, z=1$ -- три полюси першого порядку;
+    \item $z=\infty$ -- усувна особливість.
+\end{enumerate}
+
+\pagebreak
+
+\section*{Задача 3.} 
+
+\textbf{Умова.} Знайти і класифікувати всі особливі точки, з поясненням
+\[
+f(z) = z^3\sin \frac{\pi}{z}
+\]
+
+\textbf{Розв'язок.} По-перше, помітимо, що $z^3\sin\frac{\pi}{z}\underset{z \to \infty}{\sim} z^3 \cdot \frac{\pi}{z}=\pi z^2$. Отже, $z=\infty$ є полюсом $2$-ого порядку. 
+
+Тепер розглянемо $z=0$. Розкладемо функцію $f(z)$ у ряд Лорана:
+\[
+\sin z = \frac{\pi}{z} - \frac{\pi^3}{3!\cdot z^3} + \frac{\pi^5}{5!\cdot z^5} - \frac{\pi^7}{7!\cdot z^7} + \dots
+\]
+\[
+f(z) = z^3\sin z = \underbrace{\pi z^2 - \frac{\pi^3}{3!}}_{\text{правильна частина}} + \underbrace{\frac{\pi^2}{5! \cdot z^2} - \frac{\pi^7}{7! \cdot z^4} + \dots}_{\text{головна частина, безліч доданків}}
+\]
+Бачимо, що оскільки маємо безліч доданків у головній частині ряда Лорана, то $z=0$ буде істотною особливістю. 
+
+\textbf{Відповідь.}
+\begin{enumerate}
+    \item $z=\infty$ -- полюс другого порядку;
+    \item $z=0$ -- істотна особливість.
+\end{enumerate}
+
+\pagebreak
+
+\section*{Задача 4.} 
+
+\textbf{Умова.} Знайти і класифікувати всі особливі точки, з поясненням
+\[
+f(z) = \frac{\cos z}{(z+2)^3}
+\]
+
+\textbf{Розв'язок.} По-перше, розглянемо $z \to \infty$. Помітимо, що
+\[
+f(z) = \frac{e^{iz} + e^{-iz}}{2(z+2)^3}
+\]
+Якщо підставимо $z = x \in \mathbb{R}$, то маємо добуток обмеженної функції $\cos x$ на $\frac{1}{(x+2)^3} \xrightarrow[z \to \infty]{} 0$, тому і $\frac{\cos x}{(x+2)^3} \xrightarrow[z \to \infty]{} 0$.
+
+Якщо ж $z = iy, y \in \mathbb{R}$, то маємо
+\[
+f(iy) = \frac{e^{y}+e^{-y}}{2(iy+2)^3} \sim \frac{e^y}{iy^3} \xrightarrow[y \to \infty]{} i\infty
+\]
+
+Отже маємо дві різні границі, що означає те, що $z=\infty$ є неізольованою особливістю.
+
+Далі, находимо корені чисельника і знаменника. У чисельника маємо $z_k=\frac{\pi}{2}+\pi k, \; k \in \mathbb{Z}$, а у знаменника $z=-2$ третього ступеня. Бачимо, що ці корені ніяк не перетинаються, оскільки рівняння $\frac{\pi}{2}+\pi k = -2$ не має розв'язків у цілих числах. Отже, маємо $z=-2$ -- полюс третього порядку. 
+
+\textbf{Відповідь.}
+\begin{enumerate}
+    \item $z=\infty$ -- неізольована особливість;
+    \item $z=-2$ -- полюс третього порядку.
+\end{enumerate}
+
+\pagebreak
+
+\section*{Задача 5.} 
+
+\textbf{Умова.} Знайти і класифікувати всі особливі точки, з поясненням
+\[
+f(z) = \frac{z^2+\pi^2}{e^z+1}
+\]
+\textbf{Розв'язок.} Спочатку знаходимо нулі чисельника та знаменника. У чисельника маємо $z=\pm i\pi$, а у знаменника $z_k=(1+2k)\pi i$ -- корені першої кратності. Помітимо, що при $k=0$ та $k=-1$ набір коренів перетинаються. 
+
+Розглянемо границі у цих точках:
+\begin{gather*}
+\lim_{z \to -i\pi} \frac{z^2+\pi^2}{e^z+1} = \begin{vmatrix}
+    w := z + i\pi \\
+    z = w - i\pi \\
+    w \to 0
+\end{vmatrix} = \lim_{w \to 0} \frac{(w-i\pi)^2 + \pi^2}{e^{w-i\pi}+1} = \lim_{w \to 0} \frac{w^2-2i \pi w}{1 - e^{w}} \\
+= \lim_{w \to 0} \frac{-2i\pi w+w^2}{-w - \frac{w^2}{2} + \overline{o}(w^2)} = \lim_{w \to 0} \frac{-2i \pi + w}{-1 - w(\frac{1}{2}+\overline{o}(1))} = 2i \pi
+\end{gather*}
+Аналогічно можна показати, що
+\[
+\lim_{z \to i \pi} \frac{z^2+\pi^2}{e^z+1} = -2i \pi 
+\]
+Отже, $z=\pm i \pi$ є усувними особливостями. Нарешті, $z=+\infty$ є неізольованою особливістю, бо границя для полюсів $z_k = (1+2k)\pi i \xrightarrow[k \to \infty]{} \infty$. 
+
+\textbf{Відповідь.}
+\begin{enumerate}
+    \item $z_k=(1+2k)\pi i, \; k \in \mathbb{Z} \setminus \{0,1\}$ є полюсами першого порядку;
+    \item $z=\pm i \pi$ є усувними особливостями;
+    \item $z=\infty$ є неізольованою особливістю.
+\end{enumerate}
+
+\pagebreak
+
+\section*{Задача 6.} 
+
+\textbf{Умова.} Розкласти в ряд Лорана в т. $z_0=0$ на $1<|z|<4$ функцію
+\[
+f(z) = \frac{1}{(z-1)(z^2-16)}
+\]
+
+\textbf{Розв'язок.} Спочатку помітимо, що:
+\[
+f(z) = \frac{1}{(z-1)(z-4)(z+4)} = \frac{\alpha}{z-1} + \frac{\beta}{z-4} + \frac{\gamma}{z+4}
+\]
+Знайдемо $(\alpha,\beta,\gamma)$. Отже:
+\[
+\alpha(z^2-16)+\beta(z-1)(z+4)+\gamma(z-1)(z-4) \equiv 1
+\]
+Розкладаємо цей вираз:
+\begin{gather*}
+\alpha z^2 - 16\alpha + \beta(z^2+3z-4)+\gamma(z^2-5z+4) \equiv 1 \\
+(\alpha+\beta+\gamma)z^2 + (3\beta-5\gamma)z + (-16\alpha-4\beta+4\gamma) \equiv 1
+\end{gather*}
+Отже, маємо систему рівнянь:
+\[
+\begin{cases}
+    \alpha+\beta+\gamma = 0 \\
+    3\beta-5\gamma = 0 \\
+    -16\alpha-4\beta+4\gamma = 1
+\end{cases}
+\]
+З другого рівняння $\beta=\frac{5\gamma}{3}$, підставляючи у перше маємо $\alpha = -\frac{8\gamma}{3}$. Нарешті, якщо це підставити у третє:
+\[
+\frac{128\gamma}{3} - \frac{20\gamma}{3} + 4\gamma = 1 \implies \gamma = \frac{1}{40}
+\]
+Звідси $\alpha=-\frac{1}{15},\beta=\frac{1}{24}$. Тому остаточно:
+\[
+f(z) = -\frac{1}{15(z-1)} + \frac{1}{24(z-4)} + \frac{1}{40(z+4)}
+\]
+Тепер розглядаємо кожен дріб окремо. Оскільки $1<|z|<4$, то дріб $\frac{1}{z-1}$ запишемо як
+\[
+\frac{1}{z-1} = \frac{1}{z} \cdot \frac{1}{1-\frac{1}{z}} = \frac{1}{z}\sum_{k=0}^{\infty} \frac{1}{z^k} = \sum_{k=0}^{\infty} \frac{1}{z^{k+1}}.
+\]
+Ми так змогли зробити, оскільки $\left|\frac{1}{z}\right| < 1$ для нашої області. 
+
+Аналогічно розглядаємо інші ряди:
+\begin{gather*}
+\frac{1}{z-4} = -\frac{1}{4} \cdot \frac{1}{1-\frac{z}{4}} = -\frac{1}{4}\sum_{k=0}^{\infty} \frac{z^k}{4^k} \\
+\frac{1}{z+4} = \frac{1}{4} \cdot \frac{1}{1+\frac{z}{4}} = \frac{1}{4} \sum_{k=0}^{\infty} (-1)^k \cdot \frac{z^k}{4^k}
+\end{gather*}
+Тут ми скористалися тим, що $\left|\frac{z}{4}\right|<1$ для нашої області. Таким чином, остаточно:
+\begin{gather*}
+f(z) = -\frac{1}{15}\sum_{k=0}^{\infty} \frac{1}{z^{k+1}} - \frac{1}{96}\sum_{k=0}^{\infty} \frac{z^k}{4^k} + \frac{1}{160}\sum_{k=0}^{\infty} (-1)^k \cdot \frac{z^k}{4^k} = \\
+\boxed{\sum_{k=0}^{\infty}\left\{ -\frac{1}{15z^{k+1}} + \frac{z^k}{32 \cdot 4^k}\left(-\frac{1}{3} + \frac{(-1)^k}{5}\right) \right\}}
+\end{gather*}
+
+\textbf{Відповідь.} $f(z) = \sum_{k=0}^{\infty}\left\{ -\frac{1}{15z^{k+1}} + \frac{z^k}{32 \cdot 4^k}\left(-\frac{1}{3} + \frac{(-1)^k}{5}\right) \right\}$.
+
+\pagebreak
+
+\end{document}
+
