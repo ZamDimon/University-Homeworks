@@ -1,0 +1,129 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{Домашня робота \#3 з курсу ``Комплексний аналіз'' (частина перша)}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 1.} 
+
+\textbf{Умова.} Знайти область збіжності ряду
+\[
+\sum_{i=1}^{\infty} \frac{i^n}{(z+4)^n}
+\]
+
+\textbf{Розв'язок.} Маємо геометричну прогресію зі знаменником $q=\frac{i}{z+4}$. Геометрична прогресія буде збігатися тоді, коли $|q|<1$, тобто $\left|\frac{i}{z+4}\right|=\frac{1}{|z+4|} < 1$. Отже $|z+4|>1$. 
+
+\section*{Завдання 2.} 
+
+\textbf{Умова.} Вказати число доданків у головній частині ряду Лорана 
+\[
+\sum_{n=1}^{\infty} \frac{n}{(z-i)^{n-2}}
+\]
+\textbf{Розв'язок.} Головна частина ряда Лорана складається з елементів виду $\gamma_{-n}(z-z_0)^{-n}$ для $n \in \mathbb{N}$. Перепишемо ряд у вигляді:
+\begin{gather*}
+\sum_{n=1}^{\infty} \frac{n}{(z-i)^{n-2}} = \sum_{n=1}^2 \frac{n}{(z-i)^{n-2}} + \sum_{n=3}^{\infty} \frac{n}{(z-i)^{n-2}}\\
+= \underbrace{2 + (z-i)}_{\text{Голоморфна частина}} + \underbrace{\sum_{n=1}^{\infty} (n+2)(z-i)^{-n}}_{\text{Головна частина}}
+\end{gather*}
+
+Як бачимо, головна частина складається з нескінченної кількості елементів.
+
+\section*{Завдання 3.} 
+
+\textbf{Умова.} Вказати число доданків у голоморфній частині ряду Лорана 
+\[
+\sum_{n=1}^{\infty} \frac{z^{-n-3}}{n!},
+\]
+вважаючи, що ряд розглянуто в околі нескінченності. 
+
+\textbf{Розв'язок.} Робимо заміну $w=\frac{1}{z}$. Тоді розглядання ряда аналогічно розглядання наступного ряду в околі нуля:
+\[
+\sum_{n=1}^{\infty}\frac{1}{n!} \cdot w^{n+3}
+\]
+Тут весь ряд є голоморфним, отже число доданків у голоморфній частині безліч. 
+
+\section*{Завдання 6.}
+
+\textbf{Умова.} Розкласти в ряд Лорана в області $|z|>3$ функцію 
+\[f(z) = \frac{1}{z^2-5z+6}\]
+
+\textbf{Розв'язок.} Розкладемо $f(z)$ на прості дроби:
+\[
+f(z) = \frac{1}{z^2-5z+6} = \frac{1}{(z-2)(z-3)} = \frac{\alpha}{z-2} + \frac{\beta}{z-3}
+\]
+З останньої рівності $(\alpha+\beta)z - (3\alpha+2\beta)\equiv 1$. Отже:
+\[
+\begin{cases}
+    \alpha+\beta = 0 \\
+    3\alpha+2\beta = -1
+\end{cases} \implies (\alpha,\beta) = (-1,1)
+\]
+Таким чином:
+\[
+f(z) = \frac{1}{z-3} - \frac{1}{z-2}
+\]
+Розглянемо розкладання у ряд Лорана наступної функції:
+\[
+g(z;\theta)=\frac{1}{z-\theta}
+\]
+Для цього перепишемо її у вигляді
+\[
+g(z;\theta) = \frac{1}{z(1-\frac{\theta}{z})} = \frac{1}{z}\sum_{n=0}^{\infty} \left(\frac{\theta}{z}\right)^n, \; |z| > |\theta|
+\]
+Отже:
+\begin{gather*}
+f(z) = g(z;3) - g(z;2) = \sum_{n=0}^{\infty} \left\{ \frac{1}{z} \cdot \left(\frac{3}{z}\right)^n - \frac{1}{z} \cdot \left(\frac{2}{z}\right)^n \right\} \\
+= \sum_{n=0}^{\infty} \left\{ \frac{3^n}{z^{n+1}} - \frac{2^n}{z^{n+1}} \right\} = \boxed{\sum_{n=0}^{\infty} \frac{3^n-2^n}{z^{n+1}}, \; |z| > 3}
+\end{gather*}
+
+\section*{Завдання 9.}
+
+\textbf{Умова.} Вказати область, у якій ряд Лорана функції $f(z) = \frac{e^z}{z-2}$ буде збігатися з рядом Тейлора.
+
+\textbf{Розв'язок.} Розглянемо два випадки.
+
+\textbf{Випадок 1.} $|z|>2$. Тоді:
+\[
+f(z) = \frac{e^z}{z-2} = \frac{e^z}{z} \cdot \frac{1}{1-\frac{2}{z}} = \frac{e^z}{z} = \frac{e^z}{z}\sum_{n=0}^{\infty} \frac{2^n}{z^n} = \left(\sum_{n=0}^{\infty} \frac{2^n}{z^{n+1}}\right) \cdot \left(\sum_{n=0}^{\infty} \frac{z^n}{n!}\right)
+\]
+Ми не можемо знайти явний вид у формі $\sum_{n=-\infty}^{\infty}\gamma_nz^n$, проте можемо сказати, чи буде ряд Лорана збігатися з рядом Тейлора. Ряд Лорана є рядом Тейлора тоді і тільки тоді, коли $\gamma_{-n}=0 \; \forall n \in \mathbb{N}$. 
+
+У такому добутку існує безліч елементів виду $\gamma_{-n}z^{-n}$ для $n \in \mathbb{N}, \gamma_{-n} \neq 0$. Дійсно, візьмемо коефіцієнт при $z^{-1}$. В такому разі:
+\[
+\gamma_{-1} = \sum_{k=0}^{\infty} \frac{2^k}{k!} = e^2 \neq 0
+\]
+
+\textbf{Випадок 2.} $|z|<2$. Тоді:
+\[
+f(z) = -\frac{e^z}{2(1-\frac{z}{2})} = -\frac{e^z}{2} \cdot \sum_{k=0}^{\infty} \frac{z^k}{2^k} = -\frac{1}{2} \left(\sum_{k=0}^{\infty}\frac{z^k}{k!}\right) \cdot \left(\sum_{k=0}^{\infty}\frac{z^k}{2^k}\right)
+\]
+Як бачимо, у такого добутку немає доданків виду $\gamma_{-n}z^{-n}$ для $n \in \mathbb{N}$. Отже, цей ряд повністю збігається з рядом Тейлора. 
+
+Остаточна відповідь -- $\boxed{|z|<2}$
+
+\end{document}
+

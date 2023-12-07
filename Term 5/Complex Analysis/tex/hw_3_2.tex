@@ -1,0 +1,99 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{Домашня робота \#3 з курсу ``Комплексний аналіз'' (частина друга)}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Варіант 5}
+\end{center}
+
+\section*{Завдання.} 
+
+\textbf{Умова.} Знайти всі особливі точки та класифікувати їх
+\begin{enumerate}
+    \item $f(z) = \frac{1}{(z+3)(z-12)}$;
+    \item $f(z) = \frac{\sin 3z}{(z+1)^3}$;
+    \item $f(z) = \frac{z+\frac{5}{2}}{\cos \pi z}$.
+\end{enumerate}
+
+\textbf{Розв'язок.} 
+
+\textbf{Пункт 1.} Тут $z=-3,z=12$ -- полюси першого порядку. Для цього можемо скористатися критерієм полюса: $f(z)$ має полюс порядку $m$ у точці $z_0$ тоді і тільки тоді, коли $\frac{1}{f(z)}$ має корінь $z_0$ кратності $m$. Оскільки $\frac{1}{f(z)} = (z+3)(z-12)$, то маємо два полюси першого порядку $z=-3,z=12$.
+
+Також $z=\infty$ є усувною, оскільки $\lim_{z \to \infty}f(z) = 0$. 
+
+\textbf{Пункт 2.} Нуль знаменника $z=-1$ кратності $3$, а нулі чисельника $3z_k=\pi k \to z_k = \frac{\pi k}{3}$ для $k \in \mathbb{Z}$. 
+
+Отже, $z=-1$ є полюсом третього порядку, оскільки є коренем кратності $3$ виразу $\frac{1}{f(z)} = \frac{(z+1)^3}{\sin 3z}$. При цьому корені чисельника і знаменника не збігаються, оскільки рівняння $\frac{\pi k}{3} = -1$ немає розв'язків для $k \in \mathbb{Z}$. 
+
+Точка $z=\infty$ є усувною, оскільки $\lim_{z \to \infty} \frac{\sin 3z}{(z+1)^3}=0$. Дійсно,
+\[
+\left|\frac{\sin 3z}{(z+1)^3}\right| < \frac{1}{(z+1)^3} \xrightarrow[\text{$z \to \infty$}]{} 0
+\]
+
+\textbf{Пункт 3.} Нуль чисельника $z=-\frac{5}{2}$, а у знаменника $\cos\pi z_k = 0 \implies \pi z_k = \frac{\pi}{2}+\pi k$, тобто $z_k = \frac{1}{2}+k$.
+
+Бачимо, що при $k=-3$, корені чисельника та знаменника збігаються. Тому проаналізуємо границю:
+\[
+\lim_{z \to -\frac{5}{2}} \frac{z+\frac{5}{2}}{\cos \pi z} = \lim_{w \to 0} \frac{w}{\cos\left(\pi\left(w-\frac{5}{2}\right)\right)} = \lim_{w \to 0} \frac{w}{\cos \left(\pi w - \frac{5 \pi}{2}\right)} = \lim_{w \to 0} \frac{w}{\sin \pi w} = \frac{1}{\pi}
+\]
+
+Отже, точка $z=-\frac{5}{2}$ є усувною. Всі точки $z_k = \frac{1}{2}+k, k \in \mathbb{Z} \setminus \{-3\}$ є полюсами першого порядку. 
+
+$z = +\infty$ є істотною особливістю, оскільки $\lim_{z \to \infty} f(z)$ не визначено. 
+
+\vspace{10px}
+\begin{center}
+\textit{Ітогові відповіді на наступній сторінці}
+\end{center}
+
+\pagebreak
+\textbf{Відповідь.}
+
+\textbf{Пункт 1.} 
+\begin{enumerate}
+\item $z=-3,z=12$ -- полюси (першого порядку);
+\item $z=\infty$ -- усувна особливість.
+\end{enumerate}
+
+\textbf{Пункт 2.} 
+\begin{enumerate}
+\item $z=-1$ -- полюс (третього порядку);
+\item $z=\infty$ -- усувна особливість.
+\end{enumerate}
+
+\textbf{Пункт 3.} 
+\begin{enumerate}
+\item $z=-\frac{5}{2}$ -- усувна особливість;
+\item $z_k=\frac{1}{2}+k, \; k \in \mathbb{Z} \setminus \{-3\}$ -- полюси (першого порядку);
+\item $z=\infty$ -- істотна особливість.
+\end{enumerate}
+
+\end{document}
+

@@ -1,0 +1,711 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{Підготовка до колоквіуму}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\textbf{1.} Комплексні числа, дії з ними, модуль, аргумент, тригонометрическая форма, нерівності з комплексними числами. Функції $\exp(z)$, $\ln z$, $z^w$. Комплексні $\sin z$ і $\cos z$.
+
+Доволі зрозуміло, розписувати не буду.
+
+\textbf{2.} Комплексна площина, зв’язна множина, компакт, лема про компакт та замкнену множину. Сферична метрика, сфера Рімана, нескінченність. Функції комплексної змінної, їхні властивості.
+
+\textbf{Комплексна площина} -- кожному комплексному числу $z=x+iy$ ставимо у відповідність точку $(x,y)$ на декартовій площині. (див. Горіанов ст. 11).
+
+\textbf{Зв'язна множина} -- множина $E \subset \overline{\mathbb{C}}$ називається зв'язною, якщо не існує двох відкритих множин $G_1,G_2$, що задовольняють умови:
+\begin{enumerate}
+    \item $E \subset G_1 \cup G_2$
+    \item $E \cap G_1 \cap G_2 = \emptyset$
+    \item $G_1 \cap E \neq \emptyset, \; G_2 \cap E \not \neq \emptyset$
+\end{enumerate}
+
+\textbf{Компакт} -- будь-яка обмежена замкнена множина $K \subset \mathbb{C}$.
+
+\textbf{Лема про компакт та замкнену множину.} Нехай $K$ -- компакт, $F$ -- замкнена множина на $\mathbb{C}$. Якщо $K \cap F = \emptyset$, то
+\[
+\inf_{z \in K, w \in F}|z-w| > 0
+\]
+\textbf{Доведення.} Нехай $\alpha := \inf_{z \in K, w \in F}|z-w|$. З визначення $\inf$ випливає, що існують такі послідовності $\{z_n\}_{n \in \mathbb{N}} \subset K, \{w_n\}_{n \in \mathbb{N}} \subset F$, що $|z_n-w_n| \xrightarrow[n \to \infty]{}\alpha$.
+
+Знайдемо підпослідовність $\{z_{n_k}\}_{k \in \mathbb{N}}$ таку, що $z_{n_k} \xrightarrow[k \to \infty]{} \widetilde{z} \in K$...
+
+Див. Лекцію 2.
+
+\textbf{Сферична метрика.} Розглядаємо сферу $x^2+y^2+(w-\frac{1}{2})^2 = \frac{1}{4}$. Кожній точці на сфері, ставимо у відповідність перетин $Oxy$ з прямою, що проходить через цю точку та північний полюс (стереографічна проекція). 
+
+Кожній точці на площині відповідає єдина точка на сфері (сфера Рімана). Є неперервним зображенням сфери на площину.
+
+Північному полюсу ставимо у відповідність $\infty$. Тому маємо відображення $\mathbb{S}$ з $\overline{\mathbb{C}} := \mathbb{C} \cup \infty$. 
+
+Окіл нескінченності це окіл північного полюсу. Сферична відстань між точками:
+\[
+\rho_{\mathbb{S}}(z_1,z_2) = \frac{|z_1-z_2|}{\sqrt{1+|z_1|^2}\cdot\sqrt{1+|z_2|^2}}, \; \rho_{\mathbb{S}}(z,\infty) = \frac{1}{\sqrt{1+|z|^2}}
+\]
+
+\textbf{Функції.} $f:E \to \mathbb{C}, E \subset \mathbb{C}$. 
+
+\textit{Границя функції.}
+\[
+\lim_{z \to z_0}f(z) = A \iff \forall \epsilon > 0 \; \exists \delta(\epsilon) > 0 \;\; 0<|z-a|<\delta \implies |f(z)-A| < \epsilon
+\]
+
+\textit{Неперервність функції.} $f(z) \in \mathcal{C}(\{z_0\})$, якщо 
+\[
+\forall \epsilon > 0 \; \exists \delta(\epsilon) > 0 \; |z-z_0| < \delta \implies |f(z)-f(z_0)| < \epsilon
+\]
+
+Далі див. Горіанінов ст. 21.
+
+\textbf{3.} $\mathbb{R}$ та $\mathbb{C}$-диференційованість, умови Коші-Рімана, голоморфність. Обчислення похідних.
+
+\textit{$\mathbb{R}$-диференційованість}: якщо $\text{Re} \, f(z)$ та $\text{Im}\, f(z)$ є обидві диференційованими.
+
+\textit{$\mathbb{C}$-диференційованість}: Беремо малу зміну $\Delta f(z)$:
+\[
+\Delta f(z) = \Delta u + i \Delta v = u_x'\Delta x + u_y'\Delta y + i v_x' \Delta x + iv_y'\Delta y + \overline{o}(\sqrt{\Delta x^2 + \Delta y^2})
+\]
+Якщо позначимо $u_x'+iv_x'=f_x'$ і $u_y'+iv_y'=f_y'$, то 
+\[
+\Delta f = f_x'\Delta x + f_y'\Delta y + \overline{o}(\sqrt{\Delta x^2 + \Delta y^2})
+\]
+Враховуючи, що
+\[
+\Delta x = \frac{\Delta z+\overline{\Delta z}}{2}, \; \Delta y = \frac{\Delta z - \overline{\Delta z}}{2i}
+\]
+Таким чином,
+\[
+\Delta f = f_x'\left(\frac{\Delta z + \Delta\overline{z}}{2}\right) + f_y'\left(\frac{\Delta z - \Delta\overline{z}}{2i}\right) + \overline{o}(\sqrt{\Delta x^2 + \Delta y^2})
+\]
+\[
+\Delta f = \frac{\Delta z}{2}\left(f_x'-if_y'\right) + \frac{\Delta\overline{z}}{2}\left(f_x' + if_y'\right) = \frac{1}{2}f_z'\Delta z + \frac{1}{2}f_{\overline{z}}'\Delta\overline{z}
+\]
+Інше визначення:
+\[
+f'(z_0) = \lim_{\Delta z \to 0} \frac{f(z_0+\Delta z)-f(z_0)}{\Delta z} = \lim_{\Delta z \to 0} \frac{\Delta f}{\Delta z}
+\]
+Властивості диференціювання -- такі самі, як і в звичайному математичному аналізі (див. лекцію 2, самий кінець).
+
+\textbf{Умова Коші-Рімана.} Для $\mathbb{C}$-диференційованості необхідно і досить, щоб $f(z)$ була $\mathbb{R}$-диференційованою та $f_{\overline{z}}'=0$. 
+
+\textbf{Доведення.} $\to$
+\[
+\Delta f = f_z'\Delta z + f_{\overline{z}}' \Delta \overline{z} + \overline{o}(|\Delta z|)
+\]
+Якщо $f'_{\overline{z}}=0$, то
+\[
+\Delta f = f_z'\Delta z + \overline{o}(|\Delta z|) \implies \frac{\Delta f}{\Delta z} = f_z' + \overline{o}(1)
+\]
+Отже, $f$ є $\mathbb{C}$-диференційованою, оскільки тоді
+\[
+\frac{\Delta f}{\Delta z} \xrightarrow[z \to 0]{} f_x' - if_y'
+\]
+і $f_x',f_y'$ існують, оскільки $f$ є $\mathbb{R}$-диференційованою. 
+
+$\leftarrow$. Якщо $f(z)$ є $\mathbb{C}$-диференційованою, то $\exists L = \alpha+i\beta: \frac{\Delta f}{\Delta z} = A+\overline{o}(1)$. Тоді
+\[
+\Delta f = A \Delta z + \overline{o}(|\Delta z|) = \underbrace{\alpha \Delta x - \beta\Delta y}_{\Delta u} + i\underbrace{(\alpha \Delta y + \beta \Delta x)}_{\Delta v} + \overline{o}(|\Delta z|)
+\]
+Отже $u,v$ диференційовані та
+\[
+\frac{\Delta f}{\Delta z} = f_z' + f_{\overline{z}}' \frac{\Delta \overline{z}}{\Delta z} + \overline{o}(1)
+\]
+Ця границя існує тільки при $f_{\overline{z}}' = 0$. $\blacksquare$
+
+\textit{Голоморфність.} $f(z)$ є голоморфною у $\mathcal{H}$ якщо $f \in \mathcal{C}^1(\mathcal{H})$. 
+
+\textbf{4.} Якобіан голоморфних відображень. Геометричний сенс аргументу похідної.
+
+\textit{Геометричний сенс аргументу похідної.} Див. ст. 35. Мельник. $\lim_{\Delta z \to 0} \frac{|\Delta f|}{|\Delta z|} = |f'(z)|$. Нехай $z(t)$ крива. Тоді, $\Delta z = z(t)-z(0), t \to 0$. $\text{arg} \, \Delta z$ -- кут між $\Delta z$ та $Ox$. Тоді $\lim_{\Delta z \to 0}\Delta z$ -- це кут нахила дотичної. 
+
+Далі третя лекція, початок.
+
+\textbf{Якобіан.} Нехай маємо Якобіан для $f(x,y)=u(x,y)+iv(x,y)$:
+\[
+\mathbf{J}_f \triangleq \begin{bmatrix}
+    u_x' & u_y' \\ v_x' & v_y'
+\end{bmatrix} = \begin{bmatrix}
+    u_x' & u_y' \\ -u_y' & u_x'
+\end{bmatrix}
+\]
+Є лінійним перетворенням:
+\[
+\mathbf{J}_f=\begin{bmatrix}
+    x \\ y
+\end{bmatrix} = \begin{bmatrix}
+    u_x'x + u_y'y \\ -u_y'x + u_x'y
+\end{bmatrix} \iff (u_x'-iu_y')z=...
+\]
+$\det \mathbf{J}_f = (u_x')^2+(u_y')^2=|u'|^2$. 
+
+\textbf{5.} Інтегрування функцій комплексного змінного. Зв'язок з криволінійними інтегралами I і II роду.
+Оцінка інтеграла.
+
+Нехай $\gamma: z=z(t),t \in [\alpha,\beta]$ -- деяка крива в $\mathbb{C}$. Довжина:
+\[
+L(\gamma) = \sup_{\tau} \sum_{i=1}^n |z(t_i)-z(t_{i-1})|
+\]
+де $\tau$ розбиття $\alpha=t_0<\dots<t_n=\beta$. Розглянемо дві інтегральні суми:
+\[
+\sum_{i=1}^n f(z(\xi_i))(z(t_i)-z(t_{i-1})), \; \sum_{i=1}^n f(z(\xi_i))|z(t_i)-z(t_{i-1})|
+\]
+де $\xi_i \in [t_{i-1},t_i]$. 
+\[
+\int_{\gamma} f(z)dz = \int_{\gamma}(udx-vdy)+i\int_{\gamma}(udy+vdx)
+\]
+\[
+\int_{\gamma}f(z)|dz| = \int_{\gamma}uds + i\int_{\gamma}vds
+\]
+де $f(z)=u(x,y)+iv(x,y),z=x+iy$, а $ds$ -- елемент довжини. У випадку кусково-гладкої функції
+\[
+\int_{\gamma}f(z)dz = \int_{\alpha}^{\beta}f(z(t))z'(t)dt, \; \int_{\gamma}f(z)|dz| = \int_{\alpha}^{\beta}f(z(t))|z'(t)|dt
+\]
+Нерівність трикутників:
+\[
+\left|\int_{\gamma}f(z)dz\right| \leq \int_{\gamma}|f(z)|\cdot|dz|
+\]
+Якщо $f(z)$ обмежена $M$, тобто $|f(z)|<M$, то
+\[
+\left|\int_{\gamma}f(z)dz\right| < M\cdot \ell(\gamma)
+\]
+див. Мельник ст. 79.
+
+\textbf{6.} Теорема Ньютона-Лейбніца. Інтеграл по замкненій кривій. Лема: інтеграл по колу від ступеня $z-a$.
+
+\textbf{Первісна} -- нехай $F \in \mathcal{A}(\Omega), f \in \mathcal{C}(\Omega)$. $F$ є первісною $f$ в області $\Omega$, якщо
+\[
+F'(z) = f(z) \; \forall z \in \Omega
+\]
+
+\textbf{Теорема Ньютона-Лейбніца.} Нехай $\gamma: [\alpha,\beta] \to \mathbb{C}$ -- кусково-гладка крива, шлях $E_{\gamma}$ якої належить $\Omega$. Якщо $f \in \mathcal{C}(\Omega)$ і має первісну $\Psi$ уздовж $\gamma$, тоді
+\[
+\int_{\gamma}f(z)dz = \Psi(\beta)-\Psi(\alpha)
+\]
+
+\textbf{Доведення.} Нехай $\gamma$ лежить в колі $K \subset \Omega$, в якому існує первісна $F$ функції $f$. Тоді суперпозиція $F \circ \gamma(t)$ -- первісна функції $f$ вздовж $\gamma$, тому
+\[
+\Psi(t) = F \circ \gamma(t) + C
+\]
+Оскільки $F'=f$ у $K$ і $\gamma$ -- гладка крива, то $\dot{\Psi}(t)=\dot{F}(\gamma(t))\dot{\gamma}(t)$, тому
+\[
+\int_{\gamma}f(z)dz = \int_{[\alpha,\beta]}f(\gamma(t))\dot{\gamma}(t)dt=\int_{[\alpha,\beta]}\dot{\Psi}(t)dt = \Psi(\alpha)-\Psi(\beta)
+\]
+Якщо немає такого кола $K$, то ділимо $\gamma = \bigcup_{m}\gamma_m$, де $\gamma_m \subset K_m$ -- коло $K_m \subset \Omega$. 
+
+\textbf{Інтеграл по замкненій кривій.} Нехай $f$ та $f'$ -- аналітичні в $\mathcal{D}$. Тоді
+\[
+\oint_{\partial\mathcal{D}}f(z)dz=0
+\]
+
+\textbf{Доведення.} Скористаємося теоремою Гріна. Якщо $P(x,y),Q(x,y)$ неперервно диференційовані в $\mathcal{D}$, то
+\[
+\oint_{\partial\mathcal{D}}Pdx+Qdy = \iint_{\mathcal{D}}\left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right)dxdy
+\]
+Нехай $f(x,y)=u(x,y)+iv(x,y)$, тоді
+\[
+\oint_{\partial\mathcal{D}}f(z)dz = \oint_{\partial\mathcal{D}}(udx-vdy) + i\oint_{\partial\mathcal{D}}(vdx+udy)
+\]
+Отже:
+\begin{gather*}
+\oint_{\partial\mathcal{D}}f(z)dz = \oint_{\partial\mathcal{D}}\left(-\frac{\partial v}{\partial x}-\frac{\partial u}{\partial y}\right) + i\oint_{\mathcal{D}}\left(\frac{\partial u}{\partial x} - \frac{\partial v}{\partial y}\right)
+\end{gather*}
+За теоремою Коші-Рімана, обидва інтеграли нульові.
+
+\textbf{Лема.} Інтеграл по колу від ступеня $z-a$.
+\[
+\oint_{|z-a|=r}(z-a)^n = \begin{cases}
+    2\pi i, & n = -1 \\
+    0, & n \in \mathbb{Z} \setminus \{-1\}
+\end{cases}
+\]
+\textbf{Доведення.} Якщо $n\neq -1$, тоді первісна від $(z-a)^n$ дорівнює $\frac{(z-a)^{n+1}}{n+1}$, тому інтеграл по замкненому шляху $0$. Для $n=-1$ вводимо параметризацію $z(t)=a+re^{2\pi i t}$ для $t \in [0,1]$ і тоді:
+\[
+\oint_{|z-a|=r} \frac{1}{z-a} = \int_{[0,1]}\frac{1}{re^{2\pi i t}} \cdot 2\pi i re^{2\pi i t} = 2\pi i
+\]
+
+\textbf{7.} Теорема Коші. $\mathcal{D}$ однозв'язна, $f(z)$ голоморфна в $\mathcal{D}$, тоді 
+\[
+\oint_{L}f(z)dz=0
+\]
+\textbf{Доведення.} Будемо вважати, що $f'(z)$ -- неперервна. Тоді вона випливає з формули Гріна (див. попередній пункт).
+
+\textbf{8.} Випадок, коли невідомо про неперервність похідної. Випадок трикутника. Загальний випадок.
+
+\textbf{Лема.} Нехай $f$ голоморфна в $\Omega$. Тоді для довільного трикутника $\Delta$, який разом зі своїм замиканням належить $\Omega$ ($\Delta \subset \Omega$), маємо
+\[
+\int_{\partial^+\Delta}f(z)dz =0 
+\]
+де $\partial^+\Delta$ -- позитивно орієнтована сторона трикутника. Див. ст. 80 Мельник.
+
+\textbf{9.} Теорема Коші для функцій, безперервних аж до кордону і для багатозв’язної області.
+
+\textbf{10.} Інтегральна формула Коши.
+
+Нехай $f(z)$ аналітична на $\mathcal{D}$, $z \in \mathcal{D}$, тоді
+\[
+f(z) =\frac{1}{2\pi i}\oint_{\partial\mathcal{D}}\frac{f(\zeta)d\zeta}{\zeta-z}
+\]
+Малюємо коло $K_r$ радіусу $r$ навколо $z$ достатньо маленьке так, що $K_r \subset \mathcal{D}$. Оскільки $\frac{f(\zeta)}{\zeta-z}$ аналітично в $\mathcal{D} \setminus K_r$, то
+\[
+\frac{1}{2\pi i}\oint_{\partial\mathcal{D}} \frac{f(\zeta)d\zeta}{\zeta-z} = \frac{1}{2\pi i}\oint_{K_r} \frac{f(\zeta)d\zeta}{\zeta-z} = \frac{1}{2\pi i}\oint_{K_r}\frac{f(\zeta)-f(z)}{\zeta - z}d\zeta + \frac{f(z)}{2\pi i}\oint_{K_r}\frac{d\zeta}{\zeta-z}
+\]
+Останній інтеграл дорівнює $f(z)$. Покажемо, що перший 0. Отже
+\[
+\forall \epsilon > 0 \; \exists(\delta) > 0 \; |\zeta-z| < \delta \implies |f(\zeta)-f(z)| < \epsilon
+\]
+Обиражмо $r<\delta$, тоді
+\begin{gather*}
+\left|\frac{1}{2\pi i}\oint_{K_r}\frac{f(\zeta)-f(z)}{\zeta-z}d\zeta\right| \leq \frac{1}{2\pi}\oint_{K_r} \frac{|f(\zeta)-f(z)|}{|\zeta-z|}|d\zeta| \\
+= \frac{1}{2\pi r} \oint_{K_r}|f(\zeta)-f(z)|\cdot|d\zeta| \\
+\leq \frac{\epsilon}{2\pi r}\oint_{K_r}|d\zeta| = \frac{\epsilon}{2\pi r} \cdot 2\pi r = \epsilon \; \blacksquare
+\end{gather*}
+
+\textbf{11.} Гармонійні функції та їх зв'язок з голоморфними.
+
+Функція $u(x,y)$ гармонійна, якщо $u \in \mathcal{C}^2$ та $u_{x^2}''+u_{y^2}''=0$ (або просто $\Delta u=0$). 
+
+\textbf{Теорема 1.} $f$ голоморфна, $f(x,y)=u(x,y)+iv(x,y)$, тоді $u$ гармонійна (див. лекцію 5). 
+
+\textbf{Доведення.}
+\[
+u_{x^2}'' = (u_x')_x' = (v_y')_x'=(v_x')_y'= (-u_y')_y' = -u_{y^2}''
+\]
+
+\textbf{Теорема 2.} $u(x,y)$ гармонійна в однозв'язній $\mathcal{D}$. Існує $v(x,y)$ спряжена гармонійна така, що $u(x,y)+iv(x,y)$ голоморфна в $\mathcal{D}$, причому $v(x,y)$ визначена до сталої.
+
+\textbf{Доведення.} Візьмемо
+\[
+v(x,y) := \int_{(x_0,y_0)}^{(x,y)} -u_y'dx + u_x'dy
+\]
+Не має залежити від шляху. Є, оскільки умова $P_y'=Q_x'$ для $\int Pdx+Qdy$. 
+
+Єдиність -- легко доводиться.
+
+\textbf{12.} Формула для похідних. Диференційовність похідних.
+
+\textbf{Наслідок інтегральної теореми Коші.} За інтегральною умовою Коші за відповідними умовами для $f$:
+\[
+f(z) = \frac{1}{2\pi i}\oint_{\partial\mathcal{D}} \frac{f(\zeta)d\zeta}{\zeta-z}
+\]
+
+Справедливо також наступне:
+\[
+f^{(n)}(z) = \frac{n!}{2\pi i}\oint_{\partial\mathcal{D}} \frac{f(\zeta)d\zeta}{(\zeta-z)^{n+1}}
+\]
+
+\textbf{Доведення}. Доведемо, що $f'(z) = \frac{1}{2\pi i}\oint_{\partial\mathcal{D}}\frac{f(\zeta)d\zeta}{(\zeta-z)^2}$. Далі довести можна за індукцією. Позначимо $\eta:=\frac{f(z+\Delta z)-f(z)}{\Delta z}$
+\begin{gather*}
+\eta = \left(\frac{1}{2\pi i}\oint_{\partial\mathcal{D}} \frac{f(\zeta)d\zeta}{\zeta-z-\Delta z}-\frac{1}{2\pi i}\oint_{\partial\mathcal{D}}\frac{f(\zeta)d\zeta}{\zeta-z}\right)\frac{1}{\Delta z} \\
+= \frac{1}{2\pi i}\oint_{\partial \mathcal{D}}\frac{f(\zeta)d\zeta}{(\zeta-z-\Delta z)(\zeta - z)}
+\end{gather*}
+Тоді
+\[
+\eta - \frac{1}{2\pi i}\oint_{\partial\mathcal{D}} \frac{f(\zeta)d\zeta}{(\zeta-z)^2} = \frac{\Delta z}{2\pi i}\oint_{\partial\mathcal{D}} \frac{f(\zeta)d\zeta}{(\zeta-z)^2(\zeta-z-\Delta z)}
+\]
+Помітимо тут тепер, що $|\zeta-z| \geq \text{dist}(z,\partial\mathcal{D})$. Так само 
+\[
+|\zeta-z-\Delta z| \geq \text{dist}(z,\partial\mathcal{D})-|\Delta z| \geq \frac{1}{2}\text{dist}(z,\partial\mathcal{D})
+\]
+Отже
+\[
+\left|\eta - \frac{1}{2\pi i}\oint_{\partial\mathcal{D}} \frac{f(\zeta)d\zeta}{(\zeta-z)^2}\right| \leq \frac{|\Delta z|}{2\pi} \cdot \frac{\max_{\zeta \in \partial \mathcal{D}}|f(\zeta)|}{\frac{1}{2}\cdot \text{dist}^3(z,\partial\mathcal{D})} \xrightarrow[\Delta z \to 0]{} 0
+\]
+
+\textbf{13.} Теорема Морери.
+
+Зворотня до теореми Коші. 
+
+\textbf{Теорема.} Нехай $f(z) \in \mathcal{C}(\mathcal{D})$ і $\oint_L f(z)dz=0$, тоді $f(z) \in \mathcal{H}(\mathcal{D})$.
+
+\textbf{Доведення.} По-перше, $\int_a^b f(z)dz$ не залежить від обраного шляху. Дійсно, нехай є два шляхи $L_1,L_2$ від $a$ до $b$. В такому разі
+\[
+\int_{L_1}f(z)dz - \int_{L_2}f(z)dz = \int_{L_1}f(z)dz + \int_{-L_2}f(z)dz = \int_{L_1-L_2}f(z)dz = 0,
+\]
+оскільки $L_1-L_2$ є замкненою кривою. Отже, $\int_{L_1}f(z)dz = \int_{L_2}f(z)dz \; \forall L_1,L_2$. 
+
+Розглянемо функцію $F(z) = \int_{[a,z]}f(\zeta)d\zeta$. Розглядаємо $\eta:=\frac{F(z+\Delta z)-F(z)}{\Delta z}$
+\[
+\eta = \frac{1}{\Delta z} \left(\int_{a}^{z+\Delta z}-\int_a^z\right)f(\zeta)d\zeta = \frac{1}{\Delta z}\int_{z}^{z+\Delta z}f(\zeta)d\zeta
+\]
+Розглядаємо
+\[
+\eta - f(z) = \frac{1}{\Delta z}\int_{[z,z+\Delta z]}(f(\zeta)-f(z))d\zeta
+\]
+Причому,
+\begin{gather*}
+\left|\frac{1}{\Delta z}\int_{[z,z+\Delta z]}(f(\zeta)-f(z))d\zeta\right| \leq |\Delta z|^{-1} \cdot \max_{\zeta \in [z,z+\Delta z]}|f(\zeta)-f(z)| \cdot |\Delta z| \\
+= \max_{\zeta \in [z,z+\Delta z]}|f(\zeta)-f(z)| \xrightarrow[\Delta z \to 0]{} 0
+\end{gather*}
+
+Отже, $|\eta-f(z)| \xrightarrow[\Delta z \to 0]{} 0$, отже $F'(z)=f(z)$, тому $f(z)$ теж голоморфна.
+
+\textbf{14.} Формули для середнього значення.
+
+\textbf{Теорема.} Нехай $f(z)$ голоморфний у крузі $\mathcal{U}_r(a)$. Тоді
+\[
+f(a) = \frac{1}{2\pi}\int_0^{2\pi} f(a+re^{i\theta})d\theta
+\]
+\textbf{Доведення.} Використовуємо інтегральну формулу Коші:
+\[
+f(a) = \frac{1}{2\pi i}\oint_{|z-a|=r}\frac{f(\zeta)d\zeta}{\zeta-a}
+\]
+Підставляємо $\zeta=a+re^{i\theta}$, тоді $\dot{\zeta}=rie^{i\theta}$, тому
+\[
+f(a) = \frac{1}{2\pi i}\int_{0}^{2\pi} \frac{f(a+re^{i\theta})rie^{i\theta}d\theta}{re^{i\theta}} = \frac{1}{2\pi}\int_0^{2\pi}f(a+re^{i\theta})d\theta
+\]
+
+\textbf{Теорема.} 
+\[
+f(a) = \frac{1}{\pi R^2}\iint_{\mathcal{U}_R(a)} f(x,y)dxdy
+\]
+\textbf{Доведення.} Нехай $x=\text{Re}\,a + r \cos\theta,y=\text{Im}\, a + r \sin\theta$. Тоді $r \in [0,R], \theta\in[0,2\pi]$. Тому
+\begin{gather*}
+\frac{1}{\pi R^2}\iint_{\mathcal{U}_R(a)} f(x,y)dxdy = \frac{1}{\pi R^2}\int_0^R r\int_0^{2\pi}f(\text{Re}\, a + r\cos\theta +(\text{Im}\, a + r\sin\theta)i) d\theta dr \\
+= \frac{1}{\pi R^2}\int_0^R r \int_0^{2\pi}f(a+re^{i\theta})d\theta dr = \frac{1}{\pi R^2} \int_0^R rf(a)2\pi dr  = f(a)
+\end{gather*}
+
+\textbf{15.} Теорема Вейєрштрасса. Степеневі ряди.
+
+$\mathcal{H}(D)$ -- голоморфні на $D$. $\{f_n\}_{n \in \mathbb{N}}$ збігається до $f$, якщо 
+\[
+\forall K \subset D: \; K \text{ -- компакт} \; f_n(z) \rightrightarrows f(z) \; \text{на} \; K
+\]
+\textbf{Теорема Вейєрштрасса.} $\{f_n\}_{n \in \mathbb{N}} \to_K f(z)$. Причому $\{f_n\}_{n \in \mathbb{N}} \subset \mathcal{H}(D)$. Тоді:
+\begin{enumerate}
+    \item $f(z)$ голоморфна в $D$.
+    \item $\forall p \in \mathbb{N}: f_n^{(p)} \to f^{(p)}$
+\end{enumerate}
+
+\textbf{Доведення.} 
+
+\textit{Пункт 1.} Розглянемо
+\[
+\oint_{\gamma} f_n(z)dz - \oint_{\gamma}f(z)dz = \oint_{\gamma}(f_n(z)-f(z))dz
+\]
+$\gamma$ -- компакт, оскільки замкнута обмежена множина. Тому $f_n \rightrightarrows f$ на $\gamma$. Візьмемо модуль:
+\[
+\left|\oint_{\gamma}(f_n(z)-f(z))dz\right| \leq \max_{z \in \gamma}|f_n(z)-f(z)| \ell_{\gamma} \xrightarrow[n \to \infty]{} 0
+\]
+Тому $\oint_{\gamma}f(z)dz=0$, оскільки $\oint_{\gamma}f_n(z)dz=0$, а отже $f(z)$ неперервна на кожному компакті $D$, а отже і на $D$. 
+
+\textit{Пункт 2.} 
+\[
+f^{(p)}(z) = \frac{p!}{2\pi i}\oint_{|\zeta-z^0|=r} \frac{f(\zeta)d\zeta}{(\zeta-z)^{p+1}}
+\]
+
+Візьмемо $\overline{B(z^0,r)} \subset D, \; z \in B(z^0,\frac{r}{2})$
+\[
+f_n^{(p)}(z) = \frac{p!}{2\pi i}\oint_{|\zeta-z^0|=r} \frac{f_n(\zeta)d\zeta}{(\zeta-z)^{p+1}}
+\]
+Візьмемо різницю:
+\[
+f^{(p)}(z) - f_n^{(p)}(z) = \frac{p!}{2\pi i}\oint_{|\zeta-z^0|=r} \frac{(f(\zeta)-f_n(\zeta))d\zeta}{(\zeta-z)^{p+1}}
+\]
+Розглядаємо модуль:
+\[
+|f^{(p)}(z)-f_n^{(p)}(z)| \leq \frac{p!}{2\pi} \cdot 2\pi r \cdot \frac{\max_{|\zeta-z^0|=r}|f(\zeta)-f_n(\zeta)|}{\left(\frac{r}{2}\right)^{p+1}}
+\]
+Тут ми скористалися тим, що $|\zeta-z| \geq |\zeta-z^0|+|z^0-z| \geq \frac{r}{2}$. Отже,
+\[
+|f^{(p)}(z)-f_n^{(p)}(z)| \leq \frac{p!\cdot 2^{p+1}}{r^p}\max_{|\zeta-z^0|=r}|f(\zeta)-f_n(\zeta)| \xrightarrow[n \to \infty]{} 0
+\]
+
+Отже $f^{(p)}(z) - f_n^{(p)}(z) \rightrightarrows 0$, тобто
+\[
+\forall \epsilon > 0 \; \exists n_{\epsilon} \in \mathbb{N} \; \forall n \geq n_{\epsilon}: \max_{z \in B(z^0,r/2)}|f_n(z)-f(z)| < \epsilon
+\]
+Беремо $K \subset D$. Існує скінченна кількість $B(z^j,r^j/2),j\in\{1,\dots,N\}$ такі, що $K \subset \bigcup B(z^j,r^j/2)$.
+
+Якщо ж візьмемо $n \geq \max_j n_j$, то отримаємо цю нерівність для усіх точок $z \in K$.  
+
+\textbf{Наслідок.} Нехай $\{f_n\}_{n \in \mathbb{N}} \subset \mathcal{H}(D)$. Нехай $\sum_{n \in \mathbb{N}}f_n$ збігається рівномірно на $\mathcal{H}(D)$. Тоді $\sum_{n \in \mathbb{N}}f_n \in \mathcal{H}(D)$ та $\sum_{n \in \mathbb{N}}f_n^{(p)} \rightrightarrows \left(\sum_{n \in \mathbb{N}}f_n(z)\right)^{(p)}$.
+
+\textbf{Доведення.} Розглядаємо
+\[
+g_N(z) := \sum_{n=1}^N f_n(z)
+\]
+А далі використовується теорема Вейєрштрасса. 
+
+\textbf{Визначення.} Степеневий ряд це
+\[
+\sum_{n=0}^{\infty} \gamma_n(z-a)^n
+\]
+
+\textbf{Теорема.} Якщо позначимо $R:=\frac{1}{\overline{\lim_{n \to \infty}}\sqrt[n]{\gamma_n}}$, то якщо взяти $|z-a|\leq r < R$, то ряд збігається рівномірно, інакше розбігається.
+
+\textbf{16.} Теорема про розклад голоморфної функції в ряд Тейлора.
+
+\textbf{Теорема.} Нехай $f(z) \in \mathcal{H}(D)$ і $B(a,r) \subset D$. Тоді
+\begin{enumerate}
+\item $
+\exists \{c_n\}_{n=0}^{\infty}: f(z) = \sum_{n=0}^{\infty} c_n(z-a)^n \; \text{в $B(a,r)$}
+$
+\item $c_n = \frac{f^{(n)}(a)}{n!}$
+\item $r_{\text{збіжності}} > r$
+\end{enumerate}
+
+\textbf{Доведення.} Візьмемо $\rho<r$. $f(z) \in \mathcal{H}(B(a,\rho)) \cap \mathcal{C}(B(a,\rho))$. Тоді:
+\[
+z \in B(a,\rho): f(z) = \frac{1}{2\pi i}\oint_{\partial B(a,\rho)} \frac{f(\zeta)d\zeta}{\zeta-z}
+\]
+Помітимо, що
+\[
+\frac{1}{\zeta-z}=\frac{1}{\zeta-a-(z-a)} = \frac{1}{\zeta-a} \cdot \frac{1}{1-\frac{z-a}{\zeta-a}}
+\]
+Тому
+\[
+\frac{1}{\zeta-z} = \sum_{n=0}^{\infty} \frac{(z-a)^n}{(\zeta-a)^{n+1}} \; \text{збігається рівномірно по $\zeta$ якщо $\zeta \in \partial B(a,\rho)$}
+\]
+Тоді:
+\begin{gather*}
+f(z) = \frac{1}{2\pi i}\oint_{\partial B(a,\rho)} d\zeta f(\zeta) \sum_{n=0}^{\infty} \frac{(z-a)^n}{(\zeta-a)^{n+1}} \\
+= \frac{1}{2\pi i}\sum_{n=0}^{\infty} (z-a)^n \oint_{\partial B(a,\rho)} \frac{f(\zeta)d\zeta}{(\zeta-a)^{n+1}} \\
+= \frac{1}{2\pi i}\sum_{n=0}^{\infty} \frac{2\pi i f^{(n)}}{n!}(z-a)^n = \sum_{n=0}^{\infty} \frac{f^{(n)}}{n!}(z-a)^n
+\end{gather*}
+
+Отже, пункти 1 та 2 вже довели. 
+
+Доводимо 3 від протилежного. Нехай $r_{\text{збіжності}} \leq r$. Візьмемо $r_{\text{зб}} < |z-a| < r$. Якщо взяти $|z-a|<r$ збігається у точці $z$, але розбігається при $|z-a|>r_{\text{зб}}$. Протиріччя. 
+
+\textbf{17.} Наслідки Теореми про розклад. Нерівність Коші. Теорема Ліувілля.
+
+\textbf{Нерівність Коші.} Нехай $f(z) \in \mathcal{H}(B(a,r))$, причому $|f(z)| \leq M$. Тоді:
+\[
+|c_n| \leq \frac{M}{2^n}
+\]
+\textbf{Доведення.} Маємо формулу
+\[
+c_n = \frac{1}{2\pi i}\oint_{\partial B(a,\rho)} \frac{f(\zeta)d\zeta}{(\zeta-a)^{n+1}}
+\]
+Оцінюємо:
+\[
+|c_n| \leq \frac{1}{2\pi} \cdot 2\pi \rho \cdot \frac{\max|f(z)|}{\rho^{n+1}} \leq \frac{M}{\rho^n}, \; \rho \to r
+\]
+
+\textbf{Теорема Ліувілля.} Нехай $f(z) \in \mathcal{H}(\mathbb{C})$ і $|f(z)| \leq M$. Тоді $f \equiv \text{const}$.
+
+\textbf{Доведення.} Розкладаємо $f(z)$:
+\[
+f(z) = \sum_{n=0}^{\infty} c_nz^n
+\]
+З нерівності Коші, $|c_n| \leq \frac{M}{\rho^{n}}$. Спрямовуємо $\rho \to \infty$. Для $n \neq 0$ маємо
+\[
+|c_n| \leq \frac{M}{\rho^n} \xrightarrow[\rho \to \infty]{} 0 \implies c_n \equiv 0 \; \forall n > 0
+\]
+Отже $f(z) = c_0 = \text{const}$. 
+
+\textbf{Теорема.} 
+
+1. $\underline{\lim}_{r \to \infty} \max_{|z|=r}|f(z)| < \infty \implies f(z) \equiv \text{const}$.  
+
+2. $\exists \alpha: \underline{\lim}_{r \to \infty}\max_{|z|=r}|f(z)| \cdot \frac{1}{z^{\alpha}}<\infty \implies f(z) \; \text{поліном} \; P(z)$, $\text{deg}\, P(z) \leq [\alpha]$. 
+
+\textbf{Доведення.} Так само як попередній приклад.
+
+\textbf{18.} Теорема єдності. Аналітичне продовження.
+
+\textbf{Перша теорема єдності.} Якщо $f(z) \in \mathcal{H}(D), \; a \in D, \; f^{(n)}(a)=0 \; \forall n \implies f(z) \equiv 0$
+
+\textbf{Доведення.} Нехай $A = \{z \in D: \exists k \in \mathbb{N} \cup \{0\} \; f^{(k)}(z) \neq 0\}$ та $D \setminus A = \{z \in D: f^{(k)}(z) = 0 \; \forall k \in \mathbb{N} \cup \{0\}\}$.  
+
+$D$ -- зв'язна, тоді якщо доведемо, що $A$ -- відкрита, то або $A$ порожня, або $D \setminus A$ порожня. Але $D \setminus A$ непорожня, тому $A$ порожня, що буде означати, що $f(z) \equiv 0$.  
+
+Якщо ж $f^{(k)}(z_0) \neq 0$ і $f^{(k)}$ неперервна, то $f^{(k)}(z) \neq 0$ в околі $z_0$. Тобто $A$ -- відкрита. 
+
+$D \setminus A$ також відкрита. Беремо $z_0 \in D \setminus A$ і розкладаємо в ряд: $\exists B(z_0,r) \subset D: f(z) = \sum_{n=0}^{\infty} \frac{f^{(n)}(z_0)}{n!}(z-z_0)^n = 0$. А якщо $f(z) \equiv 0$ в деякому околі, то і похідні теж будуть нулями. 
+
+Нулі $f(z)$? Нехай $f(z)$ голоморфна в околі $a$. 
+
+\textbf{Визначення.} $f(z)$ має нуль кратності $k$ в $a$, якщо $f(z)=(z-a)^kg(z)$ в околі $a$, причому $g(a) \neq 0,g(a) \in \mathcal{H}(\text{окіл $a$})$.  
+
+Тобто $g(z) = \sum_{n=0}^{\infty}b_n(z-a)^n, \; b_0 \neq 0$. $f(z) = \sum_{n=0}^{\infty}b_n(z-a)^{n+k}=\sum_{n=k}^{\infty}c_n(z-a)^n, \; c_m=b_{m-k}$. 
+
+Тому
+\[
+f(z) = \sum_{m=0}^{\infty} \frac{f^{(m)}(a)(z-a)^m}{m!}, \; c_m = \frac{f^{(m)}(a)}{m!}
+\]
+Тобто $f^{(m)}(a)=0$ для $m=0,\dots,k-1$. 
+
+\textbf{Друга форма єдності.} Нехай $f(z) \in \mathcal{H}(D)$, $f(z)=0, \; O \subset D$, $O$ -- відкрита. Тоді $f(z)=0$ в $D$ -- форма першої теореми єдності.
+
+\textbf{Третя форма єдності.} Нехай $f,g \in \mathcal{H}(D)$ і $f \equiv g$ на $O \subset D$. Тоді $f \equiv g$ на $D$.
+
+\textbf{Аналітичне продовження.} 
+
+\textbf{Визначення.} Нехай $f(z) \in \mathcal{H}(D)$. Беремо $D \subset D_1$. І беремо $F(z) \in \mathcal{H}(D_1)$.  $F(z)$ є аналітичним продовженням $f(z)$ на область $D_1$ якщо $f(z) = F(z)$ в $D$.
+
+\textbf{Теорема.} Якщо продовження існує, то воно єдине!
+
+\textbf{Доведення.} Нехай маємо два продовження $F_1,F_2$, але вони збігаються на $D$, а отже збігаються і на $D$ тотожньо. Тому $F_1 \equiv F_2$.
+
+\textbf{Приклад.} $f(z)=\frac{1}{1-z}$ та $\sum_{k=0}^{\infty}z^k$. 
+
+\textbf{19.} Нулі голоморфних функцій. Принцип несгущованості нулів.
+
+\textbf{Принцип несгущованості нулів (друга теорема єдності).} Нехай $f(z) \in \mathcal{H}(D)$ та $\{z_n\}_{n \in \mathbb{N}} \xrightarrow[]{} a \in D, \; f(z_n) = 0 \implies f(z) = 0$.
+
+\textbf{Доведення.} Мусимо довести, що $f^{(n)}(a) = 0 \; \forall n \in \mathbb{N} \cup \{0\}$. 
+
+Від противного. Нехай $f(z) = \sum_{n=0}^{\infty}c_n(z-a)^n$. Причому $c_0=0$, оскільки $c_0=f(a)=0, \; c_n = \frac{f^{(n)}(a)}{n!}$. 
+
+Беремо $k=\min \{n: c_n \neq 0\}$ -- кратність нуля в точці $a$. Тоді
+\[
+f(z) = (z-a)^k\underbrace{\sum_{n=k}^{\infty}c_n(z-a)^n}_{=g(z)}
+\]
+Тоді $g(a) = c_k \neq 0$ і $g(z) \neq 0$ в околі $a$. 
+
+$0 = f(z_n) = (z_n-a)^kg(z_n)$. Протиріччя, оскільки $g(z_n) \neq 0, (z_n-a)^k \neq 0$, а $f(z_n)=0$. 
+
+\textbf{20.} Принцип максімуму модуля для гармонійних та голоморфних функцій.
+
+\textbf{Теорема.} 
+
+1. Якщо $u(z)$ гармонічна в $D$ та $u(z) \not\equiv \text{const}$, тоді
+\[
+\inf_{\zeta \in D} u(\zeta) < u(z) < \sup_{\zeta \in D} u(\zeta)
+\]
+
+2. $f(z) \in \mathcal{H}(D)$, причому $f \not\equiv \text{const}$. Тоді
+\[
+|f(z)| < \sup_{\zeta \in D}|f(\zeta)| \; \forall z \in D
+\]
+
+\textbf{Доведення.} 
+
+Доведення правої частини для гармонійних функцій. Нехай $M:=\sup_{\zeta \in D}u(\zeta)$. Розглянемо дві множини: $A = \{z \in D: u(z) = M\}$ та $D \setminus A=\{z \in D: u(z) < M\}$.
+
+Легше почати з $D \setminus A$. Оскільки функція гармонійна, то вона неперервна, а отже якщо в деякій точці $u(z)<M$, то так само буде і для деякого її околу. 
+
+Залишилось довести відкритість $A$. Нехай $z_0 \in A$. Розглянемо $\overline{B}(z_0,r) \subset D$. Маємо
+\[
+u(z_0) = \frac{1}{\pi r^2}\iint_{B(z_0,r)} u(z)dxdy
+\]
+
+\textit{Випадок 1.} $B(z_0,r) \subset A$, тоді $A$ відкрите.
+
+\textit{Випадок 2.} $\exists z_1 \in B(z_0,r) \wedge z_1 \not\in A$. Отже, $u(z_1) < M-\epsilon$. Отже
+\begin{gather*}
+M = \frac{1}{\pi r^2}\iint_{B(z_0,r) \setminus B(z,\rho)} u(z)dxdy + \frac{1}{\pi r^2}\iint_{B(z,\rho)} u(z)dxdy \\ \leq \frac{1}{\pi r^2}\iint_{B(z_0,r) \setminus B(z,\rho)} Mdxdy + \frac{1}{\pi r^2}\iint_{B(z,\rho)} (M-\epsilon)dxdy \\
+= \frac{M(\pi r^2 - \pi \rho^2)}{\pi r^2} + \frac{(M-\epsilon)\pi \rho^2}{\pi r^2} = M - \frac{\epsilon \rho^2}{r^2} < M
+\end{gather*}
+
+\textbf{2.} Для голоморфних. Доведемо від протилежного. Нехай $\exists z_0: |f(z_0)|=M = \sup_{D}|f(\zeta)|$, тому $f(z_0)=Me^{i\alpha}$.
+
+Розглядаємо $g(z)=f(z)e^{-i\alpha}$. Тоді $g(z_0)=M$.
+
+$\text{Re}\, g(z_0)$ гармонійна, $\text{Re} \, g(z) \leq M, \; g(z_0) = M$. Отже $g(z) \equiv \text{const}$, тоді за умовою Коші-Рімана $g(z) \equiv \text{const}, \; f(z) \equiv \text{const}$, протиріччя умові. 
+
+\textbf{21.} Наслідки принципу максимуму модуля: Варіант теореми Вейерштрасса, лема Шварца.
+
+\textbf{Головний наслідок.} $f(z) \in \mathcal{H}(D) \cap \mathcal{C}(\overline{D})$, $D$ -- обмежена область. 
+\[
+|f(z)| \leq \max_{\partial D}|f(\zeta)|
+\]
+
+\textbf{Доведення.} Розглядаємо $|f(z)|$ -- неперервна на $\overline{D}$, тобто десь досягає максимума в точці $z_0$. Причому $z_0 \in \partial D$, оскільки не належить $D$.  
+
+\textbf{Теорема Вейерштрасса в іншій формі.} 
+
+Нехай $f_n(z) \in \mathcal{H}(D) \cap \mathcal{C}(\overline{D})$, $D$ обмежена, $f_n \rightrightarrows \varphi$ на $\partial D$. Тоді 
+\[
+\exists f(z) \in \mathcal{H}(D) \cap \overline{C}(\overline{D}): f(z) \rightrightarrows \varphi \; \text{в $\overline{D}$}
+\]
+
+\textbf{Доведення.} Маємо
+\[
+|f_n(z)-f_m(z)| \leq \max_{\partial D} |f_n(z) - f_m(z)| \xrightarrow[n,m \to \infty]{} 0
+\]
+Звідки $f_n \rightrightarrows f \in \mathcal{C}(\overline{D})$. Звідси одразу випливає те, що доводили.
+
+\textbf{Лема Шварца.} $f(z) \in \mathcal{H}(\{z \in \mathbb{C}: |z|<1\})$ та $|f(z)| < 1$ та $f(0)=0$. Звідси випливає 
+\[
+|f(z)| \leq |z|
+\]
+
+Якщо ж $\exists z_0 \in \mathbb{C}: f(z_0)=z_0$, то $f(z) =e^{i\gamma}z, \; \gamma \in \mathbb{R}$
+
+\textbf{Відповідь.} Розглядаємо
+\[
+g(z) := \frac{f(z)}{z}
+\]
+Розглядаємо ряд Тейлра:
+\[
+f(z) = c_0 + c_1 z + c_2z^2 + \dots 
+\]
+Помічаємо, що $c_0=f(0)=0$, тому
+\[
+g(z) = \frac{c_1z + c_2z^2+\dots}{z} = c_1+c_2z + \dots 
+\]
+Отже $g(z)$ є аналітичним продовженням $f(z)$ з $0<|z|<1$ на $|z|<1$ і є голоморфною на $|z|<1$.
+
+Розглядаємо $|z| \leq r < 1$. Маємо
+\[
+|g(z)| \leq \max_{|z|=r}\frac{|f(z)|}{|z|} \leq \frac{1}{r}
+\]
+Гранично переходимо до $r \to 1$, маємо
+\[
+|g(z)| < 1
+\]
+Якщо ж $|g(z_0)|=1$, то $|g(z_0)|\equiv \text{const}$, то $g(z)=ze^{i\gamma},\gamma \in \mathbb{R}$. 
+
+Отже, 
+\[
+\frac{|f(z)|}{|z|} < 1 \implies |f(z)| < |z|\; \blacksquare
+\]
+
+\textbf{22.} Ряд Лорана, теорема про розкладання голоморфної функції в ряд Лорана. Едність.
+
+\textbf{Означення.} Ряд Лорана:
+\[
+\sum_{n=-\infty}^{\infty} c_n(z-a)^n \equiv \sum_{n=0}^{\infty}c_n(z-a)^{n} + \sum_{n=1}^{\infty}c_{-n}(z-a)^{-n}
+\]
+
+Введемо $w=(z-a)^{-1}$, тоді
+\[
+\sum_{n=1}^{\infty}c_{-n}(z-a)^{-n} = \sum_{n=1}^{\infty}c_{-n}w^n
+\]
+
+\textbf{Теорема.} $f(z) \in \mathcal{H}(r<|z-a|<R)$, тоді
+\[
+f(z) = \sum_{n=-\infty}^{+\infty} c_n(z-a)^n,
+\]
+причому $c_n$ визначаються однозначно.
+
+\textbf{Доведення.} Візьмемо $r',R'$ так, щоб $r'<|z-a|<R'$. Фіксуємо $z$ в цьому кільці. Застосовуємо інтегральну формулу Коші для $r' < |z-a|<R'$:
+\begin{gather*}
+f(z) = \frac{1}{2\pi i}\oint_{\partial(r' < |z-a|<R')} \frac{f(\zeta)d\zeta}{\zeta-z} \\
+= \frac{1}{2\pi i}\oint_{|\zeta-a|=R'} \frac{f(\zeta)d\zeta}{\zeta-z} - \frac{1}{2\pi i}\oint_{|\zeta-a|=r'} \frac{f(\zeta)d\zeta}{\zeta-z}
+\end{gather*}
+
+Тепер помітимо те, шо
+\begin{gather*}
+-\frac{1}{\zeta-z} = -\frac{1}{(\zeta-a)-(z-a)} = \frac{1}{z-a} \cdot \frac{1}{1-\frac{\zeta-a}{z-a}} \\
+= \sum_{n=0}^{\infty} \frac{(\zeta-a)^n}{(z-a)^{n+1}}
+\end{gather*}
+
+\end{document}
+
