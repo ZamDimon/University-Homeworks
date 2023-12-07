@@ -1,0 +1,113 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{statement}{Твердження}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+\title{Домашня робота з курсу ``Теорія Ймовірності''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 1.} 
+
+\textbf{Умова.} Знайти ймовірність того, що при $n=2000$ підкиданнях грального кубику ``одиниця'' випаде $m=400$ разів.
+
+\textbf{Розв'язання.} Введемо випадкову величину $\xi \sim \text{Bin}(n,\frac{1}{6})$ -- кількість випадань одиниць після $n$ кидань. Якщо позначити $p=\frac{1}{6},q=\frac{5}{6}$, то за теоремою Муавра-Лапласа
+\[
+p(\xi = m) \approx \mathcal{N}(m \mid np, \sqrt{npq}),
+\]
+де $\mathcal{N}(x \mid \mu,\sigma) \triangleq \frac{1}{\sqrt{2\pi\sigma^2}}\exp \{-\frac{(x-\mu)^2}{2\sigma^2}\}$ -- нормальний розподіл. Отже:
+\[
+p(\xi = 400) \approx \frac{1}{\sqrt{2\pi \cdot 2000 \cdot \frac{1}{6} \cdot \frac{5}{6}}}\exp \left\{-\frac{(400-2000 \cdot \frac{1}{6})^2}{2 \cdot 2000 \cdot \frac{1}{6} \cdot \frac{5}{6}}\right\}
+\]
+Далі рахуємо значення:
+\[
+p(\xi = 400) \approx \frac{3e^{-8}}{50\sqrt{2\pi}} \approx 8 \cdot 10^{-6}
+\]
+Реальне значення, якщо порахувати, виходить $p(\xi=m)=C_n^m p^{m}q^{n-m} \approx 1.1 \cdot 10^{-7}$ -- як бачимо, помилка вийшла невеликою. 
+
+\section*{Завдання 2.}
+
+\textbf{Умова.} Ймовірність деякої події $A$ у кожному випробуванні з серії $n$ незалежних випробувань дорівнює $\theta=\frac{1}{3}$. Знайти ймовірність того, що частота цієї події відхилиться від її ймовірності за абсолютним значенням не більш, ніж на $\delta = 0.01$, якщо буде проведено $n = 9000$ випробувань.
+
+\textbf{Розв'язання.} Розглядаємо випадкову величину $\xi \sim \text{Bin}(n,\theta)$ -- кількість випадіння події $A$. Частота події визначається як $\nu = \frac{\xi}{n}$. За умовою, треба знайти $p(|\nu - \theta| \leq \delta)$, що в свою чергу еквівалентно 
+\[
+p(n(\theta-\delta) < \xi < n(\theta+\delta))
+\]
+Застосуємо теорему Муавра-Лапласа. Тоді, приблизно $\xi \sim \mathcal{N}(n\theta,\sqrt{n\theta(1-\theta)})$. В такому разі, шукану ймовірність можна записати як:
+\begin{gather*}
+p(n(\theta-\delta) < \xi < n(\theta + \delta)) = \int_{n(\theta-\delta)}^{n(\theta+\delta)}\mathcal{N}(x \mid n\theta,\sqrt{n\theta(1-\theta)})dx \\
+= \frac{1}{\sqrt{2\pi n\theta(1-\theta)}}\int_{(\theta-\delta)n}^{(\theta+\delta)n} \exp\left\{-\frac{(x-n\theta)^2}{2 n \theta(1-\theta)}\right\}dx
+\end{gather*}
+
+Робимо заміну $z = \frac{x-n\theta}{\sqrt{n\theta(1-\theta)}}$, тоді $dz = \frac{dx}{\sqrt{n\theta(1-\theta)}}$. В такому разі, межі зміняться на $[-z_0,+z_0]$ де $z_0 = \delta\sqrt{\frac{n}{\theta(1-\theta)}}$. Тоді наш інтеграл має вид:
+\[
+p((\theta-\delta)n < \xi < (\theta+\delta)n) = \frac{1}{\sqrt{2\pi}}\int_{-z_0}^{z_0} \exp\left\{-\frac{z^2}{2}\right\}dz = 2\Phi(z_0) 
+\]
+
+Або остаточно, наша відповідь
+\[
+2\Phi\left(\delta\sqrt{\frac{ n}{\theta(1-\theta)}}\right) = 2\Phi\left(\frac{9}{2\sqrt{5}}\right) \approx 0.96
+\]
+
+\pagebreak
+\section*{Завдання 3.}
+
+\textbf{Умова.} Ймовірність виходу конденсатора з ладу протягом певного проміжку часу дорівнює $\theta=0.2$ і конденсатори виходять з ладу незалежно один від одного. Знайти ймовірність того, що за цей проміжок часу зі $n=100$ конденсаторів з ладу вийдуть від $a=14$ до $b=26$ конденсаторів.
+
+\textbf{Розв'язання.} Розглядаємо випадкову величину $\xi \sim \text{Bin}(n,\theta)$. Застосовуючи теорему Муавра-Лапласа, приблизно можна вважати розподіл $\xi \sim \mathcal{N}(\mu,\sigma)$ з математичним сподіванням $\mu=n\theta = 20$ та середньоквадратичним відхиленням $\sigma=\sqrt{n\theta(1-\theta)}=4$. За умовою, треба знайти
+\begin{gather*}
+p(a < \xi < b) \approx \int_{a}^b \mathcal{N}(x \mid \mu,\sigma)dx = \frac{1}{\sqrt{2\pi}\sigma}\int_a^b \exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\right\}dx \\
+= \frac{1}{\sqrt{2\pi}}\int_{(a-\mu)/\sigma}^{(b-\mu)/\sigma} \exp\left\{-\frac{z^2}{2}\right\}dz = \Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a-\mu}{\sigma}\right)
+\end{gather*}
+
+Якщо підставляти конкретні числа, то маємо
+\[
+p(a < \xi < b) = \Phi\left(\frac{3}{2}\right) - \Phi\left(-\frac{3}{2}\right) = 2 \Phi(1.5) \approx 0.87
+\]
+
+\pagebreak
+\section*{Завдання 4.}
+
+\textbf{Умова.} Знайти найменше число випробувань таке, щоб з ймовірністю, не менш $\tau=0.99$, частота події відхилялася за абсолютним значенням від її ймовірності $\theta = \frac{1}{3}$ не більш ніж на $\delta=0.01$.
+
+\textbf{Розв'язання.} Як ми знаходили з другого завдання, ймовірність події з умови дорівнює
+\[
+p((\theta-\delta)n < \xi < (\theta+\delta)n) = 2\Phi\left(\delta\sqrt{\frac{n}{\theta(1-\theta)}}\right)
+\]
+Нам потрібно, щоб $p((\theta-\delta)n < \xi < (\theta+\delta)n) \geq \tau$, отже
+\[
+2\Phi\left(\delta\sqrt{\frac{n}{\theta(1-\theta)}}\right) \geq \tau \implies \sqrt{\frac{n}{\theta(1-\theta)}} \geq \frac{1}{\delta} \cdot \Phi^{-1} \left(\frac{\tau}{2}\right)
+\]
+Звідки остаточно:
+\[
+n \geq \frac{\theta(1-\theta)}{\delta^2} \cdot \Phi^{-1}\left(\frac{\tau}{2}\right)^2 \approx 14750
+\]
+
+\end{document}
+
