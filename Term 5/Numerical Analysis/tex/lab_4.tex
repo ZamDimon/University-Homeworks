@@ -1,0 +1,370 @@
+\documentclass[12pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{chngcntr}
+\usepackage{esint}
+
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{dsfont}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\usepackage{ragged2e}
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.15\textwidth]{images/lab_1/logo.png}\par\vspace{0.3cm}
+	{\textbf{Міністерство освіти і науки України}\par
+ Харківський національний університет імені В.Н. Каразіна\par}
+    \vspace{1cm}
+	{\Large \textsc{Лабораторна робота \#4}\par
+    \textbf{Обчислення інтегралів за складеними квадратурними формулами трапецій і парабол}\par}
+	\vfill
+ \begin{FlushRight}
+	\textbf{Виконав:}\par Захаров Дмитро Олегович \par Група МП-31
+\end{FlushRight}
+	\vfill
+
+% Bottom of the page
+	{\large Харків -- 2023\par}
+\end{titlepage}
+
+\tableofcontents
+\pagebreak
+
+\section{Постановка задачі}
+
+Обчислити заданий інтеграл з точністю $\varepsilon=10^{-6}$ за квадратурними формулами трапецій та парабол, використовуючи двійний перерахунок і оцінку за Рунге. 
+
+На друк вивести наближене значення інтегралу.
+
+\begin{center}
+\textbf{Варіант 5.} 
+\end{center}
+
+\[
+\int_{[0,1]} \frac{1 - \cos x}{x}dx
+\]
+
+\pagebreak
+\section{Опис методу}
+
+\subsection{Складова квадратурна формула трапеції}\label{section:quadratic_formula}
+
+Нехай треба знайти значення інтегралу
+\[
+\mathcal{I} = \int_{[\alpha,\beta]}f(x)dx
+\]
+Інтеграл обчислюємо за допомогою наступного алгоритму:
+\begin{algorithm}
+\caption{Складова квадратурна формула трапеції, спосіб \#1}\label{alg:cap}
+\begin{algorithmic}
+\State $h \gets \frac{\beta-\alpha}{2}$
+\State $\mathcal{I}_h \gets \frac{f(\alpha)+f(\beta)}{2}\cdot h$
+\State $\rho \gets \infty, k \gets 1$
+\For{$\left|\rho\right| > \varepsilon$}
+    \State $n \gets 2^k$
+    \State $h_{2n} \gets \frac{h}{2n}$
+    \State $\mathcal{I}_{2n} \gets \frac{1}{2}\mathcal{I}_h + h_{2n}\sum_{i=1}^n f\left(\alpha+(2i-1)h_{2n}\right)$
+    \State $k \gets k+1$
+    \State $\rho \gets \frac{\mathcal{I}_h-\mathcal{I}_{2n}}{3}$
+\EndFor
+
+\Return $\mathcal{I}_{2n} + \rho$
+\end{algorithmic}
+\end{algorithm}
+
+Також, як альтернатива, ми використаємо наступний алгоритм:
+
+\begin{algorithm}
+\caption{Складова квадратурна формула трапеції, спосіб \#2}\label{alg:cap}
+\begin{algorithmic}
+\State $h \gets \beta - \alpha,\; k \gets 1,\; \delta \gets +\infty,\; \mathcal{I} \gets 0$
+\For{$|\delta| > \varepsilon$}
+    \State $n \gets 2^k$ 
+    \Comment Розбиваємо відрізок на $2^k$ частин
+    \State $h_n \gets \frac{h}{n}$
+    \Comment Знаходимо розмір інтервалів
+    \State $\{x_j\}_{j=0}^n \gets \{\alpha + jh_n\}_{j}$
+    \Comment Задаємо вузли
+    \State $\mathcal{I}_n \gets \frac{h_n}{2}\sum_{j=1}^n \left\{f(x_{k-1})+f(x_k)\right\}$
+    \Comment Значення інтегралу для $2^k$ розбиттів
+    \State $\delta = \mathcal{I}_n - \mathcal{I}$
+    \Comment Знаходимо різницю між сусідніми апроксимаціями
+    \State $\mathcal{I} \gets \mathcal{I}_n$
+\EndFor
+
+\Return $\mathcal{I}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Складова квадратурна формула парабол}\label{section:simpson_formula}
+Тут ми застосовуємо наступний алгоритм:
+\begin{algorithm}[H]
+\caption{Складова квадратурна формула парабол, спосіб \#1}\label{alg:cap}
+\begin{algorithmic}
+\State $h \gets \frac{\beta-\alpha}{2}, s_0 \gets f(\alpha)+f(\beta), s_1 \gets f(\alpha+h), s_2 \gets 0$
+\State $\mathcal{I}_h \gets (s_0+4s_1+2s_2)\frac{h}{3}$
+\State $\rho \gets \infty, k \gets 1$
+\For{$\left|\rho\right| > \varepsilon$}
+    \State $n \gets 2^k$
+    \State $h_{2n} \gets \frac{h}{2n}$
+    \State $\mathcal{I}_{2n} \gets \frac{h_{2n}}{3}\left(s_0+4\sum_{i=1}^n f\left(\alpha+(2i-1)h_{2n}\right) + 2\sum_{i=1}^{n-1}f\left(\alpha+2ih_{2n}\right)\right)$
+    \State $k \gets k+1$
+    \State $\rho \gets \frac{\mathcal{I}_h-\mathcal{I}_{2n}}{15}$
+\EndFor
+
+\Return $\mathcal{I}_{2n} + \rho$
+\end{algorithmic}
+\end{algorithm}
+
+Також, як альтернатива, ми використаємо наступний алгоритм:
+
+\begin{algorithm}[H]
+\caption{Складова квадратурна формула парабол, спосіб \#2}\label{alg:cap}
+\begin{algorithmic}
+\State $h \gets \beta - \alpha,\; k \gets 1,\; \delta \gets +\infty,\; \mathcal{I} \gets 0$
+\For{$|\delta| > \varepsilon$}
+    \State $n \gets 2^k$ 
+    \Comment Розбиваємо відрізок на $2^k$ частин
+    \State $h_n \gets \frac{h}{n}$
+    \Comment Знаходимо розмір інтервалів
+    \State $\{x_j\}_{j=0}^n \gets \{\alpha + jh_n\}_{j}$
+    \Comment Задаємо вузли
+    \State $\mathcal{I}_n \gets \frac{h_n}{3}\left[f(x_0)+4\sum_{j=1}^{n/2}f(x_{2j-1}) + 2\sum_{j=1}^{n/2-1}f(x_{2j})+f(x_n)\right]$
+    \State $\delta = \mathcal{I}_n - \mathcal{I}$
+    \Comment Знаходимо різницю між сусідніми апроксимаціями
+    \State $\mathcal{I} \gets \mathcal{I}_n$
+\EndFor
+
+\Return $\mathcal{I}$
+\end{algorithmic}
+\end{algorithm}
+
+\pagebreak
+\section{Текст програми}
+
+Повний текст програми можна знайти за \href{https://github.com/ZamDimon/University-Homeworks/tree/main/Term%205/Numerical%20Analysis/code/lab_4}{цим посиланням} ($\leftarrow$ напис клікабельний) на \textit{GitHub} сторінку.
+
+
+\subsection{Складова квадратурна формула трапеції}
+
+Створимо файл \texttt{integrators.py} та реалізуємо алгоритм з розділу \ref{section:quadratic_formula} у класі \texttt{TrapezoidalIntegrator}. При ініціалізації ми будемо вказувати функцію, що будемо інтегрувати, а також додамо метод \texttt{evaluate}, що приймає інтервал для інтегрування, а також бажану точність $\varepsilon$:
+
+\begin{lstlisting}[language=Python, caption=Реалізація складової квадратурної формули трапеції]
+from typing import Callable, Tuple, TypeAlias
+from abc import ABC, abstractmethod
+
+# Define type alias for an interval type
+Interval: TypeAlias = Tuple[float, float]
+
+class Integrator(ABC):
+    """
+    Abstract class for classes that implement function integration
+    """
+    
+    def __init__(self, fn: Callable[[float], float]) -> None:
+        """ Initialize the integrator with a function to integrate
+
+        Args:
+            fn (Callable[[float], float]): Function to integrate
+        """
+        self._fn = fn
+        pass
+    
+    @abstractmethod
+    def evaluate(self, interval: Interval, accuracy: float = 1e-6) -> float:
+        """
+        Evaluate the integral of the function over the interval
+        
+        Args:
+            interval (Interval): Interval to integrate over
+            accuracy (float, optional): Desired accuracy of the integral. Defaults to `1e-6`.
+        """
+        pass
+    
+class TrapezoidalIntegrator(Integrator):
+    """
+    Class for trapezoidal integration
+    """
+    
+    # Maximum number of iterations
+    MAX_ITERATIONS: int = 20
+    
+    def __init__(self, fn: Callable[[float], float]) -> None:
+        super().__init__(fn)
+    
+    def evaluate(self, interval: Interval, accuracy: float = 1e-6) -> float:
+        MAX_VALUE: float = 1e12
+        interval_size: float = interval[1] - interval[0]
+        estimate: float = MAX_VALUE 
+        error: float = MAX_VALUE
+        k: int = 1 # Number of iterations
+        
+        while abs(error) > accuracy:
+            intervals_number: int = 2**k
+            step_size: float = interval_size / intervals_number
+            k = k + 1
+            
+            nodes = [interval[0] + i * step_size for i in range(0, intervals_number+1)]
+            current_esimate = (step_size / 2) * sum([(self._fn(nodes[i]) + self._fn(nodes[i+1])) for i in range(0, intervals_number)])
+            
+            error = current_esimate - estimate
+            estimate = current_esimate
+            if k > TrapezoidalIntegrator.MAX_ITERATIONS:
+                raise RuntimeError("Maximum number of iterations reached")
+            
+        return estimate
+\end{lstlisting}
+
+\subsection{Складова квадратурна формула парабол}
+
+Ідея така сама, як в попередньому пункті.
+\begin{lstlisting}[language=Python, caption=Реалізація складової квадратурної формули парабол]
+class SimpsonIntegrator(Integrator):
+    """
+    Class for Simpson integration
+    """
+    
+    # Maximum number of iterations
+    MAX_ITERATIONS: int = 20
+    
+    def __init__(self, fn: Callable[[float], float]) -> None:
+        super().__init__(fn)
+    
+    def evaluate(self, interval: Interval, accuracy: float = 1e-6) -> float:
+        MAX_VALUE: float = 1e12
+        interval_size: float = interval[1] - interval[0]
+        estimate: float = MAX_VALUE 
+        error: float = MAX_VALUE
+        k: int = 1 # Number of iterations
+        
+        while abs(error) > accuracy:
+            intervals_number: int = 2**k
+            step_size: float = interval_size / intervals_number
+            k = k + 1
+            
+            nodes = [interval[0] + i * step_size for i in range(0, intervals_number+1)]
+            current_esimate = (step_size / 3) * (
+                self._fn(nodes[0]) + 
+                4*sum([self._fn(nodes[i]) for i in range(1, intervals_number, 2)]) +
+                2*sum([self._fn(nodes[i]) for i in range(2, intervals_number, 2)]) +
+                self._fn(nodes[-1])
+            )
+            
+            error = current_esimate - estimate
+            estimate = current_esimate
+            if k > SimpsonIntegrator.MAX_ITERATIONS:
+                raise RuntimeError("Maximum number of iterations reached")
+            
+        return estimate
+\end{lstlisting}
+
+\subsection{Програма запуску}
+
+Програма для запуску зовсім проста: створюємо \texttt{TrapezoidalIntegrator} та \texttt{SimpsonIntegrator}, а потім проганяємо нашу функцію $f(x) = \frac{1-\cos x}{x}$ через неї:
+
+\begin{lstlisting}[language=Python, caption=Перевірка результатів]
+from typing import Callable
+from rich import print
+from math import cos
+from integrators import Interval, TrapezoidalIntegrator, SimpsonIntegrator
+
+if __name__ == '__main__':
+    fn: Callable[[float], float] = lambda x: (1 - cos(x)) / x
+    # We define the left endpoint of the interval to be EPSILON instead of 0 to avoid division by zero
+    EPSILON: float = 1e-12
+    interval: Interval = (EPSILON, 1.0) 
+    
+    trapezoidal_integrator: TrapezoidalIntegrator = TrapezoidalIntegrator(fn)
+    trapezoidal_integral_estimate = trapezoidal_integrator.evaluate(interval, accuracy=1e-6)
+    
+    simpson_integrator: SimpsonIntegrator = SimpsonIntegrator(fn)
+    simpson_integrator_estimate = simpson_integrator.evaluate(interval, accuracy=1e-6)
+    
+    print(f"Trapezoidal integral estimate: {trapezoidal_integral_estimate}")
+    print(f"Simpson integral estimate: {simpson_integrator_estimate}")
+\end{lstlisting}
+
+\pagebreak
+
+\section{Результати}
+
+Після запуску програми, отримуємо два майже однакових значення, що приблизно дорівнюють:
+\[
+\int_{[0,1]} \frac{1-\cos x}{x}dx \approx 0.239812
+\]
+Різниця у значеннях починається з $7$ знака після коми. Більш конкретні значення наводимо нижче:
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ \textbf{Формула трапеції} & \texttt{\textcolor{olive}{0.239811}\textcolor{gray}{59166750359857}} \\
+ \hline
+ \textbf{Формула парабол} & \texttt{\textcolor{olive}{0.239811}\textcolor{green}{74}\textcolor{gray}{863719770252}} \\
+ \hline
+ \textbf{Wolfram Mathematica} & \texttt{\textcolor{olive}{0.239811}\textcolor{green}{74}\textcolor{gray}{200056472594}} \\
+ \hline
+\end{tabular}
+\end{center}
+
+У \textit{Wolfram Mathematica} ми використали наступну команду для приблизного обчислення:
+\begin{lstlisting}[language=wolfram, caption=Обрахунок інтегралу в \textit{Wolfram Mathematica}]
+NIntegrate[(1 - Cos[x])/x, {x, 0, 1}, AccuracyGoal -> 30, WorkingPrecision -> 20]
+\end{lstlisting}
+
+\pagebreak
+\section{Висновки}
+
+В цій лабораторній роботі ми:
+\begin{itemize}
+\item навчилися чисельно інтегрувати функцію на заданому відрізку $\int_{[\alpha,\beta]}f(x)dx$.
+\item навчилися писати комп'ютерну програму (на прикладі мови \texttt{Python}), що приймає на вхід функцію $f(x)$ та інтервал $[\alpha,\beta]$, і інтегрує її.
+\item Порівняли отримані результати з математичним пакетом \textit{Wolfram Mathematica}.
+\end{itemize}
+
+При заданій точності, інтеграли збігаються дуже швидко ($1-2$ кроки), оскільки ми проходимось по ступеням двійки. При цьому, точність досяглася більше, використовуючи формулу парабол, якщо порівнювати з результатом в пакеті \textit{Wolfram Mathematica}. Отже, ми спробували два точних і відносно швидких методи для знаходження приблизних значень визначених інтегралів.
+
+\end{document}
+
