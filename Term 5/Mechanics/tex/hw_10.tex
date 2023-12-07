@@ -1,0 +1,84 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Домашня робота з курсу ``Теоретична механіка''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Завдання 12.34}
+
+\textbf{Умова.} Шків, який обертається з кутовою швидкістю $\omega_0$, гальмується за допомогою ручного гальма. З якою силою $P$ треба натиснути на рукоятку, щоб шків зупинився через $\tau$ секунд, якщо коефіцієнт тертя $\mu$, довжина рукоятки $a$, $OK=b$, момент інерції шківа $I$, його радіус $r$. Визначити число обертів $N$, яке здійснює шків до його зупинки.
+
+\textbf{Розв'язок.} Щоб рукоятка була у рівновазі, має виконуватись рівність моментів:
+\[
+Pa = Nb \implies N = \frac{a}{b}P,
+\]
+де $N$ -- сила нормальної реакції на шків. Оскільки вона направлена радіально, то вона безпосередньо не спричиняє зупинки. А ось хто спричиняє -- це сила тертя $F_f = \mu N = \frac{\mu a}{b}P$. 
+
+Далі записуємо закон обертального руху:
+\[
+I \varepsilon = -F_f r \implies \varepsilon = -\frac{\mu a r P}{b I}
+\]
+Бачимо, що це константна величина, а отже рух рівносповільнений. Тому, закон зміни швидкості:
+\[
+\omega(t) = \omega_0 - |\varepsilon| t = \omega_0 - \frac{\mu a r}{b} \cdot \frac{P}{I} t 
+\]
+Зупинка станеться тоді, коли $\omega(\tau)=0$, тобто
+\[
+P = \frac{Ib\omega_0}{\mu a r \tau }
+\]
+Зміну кута до зупинки можна знайти за формулою:
+\[
+\varphi = \omega_0 \tau - \frac{|\varepsilon|\tau^2}{2} = \omega_0\tau - \frac{\omega_0 \cdot \tau^2}{2\tau} = \frac{\omega_0\tau}{2}
+\]
+Кількість обертів це $\frac{\varphi}{2\pi}$, тому
+\[
+N = \frac{\omega_0\tau}{4\pi}
+\]
+
+\textbf{Відповідь.} $P = \frac{Ib\omega_0}{\mu a r \tau}, \; N = \frac{\omega_0\tau}{4\pi}$.
+
+\section*{Завдання 12.36}
+
+\textbf{Умова.} Порожнистому кільцю радіуса $R$ надана деяка кутова швидкість навколо вертикального діаметра. В кільці з найвищої точки під дією сили ваги рухається кулька масою $m$. Знайти відношення найбільшої кутової швидкості кільця до найменьшої, якщо момент інерції кільця відносно вісі обертання дорівнює $I$.
+
+\textbf{Розв'язок.} Момент імпульсу $I\omega$ залишається константним, де $I$ -- момент інерції системи. Мінімальний момент імпульсу досягається тоді, коли кулька знаходиться у крайньому нижніх/верхніх положеннях, і дорвнює $I$. Найбільший -- коли вона знаходиться на відстані радіусу від вісі, тоді момент інерції стає $I + mR^2$. 
+
+Тоді, користуючись законом збереження моменту імпульсу:
+\[
+(I+mR^2)\omega_{\min} = I\omega_0, \; I\omega_{\max} = I\omega_0
+\]
+Отже:
+\[
+\omega_{\min} = \frac{\omega_0}{1+\frac{mR^2}{I}} \implies \frac{\omega_{\max}}{\omega_{\min}} = 1 + \frac{mR^2}{I}
+\]
+
+\textbf{Відповідь.} $1 + \frac{mR^2}{I}$.
+
+\end{document}
+
