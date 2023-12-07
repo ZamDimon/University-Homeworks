@@ -1,0 +1,326 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage{dsfont}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+\title{Залікова робота з курсу ``Дискретна теорія ймовірностей''}
+\author{Студента групи МП-31 Захарова Дмитра Олеговича}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Варіант 3.}
+\end{center}
+
+\section*{Завдання 1. Біномінальний закон розподілу. Приклад.} 
+
+\subsection*{Означення}
+Нехай ми проводимо $N$ незалежних спостережень, в кожному з яких може відбутися подія з деякою ймовірністю $\theta \in [0,1]$ або не відбутися з ймовірністю $1-\theta$. 
+
+Розглядаємо випадкову величину $\xi$ яка дорівнює кількості випадіння події. Тоді, біномінальний розподіл можна записати як:
+\[
+\text{Bin}(k \mid N,\theta) \equiv \mathbb{P}(\xi=k) \triangleq \begin{pmatrix}
+    N \\ k
+\end{pmatrix} \theta^k(1-\theta)^{N-k}, \; k \in \{0,\dots,N\}
+\]
+Цю формулу можемо зрозуміти наступним чином: ймовірність отримати $k$ успіхів $\theta^k$, а $N-k$ неуспіхів $(1-\theta)^{N-k}$. Проте, ми можемо отримати $k$ успіхів з $N$ спроб $\begin{pmatrix}
+    N \\ k
+\end{pmatrix}$ способами. Звідси і така формула розподілу. 
+
+Якщо випадкова величина $\xi$ підпорядковується біномінальному розподілу, то це позначається як $\xi \sim \text{Bin}(N,\theta)$. 
+
+Також, є інший розподіл доволі пов'язаний з біномінальним. Його називають \textit{мультиномінальним} законом розподілу. Нехай ми спостерігаємо $N$ разів мульткласову подію, котра може приймати $C$ різних значень з відповідними ймовірностями $\boldsymbol{\theta}=[\theta_1,\dots,\theta_C]^{\top}$ (звичайно, що при цьому маємо вимагати $\sum_{i=1}^C \theta_i = 1$). Тобто наш розподіл складається з подій $\zeta_n \sim \text{Cat}(\boldsymbol{\theta})$, де $\text{Cat}(y \mid \boldsymbol{\theta})\triangleq \prod_{c=1}^C \theta_c^{\mathds{1}(y=c)}$. Позначимо $\mathbf{y} := [N_1,\dots,N_C]^{\top}$ -- вектор, $c^{\text{й}}$ елемент котрого позначає кількість випадіння $c^{\text{ої}}$ події, тобто $y_c = N_c := \sum_{n=1}^N \mathds{1}(\zeta_n=c)$. Тоді, мультиномінальний розподіл має вигляд:
+\[
+\mathcal{M}(\mathbf{y} \mid N,\boldsymbol{\theta}) \triangleq \begin{pmatrix}
+    N \\ y_1\dots y_C
+\end{pmatrix}\prod_{c=1}^C \theta_c^{y_c} = \begin{pmatrix}
+    N \\ N_1\dots N_C
+\end{pmatrix}\prod_{c=1}^C \theta_c^{N_c}
+\]
+де ми позначили
+\[
+\begin{pmatrix}
+    N \\ N_1\dots N_C
+\end{pmatrix} \triangleq \frac{N!}{N_1!N_2!\dots N_C!}
+\]
+
+\subsection*{Властивості біномінального розподілу}
+
+Нехай $\xi \sim \text{Bin}(N,\theta)$. Тоді:
+
+\textbf{Властивість 1.} Математичне сподівання $\mathbb{E}[\xi]=N\theta$
+
+\textbf{Доведення.} За означенням, $\xi \triangleq \sum_{n=1}^N \zeta_n$, де $\zeta_n \sim \text{Ber}(\theta)$ -- незалежні випадкові величини, що підпорядковуються розподілу Бернуллі. Тоді, користуючись лінійністю математичного сподівання,
+\[
+\mathbb{E}[\xi] = \mathbb{E}\left[\sum_{n=1}^N \zeta_n\right] = \sum_{n=1}^N \mathbb{E}[\zeta_n] = \sum_{n=1}^N \theta = N\theta \;\;\;\blacksquare
+\]
+
+\textbf{Коментар.} Можна було доводити за означенням математичного сподівання $\mathbb{E}[\xi] = \sum_{n=0}^N n\mathbb{P}(\xi=n)$, але доведення було б доволі громіздким.
+
+\textbf{Властивість 2.} Дисперсія $\mathbb{V}[\xi] = n\theta(1-\theta)$.
+
+\textbf{Доведення.} Оскільки $\xi\triangleq\sum_{n=1}^N \zeta_n, \; \zeta_n \sim \text{Ber}(\theta)$ і $\{\zeta_n\}_{n=1}^N$ попарно незалежні, то
+\[
+\mathbb{V}[\xi] = \mathbb{V}\left[\sum_{n=1}^N \zeta_n\right] = \sum_{n=1}^N \mathbb{V}[\zeta_n] = \sum_{n=1}^N \theta(1-\theta) = N\theta(1-\theta) \; \blacksquare
+\]
+
+\subsection*{Наближення біномінального розподілу}
+
+Наведемо деякі корисні теореми, котрі можуть допомогти наближено оцінити значення ймовірностей для великої кількості спостережень. Оскільки це не безпосередньо тема питання, наведемо їх без доведень.
+
+\textbf{Теорема Пуассона.} Нехай $\zeta_n \sim \text{Ber}(\theta_n)$, тобто на кожному спостереженні ймовірність $\theta_n$, взагалі кажучи, може бути різною. Нехай при цьому $n\theta_n \xrightarrow[n \to \infty]{} \alpha \in \mathbb{R}$, тоді
+\[
+\lim_{N \to \infty} \mathbb{P}(\xi=k) = \frac{\alpha^k}{k!}e^{-\alpha}, \; k \in \mathbb{N} \cup \{0\}
+\]
+
+\textbf{Інтегральна теорема Муавра-Лапласа}. Нехай $\xi_N \sim \text{Bin}(N,\theta)$. Тоді
+\[
+\lim_{N \to \infty} \mathbb{P}\left(\alpha \leq \frac{\xi_N-N\theta}{\sqrt{N\theta(1-\theta)}} \leq \beta\right) = \frac{1}{\sqrt{2\pi}}\int_{[\alpha,\beta]}e^{-\frac{x^2}{2}}dx
+\]
+
+\textit{Зауваження до інтегральної теореми Муавра-Лапласа.} Насправді, ця властивість випливає з того факту, що для достатньо великих $N \gg 1$, біномінальний розподіл приблизно дорівнює нормальному розподілу $\mathcal{N}(N\theta,N\theta(1-\theta))$, густина котрого $p(x)=\frac{1}{\sqrt{2\pi N\theta(1-\theta)}}\exp\left\{-\frac{(x-N\theta)^2}{2N\theta(1-\theta)}\right\}$ (окрім стандартного доведення, що наводилось у теорії). 
+
+\subsection*{Приклад}
+
+Нехай Дмитро ходить на пару з дискретної теорії ймовірності з ймовірністю $0.7$. Якщо в семестрі $13$ пар з цього предмету, то запишіть:
+\begin{enumerate}
+    \item Ймовірність того, що Дмитро відвідає рівно $k$ пар.
+    \item Найбільш ймовірне значення кількості пар, які відвідає Дмитро.
+    \item Дисперсію кількості пар, які відіває Дмитро.
+\end{enumerate}
+
+Розглядаємо випадкову величину $\xi \sim \text{Bin}(13,0.7)$, що позначає кількість пар, що відвідав Дмитро. Для першого пункту запишемо за означенням:
+\[
+\mathbb{P}(\xi=k)=\text{Bin}(k \mid 13,0.7) = \begin{pmatrix}
+    13 \\ k
+\end{pmatrix} 0.7^k \cdot 0.3^{13-k}
+\]
+Для другого знаходимо математичне сподівання: $\mathbb{E}[\xi] = 13 \cdot 0.7 = 9.1$, тобто скоріше за все, Дмитро відвідає близько $9$ пар. Для дисперсії ж маємо $\mathbb{V}[\xi] = 13 \cdot 0.7 \cdot 0.3 = 2.73$.
+
+\section*{Завдання 2.}
+\textbf{Умова.} Дано таблицю розподілу двовимірного випадкового вектору $[\xi,\eta]^{\top}$:
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ -- & $\eta=-1$ & $\eta=0$ & $\eta=2$ \\ 
+ \hline
+ $\xi=0$ & $0.20$ & $0.01$ & $0.03$ \\ 
+ \hline
+ $\xi=1$ & $0.01$ & $0.03$ & $0.03$ \\ 
+ \hline
+ $\xi=3$ & $0.08$ & $0.2$ & $x$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Знайти невідоме значення параметру $x$, знайти ймовірності $\mathbb{P}(\xi<\eta),\mathbb{P}(\xi \leq \eta)$.
+    \item Знайти умовний закон розподілу $\eta$ за умови, що $\xi=3$ та умовний закон розподілу $\xi$ за умови, що $\eta=0$.
+    \item Побудувати функцію розподілу дискретного випадкового вектору $[\xi,\eta]^{\top}$.
+    \item Знайти коефіцієнт кореляції випадкових величин $\xi$ та $\eta$. Чи будуть величини $\xi$ та $\eta$ незалежними? Якщо ні, то побудуйе таблицю розподілу двовимірного випадкового вектору $[\xi,\eta]^{\top}$ з незалежними компонентами.
+\end{enumerate}
+
+\textbf{Розв'язання.}
+
+\textbf{Пункт 1.} Позначимо через $X$ та $Y$ набір можливих значень $\xi$ та $\eta$, відповідно. Тоді, щоб знайти $x$, скористаємося тим фактом, що
+\[
+\sum_{(x,y) \in X \times Y} \mathbb{P}(\xi=x,\eta=y) = 1
+\]
+Отже, $0.59+x=1.0 \implies \boxed{x=0.41}$. Тепер знайдемо ймовірності з умови:
+\begin{gather*}
+\mathbb{P}(\xi < \eta) = \sum_{\substack{(x,y) \in X \times Y: \\ x < y}}\mathbb{P}(\xi=x,\eta=y) \\
+= \mathbb{P}(\xi=0,\eta=2) + \mathbb{P}(\xi=1,\eta=2) = 0.03 + 0.03 = \boxed{0.06}
+\end{gather*}
+\begin{gather*}
+    \mathbb{P}(\xi \leq \eta) = \underbrace{\mathbb{P}(\xi < \eta)}_{=0.06}+\mathbb{P}(\xi=\eta) = 0.06 + \mathbb{P}(\xi=0,\eta=0) = \boxed{0.07}
+\end{gather*}
+
+\textbf{Пункт 2.} Отже, треба знайти $\mathbb{P}(\eta \mid \xi=3)$ та $\mathbb{P}(\xi \mid \eta=0)$. Почнемо з першого:
+\begin{gather*}
+\mathbb{P}(\eta=-1 \mid \xi=3) = \frac{\mathbb{P}(\xi=3,\eta=-1)}{\mathbb{P}(\xi=3)} = \frac{\mathbb{P}(\xi=3,\eta=-1)}{\sum_{y \in Y}\mathbb{P}(\xi=3,\eta=y)} = \frac{0.08}{0.69} = \frac{8}{69} \\
+\mathbb{P}(\eta=0 \mid \xi=3) = \frac{\mathbb{P}(\xi=3,\eta=0)}{\sum_{y \in Y}\mathbb{P}(\xi=3,\eta=y)} = \frac{0.2}{0.69} = \frac{20}{69} \\
+\mathbb{P}(\eta=2 \mid \xi=3) = \frac{\mathbb{P}(\xi=3,\eta=2)}{\sum_{y \in Y}\mathbb{P}(\xi=3,\eta=y)} = \frac{41}{69}
+\end{gather*}
+
+Отже, наводимо розподіл знизу:
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ $y$ & $-1$ & $0$ & $2$ \\ 
+ \hline
+ $\mathbb{P}(\eta=y\mid \xi=3)$ & $\frac{8}{69}$ & $\frac{20}{69}$ & $\frac{41}{69}$ \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+Аналогічно прописуємо для $\mathbb{P}(\xi \mid \eta=0)$:
+\begin{gather*}
+    \mathbb{P}(\xi=0 \mid \eta=0) = \frac{\mathbb{P}(\xi=0,\eta=0)}{\sum_{x \in X}\mathbb{P}(\xi=x,\eta=0)} = \frac{0.01}{0.24} = \frac{1}{24} \\
+    \mathbb{P}(\xi=1 \mid \eta=0) = \frac{\mathbb{P}(\xi=1,\eta=0)}{\sum_{x \in X}\mathbb{P}(\xi=x,\eta=0)} = \frac{0.03}{0.24} = \frac{3}{24} = \frac{1}{8} \\
+    \mathbb{P}(\xi=3 \mid \eta=0) = \frac{\mathbb{P}(\xi=3,\eta=0)}{\sum_{x \in X}\mathbb{P}(\xi=x,\eta=0)} = \frac{0.2}{0.24} = \frac{20}{24} = \frac{5}{6}
+\end{gather*}
+Тоді таблиця розподілу:
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ $x$ & $0$ & $1$ & $3$ \\ 
+ \hline
+ $\mathbb{P}(\xi=x\mid \eta=0)$ & $\frac{1}{24}$ & $\frac{1}{8}$ & $\frac{5}{6}$ \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\textbf{Пункт 3.} Будуємо функцію розподілу:
+\[
+F_{(\xi,\eta)}(x,y) = \begin{cases}
+    0, & x \leq 0 \vee y \leq -1 \\
+    0.20, & 0 < x \leq 1 \wedge -1 < y \leq 0 \\
+    0.20+0.01, & 0 < x \leq 1 \wedge 0 < y \leq 2 \\
+    0.20+0.01+0.03, & 0 < x \leq 1 \wedge y > 2 \\
+    0.20+0.01, & 1 < x \leq 3 \wedge -1 < y \leq 0 \\
+    0.20+0.01+0.01+0.03, & 1 < x \leq 3 \wedge 0 < y \leq 2 \\
+    0.20+0.01+0.03+0.01+0.03+0.03, & 1 < x \leq 3 \wedge y > 2 \\
+    0.20 + 0.01 + 0.08, & x > 3 \wedge -1 < y \leq 0 \\
+    0.20+0.01+0.01+0.03+0.08+0.20, & x > 3 \wedge 0 < y \leq 2 \\
+    1, & x > 3 \wedge y > 2
+\end{cases}
+\]
+Або, якщо порахуємо:
+\[
+F_{(\xi,\eta)}(x,y) = \begin{cases}
+    0.00, & (x,y) \in (-\infty,0] \times (-\infty,-1] \\
+    0.20, & (x,y) \in (0,1] \times (-1,0] \\
+    0.21, & (x,y) \in (0,1] \times (0,2] \\
+    0.24, & (x,y) \in (0,1] \times (2,+\infty) \\
+    0.21, & (x,y) \in (1,3] \times (-1,0] \\
+    0.25, & (x,y) \in (1,3] \times (0,2] \\
+    0.31, & (x,y) \in (1,3] \times (2,+\infty) \\
+    0.29, & (x,y) \in (3,+\infty) \times (-1,0] \\
+    0.53, & (x,y) \in (3,+\infty) \times (0,2] \\
+    1.00, & (x,y) \in (3,+\infty) \times (2,+\infty)
+\end{cases}
+\]
+
+\textbf{Пункт 4.} За означенням, коефіцієнт кореляції:
+\[
+\text{corr}[\xi,\eta] \triangleq \frac{\text{Cov}[\xi,\eta]}{\sqrt{\mathbb{V}[\xi]\mathbb{V}[\eta]}}
+\]
+Причому, для обрахунку коваріації використовуємо формулу
+\[
+\text{Cov}[\xi,\eta] = \mathbb{E}[\xi \eta] - \mathbb{E}[\xi]\mathbb{E}[\eta]
+\]
+Отже, знаходимо математичні сподівання та дисперсії $\xi,\eta$, а потім $\mathbb{E}[\xi \eta]$. Отже, за означенням,
+\begin{align*}
+\mathbb{E}[\xi] \triangleq \sum_{x \in X} x\mathbb{P}(\xi=x) = \sum_{x \in X}x \sum_{y \in Y}\mathbb{P}(\xi=x,\eta=y) \\
+= 1 \cdot (0.01+0.03+0.03) + 3 \cdot (0.08+0.2+0.41) = 2.14 \\
+\mathbb{E}[\eta] \triangleq \sum_{y \in Y}y\mathbb{P}(\eta=y) = \sum_{y \in Y}y\sum_{x \in X}\mathbb{P}(\xi=x,\eta=y) \\ 
+= -1 \cdot (0.2+0.01+0.08) + 2 \cdot (0.03+0.03+0.41) = 0.65
+\end{align*}
+Для знаходження дисперсії знайдемо $\mathbb{E}[\xi^2]$ та $\mathbb{E}[\eta^2]$:
+\begin{gather*}
+    \mathbb{E}[\xi^2] = \sum_{x \in X}x^2\mathbb{P}(\xi=x) = 1^2 \cdot 0.07 + 3^2 \cdot 0.69 = 6.28 \\
+    \mathbb{E}[\eta^2] = \sum_{y \in Y}y^2\mathbb{P}(\eta=y) = (-1)^2 \cdot 0.29 + 2^2 \cdot 0.47 = 2.17
+\end{gather*}
+Нарешті, математичне сподівання :
+\[
+\mathbb{E}[\xi\eta] = \sum_{(x,y) \in X \times Y}xy \mathbb{P}(\xi=x,\eta=y) = -0.01 - 0.08 \cdot 3 + 2 \cdot 0.03 + 6 \cdot 0.41 = 2.27
+\]
+Отже, ми готові все поєднувати. Маємо:
+\[
+\text{Cov}[\xi,\eta] = \mathbb{E}[\xi\eta] - \mathbb{E}[\xi]\mathbb{E}[\eta] = 2.27 - 2.14 \cdot 0.65 = 0.879
+\]
+Тепер рахуємо дисперсії:
+\begin{gather*}
+    \mathbb{V}[\xi] = \mathbb{E}[\xi^2] - \mathbb{E}[\xi]^2 = 6.28 - 2.14^2 = 1.7004 \\
+    \mathbb{V}[\eta] = \mathbb{E}[\eta^2] - \mathbb{E}[\eta]^2 = 2.17 - 0.65^2 = 1.7475
+\end{gather*}
+Отже коефіцієнт кореляції:
+\[
+\text{corr}[\xi,\eta] \triangleq \frac{0.879}{\sqrt{1.7004 \cdot 1.7475}} \approx \frac{0.879}{1.724} \approx 0.51
+\]
+Перевіримо, чи є $\xi$ та $\eta$ незалежними. Для цього має виконуватись наступне твердження:
+\[
+\forall (x,y) \in X \times Y: \mathbb{P}(\xi=x,\eta=y) = \mathbb{P}(\xi=x)\mathbb{P}(\eta=y)
+\]
+Візьмемо $(x,y)=(0,-1)$. В такому разі, $\mathbb{P}(\xi=0,\eta=-1)=0.20$ з таблиці. Проте, 
+\[
+\mathbb{P}(\xi=0)\mathbb{P}(\eta=-1) = 0.24 \cdot 0.29 = 0.0696 \neq 0.20
+\]
+Отже, $[\xi,\eta]^{\top}$ є залежними. 
+
+Тому побудуємо таблицю розподілу з незалежними компонентами. Для цього візьмемо розподіл $p(\xi=x)$ та $p(\eta=y)$ та складемо розподіл $[\xi,\eta]^{\top}$ таким чином, щоб $\mathbb{P}(\xi=x,\eta=y)=\mathbb{P}(\xi=x)\mathbb{P}(\eta=y)$. 
+
+Розподіл $\mathbb{P}(\xi=x)$:
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ $x$ & $0$ & $1$ & $3$ \\ 
+ \hline
+ $\mathbb{P}(\xi=x)$ & 0.24 & 0.07 & 0.69 \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+Розподіл $\mathbb{P}(\eta=y)$:
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ $y$ & $-1$ & $0$ & $2$ \\ 
+ \hline
+ $\mathbb{P}(\eta=y)$ & 0.29 & 0.24 & 0.47 \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+Отже, розподіл $\mathbb{P}(\xi,\eta)$:
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ -- & $\eta=-1$ & $\eta=0$ & $\eta=2$ \\ 
+ \hline
+ $\xi=0$ & $0.24 \cdot 0.29$ & $0.24 \cdot 0.24$ & $0.24 \cdot 0.47$ \\ 
+ \hline
+ $\xi=1$ & $0.07 \cdot 0.29$ & $0.07 \cdot 0.24$ & $0.07 \cdot 0.47$ \\ 
+ \hline
+ $\xi=3$ & $0.69 \cdot 0.29$ & $0.69 \cdot 0.24$ & $0.69 \cdot 0.47$ \\
+ \hline
+\end{tabular}
+\end{center}
+Або, остаточно, якщо порахувати:
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ -- & $\eta=-1$ & $\eta=0$ & $\eta=2$ \\ 
+ \hline
+ $\xi=0$ & $0.0696$ & $0.0576$ & $0.1128$ \\ 
+ \hline
+ $\xi=1$ & $0.0203$ & $0.0168$ & $0.0329$ \\ 
+ \hline
+ $\xi=3$ & $0.2001$ & $0.1656$ & $0.3243$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+\end{document}
+
