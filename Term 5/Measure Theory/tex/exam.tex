@@ -1,0 +1,355 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{statement}{Твердження}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{theorem}{Теорема}%
+{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{def}{Означення}%
+{colback=red!5,colframe=red!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{coll}{Наслідок}%
+{colback=yellow!5,colframe=yellow!35!black,fonttitle=\bfseries}{th}
+
+\title{Екзаменаційна робота з предмету ``Теорія міри та інтегралу''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Питання 1.}
+
+\textbf{Умова.} Сформулювати теорему Лебега (про мажоровану збіжність). Перевірити виконання умов цієї теореми для $(\mathbb{R},\mathcal{S}_1,\lambda_1)$ і послідовності $\{f_n\}_{n \in \mathbb{N}}$, де
+\[
+f_n(x) = \begin{cases}
+    -1 + \frac{1}{n}, & x \in \left(-1-\frac{1}{n},0\right] \\
+    2 - \frac{1}{n^2}, & x \in \left(0,1+\frac{1}{n}\right) \\
+    0, & x \in \mathbb{R} \setminus \left(-1-\frac{1}{n},1+\frac{1}{n}\right]
+\end{cases}
+\]
+У разi виконання цих умов обчислити $\lim_{n \to \infty}\int_{\mathbb{R}}f_nd\lambda_1$.
+
+\textbf{Відповідь.} Отже, спочатку сформулюємо теорему Лебега про мажоровану збіжність.
+
+\begin{theorem*}{Теорема Лебега про мажоровану збіжність}
+Нехай маємо $f: X \to \overline{\mathbb{R}}, f_n: X \to \overline{\mathbb{R}}$ -- вимірні функції. Також, нехай виконуються умови:
+\begin{enumerate}
+    \item $f_n \to f \, (\text{mod} \, \lambda)$;
+    \item $\exists g \in L(X,\lambda): |f_n| \leq g \, (\text{mod} \, \lambda)$;
+\end{enumerate}
+Тоді
+\[
+f \in L(X,\lambda) \wedge \int_X \lim_{n \to \infty}f_nd\lambda = \int_X fd\lambda = \lim_{n \to \infty}\int_X f_nd\lambda
+\]
+
+Тут, в лівій частині рівності, ми беремо поточкову збіжність.
+\end{theorem*}
+
+Отже, нам потрібно знайти, куди поточково збігається $f_n$. Доведемо наступне твердження. 
+
+\textbf{Твердження.} Послідовність $\{f_n\}_{n \in \mathbb{N}}$ збігається до $f$ м.с., де
+\[
+f(x) = \begin{cases}
+    -1, & x \in [-1,0] \\
+    2, & x \in (0,1] \\
+    0, & x \in \mathbb{R} \setminus [-1,1]
+\end{cases}
+\]
+
+\textbf{Доведення.} Розглянемо означення поточкової збіжності:
+\begin{def*}{Поточкова збіжність}
+    Нехай $(X,\mathcal{F},\lambda)$ є простором з мірою, $f: X \to \overline{\mathbb{R}},f_n: X \to \overline{\mathbb{R}}$. Послідовність $\{f_n\}_{n \in \mathbb{N}}$ збігається до $f$ майже скрізь відносно міри $\lambda$, якщо
+    \[
+    \exists N \subset X: \lambda(N) = 0 \wedge \forall x \in X \setminus N: \lim_{n \to \infty}f_n(x) = f(x)
+    \]
+\end{def*}
+
+В якості $N$ просто візьмемо пусту множину. В такому разі покажемо, що
+\[
+\forall x \in \mathbb{R}: \lim_{n \to \infty} f_n(x) = f(x)
+\]
+Дійсно, візьмемо будь-який $x \in [-1,0]$. Оскільки такий $x$ буде завжди належати інтервалу $(-1-\frac{1}{n},0],n\in\mathbb{N}$, то $f_n(x)\Big|_{x \in [-1,0]} = -1+\frac{1}{n}$. Оскільки $\lim_{n \to \infty}f_n(x) = -1$, то отримуємо початкове твердження для $\forall x \in [-1,0]$.
+
+Аналогічно, розглядаємо $x \in (0,1]$. Він завжди лежить в інтервалі $(0,1+\frac{1}{n}), n \in \mathbb{N}$, а отже
+\[
+f_n(x) \Big|_{x \in (0,1]} = 2 - \frac{1}{n^2} \xrightarrow[n \to \infty]{} 2
+\]
+Отже довели для $\forall x \in (0,1]$.
+
+Якщо ж взяти $x \in \mathbb{R} \setminus [-1,1]$, то справедливо наступне:
+\[
+\forall x \in \mathbb{R} \setminus [-1,1] \; \exists n_x \in \mathbb{N} \; \forall n \geq n_x: f_n(x) = 0
+\]
+Тобто для усіх таких $x$ ми знайдемо $n_x$ таке, починаючи з якого $x$ буде попадати в інтервали $\mathbb{R} \setminus \left(-1-\frac{1}{n},1+\frac{1}{n}\right]$. Дійсно, беремо $x>1$. Тоді треба вимагати $x > 1+\frac{1}{n}$, тому обираємо $\frac{1}{n} < x-1 \implies n > \frac{1}{x-1}$. Тоді $n_x := \left[\frac{1}{x-1}\right]+1$. Аналогічні міркування можна провести для $x<-1$. 
+
+Тепер, доведемо наступне твердження.
+
+\textbf{Твердження.} $\lim_{n \to \infty}\int_{\mathbb{R}}f_nd\lambda_1 = 1$.
+
+\textbf{Доведення.} Використовуючи \textbf{теорему Лебега про мажоровану збіжність}, отримуємо
+\[
+\lim_{n \to \infty}\int_{\mathbb{R}} f_nd\lambda_1 = \int_{\mathbb{R}}\lim_{n \to \infty} f_nd\lambda_1 = \int_{\mathbb{R}} f(x)d\lambda_1(x)
+\]
+Отже, достатньо знайти $\int_{\mathbb{R}}fd\lambda_1$. Скористаємось адитивністю інтеграла Лебега:
+\begin{gather*}
+\int_{\mathbb{R}}fd\lambda_1 = \int_{[-1,0] \cup (0,1] \cup (\mathbb{R} \setminus [-1,1])}fd\lambda_1 \\
+= \int_{[-1,0]}fd\lambda_1 + \int_{(0,1]}fd\lambda_1 + \underbrace{\int_{\mathbb{R} \setminus [-1,1]}fd\lambda_1}_{=0}\\ 
+=-\int_{[-1,0]}d\lambda_1 + 2\int_{(0,1]} d\lambda_1 = 2\lambda_1((0,1]) - \lambda_1([-1,0]) = 1
+\end{gather*}
+
+\section*{Питання 2.}
+
+\textbf{Умова.} Сформулювати теорему про монотонне кiльце. Навести приклад, що iлюструє цю теорему.
+
+\textbf{Відповідь.} Отже, сформулюємо теорему про монотонне кільце.
+
+\begin{theorem*}{Про монотонне кільце}
+    Нехай $X$ -- універсальна множина, $\mathcal{K} \subset 2^X$ є кільцем. Тоді $m(\mathcal{K}) = \sigma k(\mathcal{K})$, де
+    \begin{gather*}
+    \sigma k(\mathcal{H}) \triangleq \bigcap_{\mathcal{H} \subset \mathcal{K}_{\alpha},\;\mathcal{K}_{\alpha} \; \text{є $\sigma$-кільцем}} \mathcal{K}_{\alpha} \\
+    m(\mathcal{H}) \triangleq \bigcap_{\mathcal{H} \subset \mathcal{M}_{\alpha},\;\mathcal{M}_{\alpha} \; \text{є монотонним класом}} \mathcal{M}_{\alpha}
+    \end{gather*}
+\end{theorem*}
+
+\textbf{Приклад.} Візьмемо, наприклад, наступне кільце та універсальну множину:
+\[
+X = \mathbb{Z}, \; \mathcal{K} := \{A \in 2^{3\mathbb{Z}}: \text{$A$ -- скінченна}\}
+\]
+Тобто, беремо в якості $\mathcal{K}$ множину скінченних множин цілих чисел, що кратні $3$. Тоді, очевидно, перед нами кільце -- беремо будь-які $K_1,K_2 \in \mathcal{K}$; тоді об'єднання цілих чисел, кратних 3, дасть нам множину цілих чисел, кратних 3, причому скінченну (оскільки об'єднання двох скінченних множин завжди скінченне). Також віднімання буде замкненим.
+
+Якщо взяти $\sigma k(\mathcal{K})$, то отримаємо просто $2^{3\mathbb{Z}}$, тобто ми можемо також включати зліченні підмножини множини цілих чисел, що кратні 3. Тоді за теоремою, $m(\mathcal{K})=2^{3\mathbb{Z}}$. Дійсно, розширення за монотонним класом також дасть нам $2^{3\mathbb{Z}}$ так само, як і при розширенні до $\sigma$-кільця. 
+
+
+\pagebreak
+\section*{Питання 3.}
+
+\textbf{Умова.} Дати загальне означення зовнiшньої мiри. Навести приклад.
+
+\textbf{Відповідь.} Наводимо означення.
+\begin{def*}{Зовнішня міра}
+    Функція множин $\lambda^*: 2^X \to [0,+\infty]$ називається зовнішньою мірою, якщо
+    \begin{enumerate}
+        \item $\lambda^*(\emptyset) = 0$;
+        \item $\forall A \in 2^X \, \forall \{A_n\}_{n \in \mathbb{N}} \subset 2^X$:
+        \[
+        A \subset \bigcup_{n \in \mathbb{N}}A_n \implies \lambda^*(A) \leq \sum_{n \in \mathbb{N}} \lambda^*(A_n)
+        \]
+    \end{enumerate}
+\end{def*}
+\textbf{Приклад.} Візьмемо:
+\[
+\lambda^*(A) := 1 - \mathds{1}(A = \emptyset) \equiv \begin{cases}
+    0, & A = \emptyset \\
+    1, & A \neq \emptyset
+\end{cases}
+\]
+Перевіримо виконання обох твердження означення. Перше, вочевидь, виконується. Перевіримо друге. Потрібно показати, що:
+\[
+\forall A \in 2^X \, \forall \{A_n\}_{n \in \mathbb{N}} \subset 2^X: A \subset \bigcup_{n \in \mathbb{N}}A_n \implies \lambda^*(A) \leq \sum_{n \in \mathbb{N}} \lambda^*(A_n)
+\]
+Покажемо від противного. Твердження не буде виконуватись, якщо знайдуться $A$ та $\{A_n\}_{n \in \mathbb{N}}$ такі, що $\lambda^*(A) > \sum_{n \in \mathbb{N}}\lambda^*(A_n)$. Це можливо лише у випадку, коли $\lambda^*(A)=1$, а $\sum_{n \in \mathbb{N}}\lambda^*(A_n)=0$. Якщо нескінченна сума дорівнює $0$, то $A_n \equiv \emptyset$. Проте, $A \neq \emptyset$, оскільки $\lambda^*(A)=1$. Тоді отримуємо $\emptyset \neq A \subset \bigcup_{n \in \mathbb{N}}\emptyset = \emptyset$. Протиріччя. 
+
+Тепер розглянемо означення зовнішньої міри, що породжена мірою.
+
+\begin{def*}{Зовнішня міра, породжена мірою}
+    Нехай $\lambda$ є мірою на півкільці $\mathcal{P}$. Зовнішньою мірою, породженою мірою $\lambda$, називається функція множин
+    \[
+    \lambda^*(A) = \begin{cases}
+        +\infty, \; \not\exists \{A_n\}_{n \in \mathbb{N}} \subset \mathcal{P}: A \subset \bigcup_{n \in \mathbb{N}}A_n \\
+        \inf\left\{\sum_{n \in \mathbb{N}}\lambda(A_n): A \subset \bigcup_{n \in \mathbb{N}} \wedge \{A_n\}_{n \in \mathbb{N}} \subset \mathcal{P}\right\}, \; \text{інакше}
+    \end{cases} 
+    \]
+\end{def*}
+\textbf{Приклад.} Нехай
+\[
+X = \{A,B,C\}, \; \mathcal{P} = \{\emptyset, \{A\}, \{B\}\},
+\]
+\[
+\lambda: \mathcal{P} \to [0,+\infty), \; \lambda(\emptyset) = 0, \; \lambda(\{A\}) = 1, \; \lambda(\{B\}) = 1.
+\]
+Тоді зовнішню міру можна задати таким чином:
+\[
+\forall H \in 2^X: \lambda^*(H) = \begin{cases}
+    |H|, & C \not \in H \\
+    +\infty, & C \in H
+\end{cases}
+\]
+\pagebreak
+\section*{Питання 4.}
+
+\textbf{Питання.} Сформулювати теорему про суперпозицiю вимiрних вiдображень та її наслiдок. Навести приклади, що iлюструють цi твердження.
+
+\textbf{Відповідь.} Спочатку сформулюємо твердження.
+
+\begin{theorem*}{Суперпозиція вимірних відображень}
+    Нехай $(X,\mathcal{F}_X),\,(Y,\mathcal{F}_Y),\,(Z,\mathcal{F}_Z)$ є вимірними просторами, функція $f: X \to Y$ є $(\mathcal{F}_X,\mathcal{F}_Y)$-вимірною, а функція $g: Y \to Z$ є $(\mathcal{F}_Y,\mathcal{F}_Z)$-вимірною. Тоді функція $h = g \circ f$ є $(\mathcal{F}_X,\mathcal{F}_Z)$-вимірною.
+\end{theorem*}
+
+\textbf{Приклад.} Візьмемо $X=Y=Z=\mathbb{R},\mathcal{F}_X=\mathcal{F}_Y=\mathcal{F}_Z=\mathcal{B}(\mathbb{R})$. У якості відображень обираємо
+\[
+f(x) = [x], \; g(y) = \cos y \implies h = \cos [x]
+\]
+Скористаємось наступним твердженням:
+
+\begin{statement*}{Про борельові відображення}
+    Якщо $f: \mathbb{R} \to \mathbb{R}$ є неперервною або монотонною, то $f$ є борельовою (тобто, вона є $(\mathcal{B}(\mathbb{R}), \mathcal{B}(\mathbb{R}))$-вимірною). 
+\end{statement*}
+
+Бачимо, що $f$ є монотонною, а $g$ неперервною, тому $f,g$ є борельовими. Тому, користуючись теоремою про суперпозицію вимірних відображень, $h$ теж є борельовою, тобто $(\mathcal{F}_X,\mathcal{F}_Z)=(\mathcal{B}(\mathbb{R}), \mathcal{B}(\mathbb{R}))$-вимірною. 
+
+\begin{coll*}{Вимірність суперпозиції}
+    Нехай $(X,\mathcal{F})$ є вимірним простором, функції $f_n: X \to \overline{\mathbb{R}}, n =1\dots m$ є $\mathcal{F}$-вимірними, функція $g: \overline{\mathbb{R}}^m \to \overline{\mathbb{R}}$ є борельовою. Тоді функція $h = g \circ (f_1,\dots,f_m): X \to \overline{\mathbb{R}}$ є $\mathcal{F}$-вимірною.
+\end{coll*}
+
+\textbf{Приклад.} Цей наслідок проілюструємо на прикладі наступної функції:
+\[
+h(x,y) = \frac{\sin x}{17+\cos^2 y}
+\]
+Тоді візьмемо:
+\[
+g(x,y) = \frac{x}{17+y^2}, \; f_1(x) = \sin x, \; f_2(y) = \cos y
+\]
+Функції $f_1,f_2$ є борельовими, бо є неперервними. $g$ також є борельовою, бо є відношенням двох борельових функцій, причому в знаменнику не може бути $0$. Тому $h=g(f_1,f_2)$ теж є борельовою за наслідком.
+\pagebreak
+\section*{Питання 5.}
+
+\textbf{Умова.} Сформулювати властивостi iнтеграла Лебега (iнтеграл по пiдмножинi, критерiй iнтегровностi в термiнах модуля функцiї, мажорантна ознака iнтегровностi, нульовий iнтеграл вiд невiд’ємної функцiї, нульовий iнтеграл по будь-якiй вимiрнiй множинi). Навести приклади.
+
+\textbf{Відповідь.} Отже, сформулюємо властивності інтеграла Лебега.
+
+\begin{statement*}{Властивості інтеграла Лебега}
+    Нехай $A,B \in \mathcal{F}$ і функція $f:X \to \overline{\mathbb{R}}$ є $\mathcal{F}$-вимірною. Тоді справедливі наступні властивості:
+    \begin{itemize}
+        \item \textbf{Інтеграл по підмножині:} Нехай $\forall x \in A: f(x) \geq 0$ та $A \subset B$. Тоді $\int_A fd\lambda \leq \int_B fd\lambda$.
+        \item \textbf{Критерій інтегрованості в термінах модуля функції:} $f \in L(A,\lambda)$ тоді і тільки тоді, коли $|f| \in L(A,\lambda)$ і
+        \[
+        \left|\int_A fd\lambda\right| \leq \int_A |f|d\lambda
+        \]
+        \item \textbf{Мажорантна ознака інтегровності}: Якщо $g \in L(A,\lambda)$ та $\forall x \in A: |f(x)| < g(x)$, то $f \in L(A,\lambda)$.
+        \item \textbf{Нульовий інтеграл від невід'ємної функції}: Якщо $\forall x \in A: f(x) \geq 0$ і $\int_A fd\lambda=0$, то $f=0 \, (\text{mod} \, \lambda)$ на $A$.
+        \item \textbf{Нульовий інтеграл по будь-якій вимірній множині}: Якщо для будь-якого $A \in \mathcal{F}: \int_A fd\lambda=0$, то $f = 0 \, (\text{mod} \, \lambda)$ на $X$.
+    \end{itemize}
+\end{statement*}
+
+Наведемо приклади для кожного твердження.
+
+\textbf{Інтеграл по відмножині.} Нехай $f \equiv 1$. Вона додатно визначена. Тоді маємо
+\[
+\int_A fd\lambda = \int_A d\lambda = \lambda(A), \; \int_B fd\lambda = \lambda(B)
+\]
+Дійсно $\int_A fd\lambda \leq \int_B fd\lambda$ оскільки $\lambda(A) \leq \lambda(B)$, що випливає з властивостей міри. 
+
+\textbf{Критерій інтегрованості в термінах модуля функції.} Візьмемо $f(x)=(-1)^{[x]}$ та $A = [0, 2)$. Очевидно, що $|f| \equiv 1$ інтегрована на $A$ і дорівнює $\lambda(A)=2$. Тому, користуючись відповідною властивістю, $f(x)$ теж є інтегрованим на $A$. Причому, цей інтеграл можемо знайти, користуючись адитивністю:
+\[
+\int_{[0,2]}(-1)^{[x]}d\lambda(x) = \int_{[0,1)}(-1)^xd\lambda(x) +\int_{[1,2)}(-1)^{[x]}d\lambda(x) = 0
+\]
+Дійсно $\left|\int_A fd\lambda\right| \leq \int_A |f|d\lambda$, оскільки в нас вийшло $\left|\int_A fd\lambda\right|=0,\int_A |f|d\lambda=2$. 
+
+\textbf{Мажорантна ознака інтегровності.} Нехай $f(x) = \sin x$ та $A = [-2, 2]$. У якості $g$ візьмемо $g \equiv 2$. Тоді дійсно $|f(x)| \leq 1 < g \equiv 2$. Помітимо, що $g \in L(A,\lambda)$, оскільки
+\[
+\int_A gd\lambda = 2\int_A d\lambda = 2\lambda(A)
+\]
+Тому $f \in L(A,\lambda)$ за мажорантною ознакою.
+
+\textbf{Нульовий інтеграл від невід'ємної функції.} Візьмемо $A=[-100,100]$ та наступну функцію:
+\[
+f(x) = \begin{cases}
+    1, & x \in \mathbb{Z} \\
+    0, & x \in [-100,100] \setminus \mathbb{Z}
+\end{cases}
+\]
+Очевидно, що $\int_{[-100,100]}fd\lambda=0$. Звідси випливає $f = 0 \, (\text{mod} \, \lambda)$. Останнє твердження очевидно справедливе і з означення збіжності майже скрізь, якщо взяти в якості $N := \{z \in \mathbb{Z}: z \in [-100, 100]\}$, оскільки в такому разі $\lambda(N) = 0$. Для всіх $[-100,100] \setminus N$ функція тотожньо $0$, тому і гранично теж $0$.
+
+\textbf{Нульовий інтеграл по будь-якій вимірній множині.} Можемо розширити минулий приклад на $\mathbb{R}$. Для цього розглянемо:
+\[
+f(x) = \begin{cases}
+    1, & x \in \mathbb{Z} \\
+    0, & x \in \mathbb{R} \setminus \mathbb{Z}
+\end{cases}
+\]
+Очевидно, що яку б вимірну $A \in \mathcal{F}$ ми не брали, в нас $\int_A fd\lambda=0$. Дійсно, розглянемо допоміжну множину $N=\{z \in \mathbb{Z}: z \in A\}$. Тоді
+\[
+\int_A fd\lambda = \underbrace{\int_{A \setminus N}f d\lambda}_{f \equiv 0} + \underbrace{\int_N fd\lambda}_{f\equiv 1} = \int_N d\lambda = \lambda(N)
+\]
+Оскільки $N \subset \mathbb{Z}$, то $N$ є зліченною, а тому $\lambda(N) = 0$ з властивостей міри Лебега. Тому $\int_A fd\lambda=0$. Тому, якщо скористатися властивістю, то $f = 0 \, (\text{mod} \, \lambda)$. Останнє твердження знову ж таки також випливає напряму з означення, якщо обрати $N = \mathbb{Z}$ ($\lambda(N)$ = 0, бо $\mathbb{Z}$ є зліченною множиною). 
+\pagebreak
+\section*{Питання 6.}
+
+\textbf{Умова.} На $\mathbb{R}$ дослiдити на збiжнiсть майже скрiзь та за мiрою послiдовнiсть:
+\[
+f_n(x) = \mathds{1}_{(n^4,(n+1)^4)}(x)
+\]
+\textbf{Розв'язок.} Одразу помічаємо, що $(n+1)^4-n^4 \xrightarrow[n \to \infty]{} +\infty$, оскільки $(n+1)^4-n^4 \sim n^3, n \to \infty$. Цим фактом ми скористаємося пізніше. 
+
+Розглянемо збіжність майже скрізь. Доведемо, що $f_n \to 0 \, (\text{mod} \, \lambda)$. За означенням, треба показати
+\[
+\exists N \subset \mathbb{R}: \lambda(N) = 0 \wedge \forall x \in X \setminus N: \lim_{n \to \infty} f_n(x) = f(x)
+\]
+В якості $N$ візьмемо пусту множину. Доведемо трошки більш строге твердження:
+\[
+\forall x \in \mathbb{R} \, \exists n_x \in \mathbb{N} \, \forall n \geq n_x: f_n(x) = 0
+\]
+Інакшими словами, починаючи з деякого $n_x \in \mathbb{N}$, $x$ перестане міститись в $(n^4,(n+1)^4)$ для $n \geq n_x$. Дійсно, якщо $x \leq 1$, то це справедливо для взагалі будь-якого $n \in \mathbb{N}$. Якщо ж $x>1$, то будемо вимагати $n_x^4>x$, тобто ліва межа буде правішою за $x$. Тому оберемо $n_x := [\sqrt[4]{x}] + 1$. 
+
+Отже, дійсно, $\forall x \in \mathbb{R}: \lim_{n \to \infty}f_n(x) = 0$, тому $f_n \to 0 \, (\text{mod} \, \lambda)$. 
+
+Зі збіжністю за мірою ситуація складніша. Покажемо, що до $0$ функція не збігається. Якщо б функція збігалася, то мало б місце:
+\[
+\forall \varepsilon > 0: \lim_{n \to \infty} \lambda(\{x \in \mathbb{R}: |f_n(x)| \geq \varepsilon\}) = 0
+\]
+Побудуємо протилежне:
+\[
+\exists \varepsilon > 0: \lim_{n \to \infty}\lambda(\{x \in \mathbb{R}: |f_n(x)| \geq \varepsilon\}) \neq 0
+\]
+Дійсно, візьмемо будь-який $\varepsilon \in (0,1]$ (для конкретики можна вважати $\varepsilon=\frac{1}{2}$). Тоді розглянемо множини $U_n:=\{x \in \mathbb{R}: |f_n(x)| \geq \varepsilon\}$. Оскільки $|f_n(x)| = \mathds{1}_{(n^4,(n+1)^4)}(x)$, то ця множина, по своїй суті, складається з усього відрізка $(n^4,(n+1)^4)$, бо на ньому $f_n(x)=1 \geq \varepsilon$. В такому разі, можемо зробити висновок, що $U_n = (n^4,(n+1)^4)$. 
+
+Отже, тепер розглянемо $\lim_{n \to \infty}\lambda(U_n)$. Якщо ми розглядаємо міру Лебега, то така границя визначеною не буде, оскільки:
+\[
+\lambda(U_n) = \lambda((n^4,(n+1)^4)) = (n+1)^4-n^4 \xrightarrow[n \to \infty]{\text{(початок розв'язку)}} +\infty
+\]
+Таким чином, $f_n$ не є збіжною до $0$ на $\mathbb{R}$. Проте, якщо б ми розглядали іншу міру, це не завжди було б так. Наприклад, нехай розглядаємо міру, породжену неспадною неперервною справа функцією:
+\[
+\lambda_F((\alpha,\beta]) = F(\beta) - F(\alpha)
+\]
+Обмежимось розгляданням збіжності на $\mathbb{R}^+$, тоді в якості $F(\cdot)$ можна взяти $\sqrt[5]{x}$, бо це неспадна, неперервна справа функція на $\mathbb{R}^+$. Тоді:
+\[
+\lambda_F(U_n) = \sqrt[5]{(n+1)^4} - \sqrt[5]{n^4} \xrightarrow[n \to \infty]{} 0
+\]
+В такому разі, наша функція збігається як поточково, так і по мірі $\lambda_{\sqrt[5]{\cdot}}$ на $\mathbb{R}^+$. 
+
+Також, в нас була б збіжність навіть за мірою Лебега, якщо б ми обмежили розглядання не всього $\mathbb{R}$, а, скажімо, відрізку $[\alpha,\beta]$. Тоді дійсно
+\[
+\forall \varepsilon > 0: \lim_{n \to \infty}\lambda(\{x \in [\alpha,\beta]: |f_n(x)| \geq \varepsilon\}) = 0,
+\]
+оскільки знайшовся б деякий натуральний номер $n_{\alpha,\beta} \in \mathbb{N}$, починаючи з якого $(n^4,(n+1)^4) \cap [\alpha,\beta] = \emptyset$ для усіх $n \geq n_{\alpha,\beta}$. Так само можна розглянути будь-яку скінченну суму обмежених підмножин $\mathbb{R}$. Або, насправді, будь-яку послідовність множин $\{A_n\}_{n \in \mathbb{N}}$, що обмежена справа. Тобто $\sup_{n \in \mathbb{N}}\sup_{x \in A_n} x \in \mathbb{R}$.
+
+\textbf{Відповідь.} Для будь-якої міри $f_n$ поточково збігається до $0$. По мірі Лебега послідовність збігається до $0$ лише для деяких підмножин $\mathbb{R}$, на всьому $\mathbb{R}$ не збігається. На інших мірах послідовність збігатися може, як приклад для $\lambda_F$ на $\mathbb{R}^+$ для $F=\sqrt[5]{x}$.
+
+\end{document}
+

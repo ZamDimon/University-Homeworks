@@ -1,0 +1,312 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{statement}{Твердження}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{theorem}{Теорема}%
+{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{def}{Означення}%
+{colback=red!5,colframe=red!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{coll}{Наслідок}%
+{colback=yellow!5,colframe=yellow!35!black,fonttitle=\bfseries}{th}
+
+\title{Екзаменаційна робота з предмету ``Теорія міри та інтегралу''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \textbf{Білет 5}
+\end{center}
+
+\section*{Питання 1.}
+
+\textbf{Умова.} Лінійні системи диференціальних рівнянь, властивості розв’язків, фундаментальна система розв’язків (ФСР), фундаментальна матриця розв’язків (ФМР).
+
+\textbf{Відповідь.} Нехай $\mathbf{A}(t) = \{a_{ij}(t)\}_{i,j=1}^n \in \mathbb{R}^{n \times n}$ і маємо вектор-функції $\mathbf{x}(t),\boldsymbol{\beta}(t)$. 
+
+\begin{def*}{Лінійна неоднорідна система диференціальних рівнянь}
+    \textbf{Лінійною неоднорідною системою диференціальних рівнянь} (ЛНС) називають рівняння виду
+    \[
+    \dot{\mathbf{x}} = \mathbf{A}(t)\mathbf{x} + \boldsymbol{\beta}
+    \]
+\end{def*}
+\begin{def*}{Лінійна однорідна система диференціальних рівнянь}
+    \textbf{Лінійною однорідною системою рівнянь}(ЛОС) називають вираз з попереднього означення при $\boldsymbol{\beta} \equiv \mathbf{0}$. 
+\end{def*}
+
+Розглянемо першу ж теорему, що вказує на єдиність розв'язку Коші.
+
+\begin{theorem*}{Єдиність розв'язку Коші ЛНС}
+    Якщо $\mathbf{A}(t),\boldsymbol{\beta} \in \mathcal{C}[\alpha,\beta]$ і $t_0 \in [\alpha,\beta]$, то $\forall \mathbf{x}_0 \in \mathbb{R}^n$ існує єдиний розв'язок задачі Коші для ЛНС, що задовольняє умові $\dot{\mathbf{x}}(t_0)=\mathbf{x}_0$ і визначене на всьому відрізку $[\alpha,\beta]$.
+\end{theorem*}
+
+\textbf{Доведення.} Оскільки права частина ЛНС неперервна й задовольняє умові Ліпшиця по $\mathbf{x}$ в шарі $[\alpha,\beta] \times \mathbb{R}^n$, то отримуємо те, що треба довести.
+
+Розглянемо властивості розв'язків таких рівнянь.
+
+\begin{statement*}{Властивості розв'язків ЛОС}
+    \begin{enumerate}
+        \item Якщо $\{\mathbf{x}_j\}_{j=1}^k$ -- розв'язки ЛОС, то $\sum_{i=1}^k \alpha_i\mathbf{x}_i$ теж є розв'язком ЛОС. Інакшими словами, множина розв'язків ЛОС утворюють лінійний простір. 
+        \item \textit{Принцип суперпозиції:} Якщо $\mathbf{x}_1,\mathbf{x}_2$ розв'язки ЛНС, то $\mathbf{x}_1-\mathbf{x}_2$ -- розв'язки ЛОС. 
+    \end{enumerate}
+\end{statement*}
+
+\textbf{Доведення.}
+
+\textbf{Пункт 1.} Підставимо вираз $\sum_{i=1}^k \alpha_i\mathbf{x}_i$ у ліву частину ЛОС:
+\[
+\frac{d}{dt}\sum_{i=1}^k \alpha_i\mathbf{x}_i= \sum_{i=1}^k \alpha_i\dot{\mathbf{x}_i} = \sum_{i=1}^k \alpha_i\mathbf{A}(t)\mathbf{x}_i = \mathbf{A}(t)\sum_{i=1}^k \alpha_i\mathbf{x}_i \; \blacksquare
+\]
+
+\textbf{Пункт 2.} Розглянемо похідну $\mathbf{x}_1-\mathbf{x}_2$:
+\begin{gather*}
+\frac{d}{dt}(\mathbf{x}_1-\mathbf{x}_2) = \dot{\mathbf{x}}_1-\dot{\mathbf{x}}_2 = (\mathbf{A}(t)\mathbf{x}_1 + \boldsymbol{\beta}) - (\mathbf{A}(t)\mathbf{x}_2 + \boldsymbol{\beta}) \\
+= \mathbf{A}(t)\mathbf{x}_1 - \mathbf{A}(t)\mathbf{x}_2 = \mathbf{A}(t)(\mathbf{x}_1-\mathbf{x}_2) \; \blacksquare
+\end{gather*}
+
+Тепер розглянемо означення фундаментальної системи розв'язків (ФСР).
+
+\begin{def*}{Фундаментальна система розв'язків}
+    Набір з $n$ лінійно незалежних розв'язків ЛОС називаються \textbf{фундаментальною системою розв'язків}. 
+\end{def*}
+
+Розглянемо теорему про існування ФСР.
+
+\begin{theorem*}{Існування ФСР}
+    Якщо $\mathbf{A}(t) \in \mathcal{C}[\alpha,\beta]$, то існує ФСР $\{\mathbf{x}_k\}_{k=1}^n$, причому він утворює базис лінійного простору множини розв'язків ЛОС.
+\end{theorem*}
+
+\textbf{Доведення.} Нехай $t_0 \in [\alpha,\beta]$, а $\mathbf{e}_k$ -- це вектор, де кожен елемент $e_{kj}=\delta_{kj}$ ($\delta$ -- це символ Кронекера). Позначимо $\mathbf{x}_k(t)$ -- розв'язок задачі Коші нашої системи, що задовольняє умові $\mathbf{x}_k(t_0)=\mathbf{e}_k$. 
+
+Доведемо, що $\{\mathbf{x}_k(t)\}_{k=1}^n$ -- лінійно незалежні. Нехай $\sum_{k=1}^n \alpha_k\mathbf{x}_k(t) \equiv \mathbf{0}$. Тому якщо підставимо $0$, то маємо $\sum_{k=1}^n\alpha_k\mathbf{e}_k=\mathbf{0}$. Проте, це автоматично означає, що $\alpha_k\equiv 0$, протиріччя.
+
+Доведемо друге твердження теореми. Нехай $\mathbf{x}(t)$ -- розв'язок ЛОС. Тоді $\mathbf{x}(t_0)=\mathbf{x}_0$ можна розкласти по базису $\{\mathbf{e}_k\}_{k=1}^n$, тобто знайдуться ненульові $\{\alpha_k\}_{k=1}^n \subset \mathbb{R}$, що $\mathbf{x}_0=\sum_{k=1}^n \alpha_k\mathbf{e}_k$. Доведемо, що $\mathbf{x}(t)=\sum_{k=1}^n \alpha_k\mathbf{x}_k(t)$. Права і ліва частини є розв'язками ЛОС, причому при $t=t_0$ вони збігаються. У силу єдності розв'язків задачі Коші ці розв'язки збігаються всюди. $\blacksquare$
+
+Розглянемо наслідок.
+
+\begin{statement*}{Наслідок існування ФСР}
+    Нехай $\widetilde{\mathbf{x}}(t)$ -- окремий розв'язок ЛНС. Тоді будь-який розв'язок ЛНС має вигляд
+    \[
+    \mathbf{x}(t) = \widetilde{\mathbf{x}}(t) + \sum_{k=1}^n \alpha_k\mathbf{x}_k
+    \]
+\end{statement*}
+
+\textbf{Доведення.} Це є наслідком попередньої теореми та принципу суперпозиції. $\blacksquare$
+
+Також розглянемо означення фундаментальної матриці розв'язків (ФМР).
+
+\begin{def*}{Фундаментальна матриця розв'язків}
+    \textbf{Фундамантальної матрицею розв'язків} ЛОС називають матрицю $\Phi$, стопці якої є вектор-функціями із ФСР, тобто
+    \[
+    \Phi(t) = \begin{bmatrix}
+        \mathbf{x}_1 & \mathbf{x}_2 & \dots & \mathbf{x}_n
+    \end{bmatrix} \in \mathbb{R}^{n \times n}
+    \]
+\end{def*}
+
+Помітимо, що в такому разі ця матриця задовольняє матричному диференціальному рівнянню
+\[
+\dot{\Phi}(t) = \mathbf{A}(t)\Phi(t),
+\]
+причому загальний розв'язок ЛОС можна записати у вигляді $\mathbf{x}(t)=\Phi(t)\mathbf{b}$, де $\mathbf{b} \in \mathbb{R}^n$ -- постійний вектор. 
+
+Також, вкажемо деякі факти, пов'язані з фундаментальною матрицею розв'язків, проте залишемо їх без доведення (оскільки це не є безпосередньо питаннями білету).
+
+\begin{theorem*}{Формула Ліувиілля-Остроградського}
+    Якщо $\mathbf{A}(t) \in \mathcal{C}[\alpha,\beta]$, то 
+    \[
+    \det\Phi(t) = \det\Phi(t_0) \exp\int_{t_0}^t \text{tr}\mathbf{A}(\tau)d\tau
+    \]
+\end{theorem*}
+
+Залишаємо цей факт без доведення. 
+
+\begin{statement*}{Метод варіації}
+    Нехай $\Phi(t)$ -- ФМР. Тоді розв'язок ЛНС можна знайти за формулою
+    \[
+    \mathbf{x}(t) = \int_{t_0}^t \Phi(t)\Phi^{-1}(\tau)\boldsymbol{\beta}(\tau)d\tau
+    \]
+\end{statement*}
+
+\textbf{Доведення.} Шукаємо ЛНС у вигляді $\mathbf{x}(t)=\Phi(t)\mathbf{u}(t)$ (варіюємо сталу). Тоді $\dot{\mathbf{x}}(t)=\dot{\Phi}\mathbf{u}+\Phi\dot{\mathbf{u}}=\mathbf{A}\Phi\mathbf{u}+\Phi\dot{\mathbf{u}}$. Підставляємо у рівняння ЛНС:
+\[
+\dot{\mathbf{x}} = \mathbf{A}\mathbf{x} + \boldsymbol{\beta} \iff \mathbf{A}\Phi\mathbf{u}+\Phi\dot{\mathbf{u}} = \mathbf{A}\Phi\mathbf{u} + \boldsymbol{\beta} \iff \Phi\dot{\mathbf{u}} = \boldsymbol{\beta} 
+\]
+Отже розв'язок $\mathbf{u}=\int_{[t_0,t]}\Phi^{-1}(\tau)\boldsymbol{\beta}(\tau)d\tau$. Підставляючи у $\mathbf{x}(t)$, отримуємо відповідь. $\blacksquare$
+
+\begin{def*}{Матриця Коші}
+    \textbf{Матрицею Коші} ЛНС називається $\mathbf{K}(t,\tau)=\Phi(t)\Phi^{-1}(\tau)$. 
+\end{def*}
+
+При цьому, з методу варіації, розв'язок Коші ЛНС можна записати так:
+\[
+\mathbf{x}(t) = \mathbf{K}(t,t_0)\mathbf{x}_0 + \int_{t_0}^t \mathbf{K}(t,\tau)\boldsymbol{\beta}(\tau)d\tau
+\]
+
+\pagebreak
+
+\section*{Питання 2.}
+
+\textbf{Умова.} Теорема Ляпунова про асимптотичну стійкість.
+
+\textbf{Відповідь.} Нехай ми розглядаємо систему
+\begin{equation}\label{eq:1}
+\dot{\mathbf{x}} = f(t,\mathbf{x}), \; f(t,\mathbf{x}) \in \mathcal{C}^1([t_0,+\infty) \times \mathcal{U}_r(\mathbf{0}))
+\end{equation}
+Функція Ляпунова допомагає досліджувати нульовий розв'язок системи на стійкість (нульовим розв'язком $\mathbf{x}_0(t), t \geq t_0$ називаємо такий розв'язок, що $f(t,\mathbf{x}_0(t))=0 \,\forall t \geq t_0$). 
+
+Сформулюємо теорему Ляпунова про звичайну стійкість, оскільки в подальшому ми будемо на неї спиратись.
+
+\begin{theorem*}{Ляпунова про стійкість}
+    Нехай для системи \ref{eq:1} існує деяка скалярна функція $V(\mathbf{x})$ (функція Ляпунова), яка задовольняє наступним умовам:
+    \begin{enumerate}
+        \item $V(\mathbf{x}) \in \mathcal{C}^1(\mathcal{U}_r(\mathbf{0}))$
+        \item $V(\mathbf{x}) > 0 \; \mathbf{x} \neq \mathbf{0}$
+        \item $V(\mathbf{0}) = 0$
+        \item $\dot{V}(t,\mathbf{x})\Big|_{(1)} = \sum_{k=1}^n \frac{\partial V}{\partial x_k} \cdot f_k(t,\dot{\mathbf{x}}) \leq 0$
+    \end{enumerate}
+    Тоді розв'язок $\mathbf{x} \equiv \mathbf{0}$ -- стійкий.
+\end{theorem*}
+
+Переходимо власне до \textit{теореми Ляпунова про асимптотичну стійкість}.
+
+\begin{theorem*}{Ляпунова про асимптотичну стійкість}
+    Нехай для системи \ref{eq:1} існує функція Ляпунова $V(x)$, яка задовольняє в деякій кулі $\mathcal{U}_r(\mathbf{0})$ умовам $1-3$ з попередньої теореми та умові:
+    \begin{enumerate}
+        \item $\dot{V}(\mathbf{x})\Big|_{(1)} \leq W(\mathbf{x}), \; W(\mathbf{x}) \in \mathcal{C}(\mathcal{U}_r(\mathbf{0})) \wedge W(\mathbf{x}) < 0 \, \mathbf{x} \neq \mathbf{0}$
+    \end{enumerate}
+    Тоді розв'язок $\mathbf{x} \equiv \mathbf{0}$ асимптотично стійкий.
+\end{theorem*}
+
+\textbf{Доведення.} З попередньої теореми одразу випливає, що $\mathbf{x} \equiv \mathbf{0}$ -- стійкий розв'язок. За означенням, це означає, що $\forall \epsilon > 0 \; \exists \delta(\epsilon) > 0$, що для будь-якого розв'язку $\mathbf{x}(t,\mathbf{x}_0)$ задачі Коші $\begin{cases}
+    \dot{\mathbf{x}} = f(t,\mathbf{x}) \\
+    \mathbf{x}(t_0)=\mathbf{x}_0
+\end{cases},f(t,\mathbf{0})=\mathbf{0}$, і для будь-якого $t \geq t_0$, з того, що $\|\mathbf{x}_0\| \leq \delta$ випливає $\|\mathbf{x}(t,\mathbf{x}_0)\| < \epsilon$. Залишилося лише довести, що $\mathbf{x}(t,\mathbf{x}_0) \xrightarrow[t \to \infty]{}\mathbf{0}$.
+
+Нехай $\mathbf{x}_0 \in \mathcal{U}_{\delta}(\mathbf{0})$. З четвертої умови теореми випливає, що функція $V \circ \mathbf{x}(t,\mathbf{x}_0)$ монотонно спадає і, окрім того, $V \circ \mathbf{x}(t,\mathbf{x_0}) \geq 0$, тому існує
+\[
+\lim_{t \to \infty} V \circ \mathbf{x}(t,\mathbf{x}_0) =: \ell \geq 0
+\]
+Доведемо від протилежного, що $\ell=0$. Отже нехай $\ell>0$, тоді $\forall t \geq t_0: V \circ \mathbf{x}(t,\mathbf{x}_0) \geq \ell > 0$. Але тоді $\exists \mu > 0: \|\mathbf{x}(t,\mathbf{x}_0)\| \geq \mu \, \forall t \geq t_0$, де $\mu := \inf_{t \geq t_0}\|\mathbf{x}(t,\mathbf{x}_0)\| > 0$. 
+
+Розглянемо $\max_{\mu \leq \|\mathbf{x}\| \leq \rho}W(\mathbf{x}) = w < 0$ з умови (4) теореми. Оскільки траєкторія $\mathbf{x}(t,\mathbf{x}_0)$ належить кільцю $\mu \leq \|\mathbf{x}\| \leq \rho$, то $W \circ \mathbf{x}(t,\mathbf{x}_0) \leq w \, \forall t \geq t_0$. Тоді з умови (4) теореми випливає $\frac{d}{dt}\left(V \circ \mathbf{x}(t,\mathbf{x}_0)\right) \leq w$ або ж
+\[
+\int_{[t_0,t]} \frac{dV \circ \mathbf{x}(\tau,\mathbf{x}_0)}{d\tau} = V \circ \mathbf{x}(t,\mathbf{x}_0)-V(\mathbf{x}_0) \leq w(t-t_0)
+\]
+Звідки отримуємо $V \circ \mathbf{x}(t,\mathbf{x}_0) \leq V(\mathbf{x}_0) + w(t-t_0) \xrightarrow[t \to \infty]{} -\infty$, а це суперечить умовам (2) та (3) теореми. Отже $\ell=0$, тобто
+\[
+\lim_{t \to \infty} V \circ \mathbf{x}(t,\mathbf{x}_0) = 0
+\]
+Тепер покажемо $\mathbf{x}(t,\mathbf{x}_0) \xrightarrow[t \to \infty]{} \mathbf{0}$ знову від протилежного, тобто 
+\[
+\exists \eta > 0 \; \exists \{t_n\}_{n \in \mathbb{N}} \, t_n \xrightarrow[n \to \infty]{} +\infty: \|\mathbf{x}(t_n,\mathbf{x}_0)\| \geq \eta
+\]
+Позначимо $m := \min_{\eta \leq \|\mathbf{x}\| \leq \rho}V(\mathbf{x}) > 0$ і оскільки $\eta \leq \|\mathbf{x}(t_n,\mathbf{x}_0)\| \leq \rho$, то $V(\mathbf{x}(t_n,\mathbf{x}_0)) \geq m > 0$, що суперечить тому, що границя нульова. Таким чином $\exists \lim_{t \to \infty}\mathbf{x}(t,\mathbf{x}_0)=0$. $\blacksquare$
+
+\pagebreak
+
+\section*{Питання 3.}
+
+\textbf{Умова.} Поставити задачу Коші для рівняння $y \cdot y''' + \sqrt{y-y'} = 3t$ й перейти до нормальної системи.
+
+\textbf{Відповідь.} Спочатку помітимо,
+\[
+y''' = \frac{3t-\sqrt{y-y'}}{y}
+\]
+Позначимо $y_1=y,y_2=y',y_3=y''$. В такому разі, очевидно, що $y_2'=y_3,y_1'=y_2$ і окрім того,
+\[
+y_3' = \frac{3t-\sqrt{y_1-y_2}}{y_1}
+\]
+Тому нормальна система має вигляд:
+\[
+\frac{d}{dt}\begin{bmatrix}
+    y_1 \\ y_2 \\ y_3
+\end{bmatrix} = \begin{bmatrix}
+    y_2 \\ y_3 \\ \frac{3t-\sqrt{y_1-y_2}}{y_1}
+\end{bmatrix}
+\]
+Поставимо початкову умову. Нехай $y(0)=1,y'(0)=0,y''(0)=0$. Тоді
+\begin{gather*}
+\begin{bmatrix}
+    y_1(0) \\ y_2(0) \\ y_3(0)
+\end{bmatrix} = \begin{bmatrix}
+    y(0) \\ y'(0) \\ y''(0)
+\end{bmatrix} = \begin{bmatrix}
+    1 \\ 0 \\ 0
+\end{bmatrix}
+\end{gather*}
+
+\textbf{Відповідь.} Якщо позначити $\mathbf{y}:=[y,y',y'']^{\top}$, то маємо нормальну систему $\dot{\mathbf{y}}=f(t,\mathbf{y})$, де
+\[
+f(t,\mathbf{y}) = \begin{bmatrix}
+    y_2 \\ y_3 \\ \frac{3t-\sqrt{y_1-y_2}}{y_1}
+\end{bmatrix}, \; \mathbf{y}(0) = \begin{bmatrix}
+    1 \\ 0 \\ 0
+\end{bmatrix}
+\]
+
+\pagebreak
+
+\section*{Питання 4.}
+
+\textbf{Умова.} Дослідити на стійкість нульову точку спокою системи
+\begin{equation}
+\begin{cases}
+    \dot{x} = \ln(4y+e^{-3x}) \\
+    \dot{y} = 2y-1+\sqrt[3]{1-6x}
+\end{cases}
+\end{equation}
+і визначити її тип. 
+
+\textbf{Відповідь.} По-перше, помітимо, що $(x,y) = \mathbf{0}$ це дійсно точку спокою, оскільки $\ln(4y+e^{-3x})\Big|_{(x,y)=\mathbf{0}}=2y-1+\sqrt[3]{1-6x}\Big|_{(x,y)=\mathbf{0}}=0$.
+
+Знайдемо Якобіан:
+\[
+J(x,y) := \frac{\partial \boldsymbol{f}}{\partial \mathbf{x}} = \begin{bmatrix}
+    -\frac{3e^{-3x}}{e^{-3x}+4y} & \frac{4}{e^{-3x}+4y} \\
+    -\frac{2}{(1-6x)^{2/3}} & 2
+\end{bmatrix}
+\]
+
+Підставляємо нашу точку спокою:
+\[
+J(0,0) = \begin{bmatrix}
+    -3 & 4 \\ -2 & 2
+\end{bmatrix}
+\]
+Характеристичний поліном $\chi_J(\lambda)=(-3-\lambda)(2-\lambda) + 8$ або $\chi_J(\lambda)=\lambda^2+\lambda+2$. Корні цього поліному $\lambda=-\frac{1}{2}\pm\frac{\sqrt{7}}{2}i$. Оскільки $-\frac{1}{2}<0$, то перед нами \textbf{стійкий фокус}. 
+
+\textbf{Відповідь.} $(0,0)$ це стійкий фокус.
+
+\pagebreak
+\end{document}
+
