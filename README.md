@@ -57,11 +57,11 @@ All homework is written in *Ukrainian* (except for foreign language classes and 
 ### Term :five:
 | Name      | Credits | Score (max=100) |
 | ---       | ---     | ---   |
-| Measure Theory | 4 | **100** |
-| Differential Equations | 4 | **100** |
-| Theoretical Mechanics | 4 | **100** |
-| Discrete Probability Theory | 4 | **93** |
-| Complex Analysis | 3 | **96** |
-| Numerical Analysis | 4 | **97** |
-| Web Programming | 4 | **100** |
-| OOP Design Patterns (in _Java_) | 3 | **100** |
+| [Measure Theory](Term%205/Measure%20Theory/pdf) | 4 | **100** |
+| [Differential Equations](Term%205/Differential%20Equations/pdf) | 4 | **100** |
+| [Theoretical Mechanics](Term%205/Mechanics/pdf) | 4 | **100** |
+| [Discrete Probability Theory](Term%205/Probability%20Theory/pdf) | 4 | **93** |
+| [Complex Analysis](Term%205/Complex%20Analysis/pdf) | 3 | **96** |
+| [Numerical Analysis](Term%205/Numerical%20Analysis/pdf) | 4 | **97** |
+| [Web Programming](https://github.com/ZamDimon/website-portfolio-backend) | 4 | **100** |
+| [OOP Design Patterns](https://github.com/ZamDimon/java-oop-course) (in _Java_) | 3 | **100** |
