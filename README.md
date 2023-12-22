@@ -53,3 +53,15 @@ All homework is written in *Ukrainian* (except for foreign language classes and 
 | Differential Equations | 4 | **100** |
 | Differential Geometry | 4 | **100** |
 | Basics of Mathematical Modelling | 4 | **100** |
+
+### Term :five:
+| Name      | Credits | Score (max=100) |
+| ---       | ---     | ---   |
+| Measure Theory | 4 | **100** |
+| Differential Equations | 4 | **100** |
+| Theoretical Mechanics | 4 | **100** |
+| Discrete Probability Theory | 4 | **93** |
+| Complex Analysis | 3 | **96** |
+| Numerical Analysis | 4 | **97** |
+| Web Programming | 4 | **100** |
+| OOP Design Patterns (in _Java_) | 3 | **100** |
