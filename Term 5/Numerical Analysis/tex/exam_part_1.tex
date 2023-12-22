@@ -1,0 +1,418 @@
+\documentclass[14pt]{extarticle}
+\usepackage[english,ukrainian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{esint}
+\usepackage[top=2.5cm, left=3cm, right=3cm, bottom=4.0cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{dsfont}
+
+\usepackage{tikz}
+
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{statement}{Твердження}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{theorem}{Теорема}%
+{colback=green!5,colframe=green!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{def}{Означення}%
+{colback=red!5,colframe=red!35!black,fonttitle=\bfseries}{th}
+
+\newtcbtheorem[number within=section]{example}{Приклад}%
+{colback=yellow!5,colframe=yellow!35!black,fonttitle=\bfseries}{th}
+
+\def\f[#1]{sin(3*#1)/2+#1/3+1}
+\def\Tick(#1)#2{%
+    \rput[b](#1|0,-12pt){\small$#2$}
+    \psline(#1|0,0)(#1|0,-2pt)
+}
+
+\title{Екзаменаційна робота з навчальної дисципліни ``Чисельний аналіз''}
+\author{Студента 3 курсу групи МП-31 Захарова Дмитра}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \textbf{Білет \#3}
+\end{center}
+\section*{Питання 1.}
+
+\textbf{Умова.} Квадратурна формула трапецій та її залишковий член.
+
+\textbf{Відповідь.} Нехай наша ціль -- чисельно обрахувати інтеграл
+\begin{equation}\label{eq:int}
+\mathcal{I} := \int_{[\alpha,\beta]} \rho(x)f(x)dx,
+\end{equation}
+де $f(x)$ -- задана функція, а $\rho(x) > 0$ -- деяка вагова функція. Також будемо вважати, що $f,\rho f \in \mathcal{R}[\alpha,\beta]$, тобто функція $f$ та добуток $\rho f$ є інтегрованими за Ріманом на нашому відрізку. 
+
+Одразу постає питання -- а чому нам взагалі треба розглядати задачу чисельного (наближеного) знаходження інтегралу? Наведемо декілька прикладів.
+
+\begin{example*}{Приклад з теорії ймовірності}
+Маємо розподілену випадкову величину за нормальним розподілом $X \sim \mathcal{N}(0,\sigma)$ і треба знайти $\mathbb{P}(\alpha < X < \beta)$. Все зводиться до інтегралу
+\[
+\frac{1}{\sqrt{2\pi}\sigma}\int_{[\alpha,\beta]}\exp\left(-\frac{x^2}{2\sigma^2}\right)dx
+\]
+Для $\alpha,\beta \in \mathbb{R}$ цей інтеграл не знаходиться явно. Тому, його рахують наближено. 
+\end{example*}
+
+\begin{example*}{Приклад з датчиком}
+Маємо показання акселерометра, що дає набір прискорень по деякій вісі $\{a_i\}_{i=1}^n$ через один й той самий проміжок часу $\Delta t$. Ціль -- знайти функцію швидкості (або координати) від часу. Функцію прискорення $a(t)$ від часу неможливо відновити по набіру $\{a_i\}_{i=1}^n$, тому у явному вигляді інтеграл знайти неможливо.
+\end{example*}
+
+Отже, наведемо алгоритм чисельного інтегрування за допомогою квадратурних формул.
+
+Нехай маємо розбиття нашого відрізку $\pi_n[\alpha,\beta]=\{x_i\}_{i=0}^n$ з вибраними точками $\xi_i \in [x_{i-1},x_i]$. Також позначимо $|\pi_n| \triangleq \max_{i \in \{1,\dots,n\}} \Delta x_i$. Якщо скористатися означенням інтегралу по Ріману, то маємо:
+\begin{equation}
+\mathcal{I} \triangleq \lim_{|\pi_n| \to 0} \sum_{i=1}^n \rho(\xi_i)f(\xi_i)\Delta x_i,
+\end{equation}
+причому ця границя існує з того, що $\rho f \in \mathcal{R}[\alpha,\beta]$. 
+
+Позначимо через $\mathcal{I}_n$ приблизне значення інтегралу, котре ми вже можемо чисельно знайти. Тоді, спробуємо знаходити приблизне значення за допомогою формули
+\begin{equation}
+\mathcal{I}_n \triangleq \sum_{k=0}^n \theta_kf(x_k),
+\end{equation}
+де $x_k$ -- вузли квадратурної формули, а $\theta_k$ -- ваги. Наша ціль -- знайти набір ваг $\Theta:=\{\theta_k\}_{k=0}^n$ таким чином, щоб абсолютна похибка $\Delta_n$ була найменьша:
+\begin{equation}\label{eq:error}
+\hat{\Theta} = \arg\min_{\Theta} \Delta_n, \; \Delta_n := |\mathcal{I}_n - \mathcal{I}|.
+\end{equation}
+Звичайно можна використовувати і іншу метрику похибки, проте поки зупинимось на цій. 
+
+Отже, наведемо інтерполяційний спосіб побудови квадратурної формули. Для цього задамо функцію $f(x)$ таким чином, щоб вона була інтерполяційним поліномом Лагранжа на деяких вузлах $\{x_k\}_{k=0}^n$, тобто $f \approx L_n$. Тоді, розписавши $L_n$ і підставивши у вираз \ref{eq:int}:
+\begin{equation}\label{eq:lagr_int}
+\mathcal{I}_n := \mathcal{I}\Big|_{f=L_n}= \int_{[\alpha,\beta]} \rho(x) \sum_{k=0}^n \frac{f(x_k)\omega_{n+1}(x)}{(x-x_k)\omega_{n+1}'(x_k)}dx,
+\end{equation}
+де ми позначили $\omega_{n+1} := \prod_{k=0}^n (x-x_k)$. Таким, якщо далі розпишемо рівняння \ref{eq:lagr_int}, то отримаємо:
+\begin{equation}
+\mathcal{I}_n = \sum_{k=0}^n f(x_k) \underbrace{\int_{[\alpha,\beta]} \frac{\rho(x)\omega_{n+1}(x)dx}{(x-x_k)\omega_{n+1}'(x_k)}}_{\theta_k}.
+\end{equation}
+Отже бачимо, що коефіцієнти мають вигляд:
+\begin{equation}
+\theta_k = \int_{[\alpha,\beta]} \frac{\rho(x)\omega_{n+1}(x)dx}{(x-x_k)\omega_{n+1}'(x_k)}
+\end{equation}
+
+При довільному $\rho(x)$, знайти $\theta_k$ не завжди можна у достатньо простому вигляді. Проте, при $\rho \equiv 1$ бачимо, що $\theta_k$ знаходиться точно, оскільки $\frac{\omega_{n+1}(x)}{(x-x_k)\omega_{n+1}'(x_k)}$ є поліномом, що легко інтегрується. Додатково, якщо $\pi[\alpha,\beta]$ є рівномірним розбиттям, то такий вибір квадратури називають \textbf{формулами Ньютона-Котеса}. 
+
+Виділимо усі попередні факти у одне означення.
+
+\begin{def*}{Формули Ньютона-Котеса}
+    Нехай $f \in \mathcal{R}[\alpha,\beta]$, $\pi_n[\alpha,\beta]=\{x_i\}_{i=0}^n$ -- рівномірне розбиття. Тоді наближення інтегралу $\int_{[\alpha,\beta]}f(x)dx$ формулами Ньютона-Котеса називають вираз
+    \[
+    \mathcal{I}_n = \sum_{k=0}^n \theta_k f(x_k), \; \theta_k = \int_{[\alpha,\beta]} \frac{\omega_{n+1}(x)dx}{(x-x_k)\omega_{n+1}'(x_k)} 
+    \]
+\end{def*}
+
+Формулу з означення використовувати не завжди практично. Тому доведемо наступне твердження:
+
+\begin{statement*}{Формула Ньютона-Котеса}
+    Коефіцієнти у означенні можна переписати у вигляді:
+    \[
+    \theta_k = \frac{(\beta-\alpha)\cdot (-1)^{n-k}}{n\cdot k!\cdot (n-k)!}\int_{[0,n]} \left(\prod_{j=0,j\neq k}^n (\eta-j)\right)d\eta
+    \]
+\end{statement*}
+
+\textbf{Доведення.} Зробимо заміну $x=x_0+\eta h$, де $h := \frac{\beta-\alpha}{n}$. Тоді $\eta=\frac{x-\alpha}{h}$ і межа інтегрування стає $[0,n]$. Окрім цього, $dx=hd\eta$. Нарешті, підставляємо заміну:
+\begin{gather}
+    \theta_k = h\int_{[0,n]} \left(\prod_{i=0,i\neq k}^n \frac{x_0+\eta h - x_i}{x_k-x_i}\right)d\eta
+\end{gather}
+Далі використовуємо той факт, що $x_i=x_0+i h$ (оскільки $\pi[\alpha,\beta]$ рівномірне розбиття). Тому
+\begin{equation}
+    \theta_k = h\int_{[0,n]}\left(\prod_{i=0,i\neq k}^n \frac{\eta-i}{k-i}\right)d\eta
+\end{equation}
+Помітимо, що добуток $\prod_{i=0,i\neq k}^n (k-i)$ не залежить від $\eta$, тому ми можемо винести цей вираз за інтеграл. Причому, 
+\begin{equation}
+    \prod_{i=0,i\neq k}^n (k-i) = \underbrace{k\cdot (k-1)\dots 1}_{k!} \cdot \underbrace{(-1) \dots (k-n)}_{(-1)^{n-k}(n-k)!} = (-1)^{n-k}k!(n-k)!
+\end{equation}
+Тому
+\begin{equation}
+\theta_k = \frac{h}{\prod_{i=0,i\neq k}^n (k-i)}\int_{[0,n]}\left(\prod_{i=0,i\neq k}^n (\eta-i)\right)d\eta.
+\end{equation}
+Або остаточно
+\begin{equation}
+    \theta_k = \frac{(-1)^{n-k}(\beta-\alpha)}{n \cdot k! \cdot (n-k)!} \int_{[0,n]}\left(\prod_{i=0,i\neq k}^n (\eta-i)\right)d\eta \; \blacksquare
+\end{equation}
+
+Нарешті, перейдемо до безпосередньо \textbf{квадратурної формули трапеції}.
+
+\begin{def*}{Квадратурна формула трапеції}
+\textbf{Квадратурною формулою трапеції} називають формулу Ньютона-Котеса для $n=1$. 
+\end{def*}
+Отже, обчислимо вигляд коефіцієнтів:
+\begin{gather}
+    \theta_0 = -\int_0^1 \frac{t(t-1)dt}{t} = -\int_0^1 (t-1)dt = \frac{1}{2}, \\ \theta_1 = \int_0^1 \frac{t(t-1)dt}{t-1} = \int_0^1 tdt = \frac{1}{2}.
+\end{gather}
+
+Таким чином, 
+\begin{equation}\label{eq:trap}
+\boxed{\mathcal{I}_1 = \frac{(\beta-\alpha)(f(\alpha)+f(\beta))}{2}}
+\end{equation}
+
+\textbf{Зауваження.} На практиці застосування наближення $\mathcal{I}_1$ на всьому відрізку $[\alpha,\beta]$ дає дуже неточні результати. Дійсно, нехай ми візьмемо інтеграл $\int_{[0,10]}e^{-x^2}dx$. Застосувавши формулу, маємо $\mathcal{I}_1 = 5(e^{-100}+e^0)$, що майже точно дорівнює $5$. Дійсне значення цього інтегралу приблизно $0.886$, тобто похибка дуже велика.
+
+Тому зазвичай на практиці відрізок $[\alpha,\beta]$ ділять рівномірно на систему відрізків $\pi_N[\alpha,\beta]=\{z_i\}_{i=0}^N$ і користуються адитивністю інтеграла Рімана:
+\begin{equation}
+\mathcal{I} = \int_{[\alpha,\beta]}f(x)dx = \sum_{i=1}^N \int_{[z_{i-1},z_i]}f(x)dx,
+\end{equation}
+де інтеграл $\int_{[z_{i-1},z_i]}f(x)dx$ рахується за допомогою формули \ref{eq:trap} для розбиття $\pi_n[z_{i-1},z_i]$.
+
+\textbf{Оцінка.} Для оцінки доведемо наступне твердження:
+\begin{statement*}{Оцінка квадратурної формули трапеції}
+    Абсолютну похибку з формули \ref{eq:error} можна обмежити:
+    \[
+    \Delta_n \leq \frac{h^{n+2}\mu_{n+1}}{(n+1)!}\int_{[0,n]}\left|\prod_{k=0}^n (t-k)\right|dt,
+    \]
+    де $\mu_n \triangleq \max_{x \in [\alpha,\beta]}|f^{(n+1)}(x)|$.
+\end{statement*}
+
+\textbf{Доведення.} З виразу для похибки інтерполяційного многочлену у формі Лагранжа, 
+\begin{gather}
+\Delta_n=\left|\int_{[\alpha,\beta]}f(x)dx-\int_{[\alpha,\beta]}L_n(x)dx\right| \\
+=\left|\int_{[\alpha,\beta]}(f(x)-L_n(x))dx\right| \\
+\leq \int_{[\alpha,\beta]} \frac{\mu_{n+1}|\omega_{n+1}(x)|}{(n+1)!}|dx = \frac{\mu_{n+1}}{(n+1)!}\int_{[\alpha,\beta]}|\omega_{n+1}(x)|dx.
+\end{gather}
+Якщо врахувати, що $\pi_n[\alpha,\beta]$ рівномірне, то замінивши $x=x_0+th$, маємо
+\begin{equation}
+\Delta_n \leq \frac{h^{n+2}\mu_{n+1}}{(n+1)!}\int_{[0,n]} \left|\prod_{k=0}^n (t-k)\right|dt \; \blacksquare
+\end{equation}
+
+Для випадку з трапецією, маємо $n=1$ і тоді:
+\[
+\Delta_1 \leq \frac{h^3\mu_2}{2!}\int_0^1 |t(t-1)|dt = \frac{h^3\mu_2}{2} \cdot \frac{1}{6} = \frac{h^3\mu_2}{12}
+\]
+
+\textbf{Геометрична інтерпретація} 
+
+Розглянемо рисунок \ref{fig:visualization}. Нехай маємо деяку функцію $y=f(x)$ і потрібно знайти $\int_{[\alpha,\beta]}f(x)dx$. 
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\coordinate (p1) at (0.7,3);
+\coordinate (p2) at (1,3.3);
+\coordinate (p3) at (2,2.5);
+\coordinate (p4) at (3,2.5);
+\coordinate (p5) at (4,3.5);
+\coordinate (p6) at (5,4.1);
+\coordinate (p7) at (6,3.4);
+\coordinate (p8) at (7,4.1);
+\coordinate (p9) at (8,4.6);
+\coordinate (p10) at (9,4);
+\coordinate (p11) at (9.5,4.7);
+
+% The cyan background
+\fill[gray!10] 
+  (p2|-0,0) -- (p2) -- (p3) -- (p4) -- (p5) -- (p6) -- (p7) -- (p8) -- (p9) -- (p10) -- (p10|-0,0) -- cycle;
+% the dark cyan stripe
+\fill[gray!30] (p6|-0,0) -- (p6) -- (p7) -- (p7|-0,0) -- cycle;
+% the curve
+\draw[ultra thick,red] 
+  (p1) to[out=70,in=180] (p2) to[out=0,in=150] 
+  (p3) to[out=-50,in=230] (p4) to[out=30,in=220] 
+  (p5) to[out=50,in=150] (p6) to[out=-30,in=180] 
+  (p7) to[out=0,in=230] (p8) to[out=40,in=180] 
+  (p9) to[out=-30,in=180] (p10) to[out=0,in=260] (p11);
+% the broken line connecting points on the curve
+\draw[thick,gray] (p2) -- (p3) -- (p4) -- (p5) -- (p6) -- (p7) -- (p8) -- (p9) -- (p10);
+% vertical lines and labels
+\foreach \n/\texto in {2/{\alpha=x_0},3/{x_1},4/{},5/{},6/{x_{j-1}},7/{x_j},8/{},9/{x_{n-1}},10/{\beta=x_n}}
+{
+  \draw[thick,gray] (p\n|-0,0) -- (p\n);
+  \node[below,text height=1.5ex,text depth=1ex,font=\small] at (p\n|-0,0) {$\texto$};
+}
+% The axes
+\draw[->,very thick,dark gray] (-0.5,0) -- (10,0) coordinate (x axis);
+\draw[->,very thick,dark gray] (0,-0.5) -- (0,6) coordinate (y axis);
+% labels for the axes
+\node[below] at (x axis) {$x$};
+\node[left] at (y axis) {$y$};
+% label for the function
+\node[above,text=cyan] at (p11) {$y=f(x)$};
+\end{tikzpicture}
+\caption{Візуалізація формули трапеції}
+\label{fig:visualization}
+\end{figure}
+
+Якщо маємо рівномірне розбиття $\pi_n[\alpha,\beta]=\{x_k\}_{k=0}^n$, то складена квадратурна формула трапеції дасть нам:
+\[
+\int_{[\alpha,\beta]}f(x)dx \approx \sum_{i=1}^n \frac{h}{2}(f(x_{i-1})+f(x_i)),
+\]
+що є сумою площ трапецій, що зображені на рис. \ref{fig:visualization}.
+
+\pagebreak
+
+\section*{Питання 2.}
+
+\textbf{Умова.} Побудова полінома Лагранжа у формі визначника.
+
+\textbf{Відповідь.} Нехай маємо функцію $f(x)$, що визначена на відрізку $[\alpha,\beta]$. Також задамо розбиття $\pi_n[\alpha,\beta]=\{x_i\}_{i=0}^{n}$. У кожному вузлі, ми можемо знайти значення функції. Позначимо $y_i:=f(x_i)$. 
+
+Визначимо, що таке поліном Лагранжа.
+
+\begin{def*}{Поліном Лагранжа}
+    Поліномом Лагранжа називають поліном виду $L_n(x)=\sum_{k=0}^n \gamma_kx^k$ такий, що $L_n(x_k)=y_k \; \forall k \in \{0,\dots,n\}$. 
+\end{def*}
+
+Отже, якщо підставити умову $L_n(x_k)=y_k$ для всіх $k$, то отримуємо систему рівнянь
+\[
+\begin{cases}
+    \sum_{k=0}^n \gamma_kx_0^k = y_0 \\
+    \sum_{k=0}^n \gamma_kx_1^k = y_1 \\
+    \vdots \\
+    \sum_{k=0}^n \gamma_kx_n^k = y_n
+\end{cases}
+\]
+Це рівняння можна записати матричному вигляді:
+\[
+\begin{bmatrix}
+    x_0^n & x_0^{n-1} & \dots & 1 \\
+    x_1^{n} & x_1^{n-1} & \dots & 1 \\
+    \vdots & \vdots & \ddots & \vdots \\ 
+    x_n^n & x_n^{n-1} & \dots & 1
+\end{bmatrix}\begin{bmatrix}
+    \gamma_0 \\ \gamma_1 \\ \vdots \\ \gamma_n
+\end{bmatrix} = \begin{bmatrix}
+    y_0 \\ y_1 \\ \vdots \\ y_n
+\end{bmatrix}
+\]
+
+Оскільки матриця рівняння є матрицею Вандермонда, то розв'язок завжди існує (оскільки $x_i$ всі попарно різні). 
+
+Будувати поліном Лагранжа можна кількома способами. Найбільш поширений і класичний -- це явно за допомогою формули
+\[
+L_n(x) = \sum_{k=0}^n f(x_k) \frac{(x-x_0)\dots (x-x_{k-1})(x-x_{k+1})\dots(x-x_n)}{(x_k-x_0)\dots (x_k-x_{k-1})(x_k-x_{k+1})\dots(x_k-x_n)}
+\]
+Проте, також, його можна знаходити із наступного рівняння:
+\begin{theorem*}{Подання полінома Лагранжа у формі визначника}
+Поліном Лагранжа можна знайти з формули:
+\[
+\det\begin{bmatrix}
+    L_n(x) & f(x_0) & f(x_1) & \dots & f(x_n) \\
+    1 & 1 & 1 & \dots & 1 \\
+    x & x_0 & x_1 & \dots & x_n \\
+    x^2 & x_0^2 & x_1^2 & \dots & x_n^2 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    x^n & x_0^n & x_1^n & \dots & x_n^n 
+\end{bmatrix} = 0
+\]
+\end{theorem*}
+
+\textbf{Доведення.} Розкриємо визначник по першій строчці. Отримаємо:
+\[
+\det\begin{bmatrix}
+    1 & \dots & 1 \\
+    \vdots & \ddots & \vdots \\
+    x_0^n & \dots & x_n^n
+\end{bmatrix}L_n(x) + \sum_{j=0}^n (-1)^{j+1}f(x_j)\det\begin{bmatrix}
+    1 & 1 & 1 & 1 & \dots & 1 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+    x^n & \dots & x_{j-1}^n & x_{j+1}^n & \dots & x_n^n
+\end{bmatrix} = 0
+\]
+Бачимо, що множник перед $L_n(x)$ є визначником Вандермонда, тобто він відмінний від $0$, що означає, що $L_n(x)$ дійсно виражається через $\{x^k\}_{k=0}^n$ і є поліномом ступеня $n$.
+
+Тепер покажемо, що дійсно $L_n(x_k)=y_k, k \in \{0,\dots,n\}$. Для цього підставимо $x=x_k$ у наш початковий визначник. Отримуємо:
+\[
+\det\begin{bmatrix}
+    L_n(x_k) & f(x_0) & f(x_1) & \dots & f(x_n) \\
+    1 & 1 & 1 & \dots & 1 \\
+    x_k & x_0 & x_1 & \dots & x_n \\
+    x_k^2 & x_0^2 & x_1^2 & \dots & x_n^2 \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    x_k^n & x_0^n & x_1^n & \dots & x_n^n 
+\end{bmatrix}
+\]
+Якщо знову скористатися нашим розкладанням, то маємо
+\[
+\det\begin{bmatrix}
+    1 & \dots & 1 \\
+    \vdots & \ddots & \vdots \\
+    x_0^n & \dots & x_n^n
+\end{bmatrix}L_n(x_k) + \sum_{j=0}^n (-1)^{j+1} f(x_j)\det\begin{bmatrix}
+    1 & 1 & 1 & 1 & \dots & 1 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+    x_k^n & \dots & x_{j-1}^n & x_{j+1}^n & \dots & x_n^n
+\end{bmatrix} = 0
+\]
+Помітимо, що 
+\[
+\begin{bmatrix}
+    1 & 1 & 1 & 1 & \dots & 1 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+    x_k^n & \dots & x_{j-1}^n & x_{j+1}^n & \dots & x_n^n
+\end{bmatrix} = 0 \; \forall j \neq k,
+\]
+оскільки при $j \neq k$ будемо мати два однакових стопвчика. Тому
+\[
+\det\begin{bmatrix}
+    1 & \dots & 1 \\
+    \vdots & \ddots & \vdots \\
+    x_0^n & \dots & x_n^n
+\end{bmatrix}L_n(x_k) + (-1)^{k+1}f(x_k)\det\begin{bmatrix}
+    1 & 1 & 1 & 1 & \dots & 1 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\
+    x_k^n & \dots & x_{k-1}^n & x_{k+1}^n & \dots & x_n^n
+\end{bmatrix} = 0
+\]
+Коефіцієнт перед $L_n(x_k)$ є в точності коефіцієнтом перед $f(x_k)$ зі знаком мінус. Щоб це побачити, треба здвинути перший рядок правого детермінанта на $k$ позицій праворуч, тоді отримаємо, що коефіцієнт перед $f(x_k)$ дорівнює визначник Вандермонда, множений на $(-1)^{2k+1}=-1$. Звідси одразу $L_n(x_k)=f(x_k)$. $\blacksquare$
+
+\textbf{Загальний випадок для системи Чебишева.} В загальному випадку, якщо ми записуємо поліном Лагранжа у вигляді $L_n(x)=\sum_{k=0}^n \gamma_k\varphi_k(x)$, де $\{\varphi_k(x)\}_{k=0}^n$ -- система Чебишева, то інтерполяційний поліном можемо знайти з рівняння
+\[
+\det\begin{bmatrix}
+    L_n(x) & f(x_0) & f(x_1) & \dots & f(x_n) \\
+    \varphi_0(x) & \varphi_0(x_0) & \varphi_0(x_1) & \dots & \varphi_0(x_n) \\
+    \varphi_1(x) & \varphi_1(x_0) & \varphi_1(x_1) & \dots & \varphi_1(x_n) \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    \varphi_n(x) & \varphi_n(x_0) & \varphi_n(x_1) & \dots & \varphi_n(x_n) 
+\end{bmatrix} = 0
+\]
+
+Тут ми скористались терміном \textbf{система Чебишева}:
+
+\begin{def*}{Система Чебишева}
+    Система функції $\{\varphi_k(x)\}_{k=0}^n$ називається системою Чебишева порядку $n$ на відрізку $[\alpha,\beta]$, якщо будь-який узагальнений многочлен $\sum_{k=0}^n\beta_k\varphi_k(x)$ при $\sum_{k=0}^n\beta_k^2 \neq 0$, має на відрізку не більше $n$ різних коренів.
+\end{def*}
+
+Усі попередні теореми та твердження мають аналогічне доведення для загального випадку. Єдине, варто довести наступне твердження:
+\begin{statement*}{Детермінант з системою Чебишева}
+Якщо $\{\varphi_k(x)\}_{k=0}^n$ є системою Чебишева, то
+\[
+\det \begin{bmatrix}
+    \varphi_0(x_0) & \dots & \varphi_0(x_n) \\
+    \vdots & \ddots & \vdots \\
+    \varphi_n(x_0) & \dots & \varphi_n(x_n)
+\end{bmatrix} \neq 0
+\]
+\end{statement*}
+
+\textbf{Доведення.} Нехай від супротивного, детермінант нульовий. Тоді стовпці є лінійно залежними, тобто знайдеться $\{\beta_k\}_{k=0}^n \subset \mathbb{R}, \sum_{k=0}^n \beta_k^2 \neq 0$ такі, що
+\[
+\sum_{k=0}^n\begin{bmatrix}
+    \varphi_k(x_0) \\ \vdots \\ \varphi_k(x_n)
+\end{bmatrix}\beta_k = 0
+\]
+Або, можна записати
+\[
+\sum_{k=0}^n \varphi_k(x_j)\beta_k = 0 \; \forall j \in \{0,\dots,n\}
+\]
+Тобто ми знайшли $n+1$ різних коренів на заданому відрізку, що суперечить тому факту, що $\{\varphi_k(x)\}_{k=0}^n$ є системою Чебишева. $\blacksquare$
+
+\end{document}
+
