@@ -12,3 +12,6 @@ In this folder, there are homework assignments from the following subjects:
 | Numerical Analysis | 4 | Lagrange polynomial, Newton polynomial, Splines, Linear approximation, Numerical Integration (Newton cotes quadrature, Chebyshev–Gauss quadrature), Numerical Differentiation |
 | Web Programming | 4 | HTML, CSS, Javascript basics. Writing backend on _Node.js_, _PSQL_ database, frontend and backend communication |
 | OOP Design Patterns (in _Java_) | 3 | OOP Design Patterns (Fabrics, Iterator, Chain of responsibility etc.), implementing a turn-based fighting game, writing unit tests, creating logger |
+
+## Structure
+Each subject folder consits of `pdf`, `tex`, and optionally `code` folders. In `pdf` we include raw files, in `tex` source `.tex` files, and finally in `code` implementations of tasks.
