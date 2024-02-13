@@ -27,6 +27,6 @@ The following table shows the available commands and their descriptions:
 
 The code is organized as follows:
 
-- `cli.py`: the command-line interface to run the program.
-- `tile.py`: module with the `Tile` class, which represents a cell in the grid.
-- `grid.py`: module with the `Grid` class, which represents the grid itself and contains all the core logic.
+- [`cli.py`](cli.py): the command-line interface to run the program.
+- [`tile.py`](tile.py): module with the `Tile` class, which represents a cell in the grid.
+- [`grid.py`](grid.py): module with the `Grid` class, which represents the grid itself and contains all the core logic.
