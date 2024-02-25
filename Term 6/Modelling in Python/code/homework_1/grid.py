@@ -62,6 +62,8 @@ class Grid:
             int: The maximum number of filled cells in a column
         """
         
+        # Only gay people use 
+        
         self._prepare()
         self._fill_step()
         
