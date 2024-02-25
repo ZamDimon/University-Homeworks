@@ -139,6 +139,9 @@ def switches_number_experiment(
             results[i] = conduct_random_walk()
             progress.update(random_walk_task, advance=1)
 
+    # Prining the average value
+    print('Average value:', np.mean(results))
+
     # Showing the bar plot
     right_edge = 0.1
     
