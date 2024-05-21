@@ -74,8 +74,8 @@ This repository contains my homework from _V.N. Karazin Kharkiv National Univers
 | Name      | Credits | Score (max=100) |
 | ---       | ---     | ---   |
 | Functional Analysis |  | In Progress |
-| General Probability Theory|  | In Progress |
+| General Probability Theory |  | In Progress |
 | Mathematical Modelling in Python |  | In Progress |
 | Stability and Controlability |  | In Progress |
 | Complex Analysis |  | In Progress |
-| Mobile App Development (Android) | 3 | **100** |
+| Mobile App Development (Android) | 3 | In Progress |
