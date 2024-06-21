@@ -1,0 +1,706 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{indentfirst}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{float}
+\usepackage[italicdiff]{physics}
+%\usepackage{pifont} %For unusual symbols
+%\usepackage{mathdots} %For unusual combinations of dots
+\usepackage{wrapfig}
+\usepackage[inline,shortlabels]{enumitem}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, top=1in,bottom=1in, left=1in, right=1in, footskip=0.3in, includefoot]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz,tikz-3dplot,tikz-cd,tkz-tab,tkz-euclide,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{multicol}
+\usepackage[bottom,multiple]{footmisc} %ensures footnotes are at the bottom of the page, and separates footnotes by a comma if they are adjacent
+\usepackage{hyperref}
+\usepackage[nameinlink]{cleveref} %nameinlink ensures that the entire element is clickable in the pdf, not just the number
+
+\newcommand{\remind}[1]{\textcolor{red}{\textbf{#1}}} %To remind me of unfinished work to fix later
+\newcommand{\hide}[1]{} %To hide large blocks of code without using % symbols
+
+\newcommand{\ep}{\varepsilon}
+\newcommand{\vp}{\varphi}
+\newcommand{\lam}{\lambda}
+\newcommand{\Lam}{\Lambda}
+%\newcommand{\abs}[1]{\ensuremath{\left\lvert#1\right\rvert}} % This clashes with the physics package
+%\newcommand{\norm}[1]{\ensuremath{\left\lVert#1\right\rVert}} % This clashes with the physics package
+\renewcommand{\ip}[1]{\ensuremath{\left\langle#1\right\rangle}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\Y}{\mathbb{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\As}{\mathcal{A}}
+\newcommand{\Bs}{\mathcal{B}}
+\newcommand{\Cs}{\mathcal{C}}
+\newcommand{\Ds}{\mathcal{D}}
+\newcommand{\Es}{\mathcal{E}}
+\newcommand{\Fs}{\mathcal{F}}
+\newcommand{\Gs}{\mathcal{G}}
+\newcommand{\Hs}{\mathcal{H}}
+\newcommand{\Is}{\mathcal{I}}
+\newcommand{\Js}{\mathcal{J}}
+\newcommand{\Ks}{\mathcal{K}}
+\newcommand{\Ls}{\mathcal{L}}
+\newcommand{\Ms}{\mathcal{M}}
+\newcommand{\Ns}{\mathcal{N}}
+\newcommand{\Os}{\mathcal{O}}
+\newcommand{\Ps}{\mathcal{P}}
+\newcommand{\Qs}{\mathcal{Q}}
+\newcommand{\Rs}{\mathcal{R}}
+\newcommand{\Ss}{\mathcal{S}}
+\newcommand{\Ts}{\mathcal{T}}
+\newcommand{\Us}{\mathcal{U}}
+\newcommand{\Vs}{\mathcal{V}}
+\newcommand{\Ws}{\mathcal{W}}
+\newcommand{\Xs}{\mathcal{X}}
+\newcommand{\Ys}{\mathcal{Y}}
+\newcommand{\Zs}{\mathcal{Z}}
+\newcommand{\ab}{\textbf{a}}
+\newcommand{\bb}{\textbf{b}}
+\newcommand{\cb}{\textbf{c}}
+\newcommand{\db}{\textbf{d}}
+\newcommand{\ub}{\textbf{u}}
+%\renewcommand{\vb}{\textbf{v}} % This clashes with the physics package (the physics package already defines the \vb command)
+\newcommand{\wb}{\textbf{w}}
+\newcommand{\xb}{\textbf{x}}
+\newcommand{\yb}{\textbf{y}}
+\newcommand{\zb}{\textbf{z}}
+\newcommand{\Ab}{\textbf{A}}
+\newcommand{\Bb}{\textbf{B}}
+\newcommand{\Cb}{\textbf{C}}
+\newcommand{\Db}{\textbf{D}}
+\newcommand{\eb}{\textbf{e}}
+\newcommand{\ex}{\textbf{e}_x}
+\newcommand{\ey}{\textbf{e}_y}
+\newcommand{\ez}{\textbf{e}_z}
+\newcommand{\abar}{\overline{a}}
+\newcommand{\bbar}{\overline{b}}
+\newcommand{\cbar}{\overline{c}}
+\newcommand{\dbar}{\overline{d}}
+\newcommand{\ubar}{\overline{u}}
+\newcommand{\vbar}{\overline{v}}
+\newcommand{\wbar}{\overline{w}}
+\newcommand{\xbar}{\overline{x}}
+\newcommand{\ybar}{\overline{y}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\Abar}{\overline{A}}
+\newcommand{\Bbar}{\overline{B}}
+\newcommand{\Cbar}{\overline{C}}
+\newcommand{\Dbar}{\overline{D}}
+\newcommand{\Ubar}{\overline{U}}
+\newcommand{\Vbar}{\overline{V}}
+\newcommand{\Wbar}{\overline{W}}
+\newcommand{\Xbar}{\overline{X}}
+\newcommand{\Ybar}{\overline{Y}}
+\newcommand{\Zbar}{\overline{Z}}
+\newcommand{\Aint}{A^\circ}
+\newcommand{\Bint}{B^\circ}
+\newcommand{\limk}{\lim_{k\to\infty}}
+\newcommand{\limm}{\lim_{m\to\infty}}
+\newcommand{\limn}{\lim_{n\to\infty}}
+\newcommand{\limx}[1][a]{\lim_{x\to#1}}
+\newcommand{\liminfm}{\liminf_{m\to\infty}}
+\newcommand{\limsupm}{\limsup_{m\to\infty}}
+\newcommand{\liminfn}{\liminf_{n\to\infty}}
+\newcommand{\limsupn}{\limsup_{n\to\infty}}
+\newcommand{\sumkn}{\sum_{k=1}^n}
+\newcommand{\sumk}[1][1]{\sum_{k=#1}^\infty}
+\newcommand{\summ}[1][1]{\sum_{m=#1}^\infty}
+\newcommand{\sumn}[1][1]{\sum_{n=#1}^\infty}
+\newcommand{\emp}{\varnothing}
+\newcommand{\exc}{\backslash}
+\newcommand{\sub}{\subseteq}
+\newcommand{\sups}{\supseteq}
+\newcommand{\capp}{\bigcap}
+\newcommand{\cupp}{\bigcup}
+\newcommand{\kupp}{\bigsqcup}
+\newcommand{\cappkn}{\bigcap_{k=1}^n}
+\newcommand{\cuppkn}{\bigcup_{k=1}^n}
+\newcommand{\kuppkn}{\bigsqcup_{k=1}^n}
+\newcommand{\cappk}[1][1]{\bigcap_{k=#1}^\infty}
+\newcommand{\cuppk}[1][1]{\bigcup_{k=#1}^\infty}
+\newcommand{\cappm}[1][1]{\bigcap_{m=#1}^\infty}
+\newcommand{\cuppm}[1][1]{\bigcup_{m=#1}^\infty}
+\newcommand{\cappn}[1][1]{\bigcap_{n=#1}^\infty}
+\newcommand{\cuppn}[1][1]{\bigcup_{n=#1}^\infty}
+\newcommand{\kuppk}[1][1]{\bigsqcup_{k=#1}^\infty}
+\newcommand{\kuppm}[1][1]{\bigsqcup_{m=#1}^\infty}
+\newcommand{\kuppn}[1][1]{\bigsqcup_{n=#1}^\infty}
+\newcommand{\cappa}{\bigcap_{\alpha\in I}}
+\newcommand{\cuppa}{\bigcup_{\alpha\in I}}
+\newcommand{\kuppa}{\bigsqcup_{\alpha\in I}}
+\newcommand{\Rx}{\overline{\mathbb{R}}}
+\newcommand{\dx}{\,dx}
+\newcommand{\dy}{\,dy}
+\newcommand{\dt}{\,dt}
+\newcommand{\dax}{\,d\alpha(x)}
+\newcommand{\dbx}{\,d\beta(x)}
+\DeclareMathOperator{\glb}{\text{glb}}
+\DeclareMathOperator{\lub}{\text{lub}}
+\newcommand{\xh}{\widehat{x}}
+\newcommand{\yh}{\widehat{y}}
+\newcommand{\zh}{\widehat{z}}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\renewcommand{\iff}{\Leftrightarrow}
+\DeclareMathOperator{\im}{\text{im}}
+\let\spn\relax\let\Re\relax\let\Im\relax
+\DeclareMathOperator{\spn}{\text{span}}
+\DeclareMathOperator{\Re}{\text{Re}}
+\DeclareMathOperator{\Im}{\text{Im}}
+\DeclareMathOperator{\diag}{\text{diag}}
+
+\newtheoremstyle{mystyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{}
+\newtheoremstyle{cstyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{\thmnote{#3}}
+\makeatletter
+\renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}{\normalfont\sffamily\bfseries\topsep6\p@\@plus6\p@\relax #1\@addpunct{.} }}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\newcommand{\coolqed}[1]{\includegraphics[width=#1cm]{sunglasses_emoji.png}} %Defines the new QED symbol
+\renewcommand{\qedsymbol}{\coolqed{0.32}} %Implements the new QED symbol
+\theoremstyle{mystyle}{\newtheorem{definition}{Definition}[section]}
+\theoremstyle{mystyle}{\newtheorem{proposition}[definition]{Proposition}}
+\theoremstyle{mystyle}{\newtheorem{theorem}[definition]{Theorem}}
+\theoremstyle{mystyle}{\newtheorem{lemma}[definition]{Lemma}}
+\theoremstyle{mystyle}{\newtheorem{corollary}[definition]{Corollary}}
+\theoremstyle{mystyle}{\newtheorem*{remark}{Remark}}
+\theoremstyle{mystyle}{\newtheorem*{remarks}{Remarks}}
+\theoremstyle{mystyle}{\newtheorem*{example}{Example}}
+\theoremstyle{mystyle}{\newtheorem*{examples}{Examples}}
+\theoremstyle{definition}{\newtheorem*{exercise}{Exercise}}
+\theoremstyle{cstyle}{\newtheorem*{cthm}{}}
+
+%Warning environment
+\newtheoremstyle{warn}{}{}{}{}{\normalfont}{}{ }{}
+\theoremstyle{warn}
+\newtheorem*{warning}{\warningsign{0.2}\relax}
+
+%Symbol for the warning environment, designed to be easily scalable
+\newcommand{\warningsign}[1]{\tikz[scale=#1,every node/.style={transform shape}]{\draw[-,line width={#1*0.8mm},red,fill=yellow,rounded corners={#1*2.5mm}] (0,0)--(1,{-sqrt(3)})--(-1,{-sqrt(3)})--cycle;
+\node at (0,-1) {\fontsize{48}{60}\selectfont\bfseries!};}}
+
+\tcolorboxenvironment{definition}{boxrule=0pt,boxsep=0pt,colback={red!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{red},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proposition}{boxrule=0pt,boxsep=0pt,colback={Orange!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Orange},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{theorem}{boxrule=0pt,boxsep=0pt,colback={blue!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{blue},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{lemma}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{corollary}{boxrule=0pt,boxsep=0pt,colback={violet!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{violet},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proof}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{CadetBlue!80!white},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remark}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remarks}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{example}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{examples}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{cthm}{boxrule=0pt,boxsep=0pt,colback={gray!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{gray},sharp corners,before skip=10pt,after skip=10pt,breakable}
+
+%align and align* environments with inline size
+\newenvironment{talign}{\let\displaystyle\textstyle\align}{\endalign}
+\newenvironment{talign*}{\let\displaystyle\textstyle\csname align*\endcsname}{\endalign}
+
+\usepackage[explicit]{titlesec}
+\titleformat{\section}{\fontsize{24}{30}\sffamily\bfseries}{\thesection}{20pt}{#1}
+\titleformat{\subsection}{\fontsize{16}{18}\sffamily\bfseries}{\thesubsection}{12pt}{#1}
+\titleformat{\subsubsection}{\fontsize{10}{12}\sffamily\large\bfseries}{\thesubsubsection}{8pt}{#1}
+
+\titlespacing*{\section}{0pt}{5pt}{5pt}
+\titlespacing*{\subsection}{0pt}{5pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{5pt}{5pt}
+
+%\newcommand{\sectionbreak}{\clearpage} %Start every section on a new page
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+\setlength{\parindent}{0.2in}
+\setlength{\parskip}{0pt}
+\setlength{\columnseprule}{0pt}
+
+\title{\huge\sffamily\bfseries Іспит з Варіаційного Числення та Оптимального Керування}
+\author{\Large\sffamily Захарова Дмитра Олеговича. МП-31}
+\date{\sffamily 7 червня 2024 р.}
+
+\begin{document}
+
+\maketitle
+
+%Custom colors for different environments
+\definecolor{contcol1}{HTML}{72E094}
+\definecolor{contcol2}{HTML}{24E2D6}
+\definecolor{convcol1}{HTML}{C0392B}
+\definecolor{convcol2}{HTML}{8E44AD}
+
+\begin{center}
+    \textbf{Екзаменаційний Білет \#5}
+\end{center}
+
+\begin{tcolorbox}[title=Вміст, fonttitle=\sffamily\bfseries\selectfont,interior style={left color=contcol1!40!white,right color=contcol2!40!white},frame style={left color=contcol1!80!white,right color=contcol2!80!white},coltitle=black,top=2mm,bottom=2mm,left=2mm,right=2mm,drop fuzzy shadow,enhanced,breakable]
+\makeatletter
+\@starttoc{toc}
+\makeatother
+\end{tcolorbox}
+
+\newpage
+
+\section{Загальне обчислення варіації}
+
+\textbf{Питання.} Загальна формула для обчислення варіації. Задачі з кінцями на кривих, умови трансверсальності.
+
+\subsection{Додаткові теоретичні відомості.}
+
+Як і завжди, нехай нам потрібно максимізувати або мінімізувати наступний функціонал:
+\begin{equation}
+    J[f] = \int_a^b L(x,f,f')dx \to \text{extr},
+\end{equation}
+
+проте, тут ми вже не фіксуємо значення $f$ у точках $a$ та $b$ (тобто маємо задачу з вільними кінцями).
+
+Для подальної дискусії, введемо поняття відстані між кривими.
+
+\begin{definition}
+    \textbf{Відстанню} між кривими $y=f(x)$ та $y=g(x)$ будемо вважати вираз 
+    \begin{equation}
+        \rho(f,g) = \max |f-g| + \max |f'-g'|+ \rho(F_0,G_0) + \rho(F_1,G_1),
+    \end{equation}
+    де $F_0,F_1$ -- лівий та правий кінець кривої $f(x)$, а $G_0,G_1$ -- кривої $g(x)$, де відстань між 
+    точками розуміємо у метриці Евкліда.
+\end{definition}
+
+Розглянемо дві близькі у сенсі відстані криві $f(x)$ та $\widetilde{f}(x)$ та покладемо $\eta(x) := \widetilde{f}(x) - f(x)$. Покладемо $F_0=(x_0,y_0)$ та $F_1=(x_1,y_1)$ -- початкові та кінцеві точки $y=f(x)$. 
+Початкову та кінцеву точки кривої $\widetilde{f}(x)=f(x)+\eta(x)$ позначимо як $F_0^*=(x_0+\delta x_0,y_0+\delta y_0)$ та $F_1^*=(x_1+\delta x_1,y_1+\delta y_1)$. 
+
+\begin{definition}
+    \textbf{Загальною варіацією} функціонала $J[f]$ будемо називати лінійну варіацію відносно $\eta,\eta',\delta x_0,\delta y_0,\delta x_1, \delta y_1$ та відрізяющуюся від прирісту 
+    \begin{equation}
+        \Delta J[\eta] = J[f+\eta] - J[f]
+    \end{equation}
+    на величину порядку вище першого відносно відстані $\rho(f,f+\eta)$.
+\end{definition}
+
+\subsection{Виведення загальної варіації.}
+
+Як ми і робили до цього, знаходимо приріст функціоналу, де ми розглядаємо збурення нашої функції $f(x)+\eta(x)$:
+\begin{equation}
+    \Delta J = J[f+\eta] - J[f] = \int_{x_0+\delta x_0}^{x_1+\delta x_1}L(x,f+\eta,f'+\eta')dx - \int_{x_0}^{x_1}L(x,f,f')dx
+\end{equation}
+
+Далі маємо розбиття на наступні інтеграли:
+\begin{gather}
+    \Delta J = \int_{x_0}^{x_1}\left[L(x,f+\eta,f'+\eta')-L(x,f,f')\right]dx \nonumber \\ + \int_{x_1}^{x_1+\delta x_1}L(x,f+\eta,f'+\eta')dx - \int_{x_0}^{x_0+\delta x_0}L(x,f+\eta,f'+\eta')dx
+\end{gather}
+
+Далі розкладаємо у ряд Тейлора. Перший доданок буде як при виведені формули Ейлера, а другий набуде наступного вигляду:
+\begin{gather}
+    \Delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}\eta(x)+\frac{\partial L}{\partial f'}\eta'(x)\right]dx \nonumber \\
+    + L(x,f,f')\Big|_{x=x_1}\delta x_1 - L(x,f,f')\Big|_{x=x_0}\delta x_0 + \overline{o}(\rho(f,f+\eta))
+\end{gather}
+
+Далі після інтегрування частинами знову маємо:
+\begin{gather}
+    \Delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}-\frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\eta(x)\Big|_{x=x_0}^{x=x_1} \nonumber \\
+ + L(x,f,f')\Big|_{x=x_1}\delta x_1 - L(x,f,f')\Big|_{x=x_0}\delta x_0 + \overline{o}(\rho(f,f+\eta))
+\end{gather}
+
+За нашою побудовою (ми продовжували дотичною) маємо $\eta(x_0) = \delta y_0 - (f'(x_0)-\eta'(x_0))\delta x_0$, тому наближено:
+\begin{equation}
+    \eta(x_0) \approx \delta y_0 - f'(x_0)\delta x_0, \; \eta(x_1) \approx \delta y_1 - f'(x_1)\delta x_1
+\end{equation}
+
+і відкидаючи малий доданок $\overline{o}(\rho)$ маємо \textbf{формулу загальної варіації}.
+\begin{definition}
+\textbf{Формулою загальної варіації} називають формулу
+\begin{equation}
+    \delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}-\frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\delta y\Big|_{x=x_0}^{x=x_1} +
+    \left(L-f'\frac{\partial L}{\partial f'}\right)\delta x \Big|_{x=x_0}^{x=x_1}
+\end{equation}
+\end{definition}
+
+Для кращого розуміння, що ми називаємо варіаціями $\delta x_i,\delta y_i$,
+розглянемо вже відомі нам задачі:
+
+\begin{example}
+    Якщо кінці лежать на прямих $x_0=a,x_1=b$, то $\delta x_0=\delta x_1=0$.
+\end{example}
+\begin{example}
+    Якщо кінці фіксовані, то $\delta x_0=\delta x_1 = \delta y_0 = \delta y_1$.
+\end{example}
+
+\textbf{Зауваження.} Якщо $\widetilde{f}$ є екстремумом функціоналу, то вона є екстремаллю, а також виконується
+\begin{equation}
+    \frac{\partial L}{\partial f'}\delta y \Big|_{x=x_0}^{x=x_1} + \left(L-\frac{\partial L}{\partial f'}f'\right)\delta x \Big|_{x=x_0}^{x=x_1} = 0
+\end{equation}
+для $f(x)=\widetilde{f}(x)$.
+
+\subsection{Задача з кінцями на кривих}
+
+Нехай $y(x_0)=\psi_0(x_0), y(x_1)=\psi_1(x_1)$, тобто на кінцях $x_0$ та $x_1$ (що не є фіксованими), ми маємо точку на кривій.
+
+Нагадаємо, що загальною варіацією називаємо вираз виду
+\begin{equation}
+    \Delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}-\frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\delta y\Big|_{x=x_0}^{x=x_1} +
+    \left(L-f'\frac{\partial L}{\partial f'}\right)\delta x \Big|_{x=x_0}^{x=x_1},
+\end{equation}
+
+тому нас тут цікавить знайти вирази для $\delta y_i$ відносно $\delta x_i$. Дійсно,
+\begin{equation}
+    \delta y_i = \psi_i(x_i+\delta x_i) - \psi_i(x_i) = [\psi_i'(x_i)+\overline{o}(1)]\delta x_i.
+\end{equation}
+
+Тоді умова $\delta J=0$ прийме вигляд
+\begin{equation}
+    \delta J = \left(\frac{\partial L}{\partial f'}\psi_1' + L - \frac{\partial L}{\partial f'}f'\right)\Big|_{x=x_1}\delta x_1 - \left(\frac{\partial L}{\partial f'}\psi_0' + L - \frac{\partial L}{\partial f'}f'\right)\Big|_{x=x_0}\delta x_0 = 0.
+\end{equation}
+
+Оскільки $\delta x_i$ є незалежними і довільні, то отримуємо так звану умову трансверсальності.
+\begin{definition}
+\textbf{Умовами трансверсальності} називають рівняння
+\begin{equation}
+    \left(L+(\psi_i'-f')\frac{\partial L}{\partial f'}\right)\Big|_{x=x_i} = 0, \; i=1,2  
+\end{equation}
+\end{definition}
+
+\pagebreak
+
+\section{Задача швидкодії}
+
+\textbf{Питання.} Задача швидкодії для лінійних систем. Множина досяжності (керованості) за час $T$, властивості досяжності (опуклість, властивість внутрішніх точок).
+
+\textbf{Відповідь.} 
+
+\subsection{Теоретичні відомості.}
+
+Розглянемо задачу виду: $t_1-t_0 \to \inf$ під дією
+\begin{equation}
+    \begin{cases}
+        \dot{\mathbf{x}}(t) = \boldsymbol{A}\mathbf{x}(t) + \boldsymbol{B}\mathbf{u}(t), \; t \in [t_0,t_1] \\
+        \mathbf{x}(t_0) = \mathbf{x}_0, \; \mathbf{x}(t_1) = \mathbf{x}_1, \; u(t) \in \Omega
+    \end{cases}
+\end{equation}
+
+Будемо вважати $\Omega$ -- замкнена, обмежена і випукла множина, $0 \in \Omega$.
+
+\begin{definition}
+    Множина $\Omega$ називається випуклою, якщо разом з будь-якими своїми точками $\mathbf{x},\mathbf{y}$, воно 
+    містить і весь відрізок, що їх з'єднує. Формально:
+    \begin{equation}
+        \forall \mathbf{x},\mathbf{y} \in \Omega, \; \forall \lambda \in [0,1]: \lambda \mathbf{x} + (1-\lambda)\mathbf{y} \in \Omega
+    \end{equation}
+\end{definition}
+
+Для зручності далі нехай $\mathbf{x}_1=\mathbf{0}$.
+
+\begin{definition}
+    Множиною досяжності для системи $\dot{\mathbf{x}}(t) = \boldsymbol{A}\mathbf{x}(t) + \boldsymbol{B}\mathbf{u}(t)$ за час $T$ будемо називати множину точок $\mathbf{x}_0$ з яких можна попасти в $\mathbf{x}_1=\mathbf{0}$ за час $T$ під дією деякого допустимого управління.
+\end{definition}
+
+\begin{lemma}
+    Якщо з $\mathbf{x}_0$ можна потрапити в нуль за час $T$, то в точку $0$ можна потрапити і за будь-який більший час. 
+\end{lemma}
+
+\textbf{Доведення.} Нехай $\mathbf{x}_0 \xrightarrow[\mathbf{u}(t)]{T} \mathbf{0}$, тоді покладемо
+\begin{equation}
+    \widetilde{\mathbf{u}}(t) := \begin{cases}
+        \mathbf{u}(t), & t_0 \leq t < t_1 \\
+        \mathbf{0}, & t_1 \leq t \leq t_1+\delta t
+    \end{cases}
+\end{equation}
+
+Тоді $\widetilde{\mathbf{x}}(t) = \mathbf{x}(t)$ на $[t_0,t_1)$, а на проміжку $[t_1,t_1+\delta t]$ буде в нулі, тому час $T+\delta t > T$.
+
+\subsection{Властивості множини досяжності.}
+
+Отже, позначимо через $V_T$ множину досяжності для нашої системи.
+
+\begin{lemma}
+    $V_T$ -- випукла множина.
+\end{lemma}
+
+\textbf{Доведення.} Перевіримо, що $\forall \mathbf{x}_0,\mathbf{y}_0 \in V_T \; \forall \lambda \in [0,1]: \lambda\mathbf{x}_0+(1-\lambda)\mathbf{y}_0 \in V_T$. За означенням,
+\begin{gather}
+    \mathbf{x}_0 \in V_T \implies \exists \mathbf{u}_1(t) \in \Omega: \mathbf{x}_0 \xrightarrow[(0,T)]{\mathbf{u}_1(t)} \mathbf{0} \\
+    \mathbf{y}_0 \in V_T \implies \exists \mathbf{u}_2(t) \in \Omega: \mathbf{y}_0 \xrightarrow[(0,T)]{\mathbf{u}_2(t)} \mathbf{0}
+\end{gather}
+
+Покладемо:
+\begin{gather}
+    \widetilde{\mathbf{u}}(t) = \lambda\mathbf{u}_1(t) + (1-\lambda)\mathbf{u}_2(t) 
+\end{gather}
+
+Це є допустим керуванням, оскільки за умовою множина $\Omega$ випукла. Тоді це керування задасть траєкторію
+\begin{equation}
+    \widetilde{\mathbf{x}}(t) = \lambda\mathbf{x}_1(t) + (1-\lambda)\mathbf{x}_2(t),
+\end{equation}
+
+якщо $\mathbf{x}_1(t),\mathbf{x}_2(t)$ -- траєкторії при керуваннях $\mathbf{u}_1(t),\mathbf{u}_2(t)$ відповідно.
+
+Дійсно, подивимось на похідну:
+\begin{align}
+    \dot{\widetilde{\mathbf{x}}}(t) = \lambda\dot{\mathbf{x}}_1(t) + (1-\lambda)\dot{\mathbf{x}}_2(t) \nonumber \\
+    =\lambda(\boldsymbol{A}\mathbf{x}_1(t) + \boldsymbol{B}\mathbf{u}_1(t)) + (1-\lambda)(\boldsymbol{A}\mathbf{x}_2(t) + \boldsymbol{B}\mathbf{u}_2(t)) \nonumber \\
+    =\boldsymbol{A}(\lambda\mathbf{x}_1(t) + (1-\lambda)\mathbf{x}_2(t)) + \boldsymbol{B}(\lambda\mathbf{u}_1(t)+(1-\lambda)\mathbf{u}_2(t)) \\
+    = \boldsymbol{A}\widetilde{\boldsymbol{x}}(t) + \boldsymbol{B}\widetilde{\mathbf{u}}(t)
+\end{align}
+
+Залишилося помітити, що $\widetilde{\mathbf{x}}(0) = \lambda\mathbf{x}_0+(1-\lambda)\mathbf{y}_0$ та $\widetilde{\mathbf{x}}(T) = \mathbf{0}$. Отже, дійсно можемо перевести 
+$\lambda\mathbf{x}_0+(1-\lambda)\mathbf{y}_0$ у $\mathbf{0}$ за час $T$, а тому $\lambda\mathbf{x}_0+(1-\lambda)\mathbf{y}_0 \in V_T$.
+
+\begin{lemma}
+    Якщо $\mathbf{x}_0$ -- внутрішня точка $V_T$, то з $\mathbf{x}_0$ можна потрапити в $\mathbf{0}$ за час, строго меньший за $T$.
+\end{lemma}
+
+\textbf{Доведення.} Отже, $\mathbf{x}_0 \in \text{int}(V_T)$. Тоді існує куля $B(\mathbf{x}_0,r) \subset V_T$, а отже і куб $C$ з центром в $\mathbf{x}_0$. 
+
+Нехай $\mathbf{y}_1,\dots,\mathbf{y}_N$ -- вершини куба, $\mathbf{y}_i \in V_T$. Тоді, 
+\begin{equation}
+    \exists \mathbf{u}_i(t) \in \Omega: \mathbf{y}_i \xrightarrow[(0,T)]{\mathbf{u}_i(t)} \mathbf{0}, \; i \in \{1,\dots,N\}
+\end{equation}
+
+Для достатньо малого $\delta>0$ розглянемо точки $\mathbf{y}_1(t_0+\delta),\dots,\mathbf{y}_N(t_0+\delta)$. Маємо:
+\begin{equation}
+    \begin{cases}
+        \dot{\mathbf{y}}_i = \boldsymbol{A}\mathbf{y}_i + \boldsymbol{B}\mathbf{u}_i, \; t_0+\delta \leq t \leq t_1 \\
+        \mathbf{y}_i(\widetilde{t}_0) = \mathbf{y}_i(t_0+\delta) \\
+        \mathbf{y}_i(t_1) = \mathbf{0} \\
+        \mathbf{u}_i \in \Omega, \; t_0+\delta \leq t \leq t_1
+    \end{cases}
+\end{equation}
+
+При достатньо малих $\delta>0$ випукла оболонка з точек $\mathbf{y}_i(t_0+\delta)$ буде мало відрізнятися від куба $C$. Тоді при достатньо 
+малих $\delta>0$ ця випукла оболонка буде містити $\mathbf{x}_0$. З точок $\mathbf{y}_i(t_0+\delta)$ можна потрапити за час $T-\delta$. Тоді $\mathbf{y}_i(t_0+\delta) \in V_{T-\delta}$, звідки 
+в силу випуклості множини випливає, що множині $V_{T-\delta}$ належить і весь багатогранник. Це означає, що і з $\mathbf{x}_0 \in V_{T-\delta}$, тобто з точки $\mathbf{x}_0$ можна потрапити за час $T-\delta < T$. 
+
+\begin{definition}
+    Нехай $A_0,\dots,A_n$ не лежать в одній $(k-1)$-мірній площині, тоді випукла оболонка цих точок називають \textbf{симплексом}.
+\end{definition}
+
+\begin{lemma}
+    \textbf{Допоміжна.} Нехай $\mathbf{u}(t) \in \mathcal{KC}[t_0,t_1],\mathbf{x}(t) \in \mathcal{KC}^1[t_0,t_1]$ -- траєкторія. Нехай $\boldsymbol{\psi}(t)$ -- довільний розв'язок рівняння $\dot{\boldsymbol{\psi}}=-\boldsymbol{A}^{*}\boldsymbol{\psi}(t)$. Тоді
+    \begin{equation}
+        \langle \boldsymbol{\psi}(t_1),\mathbf{x}(t_1) \rangle - \langle \boldsymbol{\psi}(t_0),\mathbf{x}(t_0) \rangle = \int_{t_0}^{t_1} \langle \boldsymbol{\psi}(t), \boldsymbol{B}\mathbf{u}(t) \rangle dt
+    \end{equation}
+\end{lemma}
+
+\textbf{Доведення.} В точках неперервності $\mathbf{u}(t)$ маємо $\dot{\mathbf{x}} = \boldsymbol{A}\mathbf{x}(t)+\boldsymbol{B}\mathbf{u}(t)$. Тоді:
+\begin{align}
+    \frac{d}{dt} \langle \boldsymbol{\psi}(t), \boldsymbol{A}\mathbf{x}+\boldsymbol{B}\mathbf{u}(t) \rangle = -\langle \boldsymbol{A}^*\boldsymbol{\psi}(t),\mathbf{x}(t) \rangle + \langle \boldsymbol{A}^*\boldsymbol{\psi}(t),\mathbf{x}(t) \rangle + \langle \boldsymbol{\psi}(t), \boldsymbol{B}\mathbf{u}(t) \rangle \\= \langle \boldsymbol{\psi}(t), \boldsymbol{B}\mathbf{u}(t) \rangle
+\end{align}
+
+$\boldsymbol{\psi}(t),\mathbf{x}(t)$ -- неперервні всюду та мають похідну всюду окрім скінченного числа точок. Тоді проінтегрувавши від $t_0$ до $t_1$ отримаємо потрібне рівняння.
+
+\pagebreak
+
+\section{Практична задача}
+
+\textbf{Умова.} Розв'язати наступну варіаційну задачу. Знайти допустимі екстремалі, перевірити необхідні умови Лежандра та Якобі, достатні умови слабкого екстремуму. Перевірити необхідну умову Вейєрштрасса та достатні умови сильного екстремуму.
+\begin{equation}
+    \int_1^e (2f(x) - x^2f'(x)^2)dx \to \text{extr}, \; f(1) = e, \; f(e) = 0
+\end{equation}
+
+\textbf{Відповідь.} Маємо задачу з фіксованими кінцями. Спочатку розв'яжемо рівняння Ейлера.
+
+\subsection{Рівняння Ейлера}
+Як відомо, екстремалі можемо знайти з рівняння
+\begin{equation}
+    \frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'} = 0
+\end{equation}
+
+В нашому випадку маємо $L(x,f,f') = 2f(x)-x^2f'(x)^2$, тому
+\begin{equation}
+    \frac{\partial L}{\partial f} = 2, \; \frac{\partial L}{\partial f'} = -2x^2f'(x), \; \frac{d}{dx}\frac{\partial L}{\partial f'} = -2(2xf'(x)+x^2f''(x))
+\end{equation}
+
+Отже, рівнняння Ейлера набуде вигляду:
+\begin{equation}
+    2 + 2(2xf'(x)+x^2f''(x)) = 0 \implies x^2f''(x) + 2xf'(x) + 1 = 0 
+\end{equation}
+
+Розв'язок цього рівняння (сам розв'язок наведемо у додатку):
+\begin{equation}
+    f(x) = -\frac{c_1}{x} + c_2 - \log x
+\end{equation}
+
+Підставляємо у граничні умови:
+\begin{gather}
+    f(1) = e \implies -c_1 + c_2 = e \\
+    f(e) = 0 \implies -\frac{c_1}{e} + c_2 - 1 = 0
+\end{gather}
+
+Отже, розв'яжемо відносно $c_1,c_2$. З першого рівняння $c_2 = c_1+e$, а з другого $c_2=1+\frac{c_1}{e}$, а тому
+\begin{equation}
+    c_1 + e = 1 + \frac{c_1}{e} \implies c_1 = \frac{1-e}{1-\frac{1}{e}} = -e
+\end{equation}
+
+Отже, $c_2=0$ і остаточно наша екстремаль має вигляд:
+\begin{equation}
+    \boxed{f_{?!}(x) = \frac{e}{x} - \log x}
+\end{equation} 
+
+Це і є підозріла точка на мінімум або максимум.
+
+\subsection{Необхідні умови}
+
+Перевіримо умову Лежандра:
+
+\begin{theorem}
+    \textbf{Необхідна умова Лежандра слабкого максимума.} Нехай функціонал $J[f]=\int_a^b L(x,f,f')dx$ з фіксованими кінцями має максимум на кривій $\widetilde{f}$. Тоді для будь-якої точці на криві виконано 
+    \begin{equation}
+        \frac{\partial^2 L}{\partial (f')^2} \leq 0
+    \end{equation}
+\end{theorem}
+
+Отже, поразуємо нашу похідну:
+\begin{equation}
+    \frac{\partial^2 L}{\partial (f')^2} = \frac{\partial }{\partial f'} \frac{\partial L}{\partial f'} = \frac{\partial}{\partial f'}(-2x^2f'(x)) = -2x^2 < 0
+\end{equation}
+
+для усіх $x \neq 0$. Проте, оскільки ми на відрізку $[1,e]$, то умова Лежандра виконана. Отже, маємо підозру на максимум.
+
+Тепер перевіримо умову Якобі. Для цього розглядаємо спряжену задачу:
+\begin{equation}
+    J^*[\eta] = \int_1^e \left(P(x)\eta'(x)^2 + Q(x)\eta(x)^2\right)dx \to \text{inf}, \; \eta(1)=\eta(e)=0,
+\end{equation}
+де позначені функції мають вигляд:
+\begin{equation}
+    P(x) := \frac{1}{2}\frac{\partial^2 L}{\partial (f')^2}, \; Q(x) := \frac{1}{2}\left(\frac{\partial^2 L}{\partial f^2} - \frac{d}{dx}\frac{\partial^2 L}{\partial f\partial f'}\right)
+\end{equation} 
+
+Отже, знайдемо вигляд цих функцій. Для $P(x)$ у нас все просто, оскільки ми цю часткову похідну вже рахували, тому маємо $P(x)=-x^2$. Для $Q(x)$ ситуація трошки гірше, але не критична:
+\begin{equation}
+    \frac{\partial^2 L}{\partial f^2} = 0, \; \frac{\partial^2 L}{\partial f\partial f'} = 0 \implies Q \equiv 0
+\end{equation}
+
+Тому, спряжена задача має вигляд:
+\begin{equation}
+    J^*[\eta] = \int_1^e (-x^2\eta'(x)^2)dx = -\int_1^e (x\eta(x))^2dx
+\end{equation}
+
+В принципі на цьому етапі вже добре видно, що в нас спряжений функціонал від'ємно визначений, проте давайте все-таки доб'ємо умову Якобі. Рівняння Якобі (або рівняння Ейлера до спряженої задачі):
+\begin{equation}
+    -\frac{d}{dx}(P(x)\eta'(x)) + Q(x)\eta(x) = 0 \implies -\frac{d}{dx}(P(x)\eta'(x)) = 0
+\end{equation}
+
+Підставляємо:
+\begin{equation}
+    -\frac{d}{dx}(-x^2\eta'(x)) = 0 \implies x^2\eta'(x) = C_1 \implies \eta'(x) = \frac{C_1}{x^2} \implies \eta(x) = -\frac{C_1}{x} + C_2
+\end{equation}
+
+З огляду на те, що $\eta(1)=0$, то $C_2=C_1$, а тому $\eta(x) = C-\frac{C}{x}$. Якщо додатково вимагати $\eta'(1)=1$, то $\eta(x) = 1-\frac{1}{x}$.
+
+Видно, що спряжених до точки $a=1$ на відрізку $(1,e]$ не існує, оскільки нуль функції $\eta(x)$ є лише $x=1$. Отже, умова Якобі на слабкий максимум виконується.
+
+Подивимось на достатню умову. Нагадаємо формулювання:
+\begin{theorem}
+    \textbf{Достатня умова слабкого екстремуму.} Якщо допустима крива $y=f(x)$ для функціоналу
+    \begin{equation}
+        \int_a^b L(x,f,f')dx \; \; f(a)=A, \; f(b)=B
+    \end{equation}
+    задовольняє наступним умовам:
+    \begin{enumerate}
+        \item $f=f(x)$ є екстремаллю, тобто задовольняє рівняння Ейлера $\frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'} = 0$.
+        \item Вздовж цієї кривої $P \equiv \frac{\partial^2 L}{\partial (f')^2} < 0$, тобто виконується посилена умова Лежандра.
+        \item Відрізок $[a,b]$ не містить точок спряжених з $a$ (посилена умова Якобі),
+    \end{enumerate}
+
+    то на цій кривій реалізується слабкий максимум.
+\end{theorem}
+
+Бачимо, що дві останні умови виконуються, а також $f_{?!}(x)=\frac{e}{x}-\log x$ є екстремаллю. Отже, дійсно маємо слабкий максимум.
+
+\subsection{Умова Веєрштраса}
+
+Далі будемо користуватись так званою \textit{функцією Веєрштраса}. Нагадаємо, що це:
+
+\begin{definition}
+    \textbf{Функцією Веєрштраса} називають вираз
+    \begin{equation}
+        E(x,f,P,Q) = L(x,f,Q) - L(x,f,P) - (Q-P)\frac{\partial L}{\partial f'}(x,f,P)
+    \end{equation}
+\end{definition}
+
+Необхідна умова стверджує, що $E(x,f_{?!},f_{?!}',f_{?!}'+\xi) \geq 0$ для усіх $x \in [1,e], \xi \in \mathbb{R}$. Перевіримо:
+\begin{equation}
+    f_{?!}' = \frac{d}{dx}\left(\frac{e}{x}-\log x\right) = -\frac{e}{x^2}-\frac{1}{x} = -\frac{e+x}{x^2}
+\end{equation}
+
+Отже,
+\begin{equation}
+    L(x,f_{?!},f_{?!}') = 2\left(\frac{e}{x}-\log x\right) - x^2\left(-\frac{e}{x^2}-\frac{1}{x}\right)^2 = -1-\frac{e^2}{x^2}-2\log x
+\end{equation}
+\begin{gather}
+    L(x,f_{?!},f_{?!}'+\xi) = 2f(x)-x^2(f'(x)+\xi)^2 = \nonumber \\
+    -\frac{e^2}{x^2} + 2e\xi - (-1+\xi x)^2 - 2\log x
+\end{gather}
+
+А також залишилось ще:
+\begin{equation}
+    \frac{\partial L}{\partial f'}(x,f_{?!},f_{?!}') = -2x^2f_{?!}'(x) = 2(e+x)
+\end{equation}
+
+Отже, остаточно наша функція має вигляд:
+\begin{gather}
+    E(x,f_{?!},f_{?!}',f_{?!}'+\xi) = -\frac{e^2}{x^2} + 2e\xi - (-1+\xi x)^2 - 2\log x - \left(-1-\frac{e^2}{x^2}-2\log x\right) \nonumber \\
+    -2\xi(e+x) = -\xi^2x^2 < 0
+\end{gather}
+
+Отже, необхідна умова виконана. Для достатньої дивимось:
+\begin{equation}
+    E(x,f,P,Q) = -Q^2x^2 + P^2x^2 - (Q-P)(-2x^2P) = -(P-Q)^2x^2,
+\end{equation}
+
+а отже достатня умова на сильний максимум також виконана!
+
+\textbf{Відповідь.} Маємо сильний і слабкий максимум при $f=\widetilde{f}(x) = \frac{e}{x}-\log x$.
+
+\subsection{Розв'язок диференціального рівняння}
+
+Розв'яжемо
+\begin{equation}
+    x^2f''(x) + 2xf'(x) + 1 = 0
+\end{equation}
+
+Перепишемо у вигляді:
+\begin{equation}
+    f''(x) + \frac{2}{x}f'(x) = -\frac{1}{x^2}
+\end{equation}
+
+Спочатку розв'яжемо лінійне однорідне рівняння, тобто
+\begin{equation}
+    \widetilde{f}''(x) + \frac{2}{x}\widetilde{f}'(x) = 0
+\end{equation}
+
+Робимо заміну $u(x)=\widetilde{f}'(x)$, тоді маємо рівняння з відокремленими змінними:
+\begin{equation}
+    \frac{du}{dx} = -\frac{2u}{x} \implies \frac{du}{u} = -\frac{2dx}{x} \implies u(x) = \frac{c_1}{x^2}
+\end{equation}
+
+Отже звідси $\widetilde{f}(x) = \int u(x) = c_2-\frac{c_1}{x}$. Отже, розв'язок початкового рівняння має вигляд:
+\begin{equation}
+    f(x) = \widetilde{f}(x) + f_0(x),
+\end{equation}
+
+де $f_0(x)$ -- будь-який розв'язок неоднорідного рівняння. Тут, можна просто вгадати, що $f_0(x)=-\log x$ підходить, тому
+\begin{equation}
+    f(x) = -\frac{c_1}{x} + c_2 - \log x,
+\end{equation}
+
+що і треба було довести.
+
+\end{document}

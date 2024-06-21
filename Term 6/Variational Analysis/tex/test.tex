@@ -1,0 +1,106 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{template}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Контрольна робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Бебія М.О.}
+\date{\today}
+\duedate{11:20 25 травня}
+\assignno{1}
+\semester{Весняний семестр 2024}
+\mainproblem{Контрольна робота. Варіант 2}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Принцип максимума Понтрягіна.}
+
+\hspace{20px}\textbf{Умова.} Мінімізувати $J(u) = \int_0^{1}u^2(t)dt - x(1)$ під дією системи
+\begin{equation*}
+    \dot{x} = x + u, \; x(0) = 0
+\end{equation*}
+
+без обмежень на керування $u(t) \in \mathbb{R}$.
+
+\textbf{Розв'язання.} Скористаємось \textbf{принципом максимума Понтрягіна}. Сформулюємо цей принцип в дещо спрощеному вигляді знизу.
+
+\noindent\rule{8cm}{0.4pt}
+
+\textcolor{blue}{\textbf{Спрощене формулювання принципу максимума Понтрягіна.}} 
+
+Нехай маємо наступну динамічну систему:
+\begin{equation}
+    \dot{\mathbf{x}} = f(\mathbf{x}(t), \mathbf{u}(t)), \; \mathbf{x}(0) = \mathbf{x}_0, \; \mathbf{u}(t) \in \mathcal{U}, \; t \in [0,T]
+\end{equation}
+і ми маємо функціонал $\mathcal{L}(\mathbf{u}) = \Psi(\mathbf{x}(T)) + \int_0^T \ell(\mathbf{x}(t), \mathbf{u}(t))dt \to \inf$. Введемо вектор множників Лагранжа $\boldsymbol{\psi}(t)$, деяке $\lambda_0 < 0$ та Гамільтоніан
+\begin{equation*}
+    \mathcal{H}(\mathbf{x}(t), \mathbf{u}(t), \boldsymbol{\psi}(t), t) := \boldsymbol{\psi}^{\top}f(\mathbf{x}(t), \mathbf{u}(t)) + \lambda_0\ell(\mathbf{x}(t), \mathbf{u}(t))
+\end{equation*}
+
+Принцип максимуму Понтрягіна стверджує, що оптимальна траєкторія $\mathbf{x}^*(t)$, керування $\mathbf{u}^*(t)$, та відповідний вектор множників Лагранжа $\boldsymbol{\psi}^*(t)$ має максимізувати Гамільтоніан $\mathcal{H}$, тобто
+\begin{equation}\label{pontryagin-condition-1}
+    (\forall t \in [0,T]) \; (\forall \mathbf{u}(t) \in \mathcal{U})\; \{\mathcal{H}(\mathbf{x}^*(t), \mathbf{u}^*(t), \boldsymbol{\psi}^*(t), t) \geq \mathcal{H}(\mathbf{x}(t), \mathbf{u}(t), \boldsymbol{\psi}(t), t)\},
+\end{equation}
+де вектор множників знаходиться з рівнянь
+\begin{equation}\label{pontryagin-condition-2}
+    \dot{\boldsymbol{\psi}}(t) = -\nabla_{\mathbf{x}} \mathcal{H}(\mathbf{x}^*(t), \mathbf{u}^*(t), \boldsymbol{\psi},t), \; \boldsymbol{\psi}(T) = -\nabla_{\mathbf{x}}\Psi(\mathbf{x}(T))
+\end{equation}
+
+\noindent\rule{8cm}{0.4pt}
+
+Отже, застосуємо цей принцип. В нашому випадку маємо траєкторію $x(t)$, множина обмежень управлінь $\mathcal{U} = \mathbb{R}$, а функції мають вид:
+\begin{equation}
+    f(x(t), u(t)) = x + u, \; \Psi(x(1)) = -x(1), \; \ell(x(t), u(t)) = u^2(t)
+\end{equation}
+
+Таким чином, якщо ввести множник Лагранжа $\psi(t)$ та покласти $\lambda_0 := -1$, то Гамільтоніан запишеться як:
+\begin{equation}
+    \mathcal{H}(x(t), u(t), \psi(t), t) = -u^2 + \psi x + \psi u
+\end{equation}
+
+Отже, нам потрібно обрати $u^* = \arg\max_{u \in \mathcal{U}}\mathcal{H}(x(t), u(t), \psi(t), t)$. Відносно $u$ наш Гамільтоніан задає параболу, що направлена вниз, а вершина, що відповідає глобальному максимуму, знаходиться через умову $\frac{\partial \mathcal{H}(u^*)}{\partial u} = 0$. Отже, 
+\begin{equation}
+    \frac{\partial \mathcal{H}(u^*)}{\partial u} = -2u^* + \psi \implies u^* = \frac{\psi}{2}
+\end{equation}
+
+Отже, тепер знаходимо множник Лагранжа з рівняння $\dot{\psi}(t) = -\nabla\mathcal{H}$:
+\begin{equation}
+    \dot{\psi} = -\psi \implies \psi(t) = C e^{-t}
+\end{equation}
+
+Отже, залишилось знайти константу $C$. Скористаємось умовою трансверсальності $\psi(T) = -\nabla \Psi (x(T))$:
+\begin{equation}
+    Ce^{-1} = 1 \implies C = e
+\end{equation}
+
+Отже, остаточно $\boxed{\psi(t) = e^{1-t}}$. Отже керування має вигляд $u^*(t) = \frac{1}{2}\psi = \frac{1}{2}e^{1-t}$. Отже, тепер знайдемо траєкторію:
+\begin{equation}
+    \dot{x} = x + \frac{1}{2}e^{1-t}
+\end{equation}
+
+Це лінійне диференціальне рівняння, тому розв'язок однорідної системи відповідає $\dot{x} = x$, звідки $x=Ce^t$. Далі методом варіації підставляємо $x(t)=C(t)e^t$ у наше рівняння:
+\begin{equation}
+    \dot{C}e^t + Ce^t = Ce^t + \frac{1}{2}e^{1-t} \implies \dot{C} = \frac{1}{2}e^{1-2t} \implies C(t) = -\frac{1}{4}e^{1-2t} + \gamma
+\end{equation}
+
+Отже розв'язок має вигляд $x(t) = (-\frac{1}{4}e^{1-2t}+\gamma)e^t$. З умови $x(0)=0$ маємо $\gamma = \frac{e}{4}$, тому остаточно оптимальна траєкторія та керування:
+\begin{equation}
+    x^*(t) = \frac{1}{4}e^{1-t}(e^{2t}-1), \; u^*(t) = \frac{1}{2}e^{1-t}
+\end{equation}
+
+Обрахуємо функціонал:
+\begin{gather}
+    J^* = J(u^*) = \int_0^1 \frac{1}{4}e^{2(1-t)}dt - \frac{1}{4}e^0(e^2-1) \nonumber \\ =-\frac{1}{8} + \frac{1}{8}e^2 - \frac{1}{4}e^2 + \frac{1}{4} = \frac{1-e^2}{8}
+\end{gather}
+
+\textbf{Відповідь.} $u^*(t) = \frac{1}{2}e^{1-t}, \; x^*(t) = \frac{e^{1-t}}{4}(e^{2t}-1), \; J^* = \frac{1-e^2}{8}$.
+
+\end{document}

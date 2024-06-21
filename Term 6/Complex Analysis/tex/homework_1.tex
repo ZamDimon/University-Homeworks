@@ -1,0 +1,110 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-complan-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Гиря Н.П.}
+\date{\today}
+\duedate{23:59 3 березня, 2024}
+\assignno{1}
+\semester{Весняний семестр 2024}
+\mainproblem{Обчислення лишків. Варіант 5}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{}
+
+\textbf{Умова.} Обчислити лишки в усіх ізольованих особливих точках, в тому числі при $z=\infty$:
+\begin{equation*}
+    f(z) = \frac{z+4}{z-6}
+\end{equation*}
+
+\textbf{Розв'язання.} Тут маємо лише дві особливі точки: $z=6$ -- полюс першого порядку, а також $z=\infty$ -- усувна особливість, оскільки
+\begin{equation}
+    f(\infty)=\lim_{z \to \infty}f(z) = \lim_{z \to \infty} \frac{1+\frac{4}{z}}{1-\frac{6}{z}} = 1
+\end{equation}
+Отже, щоб обчислити лишок у $z=\infty$, використовуємо формулу:
+\begin{gather}
+    \text{Res}_{z=\infty}f(z) = \lim_{z \to \infty}\left(z(f(\infty)-f(z))\right) = \lim_{z \to \infty}\left(z\left(1-\frac{z+4}{z-6}\right)\right) \nonumber \\
+    = \lim_{z \to \infty} \frac{-10z}{z-6} = -10\lim_{z \to \infty} \frac{1}{1-\frac{6}{z}} = -10
+\end{gather}
+Оскільки в нас всього одна особлива точка $z=6$ окрім $\infty$, то лишок в ній можна обчислити, використовши формулу
+\begin{equation}
+    \text{Res}_{z=\infty}f(z) + \text{Res}_{z=6}f(z) =.0 \implies \text{Res}_{z=6}f(z) = -\text{Res}_{z=\infty}f(z) = 10
+\end{equation}
+Або, для самоперевірки, обрахуємо її наступним чином:
+\begin{equation}
+    \text{Res}_{z=6}f(z) = \lim_{z \to 6}(z-6)f(z)=\lim_{z \to 6}(z+4) = 10
+\end{equation}
+\textbf{Відповідь.} $\text{Res}_{z=6}f(z)=10,\;\text{Res}_{z=\infty}f(z)=-10$.
+\pagebreak
+
+\problem{}
+
+\textbf{Умова.} Обчислити лишки в усіх ізольованих особливих точках, в тому числі при $z=\infty$:
+\begin{equation*}
+    f(z) = \frac{1}{z^5(z-3)(z+2i)^2}
+\end{equation*}
+
+\textbf{Розв'язання.} Перерахуємо усі особливі точки:
+\begin{itemize}
+    \item $z=0$ -- полюс $5$ порядку.
+    \item $z=3$ -- полюс $1$ порядку.
+    \item $z=-2i$ -- полюс $2$ порядку.
+    \item $z=\infty$ -- усувна особливість (легко бачити, що $\lim_{z \to \infty}f(z)=0$).
+\end{itemize}
+Окреслимо нашу ``стратегію'': найлегше обрахувати лишки у $z=\infty$, $z=3$ та $z=-2i$, а вже лишок $z=0$ п'ятого порядку знайдемо з рівності $\sum_{k}\text{Res}_{z=a_k}f(z)+\text{Res}_{z=\infty}f(z)=0$.
+
+По-перше бачимо, що $zf(z) \xrightarrow[z \to \infty]{}0$, тому $\text{Res}_{z=\infty}f(z)=0$. 
+
+Для $z=3$ скористаємося тим, що
+\begin{gather}
+    \text{Res}_{z=3}f(z) = \lim_{z \to 3}(z-3)f(z) = \lim_{z \to 3}\frac{1}{z^5(z+2i)^2} \nonumber \\ 
+    = \frac{1}{3^5 \cdot (3+2i)^2} = \frac{1}{3^5} \cdot \frac{1}{5+12i} = \frac{5-12i}{13^2 \cdot 3^5} \nonumber \\ = \frac{5}{13^2 \cdot 3^5} - \frac{4i}{3^4 \cdot 13^2} = \frac{5}{41067} - \frac{4i}{13689}
+\end{gather}
+А для $z=-2i$ скористаємось схожою формулою:
+\begin{gather}
+    \text{Res}_{z=-2i}f(z) = \lim_{z \to -2i}((z+2i)^2f(z))' = \lim_{z \to -2i}\left(\frac{1}{z^5(z-3)}\right)' \nonumber \\
+    = \lim_{z \to -2i} \frac{6z^5-15z^4}{z^{10}(z-3)^2} = \lim_{z \to -2i} \frac{6z-15}{z^6(z-3)^2} = \frac{-12i-15}{(-2i)^6(-2i-3)^2} \nonumber \\
+    = \frac{15+12i}{2^6(5+12i)} = -\frac{219}{10816} + \frac{15i}{1352}
+\end{gather}
+Нарешті, для обрахунку $\text{Res}_{z=0}f(z)$ знаходимо:
+\begin{gather}
+    \text{Res}_{z=0}f(z) = -\text{Res}_{z=3}f(z) - \text{Res}_{z=-2i}f(z) = \frac{313}{15552} - \frac{7i}{648}
+\end{gather}
+
+\textbf{Відповідь.} $\text{Res}_{z=0}f(z)=\frac{313}{15552} - \frac{7i}{648},\;\text{Res}_{z=-2i}f(z)=-\frac{219}{10816} + \frac{15i}{1352},\text{Res}_{z=3}f(z)=\frac{5}{41067} - \frac{4i}{13689},\;\text{Res}_{z=\infty}f(z)=0$.
+
+\problem{}
+
+\textbf{Умова.} Обчислити лишки в усіх ізольованих особливих точках, в тому числі при $z=\infty$:
+\begin{equation*}
+    f(z) = \exp\left(\frac{1}{z+7i}\right)
+\end{equation*}
+
+\textbf{Розв'язання.} $z=\infty$ є усувною особливістю, оскільки гранично маємо $f(z) \xrightarrow[z \to \infty]{}e^0 = 1=f(\infty)$. В такому разі лишок:
+\begin{gather}
+    \text{Res}_{z=\infty}f(z) = \lim_{z \to \infty}\left(z(f(\infty)-f(z))\right) = \lim_{z \to \infty}z\left(1-\exp\left(\frac{1}{z+7i}\right)\right)
+\end{gather}
+
+На нескінченності асимптотично $1-\exp\left(\frac{1}{z+7i}\right) \sim_{z \to \infty} -\frac{1}{z+7i}$, тому
+\begin{equation}
+    \text{Res}_{z=\infty}f(z) = -\lim_{z \to \infty} z \cdot \frac{1}{z+7i} = -\lim_{z \to \infty} \frac{1}{1+\frac{7i}{z}} = -1
+\end{equation}
+Друга особлива точка -- це $z=-7i$, що є істотною особливістю (оскільки маємо нескінченне число доданків в головній частині ряда Лорана). Розглянемо ряд Лорана:
+\begin{equation}
+    f(z) = \sum_{k=0}^{\infty}\frac{1}{k!}\left(\frac{1}{z+7i}\right)^k = 1 + \frac{1}{z+7i} + \frac{1}{2}\left(\frac{1}{z+7i}\right)^2 + \dots
+\end{equation}
+Лишок -- це коефіцієнт $c_{-1}$ в розкладі Лорана перед $\frac{1}{z+7i}$, в цьому випадку -- $1$. Тому, $\text{Res}_{z=-7i}f(z)=1$.
+
+\textbf{Відповідь.} $\text{Res}_{z=\infty}f(z)=-1,\;\text{Res}_{z=-7i}f(z)=1$. 
+\end{document}

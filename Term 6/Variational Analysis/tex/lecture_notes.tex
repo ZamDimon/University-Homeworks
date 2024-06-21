@@ -1,0 +1,2108 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{dsfont}
+\usepackage[normalem]{ulem}
+\usepackage{indentfirst}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage[italicdiff]{physics}
+%\usepackage{pifont} %For unusual symbols
+%\usepackage{mathdots} %For unusual combinations of dots
+\usepackage{wrapfig}
+\usepackage[inline,shortlabels]{enumitem}
+\setlist{topsep=2pt,itemsep=2pt,parsep=0pt,partopsep=0pt}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, top=0.5in,bottom=0.2in, left=0.5in, right=0.5in, footskip=0.3in, includefoot]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz,tikz-3dplot,tikz-cd,tkz-tab,tkz-euclide,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{multicol}
+\usepackage[bottom,multiple]{footmisc} %ensures footnotes are at the bottom of the page, and separates footnotes by a comma if they are adjacent
+\usepackage{hyperref}
+\usepackage[nameinlink]{cleveref} %nameinlink ensures that the entire element is clickable in the pdf, not just the number
+
+\newcommand{\remind}[1]{\textcolor{red}{\textbf{#1}}} %To remind me of unfinished work to fix later
+\newcommand{\hide}[1]{} %To hide large blocks of code without using % symbols
+
+\newcommand{\ep}{\varepsilon}
+\newcommand{\vp}{\varphi}
+\newcommand{\lam}{\lambda}
+\newcommand{\Lam}{\Lambda}
+%\newcommand{\abs}[1]{\ensuremath{\left\lvert#1\right\rvert}} % This clashes with the physics package
+%\newcommand{\norm}[1]{\ensuremath{\left\lVert#1\right\rVert}} % This clashes with the physics package
+\renewcommand{\ip}[1]{\ensuremath{\left\langle#1\right\rangle}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\Y}{\mathbb{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\As}{\mathcal{A}}
+\newcommand{\Bs}{\mathcal{B}}
+\newcommand{\Cs}{\mathcal{C}}
+\newcommand{\Ds}{\mathcal{D}}
+\newcommand{\Es}{\mathcal{E}}
+\newcommand{\Fs}{\mathcal{F}}
+\newcommand{\Gs}{\mathcal{G}}
+\newcommand{\Hs}{\mathcal{H}}
+\newcommand{\Is}{\mathcal{I}}
+\newcommand{\Js}{\mathcal{J}}
+\newcommand{\Ks}{\mathcal{K}}
+\newcommand{\Ls}{\mathcal{L}}
+\newcommand{\Ms}{\mathcal{M}}
+\newcommand{\Ns}{\mathcal{N}}
+\newcommand{\Os}{\mathcal{O}}
+\newcommand{\Ps}{\mathcal{P}}
+\newcommand{\Qs}{\mathcal{Q}}
+\newcommand{\Rs}{\mathcal{R}}
+\newcommand{\Ss}{\mathcal{S}}
+\newcommand{\Ts}{\mathcal{T}}
+\newcommand{\Us}{\mathcal{U}}
+\newcommand{\Vs}{\mathcal{V}}
+\newcommand{\Ws}{\mathcal{W}}
+\newcommand{\Xs}{\mathcal{X}}
+\newcommand{\Ys}{\mathcal{Y}}
+\newcommand{\Zs}{\mathcal{Z}}
+\newcommand{\ab}{\textbf{a}}
+\newcommand{\bb}{\textbf{b}}
+\newcommand{\cb}{\textbf{c}}
+\newcommand{\db}{\textbf{d}}
+\newcommand{\ub}{\textbf{u}}
+%\renewcommand{\vb}{\textbf{v}} % This clashes with the physics package (the physics package already defines the \vb command)
+\newcommand{\wb}{\textbf{w}}
+\newcommand{\xb}{\textbf{x}}
+\newcommand{\yb}{\textbf{y}}
+\newcommand{\zb}{\textbf{z}}
+\newcommand{\Ab}{\textbf{A}}
+\newcommand{\Bb}{\textbf{B}}
+\newcommand{\Cb}{\textbf{C}}
+\newcommand{\Db}{\textbf{D}}
+\newcommand{\eb}{\textbf{e}}
+\newcommand{\ex}{\textbf{e}_x}
+\newcommand{\ey}{\textbf{e}_y}
+\newcommand{\ez}{\textbf{e}_z}
+\newcommand{\abar}{\overline{a}}
+\newcommand{\bbar}{\overline{b}}
+\newcommand{\cbar}{\overline{c}}
+\newcommand{\dbar}{\overline{d}}
+\newcommand{\ubar}{\overline{u}}
+\newcommand{\vbar}{\overline{v}}
+\newcommand{\wbar}{\overline{w}}
+\newcommand{\xbar}{\overline{x}}
+\newcommand{\ybar}{\overline{y}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\Abar}{\overline{A}}
+\newcommand{\Bbar}{\overline{B}}
+\newcommand{\Cbar}{\overline{C}}
+\newcommand{\Dbar}{\overline{D}}
+\newcommand{\Ubar}{\overline{U}}
+\newcommand{\Vbar}{\overline{V}}
+\newcommand{\Wbar}{\overline{W}}
+\newcommand{\Xbar}{\overline{X}}
+\newcommand{\Ybar}{\overline{Y}}
+\newcommand{\Zbar}{\overline{Z}}
+\newcommand{\Aint}{A^\circ}
+\newcommand{\Bint}{B^\circ}
+\newcommand{\limk}{\lim_{k\to\infty}}
+\newcommand{\limm}{\lim_{m\to\infty}}
+\newcommand{\limn}{\lim_{n\to\infty}}
+\newcommand{\limx}[1][a]{\lim_{x\to#1}}
+\newcommand{\liminfm}{\liminf_{m\to\infty}}
+\newcommand{\limsupm}{\limsup_{m\to\infty}}
+\newcommand{\liminfn}{\liminf_{n\to\infty}}
+\newcommand{\limsupn}{\limsup_{n\to\infty}}
+\newcommand{\sumkn}{\sum_{k=1}^n}
+\newcommand{\sumk}[1][1]{\sum_{k=#1}^\infty}
+\newcommand{\summ}[1][1]{\sum_{m=#1}^\infty}
+\newcommand{\sumn}[1][1]{\sum_{n=#1}^\infty}
+\newcommand{\emp}{\varnothing}
+\newcommand{\exc}{\backslash}
+\newcommand{\sub}{\subseteq}
+\newcommand{\sups}{\supseteq}
+\newcommand{\capp}{\bigcap}
+\newcommand{\cupp}{\bigcup}
+\newcommand{\kupp}{\bigsqcup}
+\newcommand{\cappkn}{\bigcap_{k=1}^n}
+\newcommand{\cuppkn}{\bigcup_{k=1}^n}
+\newcommand{\kuppkn}{\bigsqcup_{k=1}^n}
+\newcommand{\cappk}[1][1]{\bigcap_{k=#1}^\infty}
+\newcommand{\cuppk}[1][1]{\bigcup_{k=#1}^\infty}
+\newcommand{\cappm}[1][1]{\bigcap_{m=#1}^\infty}
+\newcommand{\cuppm}[1][1]{\bigcup_{m=#1}^\infty}
+\newcommand{\cappn}[1][1]{\bigcap_{n=#1}^\infty}
+\newcommand{\cuppn}[1][1]{\bigcup_{n=#1}^\infty}
+\newcommand{\kuppk}[1][1]{\bigsqcup_{k=#1}^\infty}
+\newcommand{\kuppm}[1][1]{\bigsqcup_{m=#1}^\infty}
+\newcommand{\kuppn}[1][1]{\bigsqcup_{n=#1}^\infty}
+\newcommand{\cappa}{\bigcap_{\alpha\in I}}
+\newcommand{\cuppa}{\bigcup_{\alpha\in I}}
+\newcommand{\kuppa}{\bigsqcup_{\alpha\in I}}
+\newcommand{\Rx}{\overline{\mathbb{R}}}
+\newcommand{\dx}{\,dx}
+\newcommand{\dy}{\,dy}
+\newcommand{\dt}{\,dt}
+\newcommand{\dax}{\,d\alpha(x)}
+\newcommand{\dbx}{\,d\beta(x)}
+\DeclareMathOperator{\glb}{\text{glb}}
+\DeclareMathOperator{\lub}{\text{lub}}
+\newcommand{\xh}{\widehat{x}}
+\newcommand{\yh}{\widehat{y}}
+\newcommand{\zh}{\widehat{z}}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\renewcommand{\iff}{\Leftrightarrow}
+\DeclareMathOperator{\im}{\text{im}}
+\let\spn\relax\let\Re\relax\let\Im\relax
+\DeclareMathOperator{\spn}{\text{span}}
+\DeclareMathOperator{\Re}{\text{Re}}
+\DeclareMathOperator{\Im}{\text{Im}}
+\DeclareMathOperator{\diag}{\text{diag}}
+
+\newtheoremstyle{mystyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{}
+\newtheoremstyle{cstyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{\thmnote{#3}}
+\makeatletter
+\renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}{\normalfont\sffamily\bfseries\topsep6\p@\@plus6\p@\relax #1\@addpunct{.} }}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\newcommand{\coolqed}[1]{\includegraphics[width=#1cm]{sunglasses_emoji.png}} %Defines the new QED symbol
+\renewcommand{\qedsymbol}{\coolqed{0.32}} %Implements the new QED symbol
+\theoremstyle{mystyle}{\newtheorem{definition}{Definition}[section]}
+\theoremstyle{mystyle}{\newtheorem{proposition}[definition]{Proposition}}
+\theoremstyle{mystyle}{\newtheorem{theorem}[definition]{Theorem}}
+\theoremstyle{mystyle}{\newtheorem{lemma}[definition]{Lemma}}
+\theoremstyle{mystyle}{\newtheorem{corollary}[definition]{Corollary}}
+\theoremstyle{mystyle}{\newtheorem*{remark}{Remark}}
+\theoremstyle{mystyle}{\newtheorem*{remarks}{Remarks}}
+\theoremstyle{mystyle}{\newtheorem*{example}{Example}}
+\theoremstyle{mystyle}{\newtheorem*{examples}{Examples}}
+\theoremstyle{definition}{\newtheorem*{exercise}{Exercise}}
+\theoremstyle{cstyle}{\newtheorem*{cthm}{}}
+
+%Warning environment
+\newtheoremstyle{warn}{}{}{}{}{\normalfont}{}{ }{}
+\theoremstyle{warn}
+\newtheorem*{warning}{\warningsign{0.2}\relax}
+
+%Symbol for the warning environment, designed to be easily scalable
+\newcommand{\warningsign}[1]{\tikz[scale=#1,every node/.style={transform shape}]{\draw[-,line width={#1*0.8mm},red,fill=yellow,rounded corners={#1*2.5mm}] (0,0)--(1,{-sqrt(3)})--(-1,{-sqrt(3)})--cycle;
+\node at (0,-1) {\fontsize{48}{60}\selectfont\bfseries!};}}
+
+\tcolorboxenvironment{definition}{boxrule=0pt,boxsep=0pt,colback={red!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{red},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proposition}{boxrule=0pt,boxsep=0pt,colback={Orange!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Orange},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{theorem}{boxrule=0pt,boxsep=0pt,colback={blue!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{blue},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{lemma}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{corollary}{boxrule=0pt,boxsep=0pt,colback={violet!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{violet},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proof}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{CadetBlue!80!white},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remark}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remarks}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{example}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{examples}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{cthm}{boxrule=0pt,boxsep=0pt,colback={gray!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{gray},sharp corners,before skip=10pt,after skip=10pt,breakable}
+
+%align and align* environments with inline size
+\newenvironment{talign}{\let\displaystyle\textstyle\align}{\endalign}
+\newenvironment{talign*}{\let\displaystyle\textstyle\csname align*\endcsname}{\endalign}
+
+\usepackage[explicit]{titlesec}
+\titleformat{\section}{\fontsize{24}{30}\sffamily\bfseries}{\thesection}{20pt}{#1}
+\titleformat{\subsection}{\fontsize{16}{18}\sffamily\bfseries}{\thesubsection}{12pt}{#1}
+\titleformat{\subsubsection}{\fontsize{10}{12}\sffamily\large\bfseries}{\thesubsubsection}{8pt}{#1}
+
+\titlespacing*{\section}{0pt}{5pt}{5pt}
+\titlespacing*{\subsection}{0pt}{5pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{5pt}{5pt}
+
+%\newcommand{\sectionbreak}{\clearpage} %Start every section on a new page
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+\setlength{\parindent}{0.2in}
+\setlength{\parskip}{0pt}
+\setlength{\columnseprule}{0pt}
+
+\title{\huge\sffamily\bfseries Варіаційний Аналіз}
+\author{\Large\sffamily Дмитро Захаров}
+\date{\sffamily \today}
+
+\begin{document}
+
+\maketitle
+
+%Custom colors for different environments
+\definecolor{contcol1}{HTML}{72E094}
+\definecolor{contcol2}{HTML}{24E2D6}
+\definecolor{convcol1}{HTML}{C0392B}
+\definecolor{convcol2}{HTML}{8E44AD}
+
+\begin{tcolorbox}[title=Вміст, fonttitle=\sffamily\bfseries\selectfont,interior style={left color=contcol1!40!white,right color=contcol2!40!white},frame style={left color=contcol1!80!white,right color=contcol2!80!white},coltitle=black,top=2mm,bottom=2mm,left=2mm,right=2mm,drop fuzzy shadow,enhanced,breakable]
+\makeatletter
+\@starttoc{toc}
+\makeatother
+\end{tcolorbox}
+
+\newpage
+
+\section{Класичні задачі.}
+
+\textbf{Умова.} Постановка найпростішої задачі варіаційного числення. Приклади (задача про брахістохрону, задача Дідони).
+
+\textbf{Відповідь.} Якщо в звичайному аналізі зазвичай ми розглядали деяку функцію $f: \mathbb{R}^m \to \mathbb{R}$ і шукали максимум 
+чи мінімум цієї функції, то варіаційний аналіз розглядає функціонали, тобто функції від функцій. При цьому, доволі багато
+речей буде подібними, але тим не менш це досить новий погляд на задачі оптимізації.
+
+Розглянемо кілька класичних прикладів варіаційного числення. 
+
+\subsection{Задача Діодони.}
+Серед усіх кривих заданої довжини $\ell$ знайти ту, що
+обмежує найбільшу площу. Вважаємо, що кінці закріплені вздовж вісі $Ox$. Тоді, задачу можемо 
+сформулювати наступним чином:
+\begin{equation}
+    \begin{cases}
+        J[f] = \int_{x_0}^{x_1}y(x)dx \to \max \\
+        \ell = \int_{x_0}^{x_1}\sqrt{1+f'(x)^2}dx \\
+        f(x_0) = f(x_1) = 0
+    \end{cases}
+\end{equation} 
+
+Тут, як бачимо, на відміну від класичного аналізу, ми шукаємо функцію $f(x)$, яка максимізує функціонал $J[f]$.
+Тепер, розглянемо інший важливий приклад.
+
+\subsection{Задача про брахістохрону.}
+Історично дуже важлива задача, оскільки по своїй суті 
+саме вона вважається істоком варіаційного аналізу, як математичної дисципліни. Її формулювання наступне:
+
+Нехай є дві точки $A$ та $B$, що не лежать на одній горизонтальній прямі. Також, нехай 
+горизонтальна відстань між ними $\ell$, а вертикальна $h$. В точку $A$ поставили вантаж. Якою має бути 
+форма кривої, щоб під дією лише сили тяжіння без урахування тертя точка за найкоротший
+час перейшла з точки $A$ в точку $B$?
+
+Запишемо цю задачу більш детально. З закону збереження енергії, функція швидкості
+від висоти $v(y)=\sqrt{2gy}$. Тоді оскільки $v=\frac{ds}{dt}$ де $ds=\sqrt{1+f'(x)}dx$,
+маємо 
+\begin{equation}
+    \sqrt{2gy}dt = \sqrt{1+f'(x)}dx
+\end{equation}
+
+Звідси легко знайти загальний час, проінтегрувавши вираз:
+\begin{equation}
+    T = \frac{1}{\sqrt{2g}}\int_0^{\ell}\sqrt{\frac{1+f'(x)^2}{f(x)}}dx \to \inf
+\end{equation}
+
+Таким чином, формально задача варіаційного числення:
+\begin{equation}
+    \begin{cases}
+        \int_0^{\ell}\sqrt{\frac{1+f'(x)^2}{f(x)}}dx \to \inf \\
+        f(0) = 0, \; f(\ell) = h
+    \end{cases}
+\end{equation}
+
+\pagebreak
+\section{Слабкий та сильний екстремум.}
+
+\textbf{Умова.} Слабкий та сильний екстремум. Приклади.
+
+\textbf{Відповідь.} Почнемо з означень.
+
+\subsection{Формальні означення.}
+
+Через $\mathcal{F}$ позначимо множину функцій виду $f: [a,b] \to \mathbb{R}$.
+
+\begin{definition} $\mathcal{C}^1[a,b]$ -- простір неперервно-диференційованих функцій на $[a,b]$ з нормою $\|f\|_1=\max_{x \in [a,b]}|f(x)|+\max_{x \in [a,b]}|f'(x)|$.
+\end{definition}
+
+\begin{definition} $\mathcal{C}^k[a,b]$ -- простір $k$ разів неперервно-диференційованих функцій на $[a,b]$ з нормою $\|f\|_k=\sum_{i=0}^k\max_{x \in [a,b]}|f^{(i)}(x)|$.
+\end{definition}
+
+\begin{definition} \textbf{Сильним $\varepsilon$-околом} $\mathcal{U}_{\varepsilon}^+$ кривої $\widetilde{f} \in \mathcal{KC}^1[a,b]$ є
+\begin{equation}
+    \mathcal{U}_{\varepsilon}^+(\widetilde{f}) = \{f \in \mathcal{F}: |f(x) - \widetilde{f}(x)| < \varepsilon \; \forall x \in [a,b]\}
+\end{equation}
+\end{definition}
+
+\begin{definition} \textbf{Слабим $\varepsilon$-околом} $\mathcal{U}_{\varepsilon}^-$ кривої $\widetilde{f} \in \mathcal{KC}^1[a,b]$ називають
+\begin{equation}
+    \mathcal{U}_{\varepsilon}^-(\widetilde{f}) = \{f \in \mathcal{F}: |f(x) - \widetilde{f}(x)| < \varepsilon \wedge |f'(x)-\widetilde{f}'(x)|<\varepsilon \; \forall x \in [a,b]\}
+\end{equation}
+\end{definition}
+
+\begin{definition} Нехай маємо функціонал $J$ і розглянемо множину функцій, що задовольняють умові $\mathcal{U} = \{f \in \mathcal{F}: f \in \mathcal{KC}_1[a,b], f(a)=A,f(b)=B\}$. Будемо казати, що \textbf{досягається сильний(слабкий) локальний мінімум} на кривій $\widetilde{f} \in \mathcal{U}$ якщо:
+    \begin{equation}
+        \exists \varepsilon > 0: J[\widetilde{f}] \leq J[f] \; \forall f \in \mathcal{U} \cap \mathcal{U}_{\varepsilon}^{\pm}
+    \end{equation}
+\end{definition}
+
+\textbf{Важливе зауваження.} З того, що $\widetilde{f}$ досягає сильний локальний екстремум випливає, що $\widetilde{f}$ досягає і сильного локального мінімума.
+ 
+\subsection{Приклади}
+
+Розглянемо приклад, коли досягається слабкий локальний мінімум, але немає сильного локального мінімума. Нехай маємо
+\begin{equation}
+    J[f] = \int_0^{\pi}f(x)^2(1-f'(x)^2)dx \to \inf, \; f(0)=0, \; f(\pi)=0
+\end{equation}
+
+Покажемо, що на $\widetilde{f}\equiv 0$ досягається слабкий локальний мінімум. Дійсно, покладемо $\varepsilon := \frac{1}{2}$ і покажемо, що 
+\begin{equation}
+    \forall f \in \mathcal{U}_{\varepsilon}^{-}: J[\widetilde{f}] \leq J[f]
+\end{equation}
+
+Оскільки $f$ належить околу, то $|f|<\frac{1}{2},|f'|<\frac{1}{2}$. Оцінимо інтеграл:
+\begin{equation}
+    J[f] = \int_0^{\pi}f(x)^2\underbrace{(1-f'(x)^2)}_{\geq \frac{3}{4}}dx \geq \frac{3}{4}\int_0^{\pi}f(x)^2dx \geq 0 = J[\widetilde{f}]
+\end{equation}
+
+Тепер покажемо, що ми не маємо сильного локального максимуму. Нехай від противного: локальний сильний мінімум це $\widetilde{f} \equiv 0$. Тоді має виконуватись
+\begin{equation}
+    J[\widetilde{f}] = 0 \leq J[f] \; \forall f \in \mathcal{U}_{\varepsilon}^{+}(\widetilde{f})
+\end{equation}
+
+Оскільки $f$ належить околу, то $|f|<\varepsilon$. Тепер розглянемо таку послідовність функцій: $f_n := \frac{\sin nx}{\sqrt{n}}$. 
+Легко бачити, що $|f_n|=\left|\frac{\sin nx}{\sqrt{n}}\right| \leq \frac{1}{\sqrt{n}}<\varepsilon$, тому для скіль завгодно 
+маленького $\varepsilon$ можна обрати $n_{\varepsilon} := [\varepsilon^{-2}]+1$, щоб $f_n \in \mathcal{U}_{\varepsilon}(\widetilde{f})$. Тепер оцінимо $J[f_n]$:
+\begin{equation}
+    J[f_n] = \int_0^{\pi}\frac{\sin^2 nx}{n}\left(1-\frac{n^2\cos^2nx}{n}\right)dx
+\end{equation}
+
+Можна показати, що цей інтеграл дорівнює:
+\begin{equation}
+    J[f_n] = \frac{\pi(4-n)}{8n}
+\end{equation}
+
+Видно, що для $n>4$ маємо $J[f_n]<0=J[\widetilde{f}]$ -- протиріччя.
+
+\pagebreak
+
+\section{Перша варіація.}
+
+\textbf{Умова.} Перша варіація. Її застосування та обчислення.
+
+\textbf{Відповідь.} Отже, спочатку сформулюємо, що ми взагалі вважаємо за лінійний функціонал.
+
+Нехай ми маємо нормований лінійний простір $V$ і задамо деяку функцію, що кожен елемент
+з цього простору $\eta \in V$ відображає на поле $F$ (в рамках варіаційного аналізу
+нас цікавить поле $F = \mathbb{R}$) -- це по суті і є наш функціонал. Тепер, означення.
+
+\begin{definition}
+    Нехай маємо функціонал $J: V \to \mathbb{R}$. Він називається \textbf{лінійним}, якщо
+    \begin{enumerate}
+        \item $J[\alpha\eta] = \alpha J[\eta] \; \forall \eta \in V \; \forall \alpha \in \mathbb{R}$.
+        \item $J[\eta_1+\eta_2] = J[\eta_1] + J[\eta_2] \; \forall \eta_1,\eta_2 \in V$.
+    \end{enumerate}
+\end{definition}
+
+\begin{example}
+    Нехай $J[f] = \int_a^b f(x)dx$. Тоді цей функціонал лінійний.
+\end{example}
+
+\begin{example}
+    Нехай $J[f] = \int_a^b \beta(x)f(x)dx$, де $\beta \in \mathcal{C}[a,b]$ -- фіксована функція. Цей функціонал також є лінійним.
+\end{example}
+
+Тепер розглянемо поняття першої варіації.
+
+\begin{definition} \textbf{Варіація функціоналу.} Нехай $J: V \to \mathbb{R}$ функціонал на лінійному нормованому просторі $V$. Розглянемо приріст 
+    \begin{equation}
+        \Delta J[\eta] = J[f+\eta]-J[f]
+    \end{equation}
+    Нехай $\Delta J[\eta] = L[\eta] + \overline{o}(\|\eta\|)$, де $L[\cdot]$ -- лінійний функціонал. Тоді кажуть, що $J[\eta]$ -- диференційований функціонал, а $L[\eta]$ -- варіацією та позначають $\delta J[h]$. 
+\end{definition}
+
+\begin{theorem} Диференціал диференційованого функціоналу єдиний.
+\end{theorem}
+
+\begin{theorem} 
+    Нехай функціонал $J[f]$ досягає екстремуму у $\widetilde{f}$. Тоді варіація цього функціоналу за $f=\widetilde{f}$ нульова, тобто $\delta J[\eta]=0$ у $\widetilde{f}$.
+\end{theorem}
+
+\textcolor{purple}{\textbf{Доведення.}} Без обмеження загальності, нехай перед нами мінімум. Тоді,
+\begin{equation}
+    \Delta J[\eta] = \delta J[\eta] + \overline{o}(\|\eta\|)
+\end{equation}
+
+Очевидно, що при малому $\|\eta\|$ знак $\Delta J[\eta]$ буде таким самим, як і у $\delta J[\eta]$. 
+Нехай $\delta J[\eta_0] \neq 0$ для деякого $\eta_0$. Для скіль завгодно малого $\varepsilon>0$ маємо
+\begin{equation}
+    \delta J[-\varepsilon \eta_0] = -\delta J[\varepsilon h_0]
+\end{equation} 
+
+Тоді, $\Delta J[h]$ можна зробити як додатним, та і від'ємним, але для мінімума 
+\begin{equation}
+    \Delta J[\eta] = J[\widetilde{f} + \eta] - J[\widetilde{f}] \geq 0
+\end{equation}
+
+для усіх достатньо малих $\|\eta\|$. Протиріччя, а отже $\delta J[\eta]=0$.
+
+\pagebreak
+
+\section{Ключові леми.}
+
+\textbf{Умова.} Лема Лагранжа, лема Дюбуа-Реймона.
+
+\textbf{Відповідь.} Цю відповідь розділимо на дві частини: спочатку, сформулюємо теореми, а далі доведемо їх.
+
+\subsection{Формулювання}
+
+\begin{lemma}\textbf{Лагранжа.} Нехай $\alpha \in \mathcal{C}[a,b]$. Тоді, якщо для будь-якого $\eta \in \mathcal{C}[a,b]$ такого, що $\eta(a)=\eta(b)=0$, виконується $\int_a^b \alpha(x)\eta(x)dx=0$, то $\alpha \equiv 0$.
+\end{lemma}
+
+\begin{lemma}\textbf{Дюбуа-Реймона.} Нехай $\alpha \in \mathcal{C}[a,b]$. Тоді, якщо для будь-якого $\eta \in \mathcal{C}[a,b]$ такого, що $\eta(a)=\eta(b)=0$, виконується $\int_a^b \alpha(x)\eta'(x)dx=0$, то $\alpha \equiv \text{const}$.
+\end{lemma}
+
+\begin{lemma} Нехай $\alpha,\beta \in \mathcal{C}[a,b]$. Тоді, якщо для будь-якого $\eta \in \mathcal{C}^1[a,b]$ такого, що $\eta(a)=\eta(b)=0$, виконується 
+\begin{equation}
+    \int_a^b (\alpha(x)\eta(x) + \beta(x)\eta'(x))dx=0,
+\end{equation}
+то $\beta' \equiv \alpha$ на $[a,b]$.
+\end{lemma}
+
+\subsection{Доведення}
+
+\textcolor{purple}{\textbf{Доведення леми Лагранжа.}} Припустимо від противного. Нехай $\exists x_0 \in [a,b]$ для якого 
+$\alpha(x_0) \neq 0$. Позначимо $\varepsilon := \alpha(x_0)$. Без обмеження загальності, нехай
+$\varepsilon > 0$ (це нам буде зручно). Тоді, оскільки за умовою $\alpha \in \mathcal{C}[a,b]$, то
+існують $x_1,x_2: x_1<x_2$ та $\alpha(x)>0$ для усіх $x \in [x_1,x_2]$. Тоді, у якості $\eta$ можемо взяти
+\begin{equation}
+    \eta(x) = (x-x_1)(x_2-x) \cdot \mathds{1}_{[x_1,x_2]}(x)
+\end{equation}
+
+Тоді, значення інтегралу:
+\begin{equation}
+    \int_a^b \alpha(x)\eta(x)dx = \int_{x_1}^{x_2}\alpha(x)(x-x_1)(x_2-x)dx > 0,
+\end{equation}
+
+що суперечить умові. Отже, $\alpha \equiv 0$.
+
+\textcolor{purple}{\textbf{Доведення леми Дюбуа-Реймона.}} Покладемо
+\begin{equation}
+    c = \frac{1}{b-a}\int_a^b \alpha(x)dx \implies \int_a^b cdx = \int_a^b \alpha(x)dx \implies \int_a^b [\alpha(x) - c] = 0
+\end{equation}
+
+Оберемо $\eta(x)=\int_a^x [\alpha(x)-c]dx$. Тоді дійсно $\eta(a)=\eta(b)=0$ та $\eta \in \mathcal{C}^1[a,b]$. Тоді
+\begin{equation}
+    \int_a^b [\alpha(x)-c]\eta'(x)dx = \int_a^b \alpha(x)\eta'(x)dx - c\int_a^b \eta'(x)dx = 0
+\end{equation}
+
+Але, з іншого боку, $\eta'(x)=\alpha(x)-c$ і
+\begin{equation}
+    \int_a^b [\alpha(x)-c]\eta'(x)dx = \int_a^b (\alpha(x)-c)^2dx = 0 \implies \alpha \equiv c
+\end{equation}
+
+\textcolor{purple}{\textbf{Доведення третьої леми.}} Розглянемо $A(x):=\int_a^x \alpha(x)dx$, Тоді
+\begin{equation}
+    \int_a^b \alpha(x)\eta(x)dx = \int_a^b \eta(x)dA(x) = A(x)\eta(x)\Big|_{a}^b - \int_a^b A(x)\eta'(x)dx
+\end{equation}
+
+Підстановка $\eta(a)=\eta(b)=0$ дає, що $A(x)\eta(x)\Big|_{a}^b=0$, а отже 
+\begin{equation}
+    \int_a^b \alpha(x)\eta(x)dx = -\int_a^b A(x)\eta'(x)dx
+\end{equation}
+
+З іншого боку, з умови
+\begin{equation}
+    \int_a^b[-A(x)+\beta(x)]\eta'(x)dx=0,
+\end{equation}
+
+а тому з леми Дюбуа-Реймона $\beta(x)-A'(x) \equiv c$, звідки $\beta'(x) \equiv \alpha(x)$.
+
+\pagebreak
+
+\section{Рівняння Ейлера.}
+
+\textbf{Умова.} Необхідні умови екстремуму. Рівняння Ейлера в інтегральній формі та диференціальній
+формах.
+
+\subsection{Формулювання задачі.} 
+
+Нехай маємо задачу з фіксованими відрізками
+\begin{equation}
+    \begin{cases}
+        J[f] = \int_a^b L(x,f,f')dx \to \inf \\
+        f(a) = A, \; f(b) = B
+    \end{cases}
+\end{equation}
+
+Спробуємо її розв'язати. Логічно подивитися на приріст функціоналу $\Delta J[\eta]$:
+\begin{equation}
+    \Delta J[h] = J[f+\eta] - J[f] = \int_a^b [L(x,f+\eta,f'+\eta')-L(x,f,f')]dx
+\end{equation}
+
+Якщо розкласти перший доданок у ряд Тейлора, то отримаємо:
+\begin{equation}
+    \Delta J[h] = \int_a^b \left[\frac{\partial L}{\partial f}(x,f,f')\eta + \frac{\partial L}{\partial f'}(x,f,f')\eta'\right]dx + \overline{o}(\|\eta\|^2, \|\eta'\|^2),
+\end{equation}
+
+отже, поведінка приросту в основному визначається першим додатком у правій частині. Отже, логічно покласти наступне позначення:
+
+\begin{definition} Першою варіацією $J$ назвемо
+\begin{equation}
+    \delta J = \int_a^b\left[\frac{\partial L}{\partial f}(x,f,f')\eta + \frac{\partial L}{\partial f'}(x,f,f')\eta'\right]dx
+\end{equation}
+\end{definition}
+
+\begin{definition}
+\textbf{Зауваження.} Далі, буде зручно у якості першої варіації застосовувати наступний вираз: нехай $\phi(\varepsilon) = J[f+\varepsilon\eta]$, тоді
+\begin{equation}
+    \delta J[f,\eta] := \frac{d}{d \varepsilon}J[f+\varepsilon \eta]\Big|_{\varepsilon =0} = \phi'(0)
+\end{equation}
+\end{definition}
+
+Далі, рівняння Ейлера буде частково базуватися на наступній лемі.
+\begin{lemma}
+    Нехай $\Phi(x,\varepsilon)$ та $\frac{\partial \Phi}{\partial \varepsilon}(x,\varepsilon)$ неперервні на $[a,b]$ при $|\varepsilon|<\alpha_0$. Тоді якщо
+    \begin{equation}
+        \phi(\varepsilon) = \int_a^b \Phi(x,\varepsilon)dx,
+    \end{equation}
+    то справедливо 
+    \begin{equation}
+        \phi'(\varepsilon) = \int_a^b \frac{\partial\Phi(x,\varepsilon)}{\partial \varepsilon}dx
+    \end{equation}
+\end{lemma}
+
+Оскільки вона була доведена у курсі математичного аналізу, ми її не будемо доводити. Отже, з неї випливає наступна теорема.
+
+\begin{theorem}
+    Нехай $L,\frac{\partial L}{\partial f}, \frac{\partial L}{\partial f'}$ неперервні по сукупності аргументів, тоді перша варіація поставленої задачі існує.
+\end{theorem}
+
+\subsection{Необхідна умова екстремума.}
+
+Нехай на кривій $\widetilde{f}$ досягається слабкий мінімум. Тоді, 
+\begin{equation}
+    \delta J[\widetilde{f},\eta] = 0 \; \forall \eta: \eta(a) = \eta(b) = 0
+\end{equation}
+
+Розглянемо $f(x) = \widetilde{f}(x) + \varepsilon\eta(x)$ для усіх $\eta(a)=\eta(b)=0$. Легко помітити, що
+це сімейство кривих є допустимим. Окрім того, для малих $\varepsilon$, $f \in \mathcal{U}_{\varepsilon}^-(\widetilde{f})$. Тоді,
+\begin{equation}
+    J[\widetilde{f}] \leq J[\widetilde{f} + \varepsilon \eta(x)] = \phi(\varepsilon)
+\end{equation}
+
+Отже, маємо умову $\phi'(\widetilde{f},\varepsilon)=0$. Тому, маємо
+\begin{equation}
+    \int_a^b\left[\frac{\partial L}{\partial f}(x,\widetilde{f},\widetilde{f}')\eta(x) + \frac{\partial L}{\partial f'}(x,\widetilde{f},\widetilde{f}')\eta'(x)\right]dx = 0
+\end{equation}
+
+Проінтегруємо частинами другий вираз. Нехай $dv=\eta'(x)$, тоді $v=\eta(x)$. Тоді
+\begin{equation}
+    \int_a^b\frac{\partial L}{\partial f'}(x,\widetilde{f},\widetilde{f}')\eta'(x)dx = \eta(x)\frac{\partial L}{\partial f'}(x,\widetilde{f},\widetilde{f}')\Big|_{x=a}^{x=b} - \int_a^b \frac{d}{dx}\frac{\partial L}{\partial f'}(x, \widetilde{f},\widetilde{f}')\eta(x)dx
+\end{equation}
+
+Проте з крайових умов $\eta(a)=\eta(b)=0$, тому перший доданок зникає. Отже, маємо
+\begin{equation}
+    \int_a^b\left[\frac{\partial L}{\partial f}(x,\widetilde{f},\widetilde{f}')\eta(x) - \frac{d}{dx}\frac{\partial L}{\partial f'}(x,\widetilde{f},\widetilde{f}')\right]\eta(x)dx = 0
+\end{equation}
+
+А тому з леми Лагранжа маємо \textbf{рівняння Ейлера в диференційній формі.}
+
+\begin{definition}
+\textbf{Рівнянням Ейлера в диференційній формі} називають рівняння
+\begin{equation}
+    \frac{\partial L}{\partial f}(x,\widetilde{f},\widetilde{f}') - \frac{d}{dx}\frac{\partial L}{\partial f'}(x,\widetilde{f},\widetilde{f}') = 0
+\end{equation}
+\end{definition}
+
+Також, якщо ми проінтегруємо це рівняння по $dx$ від $a$ до $x$, то отримаємо інгральне рівняння Ейлера.
+
+\begin{definition}
+\textbf{Рівнянням Ейлера в інтегральній формі} називають рівняння
+\begin{equation}
+    \frac{\partial L}{\partial f'}(x,\widetilde{f},\widetilde{f}') - \int_a^x \frac{\partial L}{\partial f}(\xi,\widetilde{f}(\xi),\widetilde{f}'(\xi))d\xi \equiv \text{const}
+\end{equation}
+\end{definition}
+
+Відповідно, обидва рівняння ми можемо розв'язати. Розв'язок цього рівняння має спеціальну назву.
+
+\begin{definition}\textbf{Екстремаллю} вважаємо функцію $\widetilde{f} \in \mathcal{C}^1[a,b]$, що є розв'язком рівняння Ейлера.
+\end{definition}
+
+\pagebreak
+\section{Перші інтеграли Ейлера}
+
+\textbf{Умова.} Перші інтеграли рівняння Ейлера.
+
+\textbf{Відповідь.} Розглянемо деякі випадки рівняння Ейлера.
+
+\textcolor{purple}{\textbf{Випадок 1.}} $L = L(x,f')$, тобто $L$ не залежить від $f$. Тоді рівняння Ейлера має вигляд
+\begin{equation}
+    \frac{d}{dx}\frac{\partial L}{\partial f'} = 0,
+\end{equation}
+
+тобто $\frac{\partial L}{\partial f'} = c=\text{const}$ -- перший інтеграл. 
+
+\textcolor{blue}{\textbf{Випадок 2.}} $L = L(f,f')$, тобто $L$ не залежить від $x$. Тоді рівняння Ейлера має вигляд
+\begin{equation}
+    \frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'} = \frac{\partial L}{\partial f} - \left(\frac{\partial^2 L}{\partial f' \partial f}f' + \frac{\partial^2 L}{\partial (f')^2}f''\right) = 0
+\end{equation}
+
+Домножимо обидві частини на $f'$, отримаємо
+\begin{equation}
+    \frac{\partial L}{\partial f}f' - \frac{\partial^2 L}{\partial f' \partial f}(f')^2 - \frac{\partial^2 L}{\partial (f')^2}f'f'' = \frac{d}{dx}\left(L-\frac{\partial L}{\partial f'}f'\right) = 0
+\end{equation}
+
+Отже, перший інтеграл має вигляд
+\begin{equation}
+    L-\frac{\partial L}{\partial f'}f' \equiv c = \text{const}
+\end{equation}
+
+\textcolor{ForestGreen}{\textbf{Випадок 3.}} $L = L(x,f)$, тобто $L$ не залежить від $f'$. Тоді рівняння Ейлера має вигляд
+\begin{equation}
+    \frac{\partial L(x,f)}{\partial f} = 0
+\end{equation}
+
+Тобто, маємо рівняння Ейлера. Це не є диференціальним рівнянням, а просто рівняння на функцію $f=f(x)$.
+
+\pagebreak
+\section{Регулярні функціонали.}
+
+\textbf{Умова.} Регулярні функціонали. Гладкість екстремалей, теорема Гільберта. Лема про заокруглення
+кутів.
+
+\textbf{Відповідь.} Почнемо з поняття регулярного функціоналу.
+
+\begin{definition}
+    Нехай $L \in \mathcal{C}^2$ та $\frac{\partial L(x,f,f')}{\partial (f')^2} \neq 0 \; \forall f,f'$. Тоді такий функціонал ми будемо називати \textbf{регулярним}.
+\end{definition}
+
+У регулярного функціоналу немає ломаних екстремалей. Розглянемо теорему Гільберта.
+
+\begin{theorem}
+    \textbf{Гільберта.} Нехай $L \in \mathcal{C}^2$ та $\widetilde{f}$ -- неперервно-диференційнована в деякому околі точки $a<c<b$ та $\frac{\partial^2L(c,\widetilde{f}(c),\widetilde{f}'(c))}{\partial (f')^2} \neq 0$.
+    Тоді $\widetilde{f}$ -- двічі неперервно-диференційована в деякому околі точки $c$.
+\end{theorem}
+
+\textbf{Доведення.} Випишемо рівняння Ейлера в інтегральній формі:
+\begin{equation}
+    \frac{\partial L(x,\widetilde{f}(x),\widetilde{f}'(x))}{\partial f'} - \int_a^x \frac{\partial L}{\partial f}(\xi,\widetilde{f}(\xi),\widetilde{f}'(\xi))d\xi \equiv \text{const} =: \hat{c}
+\end{equation}
+
+Розглянемо наступну функцію:
+\begin{equation}
+    \Phi(x,z) = \frac{\partial L(x,\widetilde{f}(x),z)}{\partial f'} - \int_a^x \frac{\partial L}{\partial f}(\xi,\widetilde{f}(\xi),\widetilde{f}'(\xi))d\xi - \hat{c}
+\end{equation}
+
+Розглянемо рівняння $\Phi(x,z(x))=0$. Помітимо, що $z(x)=\widetilde{f}'(x)$ є розв'язком.
+
+Розглянемо точку $(x_0,z_0)=(c,\widetilde{f}'(c))$. Скористаємось теоремою про неявну функцію.
+
+\begin{theorem}
+    \textbf{Про неявну функцію.} Нехай $\Phi(x,z)$ -- неперервно диференційована в околі $(x_0,z_0)$ та нехай $\frac{\partial\Phi}{\partial z}(x_0,z_0) \neq 0$. Тоді в деякому околі 
+    точки $x_0$ існує єдина функція $z(x): \Psi(x,z(z)) \equiv 0$, причому $z(x) \in \mathcal{C}^1$.
+\end{theorem}
+
+Перевіримо умову цієї теореми. Маємо точку $(x_0,z_0)=(c,\widetilde{f}'(c))$. Вона очевидно неперервна по $x,z$. Часткова похідна:
+\begin{equation}
+    \frac{\partial\Phi}{\partial z} = \frac{\partial^2(x,\widetilde{f}(x),t)}{\partial (f')^2} \neq 0,
+\end{equation}
+
+оскільки за умовою маємо регулярний функціонал. Отже маємо єдиний розв'язок $z=z(x)$ такий, що $\Phi(x,z(z)) \equiv 0$. Значить, $z=\widetilde{f}'(x) \in \mathcal{C}^1 \implies \widetilde{f}(x) \in \mathcal{C}^2$.
+
+Нарешті, розглянемо лему про скруглення кутів:
+\begin{lemma}
+    \textbf{Про скруглення кутів.} Якщо $L(x,f,f')$ неперервна по сукупності аргументів, то
+    \begin{itemize}
+        \item $\inf_{f \in \mathcal{KC}^1[a,b]}J[f] = \inf_{f \in \mathcal{C}^1[a,b]}J[f]$, де $f(a)=A,f(b)=B$.
+        \item Твердження 1 зберігається, якщо брати тільки $f \in \mathcal{KC}^1[a,b]$, що задовольняють
+        \begin{equation}
+            |f(x)-\widetilde{f}(x)| < \varepsilon
+        \end{equation}
+        для заданих $\varepsilon>0$ та $\widetilde{f}$.
+        \item Твердження 1 та 2 справедливі для $\sup$ також.
+    \end{itemize}
+\end{lemma}
+
+\textbf{Доведення.} Оскільки $\mathcal{C}^1[a,b] \subset \mathcal{KC}^1[a,b]$, то $\inf_{f \in \mathcal{KC}^1[a,b]} J[f] \leq \inf_{f \in \mathcal{C}^1[a,b]}J[f]$. Доведемо справедливість оберненого твердження від супротивного. 
+
+Нехай $\inf_{\mathcal{KC}^1}J[f]<\inf_{\mathcal{C}^1}J[f]$. Тоді існує $\widetilde{f} \in \mathcal{KC}^1[a,b]$ та $\varepsilon>0$ такі, що
+\begin{equation}
+    J[\widetilde{f}] < \inf_{\mathcal{C}^1}J[f] - \varepsilon
+\end{equation}
+
+Нехай $\{\tau_i\}_{i=1}^m$ -- точки розриву похідної функції $\widetilde{f}'$ та $\Delta_i := \widetilde{f}'(\tau_i^+)$. Розглянемо замкнену обмежену множину:
+\begin{equation}
+    K := \{(x,f,f'): x \in [a,b], \; |f-\widetilde{f}| \leq \max_{1\leq i\leq m}\{\frac{|\Delta_i\delta_0|}{4}\}, \; |f'-\widetilde{f}'| \leq \max_{1 \leq i \leq m}\{\frac{|\Delta_i|}{2}\}\},
+\end{equation}
+на якому неперервна функція $L$ обмежена: $|L(x,f,f')|\leq\mu$. Тоді розглянемо неперервну функцію $\alpha(x):=\frac{(1-|x|)^2}{4}\mathds{1}_{[-1,1]}(x)$, у якої скачок величини $-1$ при $x=0$.
+
+Тоді функці $\delta \alpha\left(\frac{x-\tau_i}{\delta}\right)$ -- неперервна та її похідна усюди неперервна окрім $\tau_i$. Легко бачити, що
+\begin{equation}
+    f_{\delta}(x) = \widetilde{f}(x) + \sum_{i=1}^m \Delta_i \delta\alpha \left(\frac{x-\tau_i}{\delta}\right)
+\end{equation}
+
+є неперервно-диференційованою на $[a,b]$ та $f_{\delta}(x)\equiv \widetilde{f}$ за відрізками $[\tau_i-\delta,\tau_i+\delta]$. При достатньо малому $\delta$ ці відрізки не пересікаються. Воно також задовольняє крайовим умовам. 
+
+Окрім цього,
+\begin{equation}
+    |f_{\delta}(x)-\widetilde{f}(x)| \leq \max |\Delta_i| \frac{\delta}{4}, \; |f_{\delta}'(x)-\widetilde{f}| \leq \max \frac{|\Delta_i|}{2}
+\end{equation}
+
+тому що з визначення функції $\alpha$: $|\alpha| \leq \frac{1}{4}, \; |\alpha'| \leq \frac{1}{2}$. Тоді за $\delta<\delta_0$ маємо:
+\begin{equation}
+    J[f_{\delta}]-J[\widetilde{f}] = \sum_{i=1}^m\int_{\tau_i-\delta}^{\tau_i+\delta}[L(x,f_{\delta}(x),f_{\delta}'(x))-L(x,\widetilde{f},\widetilde{f}'(x))]dx
+\end{equation}
+
+Звідки отримуємо:
+\begin{equation}
+    J[f_{\delta}] \leq J[\widetilde{f}] + 4m\delta \mu \leq \inf_{\mathcal{C}^1}J[f] - \varepsilon + 4m\delta \mu < \inf_{\mathcal{C}^1}J[f]
+\end{equation}
+
+Оскільки $f_{\delta} \in \mathcal{C}^1[a,b]$, то отримали протиріччя.
+
+\pagebreak
+\section{Природні крайові умови.}
+
+\textbf{Умова.} Задача з кінцями на горизонтальних прямих. Природні крайові умови
+
+\textbf{Відповідь.} Розглянемо наступну задачу варіаційного аналізу:
+\begin{equation}
+    J[f] = \int_a^b L(x,f,f')dx \to \text{extr},
+\end{equation}
+
+де $a,b \in \mathbb{R}$. Тобто, ми не фіксуємо значення на кінцях, а дозволяємо $f(a)$ та $f(b)$
+набувати довільні значення. Знову розглядаємо приріст функціоналу:
+\begin{gather}
+    \Delta J[\eta] = J[f+\eta] - J[f] = \int_a^b [L(x,f+\eta,f'+\eta')-L(x,f,f')]dx \\= \int_a^b\left[\frac{\partial L}{\partial f}\eta + \frac{\partial L}{\partial f'}\eta'\right]dx + \overline{o}(\|\eta\|^2, \|\eta'\|^2)
+\end{gather}
+
+Тоді, знову перша варіація набуває вигляду
+\begin{equation}
+    \delta J = \int_a^b \left[\frac{\partial L}{\partial f}\eta + \frac{\partial L}{\partial f'}\eta'\right]dx = \int_a^b \frac{\partial L}{\partial f}\eta(x)dx + \int_a^b \frac{\partial L}{\partial f'}d\eta(x)
+\end{equation}
+
+Далі інтегруємо по частинам
+\begin{equation}
+    \delta J = \int_a^b \left[\frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\eta(x)\Big|_{x=a}^{x=b}
+\end{equation}
+
+Отже, маємо перший доданок, що збігається з задачею з фіксованими кінцями, а також додатково з'явився вираз $\frac{\partial L}{\partial f'}\Big|_{x=b}\eta(b) - \frac{\partial L}{\partial f'}\Big|_{x=a}\eta(a)$. Помітимо, що тут не обов'язково мають обнулятись $\eta(a)$ та $\eta(b)$.
+
+Оберемо такий $\eta$, що зануляється на кінцях, тобто $\eta(a)=\eta(b)=0$. Тоді, з леми Лагранжа маємо рівняння Ейлера:
+\begin{equation}
+    \frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'} = 0
+\end{equation}
+
+Звідки видно, що для кривої $f(x)$ розв'язок задачі про вільні кінці має бути екстремаллю. Тоді умова $\delta J = 0$ приймає вигляд 
+\begin{equation}
+    \frac{\partial L}{\partial f'}\Big|_{x=b}\eta(b) - \frac{\partial L}{\partial f'}\Big|_{x=a}\eta(a) = 0
+\end{equation}
+
+Оскільки $\eta$ довільна, то маємо умову
+\begin{equation}
+    \frac{\partial L}{\partial f'}\Big|_{x=b} = \frac{\partial L}{\partial f'}\Big|_{x=a} = 0
+\end{equation}
+
+Це і є \textbf{природні крайові умови}.
+
+\pagebreak
+\section{Задача з рухомим кінцем.}
+
+\textbf{Умова.} Задачі з вільними кінцями. Загальна формула для обчислення варіації.
+
+\subsection{Загальна варіація.}
+
+Знову розглядаємо задачу
+\begin{equation}
+    J[f] = \int_a^b L(x,f,f')dx \to \text{extr},
+\end{equation}
+
+але тут ми не фіксуємо $a$ та $b$.
+
+Для подальної дискусії, введемо поняття відстані між кривими.
+
+\begin{definition}
+    \textbf{Відстанню} між кривими $y=f(x)$ та $y=g(x)$ будемо вважати вираз 
+    \begin{equation}
+        \rho(f,g) = \max |f-g| + \max |f'-g'|+ \rho(F_0,G_0) + \rho(F_1,G_1),
+    \end{equation}
+    де $F_0,F_1$ -- лівий та правий кінець кривої $f(x)$, а $G_0,G_1$ -- кривої $g(x)$, де відстань між 
+    точками розуміємо у метриці Евкліда.
+\end{definition}
+
+Розглянемо дві близькі у сенсі відстані криві $f(x)$ та $\widetilde{f}(x)$ та покладемо $\eta(x) := \widetilde{f}(x) - f(x)$. Покладемо $F_0=(x_0,y_0)$ та $F_1=(x_1,y_1)$ -- початкові та кінцеві точки $y=f(x)$. 
+Початкову та кінцеву точки кривої $\widetilde{f}(x)=f(x)+\eta(x)$ позначимо як $F_0^*=(x_0+\delta x_0,y_0+\delta y_0)$ та $F_1^*=(x_1+\delta x_1,y_1+\delta y_1)$. 
+
+\begin{definition}
+    \textbf{Загальною варіацією} функціонала $J[f]$ будемо називати лінійну варіацію відносно $\eta,\eta',\delta x_0,\delta y_0,\delta x_1, \delta y_1$ та відрізяющуюся від прирісту 
+    \begin{equation}
+        \Delta J[\eta] = J[f+\eta] - J[f]
+    \end{equation}
+    на величину порядку вище першого відносно відстані $\rho(f,f+\eta)$.
+\end{definition}
+
+\subsection{Задачі з вільними кінцями.}
+
+\textbf{Задача з рухомим кінцем.} Знову ж таки, нехай $f$ не є фіксованим на $x=a$ та $x=b$ і потрібно знайти $\inf_f J[f]$, де як завжди $J[f]=\int_a^b L(x,f,f')dx$. 
+
+Знаходимо приріст:
+\begin{equation}
+    \Delta J = J[f+\eta] - J[f] = \int_{x_0+\delta x_0}^{x_1+\delta x_1}L(x,f+\eta,f'+\eta')dx - \int_{x_0}^{x_1}L(x,f,f')dx
+\end{equation}
+
+Далі маємо розбиття на наступні інтеграли:
+\begin{gather}
+    \Delta J = \int_{x_0}^{x_1}\left[L(x,f+\eta,f'+\eta')-L(x,f,f')\right]dx \nonumber \\ + \int_{x_1}^{x_1+\delta x_1}L(x,f+\eta,f'+\eta')dx - \int_{x_0}^{x_0+\delta x_0}L(x,f+\eta,f'+\eta')dx
+\end{gather}
+
+Далі розкладаємо у ряд Тейлора. Перший доданок буде як при виведені формули Ейлера, а другий набуде наступного вигляду:
+\begin{gather}
+    \Delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}\eta(x)+\frac{\partial L}{\partial f'}\eta'(x)\right]dx \nonumber \\
+    + L(x,f,f')\Big|_{x=x_1}\delta x_1 - L(x,f,f')\Big|_{x=x_0}\delta x_0 + \overline{o}(\rho(f,f+\eta))
+\end{gather}
+
+Далі після інтегрування частинами знову маємо:
+\begin{gather}
+    \Delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}-\frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\eta(x)\Big|_{x=x_0}^{x=x_1} \nonumber \\
+ + L(x,f,f')\Big|_{x=x_1}\delta x_1 - L(x,f,f')\Big|_{x=x_0}\delta x_0 + \overline{o}(\rho(f,f+\eta))
+\end{gather}
+
+За нашою побудовою (ми продовжували дотичною) маємо $\eta(x_0) = \delta y_0 - (f'(x_0)-\eta'(x_0))\delta x_0$, тому наближено:
+\begin{equation}
+    \eta(x_0) \approx \delta y_0 - f'(x_0)\delta x_0, \; \eta(x_1) \approx \delta y_1 - f'(x_1)\delta x_1
+\end{equation}
+
+і відкидаючи малий доданок $\overline{o}(\rho)$ маємо \textbf{формулу загальної варіації}.
+\begin{definition}
+\textbf{Формулою загальної варіації} називають формулу
+\begin{equation}
+    \delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}-\frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\delta y\Big|_{x=x_0}^{x=x_1} +
+    \left(L-f'\frac{\partial L}{\partial f'}\right)\delta x \Big|_{x=x_0}^{x=x_1}
+\end{equation}
+\end{definition}
+
+Для кращого розуміння, що ми називаємо варіаціями $\delta x_i,\delta y_i$,
+розглянемо вже відомі нам задачі:
+
+\begin{example}
+    Якщо кінці лежать на прямих $x_0=a,x_1=b$, то $\delta x_0=\delta x_1=0$.
+\end{example}
+\begin{example}
+    Якщо кінці фіксовані, то $\delta x_0=\delta x_1 = \delta y_0 = \delta y_1 = 0$.
+\end{example}
+
+\textbf{Зауваження.} Якщо $\widetilde{f}$ є екстремумом функціоналу, то вона є екстремаллю, а також виконується
+\begin{equation}
+    \frac{\partial L}{\partial f'}\delta y \Big|_{x=x_0}^{x=x_1} + \left(L-\frac{\partial L}{\partial f'}f'\right)\delta x \Big|_{x=x_0}^{x=x_1} = 0
+\end{equation}
+для $f(x)=\widetilde{f}(x)$.
+
+\pagebreak
+
+\section{Кінці на кривих.}
+
+\textbf{Умова.} Задачі з кінцями на кривих, умови трансверсальності.
+
+\textbf{Відповідь.} Нехай $y(x_0)=\psi_0(x_0), y(x_1)=\psi_1(x_1)$, де треба мінімізувати функціонал $J[f]=\int_{x_0}^{x_1}L(x,f,f')dx$, де знову $f \in \mathcal{KC}^1[x_0,x_1]$.
+
+Нагадаємо, що загальною варіацією називаємо вираз виду
+\begin{equation}
+    \Delta J = \int_{x_0}^{x_1}\left[\frac{\partial L}{\partial f}-\frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\delta y\Big|_{x=x_0}^{x=x_1} +
+    \left(L-f'\frac{\partial L}{\partial f'}\right)\delta x \Big|_{x=x_0}^{x=x_1},
+\end{equation}
+
+тому нас тут цікавить знайти вирази для $\delta y_i$ відносно $\delta x_i$. Дійсно,
+\begin{equation}
+    \delta y_i = \psi_i(x_i+\delta x_i) - \psi_i(x_i) = [\psi_i'(x_i)+\overline{o}(1)]\delta x_i.
+\end{equation}
+
+Тоді умова $\delta J=0$ прийме вигляд
+\begin{equation}
+    \delta J = \left(\frac{\partial L}{\partial f'}\psi_1' + L - \frac{\partial L}{\partial f'}f'\right)\Big|_{x=x_1}\delta x_1 - \left(\frac{\partial L}{\partial f'}\psi_0' + L - \frac{\partial L}{\partial f'}f'\right)\Big|_{x=x_0}\delta x_0 = 0.
+\end{equation}
+
+Оскільки $\delta x_i$ є незалежними і довільні, то отримуємо так звану умову трансверсальності.
+\begin{definition}
+\textbf{Умовами трансверсальності} називають рівняння
+\begin{equation}
+    \left(L+(\psi_i-f')\frac{\partial L}{\partial f'}\right)\Big|_{x=x_i} = 0, \; i=1,2  
+\end{equation}
+\end{definition}
+
+\pagebreak
+
+\section{Ламані екстремалі}
+
+\textbf{Умова.} Ламані екстремалі. Лема про заокруглення кутів. Умови Вейєрштраса-Ердмана.
+
+\textbf{Відповідь.} До цього, клас розглядаємих функцій був клас неперервних функцій. Розширимо його до класу $\mathcal{C}^1([a,b] \setminus \{\tau\})$, тобто неперервно-диференційованих усюди, окрім, можливо, точки $\tau \in [a,b]$.
+
+Дослідимо на слабкий екстремум функціонал $J[f]=\int_a^b L(x,f,f')dx$, де $a,b$ -- фіксовані. Очевидно з минулого аналізу, що для усіх точок $x \in [a,b] \setminus \{\tau\}$ має виконуватись рівняння Ейлера
+\begin{equation}
+    \frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'} = 0
+\end{equation}
+
+Запишемо наш функціонал як суму
+\begin{equation}
+    J[\eta] = \int_a^b L(x,f,f')dx = \int_a^{\tau}L(x,f,f')dx + \int_{\tau}^b L(x,f,f')dx,
+\end{equation}
+
+де лівий доданок назвемо $J^{-}[\eta]$, а правий $J^{+}[\eta]$. Знайдемо перші варіації цих функціоналів.
+Нехай $y=f(x)$ є розв'язком задачі. Тоді з формули загальної варіації маємо:
+\begin{gather}
+    \delta J^{-} = \frac{\partial L}{\partial f'}\Big|_{x \to \tau^{-}}\delta y_1 + \left(L-f'\frac{\partial L}{\partial f'}\right)\Big|_{x \to \tau^-}\delta x_1 \\
+    \delta J^{+} = -\frac{\partial L}{\partial f'}\Big|_{x \to \tau^{+}}\delta y_1 - \left(L-f'\frac{\partial L}{\partial f'}\right)\Big|_{x \to \tau^+}\delta x_1 
+\end{gather}
+
+Умова неперервності $f(x)$ означає, що в точці $\tau$ у виразах $\delta J^{-}$ та $\delta J^{+}$ однакові $\delta x_1,\delta y_1$. Отже для екстремума:
+\begin{equation}
+    \delta J = \delta J^{-} + \delta J^{+} = 0,
+\end{equation}
+
+звідки в силу довільності $\delta x_1,\delta y_1$ маємо умови Вейєрштраса-Ердмана.
+
+\begin{definition}
+\textbf{Умовами Вейєрштраса-Ердмана} називають наступні умови:
+\begin{gather}
+    \lim_{x \to \tau^-}\frac{\partial L}{\partial f'} = \lim_{x \to \tau^+}\frac{\partial L}{\partial f'} \\
+    \lim_{x \to \tau^-}\left(L-f'\frac{\partial L}{\partial f'}\right) = \lim_{x \to \tau^+}\left(L-f'\frac{\partial L}{\partial f'}\right)
+\end{gather}
+\end{definition}
+
+\textbf{Зауваження.} Якщо приймати $f \in \mathcal{C}^1\left([a,b] \setminus \cup_{i=1}^n \{\tau_i\}\right)$, то тоді виконується рівняння Ейлера 
+на усіх проміжках гладкості, а також виконуються умови Вейєрштраса-Ердмана для усіх $x \to \tau_i$. 
+
+\pagebreak
+
+\section{Фіксована задача Больца.}
+
+\textbf{Умова.} Задача Больца. Необхідна умова екстремуму в задачі Больца.
+
+\textbf{Відповідь.} Розглянемо \textit{задачу Больца}:
+\begin{equation}
+    \begin{cases}
+        J[f] = \int_a^b L(x,f(x),f'(x))dx + \psi(f(a), f(b)) \to \text{extr} \\
+        f \in \mathcal{KC}^1[a,b] \\
+        a,b \in \mathbb{R}
+    \end{cases}
+\end{equation}
+
+Нехай на $\widetilde{f}$ досягається локальний екстремум, тобто
+\begin{equation}
+    \exists \varepsilon > 0: J[\widetilde{f}] < J[f] \; \forall f \in \mathcal{U}_{\varepsilon}^{-}
+\end{equation}
+
+Розглянемо наступну задачу на екстремум:
+\begin{equation}
+    J^*[f] = \int_a^b L(x,f(x),f'(x))dx \to \text{extr} \; \text{при} \; f(a)=\widetilde{f}(a), \; f(b)=\widetilde{f}(b)
+\end{equation}
+
+Тоді допустимі криві в цій задачі мають такі самі кінці, як і $\widetilde{f}$. Покажемо, що 
+дійсно $\widetilde{f}$ є екстремаллю задачі на екстрмум $J^*$. 
+
+Нехай від супротивного для локального мінімуму. Якщо для будь-якого $\varepsilon>0$ знайшлась
+така допустима крива $\hat{f}$, що $J^*[\hat{f}] < J^*[\widetilde{f}]$. Оскільки вона допустима, то також
+\begin{equation}
+    \hat{f}(a) = \widetilde{f}(a), \; \hat{f}(b) = \widetilde{f}(b)
+\end{equation}
+
+В такому разі:
+\begin{equation}
+    J^*[\hat{f}] + \psi(\hat{f}(a),\hat{f}(b)) < J^*[\widetilde{f}] + \psi(\widetilde{f}(a),\widetilde{f}(b))
+\end{equation}
+
+Проте, $\psi(\hat{f}(a),\hat{f}(b))=\psi(\widetilde{f}(a), \widetilde{f}(b))$. Отже $J[\hat{f}]<J[\widetilde{f}]$ -- протиріччя.
+
+Звідки робимо висновок, що $\widetilde{f}$ задовольняє рівнянню Ейлера:
+\begin{equation}
+    \frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'} = 0
+\end{equation}
+
+всюду, окрім точок заламу, де виконується умови Вейєрштраса-Ердмана. 
+
+Тепер отримаємо умови трансверсальності. Розглянемо $f = \widetilde{f}+\varepsilon \eta$.
+Тоді існує $\varepsilon>0$, що для всіх $f \in \mathcal{U}_{\varepsilon}^{-}(\widetilde{f})$ виконується 
+$J[\widetilde{f}] \leq J[f]$. Це також можна записати як те, що при малому $|\varepsilon| < \varepsilon_0$ маємо
+\begin{equation}
+    \|f(x) - \widetilde{f}(x)\| < \varepsilon \wedge \|f'(x)-\widetilde{f}'(x)\| < \varepsilon
+\end{equation}
+
+Покладемо
+\begin{equation}
+    \Psi(\varepsilon) = J[f] = J[\widetilde{f} + \varepsilon\eta], \; \Psi(0) = J[\widetilde{f}]
+\end{equation}
+
+Маємо $\Psi(0) \leq \Psi(\varepsilon)$ при $|\varepsilon|<\varepsilon_0$, а отже у $\Psi(\varepsilon)$ в $\varepsilon=0$ локальний мінімум. Тоді,
+якщо похідна існує, то вона нульова і нулі: $\Psi'(0)=0$. Отже,
+\begin{equation}
+    \Psi(\varepsilon) = \int_a^b L(x,\widetilde{f}+\varepsilon\eta,\widetilde{f}'+\varepsilon\eta')dx + \psi(\widetilde{f}(a)+\varepsilon\eta(a),\widetilde{f}(b)+\varepsilon\eta(b))
+\end{equation}
+Тоді
+\begin{gather}
+    \Psi'(0) = \int_a^b \left[\frac{\partial L}{\partial f}(x,\widetilde{f},\widetilde{f}')\eta(x) + \frac{\partial L}{\partial f'}(x,\widetilde{f},\widetilde{f}')\eta'(x)\right]dx + \\\frac{\partial \psi(\widetilde{f}(a),\widetilde{f}(b))}{\partial f_0}\eta(a) + \frac{\partial \psi(\widetilde{f}(a),\widetilde{f}(b))}{\partial f_1}\eta(b) = 0,
+\end{gather}
+
+де $f_0=\eta(a),f_1=\eta(b)$. Далі інтегруємо за частинами:
+\begin{gather}
+    \int_a^b \left[\frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'}\right]\eta(x)dx + \frac{\partial L}{\partial f'}\eta(x)\Big|_{x=a}^{x=b} \\
+    + \frac{\partial \psi(\widetilde{f}(a),\widetilde{f}(b))}{\partial f_0}\eta(a) + \frac{\partial \psi(\widetilde{f}(a),\widetilde{f}(b))}{\partial f_1}\eta(b) = 0,
+\end{gather}
+
+звідки (скорочено):
+\begin{gather}
+    \left(\frac{\partial L}{\partial f'}+\frac{\partial\psi}{\partial f_1}\right)\eta(b) - \left(\frac{\partial L}{\partial f'}+\frac{\partial\psi}{\partial f_0}\right)\eta(a) = 0
+\end{gather}
+
+Вирази у дужках позначимо як $K_b$ та $K_a$ відповідно, тоді $K_b\eta(b)-K_a\eta(a)=0$. Покладемо:
+\begin{equation}
+    \eta(x) := \frac{x-a}{b-a}K_b \implies \eta(a) = 0, \; \eta(b)=K_b
+\end{equation}
+
+Тоді отримаємо $K_b=0$. Аналогічно можна показати, що $K_a=0$. Отже, маємо умови трансверсальності:
+\begin{gather}
+    \frac{\partial L}{\partial f'}(b,\widetilde{f}(b),\widetilde{f}'(b)) = -\frac{\partial \psi}{\partial f_1}(\widetilde{f}(a), \widetilde{f}(b)) \\
+    \frac{\partial L}{\partial f'}(a,\widetilde{f}(a),\widetilde{f}'(a)) = -\frac{\partial \psi}{\partial f_0}(\widetilde{f}(a), \widetilde{f}(b)) 
+\end{gather}
+
+\pagebreak
+
+\section{Нефіксована задача Больца.}
+
+\textbf{Умова.} Задача Больца з нефіксованими кінцями.
+
+\textbf{Відповідь.} Розглянемо \textit{задачу Больца на відрізку нефіксованої довжини}:
+\begin{equation}
+    J[f] = \int_{x_0}^{x_1} L(x,f(x),f'(x))dx + \psi(x_0,f(x_0),x_1,f(x_1)) \to \text{extr}
+\end{equation}
+
+Введемо означення:
+\begin{definition}
+    Будемо казати, що елемент $\widetilde{\xi}=(\widetilde{f}(x),\widetilde{x}_0,\widetilde{x}_1)$ досягає слабкий локальний мінімум(максимум) функціоналу в заданій задачі, якщо $\exists \varepsilon>0$ таке, що
+    для будь-якого іншого допустимого $\xi=(f(x),x_0,x_1) \in \mathcal{C}^1(\Delta) \times \mathbb{R}^2$, задовольняющі умовам
+    \begin{equation}
+        |x_0-\widetilde{x}_0| < \varepsilon \wedge |x_1-\widetilde{x}_1| < \varepsilon \wedge \|f(x)-\widetilde{f}(x)\| < \varepsilon \; \forall x \in \Delta
+    \end{equation}
+    виконується нерівність
+    \begin{equation}
+        J[\widetilde{f}(x),\widetilde{x}_0,\widetilde{x}_1] \leq J[f(x),x_0,x_1] \; \; (\text{або $\geq$ для максимуму})
+    \end{equation}
+\end{definition}
+
+Отже, розглядаємо першу варіацію функціоналу. Вводимо функцію:
+\begin{equation}
+    \Psi(\varepsilon) = J[\widetilde{f}+\varepsilon\eta, \widetilde{x}_0+\varepsilon\hat{x}_0, \widetilde{x}_1+\varepsilon\hat{x}_1],
+\end{equation}
+
+де $\eta(x),\hat{x}_0,\hat{x}_1$ -- варіації функції і точок, відповідно. Тоді маємо:
+\begin{gather}
+    \Psi(\varepsilon) = \int_{\widetilde{x}_0+\varepsilon\hat{x}_0}^{\widetilde{x}_1+\varepsilon\hat{x}_1}L(x,\widetilde{f}(x)+\varepsilon\eta(x),\widetilde{f}'(x)+\varepsilon\eta'(x))dx \nonumber\\
+    + \psi(\widetilde{x}_0+\varepsilon\hat{x}_0, \widetilde{f}(\widetilde{x}_0+\varepsilon\hat{x}_0)+\varepsilon\eta(\widetilde{x}_0+\varepsilon\hat{x}_0), \widetilde{x}_1+\varepsilon\hat{x}_1, \widetilde{f}(\widetilde{x}_1+\varepsilon\hat{x}_1)+\varepsilon\eta(\widetilde{x}_1+\varepsilon\hat{x}_1))
+\end{gather}
+
+Оскільки варіація $\delta J = \Psi'(0)$, то отримуємо:
+\begin{gather}
+    \Psi'(0) = \int_{\widetilde{x}_0}^{\widetilde{x}_1}\left[\frac{\partial\widetilde{L}}{\partial f}\eta(x)+\frac{\partial \widetilde{L}}{\partial f'}\eta'(x)\right]dx \nonumber \\
+    +\widetilde{L}(\widetilde{x}_1)\hat{x}_1 - \widetilde{L}(\widetilde{x}_0)\hat{x}_0+\frac{\partial\widetilde{\psi}}{\partial x_0}\hat{x}_0 + \frac{\partial \widetilde{\psi}}{\partial x_1}\hat{x}_1 \nonumber\\
+    \frac{\partial \widetilde{\psi}}{\partial f_0}(\eta(\widetilde{x}_0)+\widetilde{f}(\widetilde{x}_0)\hat{x}_0)+\frac{\partial \widetilde{\psi}}{\partial f_1}(\eta(\widetilde{x}_1)+\widetilde{f}(\widetilde{x}_1)\hat{x}_1)
+\end{gather}
+
+Якщо елемент $\widetilde{\xi}=(\widetilde{f},\widetilde{x}_0,\widetilde{x}_1)$ з варіацією $\delta \xi = (\eta(x),\hat{x}_0,\hat{x}_1)$ дає екстремум, то
+\begin{equation}
+    \delta J[\xi, \delta \xi] = 0 \; \forall \delta\xi \; \text{-- допустимо маленьких}
+\end{equation}
+
+Отже, спочатку розглянемо $\delta\xi := (\eta(x_1),0,0)$, де $\eta \in \mathcal{C}^1(\Delta)$ і $\eta(\widetilde{x}_0)=\eta(\widetilde{x}_1)=0$, Тоді
+\begin{equation}
+    \int_{\widetilde{x}_0}^{\widetilde{x}_1}\left(\frac{\partial\widetilde{L}}{\partial f}(x)+\frac{\partial\widetilde{L}}{\partial f'}\eta'(x)\right)dx = 0 \; \forall \eta(x) \in \mathcal{C}^1[\widetilde{x}_0,\widetilde{x}_1]: \eta(\widetilde{x}_0)=\eta(\widetilde{x}_1)=0
+\end{equation}
+
+Звідси, за лемою Дюбуа-Реймона випливає рівняння Ейлера:
+\begin{equation}
+    \frac{\partial\widetilde{L}}{\partial f} - \frac{d}{dx}\frac{\partial \widetilde{L}}{\partial f'} = 0
+\end{equation}
+
+Далі проінтегрувавши наш вираз для варіації за частинами, маємо
+\begin{gather}
+    \left[\frac{\partial\psi}{\partial f_0}-\frac{\partial \widetilde{L}(\widetilde{x}_0)}{\partial f'}\right]\eta(\widetilde{x}_0)+\left[\frac{\partial\psi}{\partial f_1}+\frac{\partial \widetilde{L}(\widetilde{x}_1)}{\partial f'}\right]\eta(\widetilde{x}_1) \\
+    +\left[\frac{\partial \widetilde{\psi}}{\partial x_0} + \frac{\partial\widetilde{\psi}}{\partial f_0}\widetilde{f}'(\widetilde{x}_0) - \widetilde{L}(\widetilde{x}_0)\right]\hat{x}_0 + \left[\frac{\partial \widetilde{\psi}}{\partial x_1} + \frac{\partial\widetilde{\psi}}{\partial f_1}\widetilde{f}'(\widetilde{x}_1) + \widetilde{L}(\widetilde{x}_1)\right]\hat{x}_1=0
+\end{gather}
+
+Оскільки $\eta(\widetilde{x}_0),\eta(\widetilde{x}_1),\hat{x}_0,\hat{x}_1$ довільні, то отримуємо умови трансверсальності по $x$ та по $y$:
+\begin{gather}
+    \widetilde{L}(\widetilde{x}_i) - \frac{\partial \psi}{\partial f_i}\widetilde{f}'(\widetilde{x}_i) = (-1)^i\frac{\partial \psi}{\partial x_i}, \; i \in \{0,1\} \\
+    \frac{\partial\widetilde{L}}{\partial f'}(\widetilde{x}_i) = (-1)^i\frac{\partial\widetilde{\psi}}{\partial f_i}, \; i \in \{0,1\}
+\end{gather}
+
+\pagebreak
+
+\section{Ізопараметрична задача.}
+
+\textbf{Умова.} Ізопараметрична задача, метод множників Лагранжа.
+
+\textbf{Відповідь.} Нехай маємо задачу
+\begin{equation}
+    \begin{cases}
+        J_0(f) = \int_a^b L_0(x,f,f')dx \to \text{extr} \\
+        J_k(f) = \int_a^b L_k(x,f,f')dx = \ell_k, \; k \in \{1,\dots,m\} \\
+        f(a) = A, \; f(b) = B
+    \end{cases},
+\end{equation}
+
+де $L_k: \mathbb{R}^3 \to \mathbb{R}, k \in \{0,\dots,m\}$ -- задані функції, а $\ell_k,a,b,A,B \in \mathbb{R}$ -- задані числа. 
+
+Сформулюємо основний принцип розв'язку ізопараметричної задачі.
+
+\begin{theorem}
+\textbf{Метод множників Лагранжа.} Нехай $\mathcal{U} \subset \mathbb{R}^3$ -- відкрита множина, $F_k: \mathcal{U} \to \mathbb{R}$ є неперервні разом функції. Тоді, якщо $\widetilde{f}$ досягає слабкого локального мінімуму в заданій ізопараметричній задачі, то знайдуться множники $\boldsymbol{\lambda} = (\lambda_0,\dots,\lambda_m) \neq \mathbf{0}$ такі, що для $\mathcal{L} := \langle \boldsymbol{\lambda}, \boldsymbol{L}\rangle$ виконується рівняння Ейлера
+\begin{equation}
+    -\frac{d}{dx} \frac{\partial \mathcal{L}}{\partial f'}(x,\widetilde{f},\widetilde{f}') + \frac{\partial \mathcal{L}}{\partial f}(x,\widetilde{f},\widetilde{f}') = 0.
+\end{equation}
+
+Якщо виконана умова регулярності: якщо
+\begin{equation}
+    -\frac{d}{dx}\frac{\partial L_i}{\partial f'} + \frac{\partial L_i}{\partial f}, \; i \in \{1,\dots,m\}
+\end{equation}
+лінійно незалежні, то $\lambda_0 \neq 0$.
+\end{theorem}
+
+\textbf{Доведення.} Згадаємо, що
+\begin{equation}
+    \delta J[\widetilde{f},\eta] = \lim_{\varepsilon \to 0}\left(\frac{1}{\varepsilon}\left[J[\widetilde{f}+\varepsilon\eta] - J[\widetilde{f}]\right]\right)
+\end{equation}
+
+Ця варіація була вже знайдена раніше, тому
+\begin{equation}
+    \delta J_i[\widetilde{f},\eta] = \int_a^b \left[\frac{\partial L_i}{\partial f}\eta(x) + \frac{\partial L_i}{\partial f'}\eta'(x)\right]dx, \; i \in \{0,\dots,m\}
+\end{equation}
+
+Розглянемо наступне перетворення
+\begin{equation}
+    \mathcal{A}: \{f \in \mathcal{C}^1[a,b]: f(a)=f(b)=0\} \to \mathbb{R}^{m+1},
+\end{equation}
+що має наступний вигляд:
+\begin{equation}
+    \mathcal{A}\eta = (\delta J_0(\widetilde{f},\eta),\dots,\delta J_m(\widetilde{f},\eta))
+\end{equation}
+
+Маємо два випадки: або $\text{Im}(\mathcal{A}) = \mathbb{R}^{m+1}$ (регулярний випадок), або $\text{Im}(\mathcal{A}) = D \subset \mathbb{R}^{m+1}$ (вироджений випадок).
+
+\textbf{Доведення для виродженого випадку.} Оскільки варіації є лінійним функціоналом, то наш оператор є лінійним. 
+
+Образ лінійного підпростору при лінійному відображенні -- це підпростір. Отже, у виродженому випадку 
+$\text{Im}(\mathcal{A})$ є власним відпростором в $\mathbb{R}^{m+1}$. В скінченному підпросторі справедлива наступна лема.
+
+\begin{lemma}
+    Якщо $V$ є власний підпростір в $\mathbb{R}^n$, то існують числа $\lambda_1,\dots,\lambda_n \in \mathbb{R}$ такі, що не рівні 0 одночасно, а також
+    \begin{equation}
+        \sum_{i=1}^n \lambda_ix_i = 0 \;\;\; \forall \mathbf{x}=(x_1,\dots,x_n) \in V
+    \end{equation}
+\end{lemma}
+
+Застосувавши лему, маємо такий набір $\lambda_0,\lambda_1,\dots,\lambda_m$, що
+\begin{equation}
+    \sum_{i=0}^m\lambda_i z_i = 0 \; \; \; \forall \mathbf{z} = (z_0,\dots,z_m) \in \text{Im}(\mathcal{A})
+\end{equation}
+
+Отже, з визначення оператору $\mathcal{A}$ і варіації, отримуємо
+\begin{equation}
+    \int_a^b \sum_{i=0}^m \lambda_i\left(\frac{\partial L_i}{\partial f}\eta + \frac{\partial L_i}{\partial f'}\eta'\right)dx = 0 \;\; \forall \eta \in \mathcal{C}^1[a,b]
+\end{equation}
+
+За лемою Дюбуа-Реймона маємо, що 
+\begin{gather}
+    \sum_{i=0}^m \lambda_i L \in \mathcal{C}^1[a,b] \\
+    -\frac{d}{dx}\left(\sum_{i=0}^m\lambda_i\frac{\partial L}{\partial f'}\right) + \sum_{i=0}^m \lambda_i\frac{\partial L}{\partial f} = 0
+\end{gather}
+
+Отже регулярний випадок доведено. Доведемо, що регулярного випадку бути не може. Оберемо $\eta_j \in \mathcal{C}_0^1[a,b]$ таким чином, щоб
+$\mathcal{A}\eta_j = \mathbf{e}_j$. Маємо відображення $\Phi$ з околу нуля $\mathbb{R}^{m+1}$ в $\mathbb{R}^{m+1}$:
+\begin{gather}
+    \Phi(\boldsymbol{\beta}) = (\varphi_0(\boldsymbol{\beta}),\dots,\varphi_m(\boldsymbol{\beta})) \\
+    \varphi_i(\beta_0,\dots,\beta_m) = J_i\left(\widetilde{f}(x)+\sum_{j=0}^m\beta_j\eta_j(x)\right)
+\end{gather}
+
+Функції $\varphi_i$ неперервно-диференційовані і окрім того:
+\begin{equation}
+    \frac{\partial \varphi_i}{\partial \beta_j} = \delta_{ij},
+\end{equation}
+
+а також $\Phi(0)=(\ell_0,\dots,\ell_m) = \hat{\mathbf{z}}$, $\ell_0:=J_0$. За теоремою про обернену функцію, існує 
+гладке обернене відображення $\Phi^{-1}$ і константа $\kappa>0$ такі, що
+\begin{equation}
+    \|\Phi^{-1}(\mathbf{z})\| \leq \kappa \|\mathbf{z} - \hat{\mathbf{z}}\|
+\end{equation}
+для малих $\|\mathbf{z} - \hat{\mathbf{z}}\|$.
+
+\begin{center}
+    Доведення не закінчено, але його можна дописати.
+\end{center}
+
+\pagebreak
+
+\section{Векторна задача}
+
+\textbf{Умова.} Векторна найпростіша задача варіаційного числення.
+
+\textbf{Відповідь.}  
+
+\textbf{Векторна задача варіаційного числення.} Нехай маємо задачу виду
+\begin{equation}
+    J[f_1,\dots,f_n] = \int_a^b L(x,f_1(x),\dots,f_n(x),f_1'(x),\dots, f_n'(x))dx \to \text{extr}
+\end{equation}
+
+Введемо позначення $\mathbf{f}'=(f_1',f_2',\dots,f_n')$. Тоді, коротко її сформулюємо як
+\begin{gather}
+    J[\mathbf{f}] = \int_a^b L(x,\mathbf{f},\mathbf{f}')dx \to \text{extr} \\
+    f_i(a) = A, \; f_i(b) = B, \; i \in \{1,\dots,n\}
+\end{gather}
+
+Як і раніше, знайдемо лінійну по $\eta_i,\eta'_i, \; i \in \{1,\dots,n\}$ частину приросту $\Delta J[\boldsymbol{\eta}] = J[\widetilde{\mathbf{f}}+\boldsymbol{\eta}]-J[\widetilde{\mathbf{f}}]$.
+Також аналогічно попереднім задачам $\eta_i(a)=\eta_i(b)=0$. Таким чином, приріст:
+\begin{equation}
+    \Delta J[\boldsymbol{\eta}] = \int_a^b \left[\sum_{i=1}^n \frac{\partial L}{\partial f_i}\eta_i + \frac{\partial L}{\partial f_i'}\eta_i'\right]dx + \overline{o}(\|\boldsymbol{\eta}\|,\|\boldsymbol{\eta}'\|)
+\end{equation}
+
+Отже, перша варіація має вигляд:
+\begin{equation}
+    \delta J = \int_a^b \left[\sum_{i=1}^n \frac{\partial L}{\partial f_i}\eta_i + \frac{\partial L}{\partial f_i'}\eta_i'\right]dx
+\end{equation}
+
+Запишемо її векторно. Нехай $\frac{\partial L}{\partial \mathbf{f}} = (\frac{\partial L}{\partial f_1},\dots,\frac{\partial L}{\partial f_n})$, а також $\frac{\partial L}{\partial \mathbf{f}'} = (\frac{\partial L}{\partial f_1'},\dots,\frac{\partial L}{\partial f_n'})$, тоді 
+\begin{equation}
+    \delta J = \int_a^b \left[\left\langle \frac{\partial L}{\partial\mathbf{f}}, \boldsymbol{\eta} \right\rangle + \left\langle \frac{\partial L}{\partial\mathbf{f}'}, \boldsymbol{\eta}' \right\rangle\right]dx
+\end{equation}
+
+Якщо $\widetilde{\mathbf{f}}$ є екстремумом, то $\eta_1,\dots,\eta_n$ не залежить один від одного. Отже, можемо покласти будь-яке значення. Покладемо $\boldsymbol{\eta} := \eta_i \odot \mathbf{e}_i$. 
+Тоді будемо мати (якщо це повторити для кожного $i$):
+\begin{equation}
+    \int_a^b \left[\frac{\partial L}{\partial f_i}\eta_i + \frac{\partial L}{\partial f_i'}\eta_i'\right]dx = 0, \; i \in \{1,\dots,n\}
+\end{equation}
+
+Звідси отримуємо рівняння Ейлера у векторній формі:
+\begin{equation}
+    \frac{\partial L}{\partial \mathbf{f}} - \frac{d}{dx}\frac{\partial L}{\partial \mathbf{f}'} = 0
+\end{equation}
+
+\pagebreak
+
+\section{Старші похідні}
+
+\textbf{Умова.} Задача варіаційного числення зі старшими похідними. Рівняння Ейлера-Пуассона.
+
+\textbf{Відповідь.} 
+
+\textbf{Задача 1.} Нехай умова виглядає як
+\begin{equation}
+    J[f] = \int_a^b L(x,f(x),f'(x),\dots,f^{(n)}(x))dx \to \text{extr}
+\end{equation}
+
+з умовами
+\begin{gather}
+    f(a)=a_0, f'(a)=a_1, \dots, f^{(n-1)}(a)=a_{n-1} \\
+    f(b)=b_0, f'(b)=b_1, \dots, f^{(n-1)}(b) =b_{n-1}
+\end{gather}
+
+Введемо означення.
+
+\begin{definition}
+    $\varepsilon$-околом порядку $k$ ($0 \leq k < n$) $\mathcal{U}_{\varepsilon}^{(k)}$ кривої $\widetilde{f} \in \mathcal{C}^n(a,b)$ будемо 
+    називати множину кривих $f(x) \in \mathcal{C}^n(a,b)$ таких, що
+    \begin{equation}
+        \max_{0 \leq i \leq k} \{\max_{x \in [a,b]}|\widetilde{f}^{(i)}(x)-f^{(i)}(x)|\} < \varepsilon
+    \end{equation}
+\end{definition}
+
+\textbf{Зауваження 1.} $\mathcal{U}_{\varepsilon}^{(0)}$ називається сильним околом.
+
+\textbf{Зауваження 2.} $\mathcal{U}_{\varepsilon}^{(n)}$ називається сильним околом.
+
+Розглянемо мале збурення $\eta(x)$ з наступними умовами:
+\begin{equation}
+    \eta^{(i)}(a) = \eta^{(i)}(b) = 0 \; \forall i \in \{0,\dots,n-1\}
+\end{equation}
+
+Тоді розглянемо $f(x) = \widetilde{f}(x)+\eta(x)$ -- воно задовольняє крайовим умовам. Далі, введемо 
+ще одне означення.
+
+\begin{definition}
+    Першою варіацією нашої задачі назвемо лінійну відносно $\eta,\eta',\dots,\eta^{(n)}$ частину розкладу прирісту $\Delta J[\eta]:=J[\widetilde{f}+\eta]-J[\widetilde{f}]$.
+\end{definition}
+
+Отже, розглянемо цей приріст:
+\begin{equation}
+    J[\widetilde{f}+\eta]-J[\widetilde{f}] = \int_a^b \left[L(x,\widetilde{f}+\eta,\dots,\widetilde{f}^{(n)}+\eta^{(n)}) - L(x,\widetilde{f},\dots,\widetilde{f}^{(n)})\right]dx
+\end{equation}
+
+Розкладаємо у ряд Тейлора:
+\begin{equation}
+    \Delta J[\eta] = \int_a^b\left[\sum_{i=0}^n \frac{\partial \widetilde{L}}{\partial f^{(k)}}\eta^{(k)}\right]dx + \overline{o}(\|\eta\|,\dots,\|\eta^{(k)}\|)
+\end{equation}
+
+Далі потрібно проінтегрувати за частинами. Заносимо $\eta',\dots,\eta^{(n)}$ під диференціал:
+\begin{gather}
+    \delta J[\eta] = \int_a^b \left(\frac{\partial L}{\partial f}\eta - \frac{d}{dx}\frac{\partial L}{\partial f'}\eta - \frac{d}{dx}\frac{\partial L}{\partial f''}\eta' - \dots -\frac{d}{dx}\eta^{(n-1)}\right)dx \nonumber \\
+    + \frac{\partial L}{\partial f'}\eta\Big|_{x=a}^{x=b} + \frac{\partial L}{\partial f''}\eta'\Big|_{x=a}^{x=b} + \dots + \frac{\partial L}{\partial f^{(n)}}\eta^{(n-1)}\Big|_{x=a}^{x=b}
+\end{gather}
+
+Умови зануляться, оскільки ми обмежили $\eta$. Далі робимо це ще раз:
+\begin{gather}
+    \delta J[\eta] = \int_a^b \left(\frac{\partial L}{\partial f}\eta - \frac{d}{dx}\frac{\partial L}{\partial f'}\eta + \frac{d^2}{dx^2}\frac{\partial L}{\partial f''}\eta' + \dots +\frac{d^2}{dx^2}\eta^{(n-2)}\right)dx \nonumber \\
+    - \frac{d}{dx}\frac{\partial L}{\partial f'}\eta\Big|_{x=a}^{x=b} - \frac{d}{dx}\frac{\partial L}{\partial f''}\eta'\Big|_{x=a}^{x=b} - \dots - \frac{d}{dx}\frac{\partial L}{\partial f^{(n)}}\eta^{(n-2)}\Big|_{x=a}^{x=b}
+\end{gather}
+
+Знову умови зануляються. Нескладно побачити, що таким чином:
+\begin{gather}
+    \Delta J[\eta] = \int_a^b\left[\sum_{k=0}^n (-1)^k \frac{d^k}{dx^k}\frac{\partial L}{\partial f^{(k)}}\right]\eta(x)dx + \overline{o}(\|\eta\|,\dots,\|\eta^{(n)}\|)
+\end{gather}
+
+Отже, за теоремою Лагранжа, отримуємо так зване рівняння Ейлера-Пуассона.
+
+\begin{theorem}
+\textbf{Рівняння Ейлера-Пуассона.} Нехай $L \in \mathcal{C}^{n+1}$ і нехай на $\widetilde{f}$ досягається екстремум. Тоді, справедливо:
+\begin{equation}
+    \sum_{k=0}^n (-1)^k \frac{\partial^k}{\partial x^k} \frac{\partial L}{\partial f^{(k)}}(x,f,\dots,f^{(n)}) = 0
+\end{equation}
+\end{theorem}
+
+\pagebreak
+
+\section{Умови другого порядку}
+
+\textbf{Умова.} Необхідні умови екстремуму другого порядку. Друга варіація функціоналу, її обчислення
+та застосування
+
+\subsection{Загальні відомості}
+
+\textbf{Відповідь.} Нехай $J[f]$ -- функціонал, визначений на нормованому лінійному просторі $V$. 
+
+\begin{definition}
+    Функціонал $J[f]$ називають \textbf{двічі диференційованим}, якщо приріст має вигляд
+    \begin{equation}
+        \Delta J[\eta] = J[f+\eta]-J[f] = L_1[\eta] + L_2[\eta] + \overline{o}(\|\eta\|^2),
+    \end{equation}
+    де $L_1$ -- лінійний функціонал, $L_2$ -- квадратичний функціонал.
+\end{definition}
+
+\begin{definition}
+    Функціонал $B: V \times V \to \mathbb{R}$ називають \textbf{білінійним}, якщо $B[f,g]$ є лінійним за $f$ за будь-яким фіксованим $g$ і навпаки. Інакше кажучи,
+    \begin{enumerate}
+        \item $B[f+g,h] = B[f,h]+B[g,h]$.
+        \item $B[\alpha f,g] = \alpha B[f,g]$.
+        \item $B[f,g+h]=B[f,g]+B[f,h]$.
+        \item $B[f,\alpha g]=\alpha B[f,g]$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}
+    Функціонал виду $B[f,f]$ називають \textbf{квадратичним}.
+\end{definition}
+
+\begin{example}
+    $B[x,y]=\int_a^b x(t)y(t)dt$ є білінійним. Функціонал $B[x,x]=\int_a^b x^2(t)dt$ є квадратичним.
+\end{example}
+
+\begin{definition}
+    Квадратичний функціонал $L_2[\eta]$ називають другою варіацією функціоналу $J[f]$. Будемо його позначати як $\delta^2J[f]$ або $\delta^2 J[f,\eta]$.
+\end{definition}
+
+\begin{theorem}
+    Нехай функціонал $J[f]$ має мінімум за $f=\widetilde{f}$. Тоді $\delta^2 J[\widetilde{f}] \geq 0$.
+\end{theorem}
+
+\textbf{Доведення.} Розглядаємо приріст функціоналу:
+\begin{equation}
+    \Delta J[\widetilde{f}, \eta] = \delta J[\widetilde{f},\eta] + \delta^2 J[\widetilde{f},\eta] + \overline{o}(\|\eta\|^2)
+\end{equation}
+
+Ми вже доводили, що в точці екстремума перша варіація нульова, а тому 
+\begin{equation}
+    \Delta J[\widetilde{f}, \eta] = \delta^2 J[\widetilde{f},\eta] + \overline{o}(\|\eta\|^2)
+\end{equation}
+
+Нехай $\delta^2J[\widetilde{f},\eta_0]<0$ при деякому допустимому $\eta_0$. Тоді:
+\begin{equation}
+    \forall \alpha \neq 0: \delta^2 J[\widetilde{f},\alpha \eta_0] = \alpha^2\delta^2 J[\widetilde{f},\eta_0] < 0,
+\end{equation}
+
+а також:
+\begin{equation}
+    \Delta J[\widetilde{f}, \alpha\eta_0] = \alpha^2\delta^2 J[\widetilde{f},\eta_0] + \alpha^2 \overline{o}(\|\eta_0\|^2) = \alpha^2\left[\delta^2 J[\widetilde{f},\eta_0]+\overline{o}(\|\eta_0\|^2)\right]
+\end{equation}
+
+Тоді $\Delta J[\star,\alpha \eta_0]<0$ при досить малому $\alpha$, що суперечить умові мінімума. Протиріччя.
+
+\begin{theorem}
+    Нехай $\delta J[\widetilde{f},\eta]=0$ і друга варіація $\delta^2 J[\widetilde{f},\eta]$ сильно додатно визначена. Тоді за $f=\widetilde{f}$ досягається мінімум функціоналу $J[\eta]$.
+\end{theorem}
+
+Розглядаємо приріст:
+\begin{equation}
+    \Delta J[\eta] = \delta^2 J[\widetilde{f},\eta] + \overline{o}(\|\eta\|^2),
+\end{equation}
+
+де $\delta^2 J[\widetilde{f},\eta] \geq \kappa\|\eta\|^2,\kappa>0$. Оскільки $\frac{\overline{o}(\|\eta\|^2)}{\|\eta\|^2} \xrightarrow[\|\eta\| \to 0]{} 0$, то при достатньо малому $\varepsilon_1$:
+\begin{equation}
+    |\overline{o}(\|\eta\|^2)| \leq \frac{1}{2}\kappa \|\eta\|^2 \; \text{при} \; \|\eta\| < \varepsilon_1
+\end{equation}
+
+Тоді
+\begin{equation}
+    \Delta J[\eta] = \delta^2 J[\widetilde{f},\eta] + \overline{o}(\|\eta\|^2) \geq \frac{\kappa}{2}\|\eta\|^2 > 0 \; \text{для} \; \|\eta\|<\varepsilon_1,
+\end{equation}
+
+тобто маємо мінімум за $f=\widetilde{f}$. 
+
+\subsection{Формула для інтегралу}
+Нехай маємо задачу з фіксованими кінцями на $[a,b]$, де треба мінімізувати або максимізувати функціонал 
+\begin{equation}
+    J[f] = \int_a^b L(x,f,f')dx
+\end{equation}
+
+Розглянемо приріст за $\eta(a)=\eta(b)=0$ і розкладемо у ряд Тейлора:
+\begin{equation}
+    \Delta J[\eta] = \int_a^b\left[\frac{\partial L}{\partial f}\eta + \frac{\partial L}{\partial f'}\eta'\right]dx + \frac{1}{2}\int_a^b\left[\frac{\partial^2 L}{\partial f^2}\eta^2 + 2\frac{\partial^2 L}{\partial f\partial f'}\eta\eta' + \frac{\partial^2 L}{\partial (f')^2}(\eta')^2\right]dx + \dots
+\end{equation}
+
+Звідси природньо випливає означення.
+
+\begin{definition}
+    \textbf{Другою варіацією} називаємо вираз
+    \begin{equation}
+        \delta^2J[f,\eta] = \frac{1}{2}\int_a^b\left[\frac{\partial^2 L}{\partial f^2}\eta^2 + 2\frac{\partial^2 L}{\partial f\partial f'}\eta\eta' + \frac{\partial^2 L}{\partial (f')^2}(\eta')^2\right]dx
+    \end{equation}
+\end{definition}
+
+\begin{theorem}
+    Нехай $L \in \mathcal{C}^2[a,b]$. Тоді для будь-яких $f,\eta \in \mathcal{KC}^1[a,b]$ перша і другі варіації існують і розраховуються за формулами:
+    \begin{gather}
+        \delta J[f,\eta] = \int_a^b\left[\frac{\partial L}{\partial f}\eta + \frac{\partial L}{\partial f'}\eta'\right]dx \\
+        \delta^2 J[f,\eta] = \frac{1}{2}\int_a^b\left[\frac{\partial^2 L}{\partial f^2}\eta^2 + 2\frac{\partial^2 L}{\partial f\partial f'}\eta\eta' + \frac{\partial^2 L}{\partial (f')^2}(\eta')^2\right]dx
+    \end{gather}
+\end{theorem}
+
+Запишемо другу варіацію у дещо іншому вигляді. Проінтегруємо $\frac{2\partial^2 L}{\partial f\partial f'}\eta\eta'dx$ за частинами. Тоді,
+\begin{equation}
+    \delta^2 J[f,\eta] = \int_a^b[P(x)\eta'(x)^2 + Q(x)\eta(x)^2]dx,
+\end{equation}
+
+де було позначено:
+\begin{equation}
+    P(x) := \frac{1}{2} \frac{\partial^2 L}{\partial (f')^2}, \; Q(x) := \frac{1}{2}\left(\frac{\partial^2 L}{\partial f^2} - \frac{d}{dx}\frac{\partial^2 L}{\partial f\partial f'}\right)
+\end{equation}
+
+\begin{theorem}
+    Нехай функціонал $\delta^2 J[f,\eta] = \int_a^b (P(\eta')^2 + Q\eta^2)dx$ визначений на функціях $\eta \in \mathcal{C}^1[a,b]$ таких, що $\eta(a)=\eta(b)=0$, і при цьому є невід'ємним, тобто $\delta^2 J[f,\eta] \geq 0$. Тоді $P(x) \geq 0$.
+\end{theorem}
+
+\textbf{Доведення.} Від супротивного. Нехай існує $x_0 \in [a,b]$ така, що $P(x_0) = -2\beta < 0$ за $\beta>0$. Тоді неперервність $P(x)$ означає, що $\exists \alpha>0: P(x_0)<-\beta$ за $a \leq x_0-\alpha < x \leq x_0+\alpha \leq b$. Оберемо
+\begin{equation}
+    \eta(x) := \sin^2 \frac{\pi(x-x_0)}{\alpha}\cdot\mathds{1}_{[x_0-\alpha,x_0+\alpha]}(x)
+\end{equation}
+
+Тоді:
+\begin{equation}
+    \delta^2 J[f,\eta] = \int_{x_0-\alpha}^{x_0+\alpha} P(x) \frac{\pi}{\alpha^2}\sin^2 \frac{\pi(x-x_0)}{\alpha}dx + \int_{x_0-\alpha}^{x_0+\alpha}Q(x) \sin^2 \frac{\pi(x-x_0)}{\alpha}dx
+\end{equation}
+
+Проте, тоді справедливо 
+\begin{equation}
+    \delta^2 J[f,\eta] \leq -\frac{\pi^2\beta^2}{\alpha} + 2\mu\alpha, \; \mu = \max_{a \leq x \leq b}|Q(x)|
+\end{equation}
+
+При достатньо малих $\alpha$ маємо $\delta^2 J[f,\eta] < 0$ -- протиріччя. Отже, $P(x) \geq 0$.
+
+\pagebreak
+
+\section{Умови Лежандра та Якобі}
+
+\textbf{Умова.} Необхідні умови Лежандра та Якобі.
+
+\textbf{Відповідь.}
+
+\begin{theorem}
+    \textbf{Необхідна умова Лежандра слабкого мінімума.} Нехай функціонал $J[f]=\int_a^b L(x,f,f')dx$ з фіксованими кінцями має мінімум на кривій $\widetilde{f}$. Тоді для будь-якої точці на криві виконано 
+    \begin{equation}
+        \frac{\partial L}{\partial (f')^2} \geq 0
+    \end{equation}
+\end{theorem}
+
+Для формулювання умови Якобі, сформулюємо спряжену задачу варіаційного числення.
+
+\begin{definition}
+    \textbf{Вторичною} (або \textbf{спряженою}) задачею до початкової назвемо задачу виду
+    \begin{equation}
+        \int_a^b (P(x)\eta'(x)^2 + Q(x)\eta^2(x))dx \to \inf 
+    \end{equation}
+    за умови $\eta(a)=\eta(b)=0$. 
+\end{definition}
+
+Далі, як і з будь-якою задачею варіаційного числення, ми маємо право записати рівняння Ейлера. В такому виді рівняння називається \textbf{рівнянням Якобі.}
+
+\begin{definition}
+\textbf{Рівнянням Якобі} називають рівняння Ейлера до спряженої задачі варіаційного числення:
+\begin{equation}
+    -\frac{d}{dx}(P(x)\eta') + Q(x)\eta(x) = 0, \; \eta(a)=\eta(b)=0
+\end{equation}
+\end{definition}
+
+Окрім тривіального розв'язку $\eta \equiv 0$, є ще один, що задовольняє умовам. Введемо ще одне поняття.
+
+\begin{definition}
+    Нехай $\eta(x)$ -- розв'язок рівняння Якобі, що задовольняє умовам $\eta(a)=0,\eta'(a)=1$. Тоді найближчий до точки $a$ праворуч корінь рівняння $\eta(x)=0$ будемо називати \textbf{спряженою} з $a$ точкою і позначатимемо $a^* (a^*>a)$.
+\end{definition}
+
+Це означення має велике значення, оскільки можемо розглянути ключову теорему.
+
+\begin{theorem}
+    Якщо $P(x) > 0$ для усіх $x \in [a,b]$ і відрізок $[a,b]$ не містить точок, спряжених з $a$, то квадратичний функціонал $\int_a^b [P(x)\eta'(x)^2+Q(x)\eta(x)^2]dx$ додатньо визначений для усіх $\eta$ таких, що $\eta(a)=\eta(b)=0$.
+\end{theorem}
+
+\textbf{Доведення.} Помітимо, що $\int_a^b (\eta^2\omega'+2\eta\eta'\omega)dx=\int_a^b d(\eta^2\omega)=0$. Додамо цей інтеграл до початкового, значення не зміниться. Отримаємо:
+\begin{equation}
+    \int_a^b\left[(Q(x)+\omega'(x))\eta^2 + 2\eta\eta'\omega + P(x)\eta'(x)^2\right]dx
+\end{equation}
+
+Нехай $P(Q+\omega')=\omega^2$ при деякому $\omega$ (ми доведемо існування пізніше), тоді
+\begin{equation}
+    \int_a^b (P\eta'(x)^2+Q\eta(x)^2)dx = \int_a^b P\left(\frac{\omega\eta}{P}+\eta'\right)^2dx > 0
+\end{equation}
+
+за $\frac{\omega\eta}{P}+\eta'\neq 0$. Якщо ж $\frac{\omega\eta}{P}+\eta'\equiv 0$, то $\eta(x)$ -- екстремаль функціоналу $\int_a^b (P\eta'(x)^2+Q\eta(x)^2)dx$ і, значить, задовольняє рівнянню Ейлера. Сама умова дає при $\eta(a)=0$, що $\eta'(a)=0$. Тоді в силу теореми про єдиність розв'язку диференціального рівняння, $\eta(x)\equiv 0$. Це означає, що функціонал додатно визначений.
+
+Отже, залишилося довести наступну лему.
+\begin{lemma}
+    Рівняння $P(x)(Q(x)+\omega'(x))=\omega(x)^2$ має розв'язок відносно $\omega(x)$ на усьому відрізку $[a,b]$ за умови, що немає спряжених точок на $[a,b]$.
+\end{lemma}
+
+\textbf{Доведення.} Покладемо заміну $\omega(x)=-\frac{u'(x)}{u(x)}P(x)$, де $u(x)$ -- нова невідома функція. Тоді:
+\begin{equation}
+    Q(x)u(x) - \frac{d}{dx}(u'(x)P(x))=0
+\end{equation}
+є рівнянням Ейлера для функціоналу $\int_a^b (P(x)u'(x)^2+Q(x)u(x)^2)dx$. Оскільки спряжених точок немає, тоді $u \neq 0$ -- розв'язок рівняння Ейлера. Тоді на всьому відрізку існує розв'язок $\omega = -\frac{u'(x)}{u(x)}P(x)$. 
+
+\begin{theorem}
+    Нехай $P(x)>0$ для усіх $x \in [a,b]$. Якщо квадратичний функціонал 
+    \begin{equation}
+        \int_a^b [P(x)\eta'(x)^2+Q(x)\eta(x)^2]dx
+    \end{equation}
+
+    додатно визначений для усіх $\eta(x): \eta(a)=\eta(b)=0$, то відрізок $[a,b]$ не має спряжених точок з $a$.
+\end{theorem}
+
+Тоді, справедлива наступна теорема
+\begin{theorem}
+    Функціонал $\int_a^b (P(x)\eta'(x)^2+Q(x)\eta(x)^2)dx$ додатно визначений за $P(x)>0,x \in [a,b]$ та $\eta(a)=\eta(b)=0$ тоді і тільки тоді, коли відрізок $[a,b]$ не містить точок, спряжених з $a$.
+\end{theorem}
+
+Отже, нарешті, формулюємо необхідну умову Якобі.
+
+\begin{theorem}
+    \textbf{Необхідна умова Якобі.} Щоб екстремаль $f(x)$ давала мінімум $\int_a^b L(x,f,f')dx$ необхідно, щоб інтервал $(a,b)$ не містив точок, спряжених з $a$.
+\end{theorem}
+
+\pagebreak
+
+\section{Умова Вейєрштраса}
+
+\textbf{Умова.} Необхідна умова Вейєрштраса сильного екстремуму
+
+\textbf{Відповідь.} Нехай маємо оптимізувати функціонал $J[f]=\int_a^b L(x,f,f')dx$ з умовою на фіксовані кінці $[a,b]$. 
+Нехай після розв'язку рівняння Ейлера маємо підозру на $\widetilde{f}$.
+
+Розглянемо спеціальний клас варіацій, котрі розглядаються в задачі на сильний екстремум (так звані ``ігольчаті варіації''). Розглядаємо збурення вигляду
+\begin{equation}
+    \eta_{\lambda}(x) := \begin{cases}
+        \xi\lambda + (x-\tau)\xi, & x \in [\tau-\lambda,\tau] \\
+        \xi\lambda - (x-\tau)\sqrt{\lambda}\xi, & x \in [\tau,\tau+\sqrt{\lambda}] \\
+        0, & x \not\in [\tau-\lambda,\tau+\sqrt{\lambda}]
+    \end{cases}
+\end{equation}
+
+Скористаємося методом варіації. Розглянемо
+\begin{equation}
+    \varphi(\lambda) = J[\widetilde{f}(x)+\eta_{\lambda}(x)], \; \tau \in [a,b], \; \xi \in \mathbb{R}
+\end{equation}
+
+Позначимо $f_{\lambda}(x) := \widetilde{f}(x) + \eta_{\lambda}(x)$. Якщо $f_{\lambda} \in \mathcal{U}_{\varepsilon}^+(\widetilde{f})$, то $|f_{\lambda}-\widetilde{f}|<\varepsilon$ для усіх $x \in [a,b]$.
+Це еквівалентно $|\eta_{\lambda}(x)| \leq |\xi\lambda|=\lambda|\xi|<\varepsilon$ за $0\leq\lambda<\lambda_1 := \frac{\varepsilon}{|\xi|}$.
+
+Також легко бачити, що $f_{\lambda}$ є допустимою функцією при достатньо малих $0\leq\lambda<\lambda_0$.
+
+Нехай далі $0\leq\lambda<\lambda_2 := \max\{\lambda_0,\lambda_1\}$. Функція $\varphi(\lambda)$ визначена для додатних $\lambda$. Покажемо, що вона дійсно є диференційованою праворуч. Помітимо, що:
+\begin{enumerate}
+    \item $\|\eta_{\lambda}(x)\|_0 = \max_{x \in [a,b]}|\eta_{\lambda}(x)|=\overline{o}(\lambda)$ оскільки $|\eta_{\lambda}(x)| \leq |\lambda||\xi| \xrightarrow[\lambda \to 0]{}0$.
+    \item $|\eta_{\lambda}'(x)|=\frac{\xi\lambda}{\sqrt{\lambda}}=\xi\sqrt{\lambda} = \overline{o}(\sqrt{\lambda}) \xrightarrow[\lambda \to 0]{}0$ за $x \in (\tau,\tau+\sqrt{\lambda})$.
+\end{enumerate}
+
+Таким чином:
+\begin{equation}
+    \varphi(\lambda)-\lambda(0) = J[\widetilde{f}+\eta_{\lambda}]-J[\widetilde{f}] = \int_a^b L(x,\widetilde{f}+\eta_{\lambda}(x),\widetilde{f}+\eta_{\lambda}')dx - \int_a^b L(x,\widetilde{f},\widetilde{f}')dx
+\end{equation}
+
+Далі розкладаємо на інтервали:
+\begin{equation}
+    \varphi(\lambda)-\lambda(0) = \int_{\tau-\lambda}^{\tau}[L(x,f_{\lambda},f_{\lambda}')-L(x,\widetilde{f},\widetilde{f}')]dx + \int_{\tau}^{\tau+\sqrt{\lambda}}[L(x,f_{\lambda},f_{\lambda}')-L(x,\widetilde{f},\widetilde{f}')]dx 
+\end{equation}
+
+Позначимо лівий та правий інтеграл як $\mathcal{I}_-$ та $\mathcal{I}_+$ відповідно. Скористаємось теоремою про середнє та умовою 1\footnote{це твердження потребує більш акуратного доведення}:
+\begin{equation}
+    \mathcal{I}_- = \lambda[L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau)+\xi)-L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau))] + \overline{o}(\lambda)
+\end{equation}
+
+Розглянемо правий інтеграл. За формулою Тейлора і твердженням 2:
+\begin{equation}
+    \mathcal{I}_+ = \int_{\tau}^{\tau+\sqrt{\lambda}}\left[\frac{\partial \widetilde{L}}{\partial f}\eta_{\lambda} + \frac{\partial \widetilde{L}}{\partial f'}\eta_{\lambda}'\right]dx + \int_{\tau}^{\tau+\sqrt{\lambda}}\overline{o}(\sqrt{\lambda})dx
+\end{equation}
+
+Далі інтегруємо за частинами:
+\begin{equation}
+    \mathcal{I}_+ = \int_{\tau}^{\tau+\sqrt{\lambda}}\left[\frac{\partial \widetilde{L}}{\partial f}-\frac{d}{dx}\frac{\partial \widetilde{L}}{\partial f'}\right]\eta_{\lambda}(x)dx + \frac{\partial \widetilde{L}}{\partial f'}\eta_{\lambda}(x)\Big|_{\tau}^{\tau+\sqrt{\lambda}}+ \overline{o}(\lambda)
+\end{equation}
+
+Або, після спрощення:
+\begin{equation}
+    \mathcal{I}_+ = \int_{\tau}^{\tau+\sqrt{\lambda}}\left[\frac{\partial \widetilde{L}}{\partial f}-\frac{d}{dx}\frac{\partial \widetilde{L}}{\partial f'}\right]\eta_{\lambda}(x)dx - \xi\lambda\frac{\partial L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau))}{\partial f'} + \overline{o}(\lambda)
+\end{equation}
+
+Оскільки виконується рівняння Ейлера
+\begin{equation}
+    \frac{\partial \widetilde{L}}{\partial f}-\frac{d}{dx}\frac{\partial \widetilde{L}}{\partial f'} = 0, \; \eta_{\lambda}(\tau)=\xi\lambda, \; \eta_{\lambda}(\tau+\sqrt{\lambda})=0,
+\end{equation}
+
+то інтеграл зануляється. Таким чином, права похідна $\varphi(\lambda)$ в нулі:
+\begin{equation}
+    \varphi'(0^+)=\lim_{\lambda \to 0^+}\frac{\varphi(\lambda)-\varphi(0)}{\lambda} = \lim_{\lambda \to 0^+} \frac{\mathcal{I}_1(\lambda)+\mathcal{I}_2(\lambda)}{\lambda}
+\end{equation}
+
+Розписавши, матимемо:
+\begin{equation}
+    \varphi'(0^+) = \lim_{\lambda \to 0^+}\left[L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau)+\xi)-L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau))-\xi \frac{\partial L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau))}{\partial f'}+\frac{\overline{o}(\lambda)}{\lambda}\right]
+\end{equation}
+
+Помітимо, що якщо $\widetilde{f}$ досягає сильного локального максимума, то $J[f_{\lambda}] \geq J[\widetilde{f}]$, звідки $\varphi'(0^+) \geq 0$. Звідки, ми отримуємо умову Веєрштраса.
+
+\begin{definition}
+    \textbf{Умовою Веєрштраса} називають умову
+    \begin{equation}
+        L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau)+\xi)-L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau))-\xi \frac{\partial L(\tau,\widetilde{f}(\tau),\widetilde{f}'(\tau))}{\partial f'} \geq 0 \; \forall \xi \in \mathbb{R}
+    \end{equation}
+\end{definition}
+
+\begin{definition}
+    \textbf{Функцією Веєрштраса} називають вираз
+    \begin{equation}
+        E(x,f,P,Q) = L(x,f,Q) - L(x,f,P) - (Q-P)\frac{\partial L}{\partial f'}(x,f,P)
+    \end{equation}
+\end{definition}
+
+Отже, ключова теорема наступна.
+
+\begin{theorem}
+    Нехай $L,\frac{\partial L}{\partial f},\frac{\partial L}{\partial f'}$ -- неперервні за сукупністю аргументів та на $\widetilde{f}$ досягається сильний локальний мінімум. Тоді:
+    \begin{equation}
+        E(x,\widetilde{f},\widetilde{f}',\widetilde{f}'(x)+\xi) \geq 0 \; \forall x \in [a,b] \; \forall \xi \in \mathbb{R}
+    \end{equation}
+\end{theorem}
+
+\pagebreak
+
+\section{Достатня умова}
+
+\textbf{Умова.} Достатня умова слабкого екстремуму. Достатня умова слабкого екстремуму для векторної
+задачі
+
+\textbf{Відповідь.} Розглянемо наступну теорему.
+
+\subsection{Достатня умова}
+
+\begin{theorem}
+    \textbf{Достатня умова слабкого екстремуму.} Якщо допустима крива $y=f(x)$ для функціоналу
+    \begin{equation}
+        \int_a^b L(x,f,f')dx \; \; f(a)=A, \; f(b)=B
+    \end{equation}
+    задовольняє наступним умовам:
+    \begin{enumerate}
+        \item $f=f(x)$ є екстремаллю, тобто задовольняє рівняння Ейлера $\frac{\partial L}{\partial f} - \frac{d}{dx}\frac{\partial L}{\partial f'} = 0$.
+        \item Вздовж цієї кривої $P \equiv \frac{\partial^2 L}{\partial (f')^2} > 0$, тобто виконується посилена умова Лежандра.
+        \item Відрізок $[a,b]$ не містить точок спряжених з $a$ (посилена умова Якобі),
+    \end{enumerate}
+
+    то на цій кривій реалізується слабкий мінімум.
+\end{theorem}
+
+\textbf{Доведення.} Якщо відрізок $[a,b]$ не містить точок, спряжених з точкою $a$ і на ньому $P(x)>0$, то в силу неперервності розв'язків рівняння Якобі і функції $P(x)$ знайдеться 
+$\varepsilon>0$ таке, що відрізок $[a,b+\varepsilon]$ також не містить точок спряжених з $a$ і $P(x)>0$ на $[a,b+\varepsilon]$. Розглянемо квадратичний функціонал:
+\begin{equation}
+    V[\eta] := \int_a^b (P(x)\eta'(x)^2 + Q(x)\eta(x)^2)dx - \alpha^2\int_a^b \eta'(x)^2dx
+\end{equation}
+
+Відповідне рівняння Ейлера має вигляд:
+\begin{equation}
+    -\frac{d}{dx}\left((P(x)-\alpha^2)\eta'(x)\right) + Q(x)\eta(x) = 0 \; \; \eta(a)=0, \; \eta'(a)=1
+\end{equation}
+
+Оскільки $P(x)>0$ неперервна при $[a,b+\varepsilon]$ і розв'язок рівняння Ейлера неперервно залежить від параметру $\alpha$, то при достатньо 
+малих значеннях $\alpha$ маємо:
+\begin{enumerate}
+    \item $P(x)-\alpha^2>0 \; \forall x \in [a,b]$.
+    \item Розв'язок рівняння Ейлера з умовами $\eta(a)=0,\eta'(a)=1$ не оберається в нуль на $[a,b]$.
+\end{enumerate}
+
+Отже звідси випливає, що цей квадратичний функціонал додатно визначений при достатньо малому $\alpha$. Отже, існує $\gamma > 0$ таке, що
+\begin{equation}
+    \int_a^b (P(x)\eta'(x)^2 + Q(x)\eta(x)^2)dx > \gamma\int_a^b \eta'(x)^2dx
+\end{equation}
+
+звідки легко випливає, що $y=f(x)$ -- мінімум. Дійсно, розглянемо приріст функціоналу 
+для малих $\eta(x)$:
+\begin{equation}
+    \Delta J[\eta] = J[f+\eta]-J[f] = \int_a^b (P(x)\eta'(x)^2 + Q(x)\eta(x)^2)dx + \int_a^b [\overline{o}_1(\eta^2) + \overline{o}_2((\eta')^2)]dx
+\end{equation}
+
+Скористаємося рівнянням Коші-Буняковського:
+\begin{equation}
+    \eta^2(x) = \left(\int_a^x \eta'(x)dx\right)^2 \leq \left[\left(\int_a^x 1^2\right)^{1/2}\left(\int_a^x \eta'(x)^2dx\right)^{1/2}\right]^2
+\end{equation}
+
+А отже:
+\begin{equation}
+    \eta^2(x) \leq (x-a)\int_a^x \eta'(x)^2dx \leq (x-a)\int_a^b \eta'(x)^2dx
+\end{equation}
+
+Звідси випливає
+\begin{equation}
+    \int_a^b \eta^2(x)dx \leq \frac{(b-a)^2}{2}\int_a^b \eta'(x)^2dx
+\end{equation}
+
+Отже для $|\overline{o}_1(1)|<\varepsilon$ та $|\overline{o}_2(1)|<\varepsilon$ маємо:
+\begin{equation}
+    \left|\int_a^b (\overline{o}_1(\eta(x)^2)+\overline{o}_2(\eta'(x)^2))dx \right| \leq \varepsilon\left[\frac{(b-a)^2}{2}+1\right]\int_a^b \eta'(x)^2dx
+\end{equation}
+
+Оскільки $\varepsilon$ можна зробити як завгодно малим, то:
+\begin{equation}
+    \Delta J[\eta] > \left[\gamma - \varepsilon\left(1+\frac{(b-a)^2}{2}\right)\right]\int_a^b \eta'(x)^2dx > 0
+\end{equation}
+
+\subsection{Векторна задача}
+
+Нехай $\mathbf{f}=(f_1,\dots,f_n)$. Знову розглядаємо збурення $\boldsymbol{\eta}=(\eta_1,\dots,\eta_n)$ з умовами на те, що
+$\eta_i(a)=\eta_i(b)=0$. Отже, застосувавши формулу Тейлора на приріст $\Delta J[\boldsymbol{\eta}]$, отримуємо:
+\begin{equation}
+    \delta^2 J[\mathbf{f},\boldsymbol{\eta}] = \frac{1}{2}\int_a^b\left[\sum_{i,j=1}^n \frac{\partial^{i+j} L}{\partial f_i\partial f_j}\eta_i\eta_j + \sum_{i,j=1}^n \frac{\partial^{i+j} L}{\partial f_i \partial (f_j)'}\eta_i\eta_j' + \sum_{i,j=1}^n \frac{\partial^{i+j} L}{\partial (f_i)'\partial (f_j)'}\eta_i'\eta_j'\right]dx
+\end{equation}
+
+Або у матричному вигляді:
+\begin{equation}
+    \delta^2 J[\mathbf{f},\boldsymbol{\eta}] = \frac{1}{2}\int_a^b\left[\left\langle \frac{\partial^2L}{\partial \mathbf{f}^2}\boldsymbol{\eta},\boldsymbol{\eta} \right\rangle + \left\langle \frac{\partial^2L}{\partial \mathbf{f}\mathbf{f}'}\boldsymbol{\eta},\boldsymbol{\eta}' \right\rangle + \left\langle \frac{\partial^2L}{\partial (\mathbf{f}')^2}\boldsymbol{\eta}',\boldsymbol{\eta}' \right\rangle\right]dx
+\end{equation}
+
+Або, якщо ввести матриці $\boldsymbol{P}=\frac{1}{2}\frac{\partial^2 L}{\partial (\mathbf{f}')^2}$ та $\boldsymbol{Q} = \frac{1}{2}\left(\frac{\partial^2 L}{\partial\mathbf{f}^2} - \frac{d}{dx}\frac{\partial L}{\partial\mathbf{f}\partial\mathbf{f}'}\right)$, то
+\begin{equation}
+    \delta^2 J[\mathbf{f},\boldsymbol{\eta}] = \int_a^b \left[\langle \boldsymbol{P}(x)\boldsymbol{\eta}'(x),\boldsymbol{\eta}'(x)\rangle + \langle \boldsymbol{Q}(x)\boldsymbol{\eta}(x),\boldsymbol{\eta}(x)\rangle\right]dx
+\end{equation}
+
+Отже тепер умова Лежандра має вид $\frac{\partial^2 L}{\partial (\mathbf{f}')^2} > 0$. Cистема Якобі набуде вигляд:
+\begin{equation}
+    \boldsymbol{Q}(x)\boldsymbol{\eta}(x) - \frac{d}{dx}\left(\boldsymbol{P}(x)\boldsymbol{\eta}'(x)\right) = 0
+\end{equation}
+
+А поняття спряженої точки тепер набувають дещо іншого вигляду.
+
+\begin{definition}
+    Нехай $\boldsymbol{\eta}^1,\dots,\boldsymbol{\eta}^n$ -- розв'язки системи Якобі, що задовольняють умовам $\boldsymbol{\eta}^i(a)=\mathbf{0}$, а також $\boldsymbol{\eta}'(a)^i=\mathbf{e}_i$. 
+    
+    Тоді точка $\widetilde{a}$ є спряженою до точки $a$, якщо наступний визначник нульовий:
+    \begin{equation}
+        \det\{\eta_{ij}\}_{i,j=1}^n \Big|_{x=\widetilde{a}} = 0
+    \end{equation}
+\end{definition}
+
+Інші поняття залишаються аналогічними.
+
+\pagebreak
+
+\section{Інтеграл Гільберта}
+
+\textbf{Умова.} Поле екстремалей. Інтеграл Гільберта. Достатня умова сильного екстремуму
+
+\textbf{Відповідь.}
+
+\subsection{Поле екстремалей}
+
+Спочатку, наведемо буквально трошки теорії поля.
+
+\begin{definition}
+    Розглянемо сімейство екстремалей $f(x\mid\theta)$, де $\theta$ -- параметр. Якщо через кожну точку області $[a,b]\times \mathbb{R}^n$ проходе одна і тільки одна крива 
+    сімейства $f(x \mid \theta)$, то кажуть, що це сімейство кривих утворюють \textbf{власне поле}. Кутовий коефіцієнт $k(x,y)$ дотичної 
+    до кривої сімейства $f(x \mid \theta)$, що проходить через точку $(x,y)$ називають \textbf{нахилом поля} в $(x,y)$.
+\end{definition}
+
+\begin{definition}
+    Якщо криві сімейства $f(x \mid \theta)$ проходять через точку $(x_0,y_0)$, то вони утворюють \textbf{пучок}. Якщо ці криві покривають 
+    усю область і ніде не перетинаються окрім центру пучка, то кажуть, що сімейство $f(x \mid \theta)$ утворює \textbf{центральне поле}.
+\end{definition}
+
+\begin{definition}
+    Власне або центральне поле, утворене сімейством екстремалей називають \textbf{полем екстремалей}.
+\end{definition}
+
+\begin{definition}
+    Якщо знайдено сімейство $f=f(x\mid\theta)$, що утворює поле, що містить при деякому $\theta=\theta_0$ екстремаль $y=f(x)$ і ця екстремаль
+    не лежить на границі області, то кажуть, що екстремаль $f(x)$ включена у поле $f(x \mid \theta)$.
+\end{definition}
+
+\begin{definition}
+    Якщо пучок екстремалей, що проходять через $A(x_0,y_0)$ в околі екстремалі $y=f(x)$, що проходить через ту саму точку, утворює поле, то екстремаль $y=f(x)$ включена в центральне поле екстремалей.
+\end{definition}
+
+\subsection{Інтеграл Гільберта}
+
+Ми готові визначити інтеграл Гільберта!
+
+\begin{definition}
+    Нехай $\Omega$ -- область, що покривається $f(x\mid\theta)$ з нахилом $k(x,y)$. Тоді для кривої $\ell \subset \Omega$ \textbf{інтегралом Гільберта} називають
+    \begin{equation}
+        T_{\ell} := \int_{\ell} \left[L(x,y,k(x,y))-\langle k(x,y), \frac{\partial L}{\partial f'}(x,y,k(x,y))\rangle\right]dx + \frac{\partial L}{\partial f'}(x,y,k(x,y))dy
+    \end{equation}
+\end{definition}
+
+Розглянемо деякі його властивості.
+
+\textbf{Властивість 1.} Нехай $\widetilde{\ell}=\{(x,y): y=f(x)=f(x\mid\theta^*): x \in [a,b]\}$ -- екстремаль. Тоді $f'(x)=k(x,f(x))$, звідки
+\begin{gather}
+    T_{\widetilde{\ell}} = \int_a^b [L(x,f(x),k(x,f(x))) - \langle k(x,y),L_{f'}(x,f(x),k(x,y)) \rangle] \\ + (L_{f'},f') = \int_a^b L(x,f(x),f'(x))dx
+\end{gather}
+
+Отже, значення інтегралу Гільберта вздовж куска екстремалі дорівнює значенню початкового функціоналу.
+
+\textbf{Властивість 2.} Якщо $\Omega$ -- однозв'язна область, то інтеграл Гільберта не залежить від шляху інтегруванню в $\Omega$. Доведемо для $n=1$, тобто потрібно довести, що $\frac{\partial P}{\partial y}=\frac{\partial Q}{\partial x}$. Отже,
+\begin{equation}
+    \frac{\partial}{\partial y}\left[L(x,y,k(x,y))-k(x,y)\frac{\partial L}{\partial f'}(x,y,k(x,y))\right] =^? \frac{\partial}{\partial x} \frac{\partial L(x,y,k(x,y))}{\partial f'}
+\end{equation}
+
+Можна показати, що це справді так.
+
+Розглянемо ключову теорему.
+
+\begin{theorem}
+    \textbf{Достатня умова сильного мінімуму.} Нехай $y=\widetilde{f}(x),x\in[a,b]$ -- допустима екстремаль, котру можна окружити центральним полем і нехай в деякій області $\Omega$, покритою полем і що містить цю екстремаль (окрім, можливо, її кінців)
+    виконана умова:
+    \begin{equation}
+        E(x,y,k(x,y),Q) \geq 0 \; \forall (x,y) \in \Omega \; \forall Q \in \mathbb{R},
+    \end{equation}
+
+    тоді на $\widetilde{f}$ досягається сильний локальний мінімум.
+\end{theorem}
+
+\pagebreak
+
+\section{Керованість лінійних систем}
+
+\textbf{Умова.} Керованість лінійних систем без обмежень на керування.
+
+\textbf{Відповідь.} Розглядаємо систему $\dot{\mathbf{x}} = \boldsymbol{A}\mathbf{x}+\boldsymbol{B}\mathbf{u}$, де
+\begin{equation}
+    \mathbf{x} \in \mathbb{R}^n, \; \mathbf{u} \in \mathbb{R}^r, \; \boldsymbol{A} \in \mathbb{R}^{n \times n}, \; \boldsymbol{B} \in \mathbb{R}^{n \times r}
+\end{equation}
+
+\begin{definition}
+    Функція $\mathbf{u}(t)$ називається управлінням.
+\end{definition}
+
+Будемо розглядати кусково-неперервні $u(t) \in \mathcal{KC}[t_0,t_1]$. Такі управління будемо називати допустимими. 
+\begin{definition}
+    Якщо $u: [t_0,t_1] \to \Omega \subset \mathbb{R}^r$, то $\Omega$ називають обмежуючою множиною. Якщо $\Omega=\mathbb{R}^r$, то таку задачу називають без обмежень на керування.
+\end{definition}
+
+\begin{definition}
+    Нехай $\{\hat{\mathbf{x}}_0,\hat{\mathbf{x}}_1\}\subset \mathbb{R}^n$ -- пара точок простору. Якщо для цих двох точок існує допустиме керування $u: [t_1,t_2] \to \Omega \subset \mathbb{R}^r$ таке, що під дією системи $\mathbf{x}(t_0)=\hat{\mathbf{x}}_0,\mathbf{x}(t_1)=\hat{\mathbf{x}}_1$, то будемо казати, що $\mathbf{u}$ переводить $\hat{\mathbf{x}}_0$ в $\hat{\mathbf{x}}_1$ за час $T:=t_1-t_0$. Позначаємо як $\hat{\mathbf{x}}_0 \xrightarrow[(t_0,t_1)]{\mathbf{u}(t)} \hat{\mathbf{x}}_1$.
+\end{definition}
+
+\begin{definition}
+    Якщо $\forall\{\hat{\mathbf{x}}_0,\hat{\mathbf{x}}_1\}\subset \mathbb{R}^n$ існує допустиме керування $u: [t_1,t_2] \to \Omega \subset \mathbb{R}^r$ таке, що під дією системи $\mathbf{x}(t_0)=\hat{\mathbf{x}}_0,\mathbf{x}(t_1)=\hat{\mathbf{x}}_1$, то будемо казати, що система є повністю керованою на $[t_0,t_1]$.
+\end{definition}
+
+\begin{theorem}
+    \textbf{Критерій Калмана.} Система є ПК тоді і тільки тоді, коли
+    \begin{equation}
+        \text{rang}(\boldsymbol{K}) = n, \; \boldsymbol{K} = (\boldsymbol{B} \parallel \boldsymbol{A}\boldsymbol{B} \parallel \dots \parallel \boldsymbol{A}^{n-1}\boldsymbol{B})
+    \end{equation}
+\end{theorem}
+
+\textbf{Доведення.} $\to$. Нехай система ПК. Оберемо відповідне $u(t)$. Згідно формули Коші:
+\begin{equation}
+    \mathbf{x}(t) = e^{\boldsymbol{A}(t-t_0)}\mathbf{x}_0 + \int_{t_0}^t e^{\boldsymbol{A}(t-\tau)}\boldsymbol{B}\mathbf{u}(\tau)d\tau
+\end{equation}
+
+Тоді при $t=t_1$ маємо:
+\begin{equation}
+    \mathbf{x}_1 = \mathbf{x}(t_1) = e^{\boldsymbol{A}(t_1-t_0)}\mathbf{x}_0 + e^{\boldsymbol{A}t_1}\int_{t_0}^{t_1} e^{-\boldsymbol{A}\tau}\boldsymbol{B}\mathbf{u}(\tau)d\tau
+\end{equation}
+
+Або:
+\begin{equation}
+    e^{-\boldsymbol{A}t_1}\mathbf{x}_1 - e^{-\boldsymbol{A}t_0}\mathbf{x}_0 = \int_{t_0}^{t_1}e^{-\boldsymbol{A}\tau}\boldsymbol{B}\mathbf{u}(\tau)d\tau
+\end{equation}
+
+Помітимо, що $e^{-\boldsymbol{A}\tau} = \sum_{s=0}^{\infty}\frac{(-1)^s(\boldsymbol{A}\tau)^s}{s!}$. За теоремою Гамільтона-Келі всяка квадратна матриця задовольняє свому характеристичному поліному $\chi(\lambda)$. Нехай
+\begin{equation}
+    \chi(\lambda) = \lambda^n + \sum_{k=1}^n c_k\lambda^{n-k}
+\end{equation}
+
+Тоді $\boldsymbol{A}^n = -c_1\boldsymbol{A}^{n-1}-\dots-c_{n-1}\boldsymbol{A}-c_n\boldsymbol{E}_{n \times n}$. Це означає, що $\boldsymbol{A}^n$ залежить від $\boldsymbol{A}^{n-1},\dots,\boldsymbol{A}^2,\boldsymbol{A},\boldsymbol{E}_{n \times n}$. Звідси випливає, що $\boldsymbol{A}^m,m \geq n$ є лінійною комбінацією $\boldsymbol{E}_{n \times n},\dots,\boldsymbol{A}^{n-1}$, тобто 
+\begin{equation}
+    \exists \varepsilon_{ki}: \boldsymbol{A}^k = \sum_{i=0}^{n-1}\varepsilon_{ki}\boldsymbol{A}^i, \; k \geq n
+\end{equation}
+
+\begin{center}
+    \textbf{Далі доведення зрозуміле, але тут не закінчене.}
+\end{center}
+
+\begin{theorem}
+    Також можна довести, що якщо система ПК, то
+    \begin{enumerate}
+        \item $\forall \lambda \in \mathbb{C}: \text{rang}(\boldsymbol{A}-\lambda\boldsymbol{E}_{n\times n}\boldsymbol{B})=n$.
+        \item $\int_{t_0}^{t_1}e^{(t_1-\tau)\boldsymbol{A}}\boldsymbol{B}\boldsymbol{B}^{\top}e^{(t_1-\tau)\boldsymbol{A}^{\top}}d\tau >> 0$.
+        \item $\text{rang}(\boldsymbol{B},\boldsymbol{A}\boldsymbol{B},\dots,\boldsymbol{A}^{n-1}\boldsymbol{B})$.
+    \end{enumerate}
+\end{theorem}
+
+\pagebreak
+
+\section{Задача швидкодії}
+
+\textbf{Умова.} Задача швидкодії для лінійних систем. Множина досяжності (керованості) за час $T$,
+властивості множини досяжності (опуклість, властивість внутрішніх точок).
+
+\textbf{Відповідь.} Розглянемо задачу виду: $t_1-t_0 \to \inf$ під дією
+\begin{equation}
+    \begin{cases}
+        \dot{\mathbf{x}} = \boldsymbol{A}\mathbf{x} + \boldsymbol{B}\mathbf{u}, \; t \in [t_0,t_1] \\
+        \mathbf{x}(t_0) = \mathbf{x}_0, \; \mathbf{x}(t_1) = \mathbf{x}_1, \; u(t) \in \Omega
+    \end{cases}
+\end{equation}
+
+Будемо вважати $\Omega$ -- замкнена, обмежена і випукла множина, $0 \in \Omega$.
+
+\begin{definition}
+    Множина $\Omega$ називається випуклою, якщо разом з будь-якими своїми точками $\mathbf{x},\mathbf{y}$, воно 
+    тримає і весь відрізок, що їх з'єднує. Формально:
+    \begin{equation}
+        \forall \mathbf{x},\mathbf{y} \in \Omega, \; \forall \lambda \in [0,1]: \lambda \mathbf{x} + (1-\lambda)\mathbf{y} \in \Omega
+    \end{equation}
+\end{definition}
+
+Для зручності далі нехай $\mathbf{x}_1=\mathbf{0}$.
+
+\begin{definition}
+    Множиною досяжності для системи $\dot{\mathbf{x}} = \boldsymbol{A}\mathbf{x} + \boldsymbol{B}\mathbf{u}$ за час $T$ будемо називати множину точок $\mathbf{x}_0$ з яких можна попасти в $\mathbf{x}_1=\mathbf{0}$ за час $T$ під дією деякого допустимого управління.
+\end{definition}
+
+Нехай $V_T$ -- множина досяжності для нашої системи.
+
+\begin{lemma}
+    $V_T$ -- випукла множина.
+\end{lemma}
+
+\textbf{Доведення.} Перевіримо, що $\forall \mathbf{x}_0,\mathbf{y}_0 \in V_T \; \forall \lambda \in [0,1]: \lambda\mathbf{x}_0+(1-\lambda)\mathbf{y}_0 \in V_T$. За означенням,
+\begin{gather}
+    \mathbf{x}_0 \in V_T \implies \exists u_X(t) \in \Omega: \mathbf{x}_0 \xrightarrow[(0,T)]{u_X(t)} \mathbf{0} \\
+    \mathbf{y}_0 \in V_T \implies \exists u_Y(t) \in \Omega: \mathbf{y}_0 \xrightarrow[(0,T)]{u_Y(t)} \mathbf{0}
+\end{gather}
+
+Покладемо:
+\begin{gather}
+    \widetilde{\mathbf{u}}(t) = \lambda\mathbf{u}_X(t) + (1-\lambda)\mathbf{u}_Y(t) \implies \widetilde{\boldsymbol{u}} \in \Omega
+\end{gather}
+
+Тоді це переведе $\lambda\mathbf{x}_0+(1-\lambda)\mathbf{y}_0$ у $\mathbf{0}$.
+
+\begin{lemma}
+    Якщо $\mathbf{x}_0$ -- внутрішня точка $V_T$, то з $\mathbf{x}_0$ можна потрапити в $\mathbf{0}$ за час, строго меньший за $T$.
+\end{lemma}
+
+\textbf{Доведення.} Отже, $\mathbf{x}_0 \in \text{int}(V_T)$. Тоді існує куля $B(\mathbf{x}_0,r) \subset V_T$, а отже і куб $C$ з центром в $\mathbf{x}_0$. 
+
+Нехай $\mathbf{y}_1,\dots,\mathbf{y}_N$ -- вершини куба, $\mathbf{y}_i \in V_T$. Тоді, 
+\begin{equation}
+    \exists u_i(t) \in \Omega: \mathbf{y}_i \xrightarrow[(0,T)]{u_i(t)} \mathbf{0}, \; i \in \{1,\dots,N\}
+\end{equation}
+
+Для достатньо малого $\delta>0$ розглянемо точки $\mathbf{y}_1(t_0+\delta),\dots,\mathbf{y}_N(t_0+\delta)$. Маємо:
+\begin{equation}
+    \begin{cases}
+        \dot{\mathbf{y}}_i = \boldsymbol{A}\mathbf{y}_i + \boldsymbol{B}\mathbf{u}_i(t), \; t_0+\delta \leq t \leq t_1 \\
+        \mathbf{y}_i(\widetilde{t}_0) = \mathbf{y}_i(t_0+\delta) \\
+        \mathbf{y}_i(t_1) = \mathbf{0} \\
+        \mathbf{u}_i \in \Omega, \; t_0+\delta \leq t \leq t_1
+    \end{cases}
+\end{equation}
+
+При достатньо малих $\delta>0$ випукла оболонка з точек $\mathbf{y}_i(t_0+\delta)$ буде мало відрізнятися від куба $C$. Тоді при достатньо 
+малих $\delta>0$ ця випукла оболонка буде містити $\mathbf{x}_0$. З точок $\mathbf{y}_i(t_0+\delta)$ можна потрапити за час $T-\delta$. Тоді $\mathbf{y}_i(t_0+\delta) \in V_{T-\delta}$, звідки 
+в силу випуклості множини випливає, що множині $V_{T-\delta}$ належить і весь багатогранник. Це означає, що і з $\mathbf{x}_0 \in V_{T-\delta}$, тобто з точки $\mathbf{x}_0$ можна потрапити за час $T-\delta < T$. 
+
+\begin{definition}
+    Нехай $A_0,\dots,A_n$ не лежать в одній $(k-1)$-мірній площині, тоді випукла оболонка цих точок називають \textbf{симплексом}.
+\end{definition}
+
+\begin{lemma}
+    \textbf{Допоміжна.} Нехай $\mathbf{u}(t) \in \mathcal{KC}[t_0,t_1],\mathbf{x}(t) \in \mathcal{KC}^1[t_0,t_1]$ -- траєкторія. Нехай $\boldsymbol{\psi}(t)$ -- довільний розв'язок рівняння $\dot{\boldsymbol{\psi}}=-\boldsymbol{A}^{*}\boldsymbol{\psi}(t)$. Тоді
+    \begin{equation}
+        \langle \boldsymbol{\psi}(t_1),\mathbf{x}(t_1) \rangle - \langle \boldsymbol{\psi}(t_0),\mathbf{x}(t_0) \rangle = \int_{t_0}^{t_1} \langle \boldsymbol{\psi}(t), \boldsymbol{B}\mathbf{u}(t) \rangle dt
+    \end{equation}
+\end{lemma}
+
+\textbf{Доведення.} В точках неперервності $\mathbf{u}(t)$ маємо $\dot{\mathbf{x}} = \boldsymbol{A}\mathbf{x}(t)+\boldsymbol{B}\mathbf{u}(t)$. Тоді:
+\begin{align}
+    \frac{d}{dt} \langle \boldsymbol{\psi}(t), \boldsymbol{A}\mathbf{x}+\boldsymbol{B}\mathbf{u}(t) \rangle = -\langle \boldsymbol{A}^*\boldsymbol{\psi}(t),\mathbf{x}(t) \rangle + \langle \boldsymbol{A}^*\boldsymbol{\psi}(t),\mathbf{x}(t) \rangle + \langle \boldsymbol{\psi}(t), \boldsymbol{B}\mathbf{u}(t) \rangle \\= \langle \boldsymbol{\psi}(t), \boldsymbol{B}\mathbf{u}(t) \rangle
+\end{align}
+
+$\boldsymbol{\psi}(t),\mathbf{x}(t)$ -- неперервні всюду та мають похідну всюду окрім скінченного числа точок. Тоді проінтегрувавши від $t_0$ до $t_1$ отримаємо потрібне рівняння.
+
+\pagebreak
+
+\section{Принцип максимуму Понтрягіна 1}
+
+\textbf{Умова.} Принцип максимуму Понтрягіна, як необхідна умова оптимальності в лінійній задачі
+швидкодії.
+
+\textbf{Відповідь.}
+
+\pagebreak
+
+\section{Принцип максимуму Понтрягіна 2}
+
+\textbf{Умова.} Принцип максимуму Понтрягина, як достатня умова оптимальності в лінійній задачі
+швидкодії.
+
+\textbf{Відповідь.}
+
+\pagebreak
+
+\section{Зупинка візка на рейках}
+
+\textbf{Умова.} Задача про найшвидшу зупинку візка на рейках. Знаходження керування. Фазовий портрет
+оптимального синтезу.
+
+\textbf{Відповідь.}
+
+\pagebreak
+
+\section{Кількість перемикань}
+
+\textbf{Умова.} Теореми про кількість перемикань.
+
+\textbf{Відповідь.}
+
+\pagebreak
+
+\section{Принцип максимуму Понтрягіна 3}
+
+\textbf{Умова.} Принцип максимуму Понтрягіна для задач Больца, Лагранжа з фіксованими кінцями та з
+кінцями на многовидах.
+
+\textbf{Відповідь.}
+
+\end{document}

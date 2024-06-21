@@ -1,0 +1,105 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Домашня Робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{15:00 21 лютого, 2024}
+\assignno{1}
+\semester{Весняний семестр 2024}
+\mainproblem{Аксiоматичне означення ймовiрностей}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Номер 2.1, Турчин}
+
+\hspace{20px}\textbf{Умова.} Указати події, протилежні до таких:
+\begin{enumerate}
+    \item Поява герба в результаті двох підкидань монети.
+    \item Три влучання в результаті трьох пострілів по мішені.
+    \item Принаймі одне влучання в результаті трьох пострілів по мішені.
+\end{enumerate}
+
+\textbf{Розв'язок.}
+\begin{enumerate}
+    \item Поява реверса двічі.
+    \item Принаймні один промах в результаті трьох пострілів.
+    \item Три промахи в результаті трьох пострілів.
+\end{enumerate}
+
+\problem{Номер 2.2, Турчин}
+
+\hspace{20px}\textbf{Умова.} Зроблено три постріли по мішені. Нехай подія $A_i$ полягає в тому, що в результаті $i$-го пострілу є влучання, $i \in \{1,2,3\}$. Виразити через $A_i$ такі події:
+\begin{enumerate}
+    \item $A$ -- ``відбулося три влучення.''
+    \item $B$ -- ``не було жодного влучання''
+    \item $C$ -- ``відбулося лише одне влучення''
+    \item $D$ -- ``відбулося не менше двох влучень''
+\end{enumerate}
+
+\textbf{Розв'язок.}
+\begin{enumerate}
+    \item $A = A_1 \cap A_2 \cap A_3$.
+    \item $B = \overline{A}_1 \cap \overline{A}_2 \cap \overline{A}_3$.
+    \item $C = (A_1 \cap \overline{A}_2 \cap \overline{A}_3) \cup (\overline{A}_1 \cap A_2 \cap \overline{A}_3) \cup (\overline{A}_1 \cap \overline{A}_2 \cap A_3)$.
+    \item $D = (A_1 \cap A_2 \cap \overline{A}_3) \cup (A_1 \cap \overline{A}_2 \cap A_3) \cup (\overline{A}_1 \cap A_2 \cap A_3) \cup (A_1 \cap A_2 \cap A_3)$.
+\end{enumerate}
+
+\problem{Номер 2.3, Турчин}
+
+\hspace{20px}\textbf{Умова.} Нехай $A,B,C$ -- випадкові події. Записати події, які полягають у тому, що не відбулося жодної з подій $A,B,C$; з подій $A,B,C$ відбулися:
+\begin{enumerate}
+    \item Тільки подія $A$.
+    \item Події $A$ і $B$ і не відбулася $C$.
+    \item Усі три події.
+    \item Принаймі одна подія.
+    \item Одна й тільки одна подія.
+    \item Не більше двох подій.
+\end{enumerate}
+\textbf{Розв'язок.} Якщо не відбулася жодна з подій, то це означає $\overline{A} \cap \overline{B} \cap \overline{C}$. Далі по пунктам:
+\begin{enumerate}
+    \item $A \cap \overline{B} \cap \overline{C}$.
+    \item $A \cap B \cap \overline{C}$.
+    \item $A \cap B \cap C$.
+    \item $A \cup B \cup C$.
+    \item $(A \cap \overline{B} \cap \overline{C}) \cup (\overline{A} \cap B \cap \overline{C}) \cup (\overline{A} \cap \overline{B} \cap C)$.
+    \item $(A \cap B \cap \overline{C}) \cup (A \cap \overline{B} \cap C) \cup (\overline{A} \cap B \cap C) \cup (A \cap B \cap C)$.
+\end{enumerate}
+
+\problem{Номер 3.2, Турчин}
+
+\hspace{20px}\textbf{Умова.} У навмання вибраній групі, яка налічує $r$ студентів, цікавимося місяцямі їхнього народження. Обчислити ймовірність події $A$, яка полягає в тому, що принаймі двоє зі студентів народилися в одному й тому самому місяці.
+
+\textbf{Розв'язок.} Оскільки кожен студент може мати день народження в один з $12$ місяців, всього варіантів днів народження $|\Omega|=12^r$. 
+
+Далі помітимо, що якщо $r > 12$, то ймовірність дорівнює $1$, оскільки в будь-якому разі будуть два студента, що народились в одному місяці. 
+
+Далі будемо цікавитись подією $\overline{A}$ -- не знайдеться два студента, що народились в одному місяці. Тоді кількість таких подій $|\overline{A}| = 12 \cdot 11 \cdot \dots \cdot (13-r)$. Цю кількість також можна записати як:
+\begin{equation}
+    |\overline{A}| = \frac{12!}{(12-r)!} = P_{12}^r
+\end{equation}
+Таким чином, ймовірність нашої події:
+\begin{equation}
+    \mathbb{P}(A) = 1 - \frac{|\overline{A}|}{|\Omega|} = 1 - \frac{P_{12}^r}{12^r}
+\end{equation}
+Остаточна відповідь:
+\begin{equation}
+    \mathbb{P}(A) = \begin{cases}
+        1-P_{12}^r/12^r, & 1 \leq r \leq 12 \\
+        0, & r > 12
+    \end{cases}
+\end{equation}
+
+
+
+\end{document}

@@ -1,0 +1,219 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+\usepackage{float}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{18:00 1 травня, 2024}
+\assignno{11}
+\semester{Весняний семестр 2024}
+\mainproblem{Характеристична функція}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Файл} 
+
+\hspace{20px}\textbf{Умова.} За характеристичною функцією $\varphi_{\xi}(t) = \frac{1}{4}(3 + \cos t)$ відновити закон розподілу випадкової величини $\xi$.
+
+\textbf{Розв'язання.} Будемо вважати, що випадкова величина $\xi$ дискретна, тобто розподіл має вигляд:
+\begin{equation}
+    \text{Pr}[\xi = x_i] = p_i, \; i \in \{1,\dots,n\}
+\end{equation}
+
+Скористаємось означенням характеристичної функції:
+\begin{equation}\label{eq:problem_1_1}
+    \varphi_{\xi}(t) = \int_{-\infty}^{+\infty}e^{itx}dF_{\xi}(x) = \sum_{i=1}^n e^{itx_i}p_i
+\end{equation}
+
+Далі помітимо наступний факт:
+\begin{equation}
+    \varphi_{\xi}(t) = \frac{3}{4} + \frac{e^{it}+e^{-it}}{8} = \frac{3}{4} + \frac{e^{it}}{8} + \frac{e^{-it}}{8}
+\end{equation}
+
+Отже бачимо, що наступна випадкова величина $\xi$ задовольняє \ref{eq:problem_1_1}:
+\begin{equation}
+    \text{Pr}[\xi=0] = \frac{3}{4}, \; \text{Pr}[\xi=1] = \text{Pr}[\xi=-1] = \frac{1}{8}
+\end{equation}
+
+\problem{Турчін 13.7} 
+
+\hspace{20px}\textbf{Умова.} Обчислити характеристичну функцію величини $\xi \sim \text{Bin}(n,\theta)$:
+\begin{equation}
+    \text{Pr}[\xi=k] = C_n^k \theta^k(1-\theta)^{n-k}, \; k \in \{0,\dots,n\}
+\end{equation}
+
+\textbf{Розв'язання.} Виписуємо за означенням:
+\begin{equation}
+    \varphi_{\xi}(t) = \int_{-\infty}^{+\infty}e^{itx}dF_{\xi}(x) = \sum_{k=0}^{n}e^{itk}\text{Pr}[\xi=k]
+\end{equation}
+
+Отже, потрібно спростити наступну суму:
+\begin{equation}
+    \varphi_{\xi}(t) = \sum_{k=0}^n e^{itk}C_n^k \theta^k (1-\theta)^{n-k}
+\end{equation}
+
+Помітимо, що $e^{itk}\theta^k = (e^{it}\theta)^k$, тому
+\begin{equation}
+    \varphi_{\xi}(t) = \sum_{k=0}^n C_n^k (e^{it}\theta)^k(1-\theta)^{n-k} = \boxed{(e^{it}\theta + (1-\theta))^n}
+\end{equation}
+
+\problem{Турчін 13.8} 
+
+\hspace{20px}\textbf{Умова.} Обчислити характеристичну функцію величини $\xi \sim \text{Geom}(\theta)$:
+\begin{equation}
+    \text{Pr}[\xi=k] = \theta(1-\theta)^k, \; k \in \mathbb{Z}
+\end{equation}
+
+\textbf{Розв'язання.} Виписуємо за означенням:
+\begin{equation}
+    \varphi_{\xi}(t) = \int_{-\infty}^{+\infty}e^{itx}dF_{\xi}(x) = \sum_{k=0}^{+\infty}e^{itk}\text{Pr}[\xi=k]
+\end{equation}
+
+Отже, треба спростити наступну формулу:
+\begin{equation}
+    \varphi_{\xi}(t) = \sum_{k=0}^{+\infty}e^{itk}\theta(1-\theta)^k
+\end{equation}
+
+Отже, починаємо перетворювати:
+\begin{equation}
+    \varphi_{\xi}(t) = \theta \cdot \sum_{k=0}^{+\infty}\left(e^{it}(1-\theta)\right)^k
+\end{equation}
+
+Помітимо, що $|e^{it}(1-\theta)| = |e^{it}|\cdot|1-\theta| = |1-\theta| < 1$, тому ряд збігається. Отже,
+\begin{equation}
+    \boxed{\varphi_{\xi}(t) = \frac{\theta}{1 - e^{it}(1-\theta)}}
+\end{equation}
+
+\problem{Турчін 13.12} 
+
+\hspace{20px}\textbf{Умова.} Обчислити характеристичну функцію випадкової величини зі щільністю $f_{\xi}(x) = e^{-|x|}/2$. 
+
+\textbf{Розв'язання.} За означенням:
+\begin{equation}
+    \varphi_{\xi}(t) = \int_{-\infty}^{+\infty}e^{itx}f_{\xi}(x)dx = \frac{1}{2}\int_{-\infty}^{+\infty}e^{itx}e^{-|x|}dx
+\end{equation}
+
+Розбиваємо інтеграл на дві частини:
+\begin{equation}
+    \varphi_{\xi}(t) = \frac{1}{2}\int_{-\infty}^0 e^{itx}e^{x}dx + \frac{1}{2}\int_0^{+\infty}e^{itx}e^{-x}dx
+\end{equation}
+
+У першому інтегралу зробимо заміну $x \mapsto -x$, тоді отримаємо $\int_{+\infty}^0 e^{-itx}e^{-x}(-dx)=\int_0^{+\infty}e^{-x(1+it)}dx$. Отже,
+\begin{equation}
+    \varphi_{\xi}(t) = \frac{1}{2}\int_0^{+\infty}\left(e^{x(-1+it)}+e^{-x(1+it)}\right)dx = \frac{1}{2}\int_0^{+\infty}e^{-x}(e^{itx} + e^{-itx})dx
+\end{equation}
+
+Помітимо, що $\frac{e^{itx}+e^{-itx}}{2}=\cos tx$, тому
+\begin{equation}
+    \varphi_{\xi}(t) = \int_0^{+\infty}e^{-x}\cos tx dx
+\end{equation}
+
+Далі будемо двічі інтегрувати частинами. Спочатку нехай $dv=e^{-x}dx \implies v=-e^{-x}$, а також $u=\cos tx, du=-t\sin txdx$. Тоді:
+\begin{equation}
+    \varphi_{\xi}(t) = -e^{-x}\cos tx \Big|_{x \to 0}^{x \to +\infty} - \int_0^{+\infty} (-e^{-x})(-t\sin txdx)
+\end{equation}
+
+Отже, звідси $\varphi_{\xi}(t) = 1 - t\int_0^{+\infty}e^{-x}\sin tx dx$. Далі знову замінюємо $dv=e^{-x}dx,v=-e^{-x}, u=\sin tx, du=t\cos tx dx$, а тому
+\begin{equation}
+    \varphi_{\xi}(t) = 1 - t\left(-e^{-x}\sin tx \Big|_{x \to 0}^{x \to +\infty} - \int_0^{+\infty}(-e^{-x})(t\cos txdx)\right)
+\end{equation}
+
+Або, якщо далі спростити:
+\begin{equation}
+    \varphi_{\xi}(t) = 1 - t^2\int_0^{+\infty}e^{-x}\cos tx dx = 1 - t^2\varphi_{\xi}(t)
+\end{equation}
+
+Отже, ми можемо розв'язати рівняння відносно $\varphi_{\xi}(t)$. Дійсно:
+\begin{equation}
+    \boxed{\varphi_{\xi}(t) = \frac{1}{1+t^2}}
+\end{equation}
+
+\problem{Турчін 13.13} 
+
+\hspace{20px}\textbf{Умова.} Обчислити характеристичну функцію показникового розподілу $\xi \sim \text{Exp}(\lambda)$
+
+\textbf{Розв'язання.} За означенням щільність $f_{\xi}(x) = \lambda e^{-\lambda x}\cdot\mathds{1}_{[0,+\infty)}(x)$. Характеристичну функцію можна знайти за означенням:
+\begin{equation}
+    \varphi_{\xi}(t) = \int_{-\infty}^{+\infty}e^{itx}f_{\xi}(x)dx = \lambda\int_0^{+\infty}e^{itx}e^{-\lambda x}dx = \lambda\int_0^{+\infty}e^{(it-\lambda)x}dx
+\end{equation}
+
+Первісна дорівнює $\frac{e^{(it-\lambda)x}}{it-\lambda}$ з точністю до константи, тому
+\begin{equation}
+    \varphi_{\xi}(t) = \frac{\lambda e^{(it-\lambda)x}}{it-\lambda}\Big|_{x \to 0}^{x \to +\infty} = \boxed{\frac{\lambda}{\lambda - it}}
+\end{equation}
+
+\problem{Турчін 13.6} 
+
+\hspace{20px}\textbf{Умова.} Довести, що $\varphi(z) = \cos^n z$ є характеристичною функцією для усіх натуральних $n \in \mathbb{N}$. 
+
+\textbf{Розв'язання.} Звичайно можна перевірити усі чотири властивості характеристичної функції, але ми підемо конструктивним шляхом. Помітимо, що оскільки $\cos z = \frac{e^{iz}+e^{-iz}}{2}$, то
+\begin{equation}
+    \varphi(z) = \cos^n z = \frac{(e^{iz}+e^{-iz})^n}{2^n} = \frac{1}{2^n}\sum_{k=0}^n C_n^k e^{kiz}e^{-(n-k)iz}
+\end{equation}
+
+Спростимо трошки далі:
+\begin{equation}
+    \varphi(z) = \sum_{k=0}^{n} e^{(2k-n)iz} \cdot \frac{C_n^k}{2^n}
+\end{equation}
+
+Отже, якщо ми введемо наступну випадкову величину:
+\begin{equation}\label{eq:13.6}
+    \text{Pr}[\xi = 2k-n] = \frac{C_n^k}{2^n}, \; k \in \{0,\dots,n\},
+\end{equation}
+то її характеристичною функцією буде $\varphi(z)$. Наведені мірування справедливі для будь-якого $n \in \mathbb{N}$, а отже твердження доведено.
+
+\textit{P.S.} На лекції ми розглядали $\varphi(z) = \cos^2 z$ і отримали випадкову величину $\text{Pr}[\xi=\pm 2] = \frac{1}{4}, \; \text{Pr}[\xi=1] = \frac{1}{2}$. Можна впевнитись, що наша формула \ref{eq:13.6} працює для цього випадку.
+ 
+\problem{Турчін 13.16} 
+
+\hspace{20px}\textbf{Умова.} Обчислити характеристичну функцію розподілу Коші з параметром $a$. Щільність розподілу Коші:
+\begin{equation}
+    f_{\xi}(x) = \frac{1}{\pi} \cdot \frac{a}{a^2+x^2}, \; x \in \mathbb{R}
+\end{equation}
+
+\textbf{Розв'язання.} Виписуємо характеристичну функцію за означенням:
+\begin{equation}
+    \varphi_{\xi}(t) = \int_{-\infty}^{+\infty}e^{itx}f_{\xi}(x)dx = \frac{a}{\pi}\int_{-\infty}^{+\infty} \frac{e^{itx}dx}{a^2+x^2} = \frac{a}{\pi} \cdot \mathcal{I}
+\end{equation}
+
+Отже нам залишилось обрахувати нетривіальний інтеграл $\mathcal{I} = \int_{-\infty}^{+\infty} \frac{e^{itx}dx}{a^2+x^2}$.
+
+Для обчислення цього інтегралу пропоную обрати контур Коші $\gamma_R$: півколо $C_R$ великого радіусу $R$ з прямою $[-R,R]$ за годинниковою стрілкою. Позначимо $f(z) := \frac{e^{itz}}{a^2+z^2}$. В такому разі розглянемо наступний інтеграл:
+\begin{equation}
+    \mathcal{I}_R := \oint_{\gamma_R} f(z)dz = \int_{C_R}f(z)dz + \int_{-R}^{+R} f(x)dx
+\end{equation}
+
+Нам потрібно тепер розв'язати дві підзадачі: по-перше, знайти $\mathcal{I}_R$, а, по-друге, довести, що $\lim_{R \to \infty}\mathcal{I}_R = \mathcal{I}$. Почнемо з першої. В контурі знаходиться одна особлива точка: $z=ia$ -- полюс першого порядку. Тоді, за теоремою про лишки, можемо обрахувати інтеграл наступним чином:
+\begin{equation}
+    \mathcal{I}_R = 2\pi i \cdot \text{Res}_{z=ia}f(z) = 2\pi i \cdot \lim_{z \to ia} (z-ia)f(z) = 2\pi i \cdot \lim_{z \to ia}\frac{e^{itz}}{z+ia}
+\end{equation}
+
+Границя обчислюється просто: $\lim_{z \to ia} \frac{e^{itz}}{z+ia} = \frac{e^{-at}}{2ia}$, тому
+\begin{equation}
+    \mathcal{I}_R = 2\pi i \cdot \frac{e^{-at}}{2ia} = \frac{\pi e^{-at}}{a}
+\end{equation}
+
+Залишилось довести, що $\lim_{R \to +\infty} \mathcal{I}_R = \mathcal{I}$. Дійсно, для цього достатньо показати, що $\int_{C_R}f(z)dz \xrightarrow[R \to +\infty]{} 0$. Проте, це одразу випливає з леми Жордана, оскільки 
+\begin{gather}
+    \left|\frac{1}{a^2+z^2}\right|\Big|_{z \in C_R} = \frac{1}{|a^2+z^2|}\Big|_{z \in C_R} = \frac{1}{|z-ia||z+ia|}\Big|_{z \in C_R} \\ \leq \frac{1}{||z|-|ia||\cdot ||z|-|ia||}\Big|_{z \in C_R} = \frac{1}{|R - a|^2} \sim \frac{1}{R^2} \xrightarrow[R \to +\infty]{} 0
+\end{gather}
+
+Отже, $\mathcal{I} = \frac{\pi e^{-at}}{a}$, а тому остаточно:
+\begin{equation}
+    \varphi_{\xi}(t) = \frac{a}{\pi} \cdot \frac{\pi}{a}e^{-at} = \boxed{e^{-at}}
+\end{equation}
+
+\end{document}

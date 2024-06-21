@@ -1,0 +1,491 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-control-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Залікова Робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Сморцова Т.І.}
+\date{\today}
+\duedate{14:00 29 травня, 2024}
+\assignno{}
+\semester{Весняний семестр 2024}
+\mainproblem{Залікова Робота. Варіант 2}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Критерії керованості \#1}
+
+\hspace{20px}\textbf{Умова.} Чи є керованою система 
+\begin{equation}\label{eq:problem_1_condition}
+    \begin{cases}
+        \dot{x}_1 = x_1 + x_2 + u \\
+        \dot{x}_2 = 0 \\
+        \dot{x}_3 = x_2 + u
+    \end{cases}
+\end{equation}
+
+на підпростори $\mathcal{G}_1 = \text{span}\{\mathbf{e}_1\}$ та $\mathcal{G}_2 = \text{span}\{\mathbf{e}_2, \mathbf{e}_3\}$ за наперед заданий час? Перевірити умови критеріїв керованості на підпростір Калмана та Коробова.
+
+\textbf{Розв'язання.} Помітимо, що наша система записується у вигляді
+\begin{equation}
+    \dot{\mathbf{x}} = \boldsymbol{A}\mathbf{x} + \mathbf{b}u, \; \boldsymbol{A} = \begin{bmatrix}
+        1 & 1 & 0 \\
+        0 & 0 & 0 \\
+        0 & 1 & 0
+    \end{bmatrix}, \; \mathbf{b} = \begin{bmatrix}
+        1 \\ 0 \\ 1
+    \end{bmatrix} = \mathbf{e}_1 + \mathbf{e}_3
+\end{equation}
+
+Скористаємось спочатку \textit{критерієм Коробова}, а потім \textit{Калмана}.
+
+\textcolor{blue}{\textbf{Критерій Коробова.}} Знаходимо підпростір $\mathcal{L} = \text{span}\{\mathbf{b}, \boldsymbol{A}\mathbf{b}, \boldsymbol{A}^2\mathbf{b}\}$, для цього додатково рахуємо $\boldsymbol{A}\mathbf{b}$, а також $\boldsymbol{A}^2\mathbf{b}$:
+\begin{equation}
+    \boldsymbol{A}\mathbf{b} = \begin{bmatrix}
+        1 \\ 0 \\ 0
+    \end{bmatrix} = \mathbf{e}_1, \; \boldsymbol{A}^2\mathbf{b} = \begin{bmatrix}
+        1 \\ 0 \\ 0
+    \end{bmatrix} = \mathbf{e}_1
+\end{equation}
+
+Отже, $\mathcal{L} = \text{span}\{\mathbf{e}_1 + \mathbf{e}_3, \mathbf{e}_1\}$. Проте, в такому вигляді працювати буде не дуже зручно, тому помітимо, що $\mathcal{L} = \text{span}\{\mathbf{e}_1 + \mathbf{e}_3, \mathbf{e}_1\} = \text{span}\{\mathbf{e}_1, \mathbf{e}_3\}$. 
+
+Тепер подивимось на суму відпросторів $\mathcal{L} \oplus \mathcal{G}_1$ та $\mathcal{L} \oplus \mathcal{G}_2$:
+\begin{gather}
+    \mathcal{L} \oplus \mathcal{G}_1 = \text{span}\{\mathbf{e}_1, \mathbf{e}_3\} \oplus \text{span}\{\mathbf{e}_1\} = \text{span}\{\mathbf{e}_1, \mathbf{e}_3\} \neq \mathbb{R}^3 \\
+    \mathcal{L} \oplus \mathcal{G}_2 = \text{span}\{\mathbf{e}_1, \mathbf{e}_3\} \oplus \text{span}\{\mathbf{e}_2, \mathbf{e}_3\} = \text{span}\{\mathbf{e}_1, \mathbf{e}_2, \mathbf{e}_3\} = \mathbb{R}^3
+\end{gather}
+
+Отже, система \ref{eq:problem_1_condition} є повністю керованою на $\mathcal{G}_2$ за наперед заданий час, але не є повністю керованою на $\mathcal{G}_1$ за наперед заданий час.
+
+\textcolor{purple}{\textbf{Критерій Калмана.}} Для цього потрібно знайти такі матриці $\boldsymbol{H}_1$ та $\boldsymbol{H}_2$, що $\mathcal{G}_1=\text{ker}(\boldsymbol{H}_1), \; \mathcal{G}_2 = \text{ker}(\boldsymbol{H}_2)$. Дійсно, нехай
+\begin{equation}
+    \boldsymbol{H}_1 = \begin{bmatrix}
+        0 & 1 & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}, \; \boldsymbol{H}_2 = \begin{bmatrix}
+        1 & 0 & 0
+    \end{bmatrix}
+\end{equation}
+
+Перевіримо. Нехай $\mathbf{x} = (x_1,x_2,x_3) \in \mathbb{R}^3$. Якщо $\boldsymbol{H}_1\mathbf{x}^* = 0$, то $\boldsymbol{H}_1\mathbf{x}^* = (x_2^*,x_3^*) = (0, 0)$, а отже $\mathbf{x}^* = (x_1^*, 0,0) \in \text{span}\{\mathbf{e}_1\} = \mathcal{G}_1$. Аналогічно нехай $\boldsymbol{H}_2\mathbf{x}^*=0$, тоді $\boldsymbol{H}_2\mathbf{x}^* = x_1^* = 0$, отже $\mathbf{x}^* = (0, x_2^*, x_3^*) \in \text{span}\{\mathbf{e}_2, \mathbf{e}_3\}=\mathcal{G}_2$. 
+
+Для $\mathcal{G}_1$ маємо $\text{rang}(\boldsymbol{H}_1) = 2$. Тепер нам треба переконатись, що дійсно $\text{rang}(\boldsymbol{H}_1) \neq \text{rang}(\boldsymbol{Q}_1)$, де
+\begin{equation}
+    \boldsymbol{Q}_1 = \begin{bmatrix}
+        \boldsymbol{H}_1\mathbf{b} & \boldsymbol{H}_1\boldsymbol{A}\mathbf{b} &\boldsymbol{H}_1\boldsymbol{A}^2\mathbf{b}
+    \end{bmatrix}
+\end{equation}
+
+Отже рахуємо:
+\begin{equation}
+    \boldsymbol{H}_1\mathbf{b} = \begin{bmatrix}
+        0 \\ 1
+    \end{bmatrix}, \; \boldsymbol{H}_1\boldsymbol{A}\mathbf{b} = \begin{bmatrix}
+        0 \\ 0
+    \end{bmatrix}, \; \boldsymbol{H}_1\boldsymbol{A}^2\mathbf{b} = \begin{bmatrix}
+        0 \\ 0
+    \end{bmatrix}
+\end{equation}
+
+Тоді $\text{rang}(\boldsymbol{Q}_1) = \text{rang}\begin{bmatrix}
+    0 & 0 & 0 \\ 1 & 0 & 0
+\end{bmatrix} = 1 < \text{rang}(\boldsymbol{H}_1) = 2$, отже система не є повністю керованою за наперед заданий час.
+
+Аналогічно розглядаємо $\mathcal{G}_2$. Маємо $\text{rang}(\boldsymbol{H}_2)=1$. У свою чергу
+\begin{equation}
+    \boldsymbol{H}_2\mathbf{b} = \boldsymbol{H}_2\boldsymbol{A}\mathbf{b} = \boldsymbol{H}_2\boldsymbol{A}^2\mathbf{b} =  \begin{bmatrix}
+        1 \\ 0 \\ 0
+    \end{bmatrix}
+\end{equation}
+
+Тому $\text{rang}(\boldsymbol{Q}_2) = \text{rang}(\boldsymbol{H}_2) = 1$, а отже система є повністю керованою за наперед заданий час.
+
+\textbf{Відповідь.} На $\mathcal{G}_1$ система не є повністю керованою за наперед заданий час, а на $\mathcal{G}_2$ вже є.
+
+\problem{Критерії керованості \#2}
+
+\hspace{20px}\textbf{Умова.} Чи є досяжним підпростір $\mathcal{G} = \{\mathbf{x} \in \mathbb{R}^4: x_2+x_3-x_4=0\}$ в силу системи
+\begin{equation}
+    \begin{cases}
+        \dot{x}_1 = -x_2-x_3+x_4 \\
+        \dot{x}_2 = x_1 - x_3 \\
+        \dot{x}_3 = x_3 \\
+        \dot{x}_4 = 0
+    \end{cases}
+\end{equation}
+
+за довільний час? Перевірити умови 1, 2 та будь-яку іншу відповідного критерію.
+
+\textbf{Розв'язання.} Наша динамічна система описується наступним рівнянням:
+\begin{equation}
+    \dot{\mathbf{x}} = \boldsymbol{A}\mathbf{x}, \; \boldsymbol{A} = \begin{bmatrix}
+        0 & -1 & -1 & 1 \\
+        1 & 0 & -1 & 0 \\
+        0 & 0 & 1 & 0\\
+        0 & 0 & 0 & 0
+    \end{bmatrix}
+\end{equation}
+
+Знайдемо власні числа цієї матриці. Характеристичний поліном:
+\begin{equation}
+    \chi_A(\lambda) = \det \begin{bmatrix}
+        -\lambda & -1 & -1 & 1 \\
+        1 & -\lambda & -1 & 0 \\
+        0 & 0 & 1-\lambda & 0 \\
+        0 & 0 & 0 & -\lambda
+    \end{bmatrix} = \lambda^4 - \lambda^3 + \lambda^2 - \lambda
+\end{equation}
+
+Один з коренів $\lambda_1=0$ кратності 1, а два інших знаходяться з рівняння:
+\begin{equation}
+    \lambda^3 - \lambda^2 + \lambda - 1 = 0
+\end{equation}
+
+Легко вгадати один з коренів: $\lambda_2=1$, а далі можна поділити два полінома в стовпчик і отримати $\frac{\lambda^3-\lambda^2+\lambda-1}{\lambda-1} = \lambda^2+1$. Отже остаточно:
+\begin{equation}
+    \chi_A(\lambda) = \lambda(\lambda-1)(\lambda^2+1)
+\end{equation}
+
+Отже маємо 4 різні власних значення: $\lambda_1=0,\lambda_2=1,\lambda_{3,4}=\pm i$. Тепер, нам треба знайти власні вектори, що відповідають $\lambda_1,\lambda_2$, оскільки $\lambda_{3,4}$ є комплексними. Нехай $\mathbf{v}_1=(v_1,v_2,v_3,v_4)$, тоді:
+\begin{equation}
+    \boldsymbol{A}\mathbf{v}_1 = \lambda_1\mathbf{v}_1 \implies (
+        -v_2 - v_3 + v_4,
+        v_1 - v_3,
+        v_3,
+        0
+    ) = \mathbf{0}
+\end{equation}
+
+Звідси одразу $v_1=v_3=0$, а далі накладається умова $v_4-v_2=0$. Тоді нехай $v_2=v_4=t$, звідси $\mathbf{v}_1=(0,1,0,1)t$. 
+
+Для $\lambda_2=1$ аналогічно маємо:
+\begin{equation}
+    \boldsymbol{A}\mathbf{v}_2 = \lambda_2\mathbf{v}_2 \implies \begin{cases}
+        -v_1-v_2-v_3+v_4 = 0 \\
+        v_1 - v_2 - v_3 = 0 \\
+        -v_4 = 0
+    \end{cases}
+\end{equation}
+
+Звідси $v_4=0$, далі з двох перших рівнянь (можна їх, наприклад, відняти) маємо $v_1=0$, а отже залишається лише умова $v_2+v_3=0$, звідки нехай $v_2=t,v_3=-t$. Тоді $\mathbf{v}_2=(0,1,-1,0)t$. 
+
+Отже, маємо два власних вектори $\mathbf{v}_1:=(0,1,0,1)$ та $\mathbf{v}_2=(0,1,-1,0)$. Тепер перевіряємо перші дві умови відповідного критерію. 
+
+\textcolor{blue}{\textbf{Умова 1.}} Кореневий підпростір $\mathcal{K}$ має міститись в $\mathcal{G}$. Отже, треба перевірити, чи виконується умова:
+\begin{equation}
+    \mathcal{K} = \text{span}\left\{\begin{bmatrix}
+        0 \\ 1 \\ 0 \\ 1
+    \end{bmatrix}, \begin{bmatrix}
+        0 \\ 1 \\ -1 \\ 0
+    \end{bmatrix}\right\} \subset^? \mathcal{G} = \{\mathbf{x} \in \mathbb{R}^4: x_2+x_3-x_4=0\}
+\end{equation}
+
+Отже, візьмемо довільний вектор $\mathbf{k}=(k_1,k_2,k_3,k_4) \in \mathcal{K}$ і перевіримо, чи буде він лежати на гіперплощині $x_2+x_3-x_4=0$. Маємо, що довільний елемент множини $\mathbf{k}$:
+\begin{equation}
+    \mathbf{k} = \gamma_1(0,1,0,1) + \gamma_2(0,1,-1,0) = (0,\gamma_1+\gamma_2,-\gamma_2,\gamma_1)
+\end{equation}
+
+Чи належить цей елемент гіперплощині? Підставимо:
+\begin{equation}
+    (\gamma_1+\gamma_2) + (-\gamma_2) - (\gamma_1) = 0
+\end{equation}
+
+Так, належить! Отже, підпростір $\mathcal{G}$ є досяжним в силу заданої системи.
+
+\textcolor{purple}{\textbf{Умова 2.}} Побудуємо найбільший інваріантний підпростір $\mathcal{M}$ відносно лінійного оператора $\boldsymbol{A}$, що міститься в $\mathcal{G}$. За доведеною лемою,
+\begin{equation}
+    \mathcal{M} = \{\mathbf{x} \in \mathbb{R}^4: \boldsymbol{H}\mathbf{x} = (\boldsymbol{HA})\mathbf{x} = (\boldsymbol{H}\boldsymbol{A}^2)\mathbf{x} = (\boldsymbol{H}\boldsymbol{A}^3)\mathbf{x} = \mathbf{0}\}, \; \mathcal{G} = \text{ker}(\boldsymbol{H})
+\end{equation}
+
+Спочатку знайдемо $\boldsymbol{H}$. По суті, оскільки $\mathcal{G}$ є гіперплощиною з вектором нормалі $(0,1,1,-1)$, то в якості $\boldsymbol{H}$ візьмемо транспонований вектор нормалі, тобто $\boldsymbol{H} = [0,1,1,-1]$. В такому разі:
+\begin{gather}
+    \boldsymbol{HA} = \begin{bmatrix}
+        0 & 1 & 1 & -1
+    \end{bmatrix}\begin{bmatrix}
+        0 & -1 & -1 & 1 \\
+        1 & 0 & -1 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 0 
+    \end{bmatrix} = \begin{bmatrix}
+        1 & 0 & 0 & 0
+    \end{bmatrix}, \\ \boldsymbol{H}\boldsymbol{A}^2=\begin{bmatrix}
+        0 & -1 & -1 & 1 
+    \end{bmatrix}, \; \boldsymbol{H}\boldsymbol{A}^3 = \begin{bmatrix}
+        -1 & 0 & 0 & 0
+    \end{bmatrix}
+\end{gather}
+
+Оскільки $\boldsymbol{H}\boldsymbol{A}^2=-\boldsymbol{H}, \boldsymbol{H}\boldsymbol{A}^3=-\boldsymbol{HA}$, то маємо:
+\begin{equation}
+    \mathcal{M} = \{(x_1,\dots,x_4): x_2+x_3-x_4=0 \wedge x_1=0\}
+\end{equation}
+
+Таким чином, якщо позначити $x_4=u,x_3=v$, то $x_2=u-v$ і тоді:
+\begin{equation}
+    \mathcal{M} = \{(0,u-v,v,u): u,v \in \mathbb{R}\} = \text{span}\left\{\begin{bmatrix}
+        0 \\ 1 \\ 0 \\ 1
+    \end{bmatrix}, \begin{bmatrix}
+        0 \\ -1 \\ 1 \\ 0
+    \end{bmatrix}\right\}
+\end{equation}
+
+Цікаво, що в нас вийшло $\mathcal{M} = \mathcal{K}$, тобто найбільшим інваріантним підпростором виявився кореневий підпростір з власних векторів, що відповідають дійсним власним значенням лінійного оператора $\boldsymbol{A}$. 
+
+Доведемо, що ми не зможемо взяти власний вектор матриці $\boldsymbol{A}^{\top}$, котрий буде перпендикулярний підпростору $\mathcal{M}$. Дійсно, спектр матриці залишився тим самим, проте власні вектори вже не факт, що ті самі. Знайдемо власний вектор, що відповідає $\lambda_1=0$:
+\begin{equation}
+    \boldsymbol{A}^{\top}\mathbf{v}_1 = \mathbf{0} \implies \begin{cases}
+        v_2 = 0 \\
+        -v_1 = 0 \\
+        -v_1 - v_2 + v_3 = 0\\
+        v_1 = 0
+    \end{cases}
+\end{equation}
+
+Звідси $v_1=v_2=v_3=0$, а компонента $v_4$ довільна, тому один з власних векторів це просто $\mathbf{e}_4$. Для $\lambda_2=1$ маємо:
+\begin{equation}
+    \boldsymbol{A}^{\top}\mathbf{v}_2 = \mathbf{v}_2 \implies \begin{cases}
+        v_2 = v_1 \\
+        -v_1 = v_2 \\
+        -v_1-v_2+v_3 = v_3 \\
+        v_1 = v_4
+    \end{cases}
+\end{equation}
+
+З перших двох рівнянь $v_1=v_2=0$, а отже з четвертого $v_4=0$. Тому $v_3$ довільний, а отже другим власним вектором є $\mathbf{e}_3$. 
+
+Дуже зручно виходить! В нас два власних вектора мають вид $\mathbf{e}_3$ та $\mathbf{e}_4$. Перевіримо, чи
+\begin{equation}
+    \mathbf{e}_3 \; \text{або} \; \mathbf{e}_4 \perp^? \text{span}\{(0,1,0,1),(0,-1,1,0)\} = \mathcal{M}
+\end{equation}
+
+Довільний елемент з $\mathcal{M}$ має вигляд $\mathbf{m}=(0,\gamma_1+\gamma_2,-\gamma_2,\gamma_1)$, знайдемо його скалярний добуток з $\mathbf{e}_3$ та $\mathbf{e}_4$, відповідно:
+\begin{gather}
+    \langle \mathbf{e}_3, \mathbf{m} \rangle = -\gamma_2, \; \langle \mathbf{e}_4, \mathbf{m} \rangle = \gamma_1
+\end{gather}
+
+Отже, ані $\mathbf{e}_3$, ані $\mathbf{e}_4$ не є перпендикулярними $\mathcal{M}$, а отже будь-які інші власні вектори виду $\mathbf{e}_3v, \mathbf{e}_4u$ для $u,v \in \mathbb{R}$ також не будуть перпендикулярними. Отже, висновок той самий.
+
+\textcolor{ForestGreen}{\textbf{Умова 3.}} Треба перевірити, що $\text{rang}(\boldsymbol{A}-\lambda\boldsymbol{E}_{4 \times 4}, \widetilde{\boldsymbol{M}}) = 4$ для всіх $\lambda$, де $\widetilde{\boldsymbol{M}}$ -- базис в $\mathcal{M}$. Матриця $\widetilde{\boldsymbol{M}} = [\mathbf{e}_3,\mathbf{e}_4]$, а тому
+\begin{equation}
+    [\boldsymbol{A} - \lambda \boldsymbol{E}_{4 \times 4}, \widetilde{\boldsymbol{M}}] = \begin{bmatrix}
+        -\lambda & -1 & -1 & 1 & 0 & 0 \\
+        1 & -\lambda & -1 & 0 & 0 & 0 \\
+        0 & 0 & 1-\lambda & 0 & 1 & 0\\
+        0 & 0 & 0 & -\lambda & 0 & 1
+    \end{bmatrix}
+\end{equation}
+
+Перевіряємо для $\lambda = 0$:
+\begin{equation}
+    \text{rang}(\boldsymbol{A},\widetilde{\boldsymbol{M}}) = \text{rang}\begin{bmatrix}
+        0 & -1 & -1 & 1 & 0 & 0 \\
+        1 & 0 & -1 & 0 & 0 & 0 \\
+        0 & 0 & 1 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 1
+    \end{bmatrix}
+\end{equation}
+
+Дуже добре видно, що 2 та 4 стовпчики лінійно залежні, а стовпці 1, 4, 5 та 6 задають вектори $\mathbf{e}_1,\dots,\mathbf{e}_4$, що є лінійно незалежними. Тому, $\text{rang}(\boldsymbol{A},\widetilde{\boldsymbol{M}})$ дійсно є $4$. Перевіряємо $\lambda=1$:
+\begin{equation}
+    \text{rang}(\boldsymbol{A}-\boldsymbol{E}_{4 \times 4},\widetilde{\boldsymbol{M}}) = \text{rang}\begin{bmatrix}
+        -1 & -1 & -1 & 1 & 0 & 0 \\
+        1 & -1 & -1 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & -1 & 0 & 1
+    \end{bmatrix}
+\end{equation}
+
+Видно, що 2 і 3 стовпчики однакові, а стовпці 1 та 2 є лінійно незалежними, оскільки розв'язок рівняння $\begin{cases}
+    -x_1-x_2 = 0 \\
+    x_1-x_2=0
+\end{cases}$ лише $x_1=x_2=0$. Отже, ці два вектори утворюють підпростір $\text{span}\{\mathbf{e}_1,\mathbf{e}_2\}$, а тоді якщо до них додати два останні стовпці, то отримаємо увесь простір $\mathbb{R}^4$, тому рангом знову є $4$. Отже, висновок такий самий.
+
+\textbf{Відповідь.} Підпростір $\mathcal{G}$ є досяженим в силу заданої системи за довільний час.
+
+\problem{Теоретичне питання}
+
+\hspace{20px}\textbf{Умова.} Керованість трикутних систем.
+\vspace{10px}
+
+\textbf{Відповідь.} Для початку введемо поняття трикутних систем.
+
+\textit{\textcolor{blue}{\textbf{Означення.}} \textbf{Трикутною системою} називають систему виду}
+\begin{equation}\label{eq:triangular_system}
+    \begin{cases}
+        \dot{x}_1 &= f_1(x_1,x_2) \\
+        \dot{x}_2 &= f_2(x_1,x_2,x_3) \\
+        \vdots \\
+        \dot{x}_{n-1}&=f_{n-1}(x_1,\dots,x_n) \\
+        \dot{x}_n &= f_n(x_1,\dots,x_n,u)
+    \end{cases}
+\end{equation}
+
+Наша ціль дізнатися, чи можна перевести (і знайти відповідне керування $u(t)$) задану початкову точку $\mathbf{x}(0):=\mathbf{x}_0$ у точку $\mathbf{x}(T):=\mathbf{x}_T$ за час $T$. Також надалі позначатимемо $u:=x_{n+1}$ для консистенції запису.
+
+Отже, розглянемо першу допоміжну теорему, котра допоможе нам відповісти на це питання.
+
+\textit{\textcolor{blue}{\textbf{Теорема Коробова} (про керованість трикутних систем).} Нехай функції $f_k, k \in \{1,\dots,n\}$ мають неперервні часткові похідні до $(n-k+1)$ порядку включно. Нехай ми знайшли таку постійну $\mu > 0$ (що не залежить від координат і керування $x_1,\dots,x_{n+1}$), що виконується}
+\begin{equation}
+    \forall \mathbf{x} \in \mathbb{R}^{n+1}: \left|\frac{\partial f_k}{\partial x_{k+1}}\right| \geq \mu, \;\;\; k \in \{1,\dots,n\}.
+\end{equation}
+\textit{Тоді трикутна система \ref{eq:triangular_system} є повністю керованою на $[0,T]$.}
+
+\textbf{Доведення.} Схема доведення є конструктивним, причому в ході доведення ми по суті опишемо алгоритм розв'язання задач про керованість трикутних систем. Зробимо наступну заміну змінних:
+\begin{equation}
+    z_1 := x_1 \equiv F_1(x_1), \; z_2 = f_1(x_1,x_2) \equiv F_2(x_1,x_2),
+\end{equation}
+
+а далі, рекурентно, якщо $z_m=F_m(x_1,\dots,x_m)$, то
+\begin{equation}
+    z_{m+1} := \sum_{j=1}^m \frac{\partial F_m(x_1,\dots,x_m)}{\partial x_j}\cdot f_j(x_1,\dots,x_{j+1}) \equiv F_{m+1}(x_1,\dots,x_{m+1})
+\end{equation}
+
+\textcolor{blue}{\textbf{Твердження 1.}} \textit{Справедливе наступне співвідношення:}
+\begin{equation}
+    F_{m+2}(x_1(t), \dots, x_{m+2}(t)) = \frac{d^{m}}{dt^{m}} f_1(x_1(t), x_2(t)), \; m \in \{0,\dots,n-1\}
+\end{equation}
+
+\textbf{Доведення.} Доведемо її за індукцією. 
+
+\textit{База індукції.} Почнемо з простого: нехай $m=0$, тоді:
+\begin{gather}
+    F_2(x_1(t), x_2(t)) = f_1(x_1(t), x_2(t))
+\end{gather}
+
+База індукції виконується. Далі спробуємо продиференціювати цей вираз за часом:
+\begin{equation}
+    \dot{F}_2(\dots) = \frac{\partial f_1}{\partial x_1}\dot{x}_1 + \frac{\partial f_1}{\partial x_2}\dot{x}_2 = \frac{\partial f_1}{\partial x_1}f_1 + \frac{\partial f_1}{\partial x_2}f_2 = F_3(\dots)
+\end{equation}
+
+Отже, і для $m=1$ це виконується. Так само будемо робити при індуктивному переході.
+
+\textit{Індуктивний перехід.} Нехай твердження доведено для $F_m$, тобто:
+\begin{equation}
+    F_m(x_1(t),\dots,x_m(t)) = \frac{d^{m-2}}{dt^{m-2}}f_1(x_1(t), x_2(t))
+\end{equation}
+
+Тоді для $F_{m+1}$ маємо:
+\begin{gather}
+    \frac{d^{m-1}}{dt^{m-1}}f_1(x_1(t), x_2(t)) = \frac{d}{dt} \frac{d^{m-2}}{dt^{m-2}}f_1(x_1(t), x_2(t)) \\
+    = \frac{d}{dt}F_m(x_1(t), \dots, x_m(t)) = \sum_{j=1}^{m} \frac{\partial F_m}{\partial x_j} \cdot \dot{x}_j
+\end{gather}
+
+Далі помічаємо, що $\dot{x}_j=f_j(x_1,\dots,x_{j+1})$, а тому
+\begin{gather}
+    \sum_{j=1}^{m} \frac{\partial F_m}{\partial x_j} \cdot \dot{x}_j = \sum_{j=1}^m \frac{\partial F_m}{\partial x_j} \cdot f_j(x_1,\dots,x_{j+1}) = F_{m+1}(x_1,\dots,x_{m+1})
+\end{gather}
+
+Отже твердження доведено. \qed
+
+Тепер, враховуючи нашу замінну $z_j$, маємо наступну систему:
+\begin{equation}
+    \begin{cases}
+        \dot{z}_1 = z_2 \\
+        \dot{z}_2 = z_3 \\
+        \vdots \\
+        \dot{z}_n = z_{n+1}
+    \end{cases},
+\end{equation}
+
+де $z_{n+1}$ є керуванням. Як відомо, ця система є повністю керованою для будь-якого часу $T$. Тепер, оскільки ми знаємо лише $\mathbf{x}_0$ та $\mathbf{x}_T$, нам потрібно знайти відповідні $\mathbf{z}_0$ та $\mathbf{z}_T$ (де через $\mathbf{z}=(z_1,\dots,z_n)$ ми маємо на увазі вектор без керування). Знайти їх легко, бо ми просто робили заміну:
+\begin{equation}
+    \mathbf{z}_0 = \begin{bmatrix}
+        F_1(\mathbf{x}_0^1) \\
+        F_2(\mathbf{x}_0^1, \mathbf{x}_0^2) \\
+        \vdots \\
+        F_n(\mathbf{x}_0^1, \dots, \mathbf{x}_0^n) 
+    \end{bmatrix}, \; \mathbf{z}_T =\begin{bmatrix}
+        F_1(\mathbf{x}_T^1) \\
+        F_2(\mathbf{x}_T^1, \mathbf{x}_T^2) \\
+        \vdots \\
+        F_n(\mathbf{x}_T^1, \dots, \mathbf{x}_T^n) 
+    \end{bmatrix},
+\end{equation}
+
+де верхній індекс у виразах $\mathbf{x}_0,\mathbf{x}_T$ позначає номер компоненти вектора. Оскільки система є ПК, то ми можемо знайти $z_{n+1}(t) = z_{n+1}^*(t)$ таке, що переведе $\mathbf{z}_0$ у $\mathbf{z}_T$ за час $T$, нехай при цьому траєкторія $\mathbf{z}^*(t) = (z_1^*(t), \dots, z_n^*(t))$.
+
+Тут постачає логічне питання: а чи можемо ми відновити траєкторію до заміни, тобто отримати функцію $\mathbf{x}^*(t) = (x_1^*(t),\dots,x_n^*(t))$, маючи $\mathbf{z}^*(t)$? Виявляється що так! Для цього доведемо наступне твердження.
+
+\textcolor{blue}{\textbf{Твердження 2.}} \textit{Можна однозначно оновити $\mathbf{x}^*(t)$ з $\mathbf{z}^*(t)$.}
+
+\textbf{Доведення.} Почнемо з першого рівняння: $z_1=x_1$, отже $x_1$ координату відновили. Нехай далі $G_1(z_1):=z_1$. Далі друге рівняння дає $z_2=F_2(x_1,x_2)$. Або, аналогічно, $z_2=F_2(G_1(z_1), x_2)$, отже це рівняння відносно $x_2$. Проте, чи однозначне це рівняння, тобто чи не може виникнути у нас рівняння накшталт $x_2^2 + z_1 = z_2$? Ні, не може. Дійсно, оскільки за умовою теореми (нарешті вона нам знадобилася!) в нас
+\begin{equation}
+    \left|\frac{\partial F_2}{\partial x_2}\right| = \left|\frac{\partial f_1}{\partial x_2}\right| \geq \mu > 0,
+\end{equation}
+
+то $F_2(x_1,x_2)$ є строго монотонною за змінною $x_2$. Отже, рівняння можна однозначно розв'язати відносно $x_2$. Таким чином, нехай $x_2(t)=G_2(z_1(t), z_2(t))$. 
+
+Продовжуючи так робити далі, на кожному кроці $m$ ми будемо отримувати рівняння виду
+\begin{equation}
+    z_m(t) = F_m(G_1(z_1(t)), \dots, G_{m-1}(z_1(t),\dots,z_{m-1}(t)), x_m(t))
+\end{equation}
+
+Можна аналогічно довести, що $F_m$ буде строго монотонною за змінною $x_m$, а отже $x_m$ можна буде явно виразити через $z_1,\dots,z_m$. Отже, розглядаємо часткову похідну:
+\begin{equation}
+    \frac{\partial F_{m}}{\partial x_m} = \frac{\partial}{\partial x_m}\left(\frac{\partial F_{m-1}}{\partial x_{m-1}}(x_1,\dots,x_{m-1})f_{m-1}(x_1,\dots,x_m)\right)
+\end{equation}
+
+Оскільки $\frac{\partial F_{m-1}}{\partial x_{m-1}}$ не залежить від $x_m$, то це можна записати як:
+\begin{equation}
+    \frac{\partial F_{m}}{\partial x_m} = \frac{\partial F_{m-1}}{\partial x_{m-1}}(x_1,\dots,x_{m-1}) \cdot \frac{\partial f_{m-1}}{\partial x_m}(x_1,\dots,x_m)
+\end{equation}
+
+З цієї формули легко бачити наступне співвідношення:
+\begin{equation}
+    \frac{\partial F_m}{\partial x_m} = \prod_{j=1}^{m-1} \frac{\partial f_j}{\partial x_{j+1}}
+\end{equation}
+
+Використовуючи умову теореми, маємо:
+\begin{equation}
+    \left|\frac{\partial F_m}{\partial x_m}\right| = \prod_{j=1}^{m-1} \left|\frac{\partial f_j}{\partial x_{j+1}}\right| \geq \mu^{m-1} > 0
+\end{equation}
+
+Отже знову маємо строгу монотонність відносно $x_m$, а отже ми можемо знайти $x_m = G_m(z_1,\dots,x_m)$. Отже, твердження доведено.\qed
+
+Тепер перевіримо, що наша знайдена траєкторія дійсно задовольняє початковій задачі \ref{eq:triangular_system}. Доводимо останнє твердження.
+
+\textcolor{blue}{\textbf{Твердження 3.}} \textit{Обрана в такий спосіб траєкторія $x_i(t)$ задовольняє систему \ref{eq:triangular_system}.}
+
+\textbf{Доведення.} Це знову ж таки робимо за індукцією.
+
+\textit{База індукції.} Перевіримо перше рівняння системи:
+\begin{equation}
+    \dot{x}_1 = \dot{z}_1 = z_2(t) = f_1(x_1(t), x_2(t))
+\end{equation}
+
+Виконується. Робимо індуктивний перехід.
+
+\textit{Індуктивний перехід.} Нехай доведено
+\begin{equation}
+    \dot{x}_j = f_j(x_1(t), \dots, x_{j+1}(t)), \; j = 1,\dots,m, \; m < n
+\end{equation}
+
+Покажемо, що це твердження справедливе і для $m \mapsto m+1$. З одного боку, в силу заміни:
+\begin{equation}
+    \dot{z}_{m+1} = \dot{F}_{m+1} = \sum_{j=1}^{m+1} \frac{\partial F_{m+1}}{\partial x_j} \cdot \dot{x}_j
+\end{equation}
+
+Врахувавши, що $\dot{x}_j = f_j(x_1,\dots,x_{j+1}), j \leq m$, оскільки це вже доведено за індукцією, то
+\begin{equation}
+    \dot{z}_{m+1} = \sum_{j=1}^{m} \frac{\partial F_{m+1}}{\partial x_j} \cdot f_j(x_1,\dots,x_{j+1}) + \frac{\partial F_{m+1}}{\partial x_{m+1}} \cdot \dot{x}_{m+1}
+\end{equation}
+
+З іншого боку, ми знаємо, що $\dot{z}_{m+1}=z_{m+2}=F_{m+2}$. Але,
+\begin{equation}
+    F_{m+2} = \sum_{j=1}^{m+1} \frac{\partial F_{m+1}}{\partial x_j} \cdot f_{j}(x_1(t), \dots, x_{j+1}(t)) = \dot{z}_{m+1}
+\end{equation}
+
+Отже, має виконуватись $\frac{\partial F_{m+1}}{\partial x_{m+1}}f_{m+1}(x_1(t),\dots,x_{m+2}(t)) = \frac{\partial F_{m+1}}{\partial x_{m+1}} \cdot \dot{x}_{m+1}(t)$. Можемо скоротити на $\partial F_{m+1}/\partial x_{m+1} \neq 0$ і отримаємо те, що треба було довести. \qed
+
+Власне, ми довели центральну теорему. \qed
+
+\end{document}

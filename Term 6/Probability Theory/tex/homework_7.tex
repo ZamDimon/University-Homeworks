@@ -1,0 +1,169 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+\usepackage{float}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{17:00 17 квітня, 2024}
+\assignno{7}
+\semester{Весняний семестр 2024}
+\mainproblem{Випадкові вектори}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Завдання з файлу} 
+
+\hspace{20px}\textbf{Умова.} Дано таблицю розподілу двовимірного випадкового вектору $\boldsymbol{\zeta} = (\xi,\eta)$. Знайти невідоме значення параметру $x$. Чи будуть випадкові величини $\xi,\eta$ незалежними?
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+         $\xi/\eta$ & -1 & 1 & 2  \\ \hline 
+         0 & 0.02 & 0.01 & 0.03 \\ \hline
+         $1$ & 0.01 & 0.04 & 0.01 \\ \hline
+         $3$ & 0.08 & 0.01 & $x$
+    \end{tabular}
+    \caption{Таблиця розподілу $(\xi,\eta)$.}
+    \label{tab:table_1}
+\end{table}
+
+\textbf{Розв'язання.} Для знаходження $x$ достатньо лише скористатись умовою (тут $\mathcal{X}$ позначає множину можливих значень $\xi$, а $\mathcal{Y}$ -- значень $\eta$):
+\begin{equation}
+    \sum_{x \in \mathcal{X}, y \in \mathcal{Y}}\text{Pr}[\xi=x, \eta=y] = 1
+\end{equation}
+
+Звідси $0.21+x=1.0 \implies \boxed{x=0.79}$. Для з'ясування залежності чи незалежності $\xi,\eta$ скористуємось означенням. Має виконуватись:
+\begin{equation}
+    \text{Pr}[\xi = x, \eta = y] = \text{Pr}[\xi=x]\text{Pr}[\eta=y], \; \forall x \in \mathcal{X}, \; \forall y \in \mathcal{Y}
+\end{equation}
+
+Отже, потрібно знайти ймовірності $\text{Pr}[\xi=x]$ та $\text{Pr}[\eta=y]$ окремо. Для цього, скористаємось формулою:
+\begin{gather}
+    \text{Pr}[\xi=x] = \sum_{y \in \mathcal{Y}} \text{Pr}[\xi=x,\eta=y], \; \forall x \in \mathcal{X} \\
+    \text{Pr}[\eta=y] = \sum_{x \in \mathcal{X}}\text{Pr}[\xi=x,\eta=y], \; \forall y \in \mathcal{Y}
+\end{gather}
+
+Підставляємо значення:
+\begin{equation}
+    \text{Pr}[\xi=0] = 0.06, \; \text{Pr}[\eta=-1] = 0.11
+\end{equation}
+
+Бачимо, що $\text{Pr}[\xi=0,\eta=-1]=0.02 \neq \text{Pr}[\xi=0]\text{Pr}[\eta=-1]=0.06 \cdot 0.11$. Отже, події не є незалежними.
+
+\problem{Завдання з файлу} 
+
+\hspace{20px}\textbf{Умова.} Неперервний двовимірний випадковий вектор $(\xi,\eta)$ має щільність
+\begin{equation}
+    f_{(\xi,\eta)}(x,y) = \gamma xy \cdot \mathds{1}_{[0,1]\times [0,1]}(x,y),
+\end{equation}
+
+де $\gamma$ -- стала. Знайти $\gamma$ та щільності розподілу $f_{\xi},f_{\eta}$. Чи будуть ці величини незалежними? 
+
+\textbf{Розв'язання.} Запишемо умову нормування випадкового вектору:
+\begin{equation}
+    \int_{\mathbb{R} \times \mathbb{R}} f_{(\xi,\eta)}(x,y)dxdy = 1.
+\end{equation}
+
+Отже, знайдемо значення інтегралу:
+\begin{gather}
+    \int_{\mathbb{R} \times \mathbb{R}}f_{(\xi,\eta)}(x,y)dxdy = \int_{[0,1] \times [0,1]} \gamma xydxdy = \gamma \int_0^1 xdx \int_0^1 ydy \\
+    = \gamma \int_0^1 xdx \cdot \frac{1}{2} = \frac{\gamma}{4} = 1 \implies \boxed{\gamma = 4}
+\end{gather}
+
+Тепер знайдемо щільності окремо. Маємо:
+\begin{gather}
+    f_{\xi}(x) = \int_{\mathbb{R}}f_{(\xi,\eta)}(x,y)dy = \int_0^1 4xydy = 2x, \; x \in [0,1] \\
+    f_{\eta}(y) = \int_{\mathbb{R}}f_{(\xi,\eta)}(x,y)dx = \int_0^1 4xydx = 2y, \; y \in [0,1]
+\end{gather}
+
+Отже, $f_{\xi}(x) = 2x\cdot \mathds{1}_{[0,1]}(x), f_{\eta}(y) = 2y\cdot\mathds{1}_{[0,1]}(y)$. Дійсно бачимо, що $f_{(\xi,\eta)}(x,y)=f_{\xi}(x)f_{\eta}(y)$, а тому випадкові величини $\xi,\eta$ є незалежними.
+
+\problem{Завдання з файлу} 
+
+\hspace{20px}\textbf{Умова.} Неперервний двовимірний випадковий вектор $(\xi,\eta)$ має щільність
+\begin{equation}
+    f_{(\xi,\eta)}(x,y) = \gamma(x^2+y^2) \cdot \mathds{1}_{[0,1]\times [0,1]}(x,y)
+\end{equation}
+
+де $\gamma$ -- стала. Знайти $\gamma$ та щільності розподілу $f_{\xi},f_{\eta}$. Чи будуть ці величини незалежними? 
+
+\textbf{Розв'язання.} Знову скористаємося умовою нормування:
+\begin{equation}
+    \int_{\mathbb{R} \times \mathbb{R}}f_{(\xi,\eta)}(x,y)dxdy = 1
+\end{equation}
+
+Отже, маємо:
+\begin{gather}
+    \int_{\mathbb{R} \times \mathbb{R}}f_{(\xi,\eta)}(x,y)dxdy = \gamma \int_0^1 \int_0^1 (x^2+y^2)dxdy \nonumber \\
+    = \gamma \int_0^1 \left(\frac{1}{3} + y^2\right)dy = \frac{2\gamma}{3} = 1 \implies \boxed{\gamma = \frac{3}{2}}
+\end{gather}
+
+Знайдемо маргінальні розподіли:
+\begin{gather}
+    f_{\xi}(x) = \int_{\mathbb{R}} f_{(\xi,\eta)}(x,y)dy = \frac{3}{2}\int_0^1 (x^2+y^2)dy = \frac{1+3x^2}{2} \\
+    f_{\eta}(x) = \int_{\mathbb{R}} f_{(\xi,\eta)}(x,y)dx = \frac{3}{2}\int_0^1 (x^2+y^2)dx = \frac{1+3y^2}{2}
+\end{gather}
+
+Видно, що $f_{(\xi,\eta)}(x,y) \neq f_{\xi}(x)f_{\eta}(y)$, тому $\xi$ та $\eta$ не є незалежними.
+
+\problem{Завдання з файлу} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ приймає значення $0,1,2$ з ймовірностями $0.2,0.3,0.5$, а випадкова величина $\eta$ приймає значення $1,2,3$ з ймовірностями $0.1,0.6,0.3$ відповідно. Побудувати таблицю розподілу $(\xi,\eta)$, якщо випадкові величини $\xi,\eta$ випадкові.
+
+\textbf{Розв'язання.} В нашому випадку $\mathcal{X} = \{0,1,2\}$ -- множина значень $\xi$, а $\mathcal{Y} = \{1,2,3\}$ -- множина значень $\eta$. Тоді, таблиця має вигляд:
+\begin{equation}
+    \text{Pr}[\xi=x,\eta=y] = \text{Pr}[\xi=x]\text{Pr}[\eta=y], \; \forall x \in \mathcal{X}, \; \forall y \in \mathcal{Y}
+\end{equation}
+
+Отже, таблиця наведена нижче.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+         $\xi/\eta$ & 1 & 2 & 3  \\ \hline 
+         0 & 0.02 & 0.12 & 0.06 \\ \hline
+         $1$ & 0.03 & 0.18 & 0.09 \\ \hline
+         $2$ & 0.05 & 0.30 & 0.15
+    \end{tabular}
+    \caption{Таблиця розподілу $(\xi,\eta)$.}
+    \label{tab:table_1}
+\end{table}
+
+\problem{Завдання з файлу} 
+
+\hspace{20px}\textbf{Умова.} Випадкові величини $\xi_1,\dots,\xi_n$ незалежні і кожна з них має показниковий розподіл з одним і тим самим параметром $\lambda > 0$. Знайти закон розподілу випадкового вектору $(\xi_1,\dots,\xi_n)$.
+
+\textbf{Розв'язання.} Згідно означенню показникового розподілу, густина кожної з випадкових величин $f_{\xi_k}(x_k) = \lambda e^{-\lambda x} \cdot \mathds{1}_{[0,+\infty)}(x)$. Таким чином, густина розподілу вектору:
+\begin{gather}
+    f_{\boldsymbol{\xi}}(x_1,\dots,x_n) = \prod_{k=1}^n f_{\xi_k}(x_k) = \prod_{k=1}^n \lambda e^{-\lambda x_k} \cdot \mathds{1}_{[0,+\infty)}(x) \nonumber \\
+    = \lambda^n \exp\left(-\lambda \sum_{k=1}^n x_k\right) \mathds{1}_{[0,+\infty)^n}(x_1,\dots,x_n)
+\end{gather}
+
+Якщо позначити $\mathbf{x} := (x_1,\dots,x_n)$, то остаточно маємо:
+\begin{equation}
+    f_{\boldsymbol{\xi}}(\mathbf{x}) = \lambda^n \exp\left(-\lambda \langle \mathbf{x}, \mathbf{1}_n\rangle\right) \mathds{1}_{[0,+\infty)^n}(\mathbf{x})
+\end{equation}
+
+\problem{Завдання з файлу} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ має щільність розподілу $f_{\xi}(x)=2x \cdot \mathds{1}_{[0,1]}(x)$, а випадкова величина $\eta$ щільність $f_{\eta}(x) = \frac{1}{2}\sin x \cdot \mathds{1}_{[0,\pi]}(x)$, причому випадкові величини $\xi$ та $\eta$ незалежні. Знайти щільність розподілу $\boldsymbol{\zeta}=(\xi,\eta)$.
+
+\textbf{Розв'язок.} Якщо випадкові величини незалежні, то щільність вектору -- це добуток окремих щільностей, тобто
+\begin{equation}
+    f_{\boldsymbol{\zeta}}(x,y) = f_{\xi}(x)f_{\eta}(y) = x\sin y \mathds{1}_{[0,1]}(x)\mathds{1}_{[0,\pi]}(y) = x\sin y \mathds{1}_{[0,1]\times [0,\pi]}(x,y)
+\end{equation}
+
+\end{document}

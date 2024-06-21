@@ -1,0 +1,254 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{17:00 3 квітня, 2024}
+\assignno{5}
+\semester{Весняний семестр 2024}
+\mainproblem{Неперервні Випадкові величини}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Файл, номер 1} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ має функцію розподілу:
+\begin{equation*}
+    F_{\xi}(x) = \begin{cases}
+        0, & x \leq 0, \\
+        \frac{x^2+2x}{3}, & x \in [0,1], \\
+        1, & x > 1
+    \end{cases}
+\end{equation*}
+
+Знайти щільність розподілу $f_{\xi}(x)$ цієї випадкової величини.
+
+\textbf{Розв'язання.} За означенням, функція розподілу:
+\begin{equation}
+    F_{\xi}(x) = \int_{-\infty}^x f_{\xi}(x)dx
+\end{equation}
+
+Продиференціюємо обидві частини:
+\begin{equation}
+    F_{\xi}'(x) = f_{\xi}(x)
+\end{equation}
+
+Знайдемо похідну функції розподілу:
+\begin{equation}
+    F_{\xi}'(x) = \frac{2}{3}(x+1)\mathds{1}_{(0,1)}(x),
+\end{equation}
+
+де $\mathds{1}_{A}(x) \triangleq \begin{cases}
+    1, & x \in A \\
+    0, & x \not\in A
+\end{cases}$ -- індикаторна функція. Таким чином, шукана щільність розподілу:
+\begin{equation}
+    \boxed{f_{\xi}(x) = \frac{2}{3}(x+1)\mathds{1}_{(0,1)}(x)}
+\end{equation}
+
+\problem{Файл, номер 2} 
+
+\hspace{20px}\textbf{Умова.} Нехай неперервна випадкова величина $\xi$ має щільність розподілу $f_{\xi}(x) = \alpha \sin x \cdot \mathds{1}_{[0,\pi]}(x)$, де $\alpha$ -- стала. Знайти значення параметру $\alpha$, функцію розподілу випадкової величини $\xi$ та ймовірності $\text{Pr}\left[-\frac{\pi}{2} \leq \xi \leq \frac{\pi}{2}\right]$ та $\text{Pr}\left[-\frac{\pi}{2} < \xi \leq \frac{\pi}{2}\right]$.
+
+\textbf{Розв'язання.} Щільність розподілу має задовольняти умові:
+\begin{equation}
+    \int_{\mathbb{R}}f_{\xi}(x)dx = 1
+\end{equation}
+
+Тому, маємо:
+\begin{equation}
+    \int_{\mathbb{R}}f_{\xi}(x)dx = \int_{\mathbb{R}}\alpha \sin x \mathds{1}_{[0,\pi]}(x)dx = \alpha\int_0^{\pi} \sin x dx = 2\alpha = 1,
+\end{equation}
+отже $\boxed{\alpha=\frac{1}{2}}$. Щоб знайти функцію розподілу, рахуємо
+\begin{equation}
+    F_{\xi}(x) \triangleq \int_{-\infty}^x f_{\xi}(t)dt = \begin{cases}
+        0, & x \leq 0 \\
+        \int_0^x \frac{1}{2}\sin x dx, & x \in [0,\pi] \\
+        1, & x > \pi
+    \end{cases}.
+\end{equation}
+
+Після інтегрування, маємо
+\begin{equation}
+    \boxed{F_{\xi}(x) = \begin{cases}
+        0, & x \leq 0 \\
+        \sin^2 \frac{x}{2}, & x \in [0,\pi] \\
+        1, & x > \pi
+    \end{cases}}
+\end{equation}
+
+Нарешті, щоб знайти ймовірності знаходимо:
+\begin{equation}
+    \text{Pr}\left[-\frac{\pi}{2} \leq \xi \leq \frac{\pi}{2}\right] = \int_{-\pi/2}^{+\pi/2}f_{\xi}(x)dx = \int_0^{\pi/2}f_{\xi}(x)dx = F_{\xi}\left(\frac{\pi}{2}\right) = \boxed{\frac{1}{2}}
+\end{equation}
+
+Відповідь для випадку $\text{Pr}\left[-\frac{\pi}{2} < \xi \leq \frac{\pi}{2}\right]$ однаковий. Дійсно,
+\begin{align}
+    \text{Pr}\left[-\frac{\pi}{2} \leq \xi \leq \frac{\pi}{2}\right] = \int_{(-\pi/2,\pi/2]}f_{\xi}(x)dx + \underbrace{\int_{\{-\pi/2\}}f_{\xi}(x)dx}_{=0} \nonumber \\
+    = \int_{(-\pi/2,\pi/2]}f_{\xi}(x)dx = \text{Pr}\left[-\frac{\pi}{2} < \xi \leq \frac{\pi}{2}\right]
+\end{align}
+
+\problem{Файл, номер 3} 
+
+\hspace{20px}\textbf{Умова.} Чи може при деякій сталій $\alpha$ функція $f_{\xi}(x) = \alpha \cos x \cdot \mathds{1}_{[0,\pi]}(x)$ визначати щільність розподілу деякої неперервної величини? Якщо так, то знайдіть $\alpha$.
+
+\textbf{Розв'язання.} Якщо таке $\alpha$ існує, то має виконуватись
+\begin{equation}
+    \int_{\mathbb{R}}f_{\xi}(x)dx = 1
+\end{equation}
+
+В такому разі
+\begin{equation}
+    \int_{\mathbb{R}} f_{\xi}(x)dx = \int_0^{\pi}\alpha \cos x dx = 0
+\end{equation}
+
+Оскільки при будь-якому $\alpha$, $\int_{\mathbb{R}} f_{\xi}(x)dx=0$, то $f_{\xi}$ не може бути щільністю розподілу. 
+
+\problem{Турчін, номер 9.13} 
+
+\hspace{20px}\textbf{Умова.} Нехай $F(x)$ -- функція розподілу випадкової величини $\xi$. Знайти функцію розподілу випадкової величини $\eta=-\xi$.
+
+\textbf{Розв'язання.} Нехай шуканий розподіл $G(x)$. За означенням,
+\begin{align}
+    F(x) = \text{Pr}[\xi < x] = \text{Pr}[-\xi \geq -x] = 1 - \text{Pr}[-\xi < -x] \nonumber \\
+    = 1 - \text{Pr}[\eta < -x] = 1 - G(-x)
+\end{align}
+
+Якщо замінимо $x \mapsto -x$, то маємо
+\begin{equation}
+    \boxed{G(x) = 1 - F(-x)}
+\end{equation}
+
+\problem{Турчін, номер 9.15} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ розподілена показниково з параметром $1$. Знайти функцію розподілу випадкової величини $\eta=1-e^{-\xi}$.
+
+\textbf{Розв'язання.} Показниковий розподіл з параметром $\theta=1$ має щільність $f_{\xi}(x) = e^{-x}\cdot \mathds{1}_{(0,+\infty)}$, а отже функція розподілу $F_{\xi}(x) = \int_0^x e^{-t}dt = 1-e^{-x}$ для $x > 0$ і тотожньо $0$ для $x \leq 0$. 
+
+Тепер знайдемо функцію розподілу $F_{\eta}(x)$. При від'ємних $x$ очевидно функція розподілу тотожньо $0$, як і для $F_{\xi}(x)$. Інакше, за означенням:
+\begin{align}
+    F_{\eta}(x) \triangleq \text{Pr}[\eta < x] = \text{Pr}[1-e^{-\xi} < x] = \text{Pr}[e^{-\xi} > 1 - x]
+\end{align}
+
+Якщо $1-x \leq 0$, тобто $x \geq 1$, то така подія відбудеться гарантовано, оскільки експонента -- функція невід'ємна. Таким чином, $F_{\eta}(x)\Big|_{x \geq 1} = 1$. Якщо ж $x \in (0,1)$, то
+\begin{align}
+    F_{\eta}(x) = \text{Pr}[-\xi > \ln(1-x)] = \text{Pr}[\xi \leq -\ln(1-x)]\nonumber \\ = F_{\xi}(-\ln (1-x)) = 1 - e^{\ln (1-x)} = x
+\end{align}
+
+Отримали достатньо простий вираз:
+\begin{equation}
+    \boxed{
+        F_{\eta}(x) = \begin{cases}
+            0, & x \leq 0 \\
+            x, & x \in (0,1) \\
+            1, & x \geq 1
+        \end{cases}
+    }
+\end{equation}
+
+\problem{Турчін, номер 9.16(1)} 
+
+\hspace{20px}\textbf{Умова.} Нехай $f_{\xi}(x)$ -- щільність розподілу випадкової величини $\xi$. Знайти щільність розподілу випадкової величини $\eta=|\xi|$.
+
+\textbf{Розв'язання.} Виразимо функцію розподілу $\eta$:
+\begin{equation}
+    F_{\eta}(x) \triangleq \text{Pr}[\eta < x] = \text{Pr}[|\xi| < x]
+\end{equation}
+
+Помічаємо, що якщо $x\leq 0$, то ймовірність такої події нульова, тому $F_{\eta}(x)\Big|_{x \leq 0} = 0$. Інакше,
+\begin{equation}
+    F_{\eta}(x) = \int_{-x}^x f_{\xi}(t)dt = F_{\xi}(x) - F_{\xi}(-x), \; x \geq 0
+\end{equation}
+Продиференціюємо обидві частини:
+\begin{equation}
+    \frac{dF_{\eta}(x)}{dx} = \frac{dF_{\xi}(x)}{dx} + \frac{dF_{\xi}(-x)}{dx} \implies \boxed{f_{\eta}(x) = f_{\xi}(x) + f_{\xi}(-x), \; x \geq 0}
+\end{equation}
+
+\problem{Турчін, номер 9.17} 
+
+\hspace{20px}\textbf{Умова.} Нехай $F_{\xi}(x)$ -- функція розподілу $\xi$. Знайти функцію розподілу $\eta=\xi^2$.
+
+\textbf{Розв'язання.}
+\begin{align}
+    F_{\eta}(x) \triangleq \text{Pr}[\eta < x] = \text{Pr}[\xi^2 < x]
+\end{align}
+
+Якщо $x \leq 0$, то ймовірність такої події нуль, тому $F_{\eta}(x)\Big|_{x \leq 0} = 0$. Інакше,
+\begin{align}
+    F_{\eta}(x) = \text{Pr}[\xi < \sqrt{x}] - \text{Pr}[\xi < -\sqrt{x}] = F_{\xi}(\sqrt{x}) - F_{\xi}(-\sqrt{x})
+\end{align}
+Отже, остаточно, $\boxed{F_{\eta}(x) = (F_{\xi}(\sqrt{x}) - F_{\xi}(-\sqrt{x}))\mathds{1}_{(0,+\infty)}(x)}$.
+
+\problem{Турчін, номер 9.18} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ розподілена показниково з параметром $\lambda$. Знайти щільності розподілів випадкових величин:
+\begin{itemize}
+    \item $\eta = |\xi - 1|$.
+    \item $\eta = (\xi - 1)^3$
+\end{itemize}
+
+\textbf{Розв'язання.} Якщо випадкова величина $\xi$ розподілена показниково, то її щільність розподілу має вигляд $f_{\xi}(x) = \lambda e^{-\lambda x} \cdot \mathds{1}_{(0,+\infty)}(x)$. 
+
+\textit{Пункт 1.} Розглянемо функцію розподілу $\eta = |\xi - 1|$. Маємо:
+\begin{gather}
+    F_{\eta}(x) \triangleq \text{Pr}[\eta < x] = \text{Pr}[|\xi-1| < x] = \text{Pr}[-x + 1 <\xi < x + 1]
+\end{gather}
+
+По-перше, якщо $x \leq 0$, то ймовірність такої події нульова (оскільки модуль завжди невід'ємний), тому $F_{\eta}(x)\Big|_{x\leq 0}=0$. Інакше, помічаємо
+\begin{gather}
+    F_{\eta}(x) = F_{\xi}(1+x) - F_{\xi}(1-x)
+\end{gather}
+
+Тепер диференціюємо $\frac{d}{dx}$:
+\begin{gather}
+    f_{\eta}(x) = f_{\xi}(1+x) + f_{\xi}(1-x)  \nonumber \\ =\lambda e^{-\lambda (1+x)}\mathds{1}_{(0,+\infty)}(1+x) + \lambda e^{-\lambda (1-x)}\mathds{1}_{(0,+\infty)}(1-x)
+\end{gather}
+
+Оскільки $x > 0$, то можна дещо спростити:
+\begin{gather}
+    f_{\eta}(x) = \lambda e^{-\lambda} \left(e^{-\lambda x} + e^{\lambda x}\mathds{1}_{(0,+\infty)}(1-x)\right)
+\end{gather}
+
+Далі можна розглянути два випадки: $x \in (0,1)$ та $x \in [1,+\infty)$. В другому випадку формула спрощується до $f_{\eta}(x)=\lambda e^{-\lambda(1+x)}$. Інакше,
+\begin{equation}
+    f_{\eta}(x)\Big|_{x \in (0,1)} = \lambda e^{-\lambda}(e^{-\lambda x} + e^{\lambda x}) = 2\lambda e^{-\lambda } \cosh \lambda x
+\end{equation}
+
+Отже, остаточно отримуємо:
+\begin{equation}
+    \boxed{f_{\eta}(x) = \begin{cases}
+        0, & x \leq 0 \\
+        2\lambda e^{-\lambda} \cosh \lambda x, & x \in (0,1) \\
+        \lambda e^{-\lambda (1+x)}, & x \geq 1
+    \end{cases}}
+\end{equation}
+
+\textit{Пункт 2.} В цьому випадку маємо:
+\begin{equation}
+    F_{\eta}(x) \triangleq \text{Pr}[\eta < x] = \text{Pr}[(\xi - 1)^3 < x]
+\end{equation}
+
+Оскільки $\xi$ може приймати лише додатні значення, то для $x \leq -1$, ймовірність події вище нульова. Тому $F_{\eta}(x)\Big|_{x \leq -1} = 0$. Інакше,
+\begin{equation}
+    F_{\eta}(x) = \text{Pr}[\xi < 1 + \sqrt[3]{x}] = F_{\xi}(1+\sqrt[3]{x})
+\end{equation}
+
+Продиференціюємо обидві частини:
+\begin{equation}
+    f_{\eta}(x) = \frac{f_{\xi}(1+\sqrt[3]{x})}{3\sqrt[3]{x^2}} = \frac{\lambda e^{-\lambda (1+\sqrt[3]{x})}}{3\sqrt[3]{x^2}}
+\end{equation}
+
+\end{document}

@@ -1,0 +1,203 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{17:00 10 квітня, 2024}
+\assignno{6}
+\semester{Весняний семестр 2024}
+\mainproblem{Випадкові вектори}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Завдання з файлу} 
+
+\hspace{20px}\textbf{Умова.} Дано таблицю \ref{tab:table_1} розподілу двовимірного випадкового вектору $(\xi,\eta)$. Знайти таблиці розподілу випадкових величин $\xi,\eta$. Знайти таблицю умовного закону розподілу $\xi$ за умови, що $\eta=0$. Знайти таблицю умовного закону розподілу $\eta$ за умови, що $\xi=-1$. Знайти таблиці розподілу суми $\xi+\eta$ та добутку $\xi\eta$. Знайти функції розподілу випадкових величин $\xi,\eta$ та
+побудувати їх графіки. Знайти функцію розподілу двовимірного дискретного випадкового вектору $(\xi,\eta)$.
+
+\textbf{Розв'язання.} Знайдемо розподіл $\xi$: $\text{Pr}[\xi = x] = \sum_{y} \text{Pr}[\xi = x, \eta = y]$. Тому, звідси
+\begin{gather}
+    \text{Pr}[\xi=0] = 0.0 + 0.1 + 0.2 = 0.3 \\
+    \text{Pr}[\xi=-1] = 0.1 + 0.2 + 0.1 = 0.4 \\
+    \text{Pr}[\xi=-2] = 0.2 + 0.1 + 0.0 = 0.3
+\end{gather}
+
+Для розподілу $\eta$: $\text{Pr}[\eta=y] = \sum_x \text{Pr}[\xi = x, \eta = y]$, тому 
+\begin{gather}
+    \text{Pr}[\eta=0] = 0.0 + 0.1 + 0.2 = 0.3 \\
+    \text{Pr}[\eta=1] = 0.1 + 0.2 + 0.1 = 0.4 \\
+    \text{Pr}[\eta=2] = 0.2 + 0.1 + 0.0 = 0.3
+\end{gather}
+
+Тепер знайдемо умовний закон розподілу $\xi$ за умови $\eta=0$. Для цього скористаємось формулою умовної ймовірності:
+\begin{gather}
+    \text{Pr}[\xi = x \mid \eta = 0] = \frac{\text{Pr}[\xi=x,\eta=0]}{\text{Pr}[\eta=0]}, \; x \in \{0,-1,-2\}
+\end{gather}
+
+Тому, таблиця розподілу:
+\begin{gather}
+    \text{Pr}[\xi=0 \mid \eta=0] = \frac{0.0}{0.3} = 0 \\
+    \text{Pr}[\xi=-1 \mid \eta = 0] = \frac{0.1}{0.3} = \frac{1}{3}  \\
+    \text{Pr}[\xi=-2 \mid \eta = 0] = \frac{0.2}{0.3} = \frac{2}{3}
+\end{gather}
+
+\begin{table}
+    \centering
+    \begin{tabular}{c|c|c|c}
+         $\xi/\eta$ & 0 & 1 & 2  \\ \hline 
+         0 & 0.0 & 0.1 & 0.2 \\ \hline
+         $-1$ & 0.1 & 0.2 & 0.1 \\ \hline
+         $-2$ & 0.2 & 0.1 & 0.0
+    \end{tabular}
+    \caption{Таблиця розподілу $(\xi,\eta)$.}
+    \label{tab:table_1}
+\end{table}
+
+Тепер побудуємо таблицю розподілу $\eta$ за умови $\xi=-1$. Скористаємось формулою:
+\begin{equation}
+    \text{Pr}[\eta = y \mid \xi = -1] = \frac{\text{Pr}[\eta=y,\xi=-1]}{\text{Pr}[\xi=-1]}, \; y \in \{0,1,2\}
+\end{equation}
+
+Тому таблиця розподілу:
+\begin{gather}
+    \text{Pr}[\eta=0 \mid \xi = -1] = \frac{0.1}{0.4} = 0.25 \\
+    \text{Pr}[\eta=1 \mid \xi = -1] = \frac{0.2}{0.4} = 0.50 \\
+    \text{Pr}[\eta=2 \mid \xi = -1] = \frac{0.1}{0.4} = 0.25
+\end{gather}
+
+Знайдемо таблицю розподілу $\sigma = \xi+\eta$. Можливі значення -- $\Sigma = \{-2, -1, 0, 1, 2\}$, причому розподіл:
+\begin{equation}
+    \text{Pr}[\sigma = s] = \sum_{(x,y): x+y=s} \text{Pr}[\xi=x,\eta=y]
+\end{equation}
+
+Далі будуємо розподіл:
+\begin{gather}
+    \text{Pr}[\sigma=-2] = \text{Pr}[\xi=-2,\eta=0] = 0.2 \\
+    \text{Pr}[\sigma=-1] = \text{Pr}[\xi=-1,\eta=0] + \text{Pr}[\xi=-2,\eta=1] = 0.1 + 0.1 = 0.2 \\
+    \text{Pr}[\sigma=0] = \text{Pr}[\xi=0,\eta=0] + \text{Pr}[\xi=-1,\eta=1] + \text{Pr}[\xi=-2,\eta=2] \nonumber \\ = 0.0 + 0.2 + 0.0 = 0.2 \\
+    \text{Pr}[\sigma=1] = \text{Pr}[\xi=0,\eta=1] + \text{Pr}[\xi=-1,\eta=2] = 0.1 + 0.1 = 0.2 \\
+    \text{Pr}[\sigma=2] = \text{Pr}[\xi=0,\eta=2] = 0.2
+\end{gather}
+
+Отже, $\sigma$ розподілена рівномірно по множині $\Sigma = \{-2,-1,0,1,2\}$. 
+
+Розглянемо добуток $\pi = \xi\eta$. Можливі значення -- $\Pi = \{0,-1, -2\}$ (хоча і $2 \times (-2)=-4$ -- також можливе значення, але ймовірність дорівнює $0$), причому формула розподілу
+\begin{equation}
+    \text{Pr}[\pi=p] = \sum_{(x,y): xy = p} \text{Pr}[\xi=x,\eta=y]
+\end{equation}
+
+Підставляємо значення:
+\begin{gather}
+    \text{Pr}[\pi=0] = 0.0 + 0.1 + 0.2 + 0.1 + 0.2 = 0.6 \\
+    \text{Pr}[\pi=-1] = 0.2 \\
+    \text{Pr}[\pi=-2] = 0.2
+\end{gather}
+
+Функція розподілу $F_{\xi}(x)$:
+\begin{equation}
+    F_{\xi}(x) = \begin{cases}
+        0.0, & x \leq -2 \\
+        0.3, & -2 < x \leq -1 \\
+        0.7, & -1 < x \leq 0 \\
+        1.0, & x > 0
+    \end{cases}
+\end{equation}
+
+Функція розподілу $F_{\eta}(y)$:
+\begin{equation}
+    F_{\eta}(y) = \begin{cases}
+        0.0, & x \leq 0 \\
+        0.3, & 0 < x \leq 1 \\
+        0.7, & 1 < x \leq 2 \\
+        1.0, & x > 2
+    \end{cases}
+\end{equation}
+
+Функція розподілу вектору $F_{\xi,\eta}(x,y)$:
+\begin{equation}
+    F_{\xi,\eta}(x,y) = \begin{cases}
+        0.0, & x \leq -2 \vee y \leq 0 \\
+        0.2, & -2 < x \leq -1 \wedge 0 < y \leq 1 \\
+        0.3, & -1 < x \leq 0 \wedge 0 < y \leq 1 \\
+        0.3, & x > 0 \wedge 0 < y \leq 1 \\
+        0.3, & -2 < x \leq -1 \wedge 0 < y \leq 1 \\
+        0.3, & -2 < x \leq -1 \wedge 1 < y \leq 2 \\
+        0.3, & -2 < x \leq -1 \wedge y > 2 \\
+        0.6, & -1 < x \leq 0 \wedge 1 < y \leq 2 \\
+        0.7, & x > 0 \wedge 1 < y \leq 2 \\
+        0.7, & -1 < x \leq 0 \wedge y > 2 \\
+        1.0, & x > 0 \wedge y > 2
+    \end{cases}
+\end{equation}
+
+\problem{Лекція, Вправа 5}
+
+\hspace{20px}\textbf{Умова.} Нехай задано випадковий вектор $\boldsymbol{\xi} = (\xi_1,\dots,\xi_n)$ і відома його функція розподілу $F_{\xi}(\mathbf{x})$. Як відновити функцію розподілу окремої компоненти $F_{\xi_k}(x_k)$?
+
+\textbf{Відповідь.} Достатньо скористатися формулою:
+\begin{gather}
+    F_{\xi_k}(x_k) \triangleq \text{Pr}[\xi_k < x_k] = \text{Pr}[\xi_1 \in \mathbb{R},\dots,\xi_{k-1} \in \mathbb{R}, \xi_k < x_k, \xi_{k+1} \in \mathbb{R},\dots,\xi_n \in \mathbb{R}] \nonumber \\
+    = \lim_{x_i \to \infty, i \in [n] \setminus \{k\}} F_{\xi}(\mathbf{x}) = F_{\xi}(+\infty,\dots,+\infty, \underbrace{x_k}_{\text{$k$та позиція}}, +\infty,\dots,+\infty)
+\end{gather}
+
+\problem{Лекція, Вправа 6}
+
+\hspace{20px}\textbf{Умова.} Нехай задано випадковий вектор $\boldsymbol{\xi} = (\xi_1,\dots,\xi_n)$ і відома його функція розподілу $F_{\xi}(\mathbf{x})$. Як відновити функцію розподілу підсистеми з векторів $\boldsymbol{\xi}' = (\xi_{m_1},\xi_{m_2},\dots,\xi_{m_k})$ де $\{m_i\}_{i=1}^k \subset [n]$ попарно різні і $k < n$. 
+
+\textbf{Відповідь.} Нехай $\mathbf{x}'=(x_{m_1},x_{m_2},\dots,x_{m_k})$. Аналогічно минулій задачі:
+\begin{equation}
+    F_{\xi'}(\mathbf{x}') = F_{\xi}(\widetilde{\mathbf{x}}), \;\widetilde{x}_i = \begin{cases}
+        x_i, & \exists j \in [k]: m_j = i \\
+        +\infty, & \text{інакше}
+    \end{cases}
+\end{equation}
+
+\problem{Лекція, Вправа 8}
+
+\hspace{20px}\textbf{Умова.} Визначити за таблицею розподiлу дискретного двовимiрного випадкового вектору $(\xi,\eta)$ розподiл добутку, рiзницi та частки дискретних випадкових величин.
+
+\textbf{Відповідь.} Достатньо навести формулу для довільної неперервної функції $f: \mathbb{R}^2 \to \mathbb{R}$, тобто знайдемо розподіл $\zeta = f(\xi,\eta)$. Тоді, розподіл:
+\begin{equation}
+    \text{Pr}[\zeta = z] = \sum_{(i,j): f(x_i,y_j) = z} \text{Pr}[\xi = x_i, \eta = y_j], \; z \in f(\Omega),
+\end{equation}
+
+де $\Omega$ -- множина можливих значень вектору $(\xi,\eta)$. 
+
+\problem{Лекція, Вправа 9}
+
+\hspace{20px}\textbf{Умова.} Охарактеризувати умовний закон розподілу випадкової величини $\eta$ за умови, що $\xi$ прийняло фіксоване значення $x_0$.
+
+\textbf{Відповідь.} Нехай можливі значення $\xi$ це $\mathcal{X} = \{x_i\}_{i=1}^N$, а у $\eta$ -- це $\mathcal{Y} = \{y_j\}_{j=1}^M$. Якщо $x_0 \notin \mathcal{X}$, то умовний розподіл тотожньо нульовий. Інакше, 
+\begin{equation}
+    \text{Pr}[\eta=y_j \mid \xi = x_0] = \frac{\text{Pr}[\eta=y_j, \xi = x_0]}{\text{Pr}[\xi=x_0]} = \frac{\text{Pr}[\eta=y_j,\xi=x_0]}{\sum_{j=1}^M \text{Pr}[\xi=x_0, y = y_j]}
+\end{equation}
+
+\problem{Лекція, Вправа 10}
+
+\hspace{20px}\textbf{Умова.} Як вiдновити щiльностi iнших компонент $\xi_2,\dots,\xi_n$ за щiльнiстю неперервної випадкової величини $\boldsymbol{\xi} = (\xi_1,\dots,\xi_n)$? Який вигляд формули вiдновлення щiльностi компонент приймуть у випадку двовимiрного випадкового вектору?
+
+\textbf{Відповідь.} Для $\xi_k$ формула набуде вигляду:
+\begin{equation}
+    f_{\xi_k}(x_k) = \int_{\mathbb{R}^{n-1}}f_{\xi}(x_1,\dots,x_n)\prod_{j=1,j\neq k}^n dx_j, \; x_k \in \mathbb{R}
+\end{equation}
+
+Для двовимірного випадку:
+\begin{gather}
+    f_{\xi_1}(x_1) = \int_{\mathbb{R}}f(x_1,x_2)dx_2, \; x_1 \in \mathbb{R} \\
+    f_{\xi_2}(x_2) = \int_{\mathbb{R}}f(x_1,x_2)dx_1, \; x_2 \in \mathbb{R}
+\end{gather}
+
+\end{document}

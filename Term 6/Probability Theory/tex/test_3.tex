@@ -1,0 +1,202 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+\usepackage[shortlabels]{enumitem}
+
+\title{Контрольна робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{18:00 25 травня}
+\assignno{2}
+\semester{Весняний семестр 2024}
+\mainproblem{Контрольна робота 2, Варіант 5}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Кореляція і умовний розподіл}
+
+\hspace{20px}\textbf{Умова.} Дано щільність розподілу двовимірного випадкового вектору $(\xi,\eta)$.
+\begin{equation*}
+    f_{(\xi,\eta)}(x,y) = \alpha x^2y^4 \cdot \mathds{1}_{[0,1] \times [0,2]}(x,y)
+\end{equation*}
+
+\begin{enumerate}[(a)]
+    \item Знайти значення сталого параметру $\alpha$, умовну щільність розподілу $\xi$ за умови $\eta=y$.
+    \item Знайти коефіцієнт кореляції випадкових величин $\xi,\eta$. Чи незалежні ці випадкові величини?
+\end{enumerate}
+
+\textbf{Розв'язання.} 
+
+\textbf{Пункт а.} Для знаходження коефіцієнту $\alpha$ скористаємося умовою нормування, тобто $\iint_{\mathbb{R} \times \mathbb{R}}f_{(\xi,\eta)}(x,y)dxdy=1$. Підставимо нашу щільність:
+\begin{equation}
+    \iint_{\mathbb{R} \times \mathbb{R}}f_{(\xi,\eta)}(x,y)dxdy = \iint_{\mathbb{R} \times \mathbb{R}} \alpha x^2y^4 \cdot \mathds{1}_{[0,1] \times [0,2]}(x,y)dxdy
+\end{equation}
+
+Якщо врахувати, що щільність зануляється за прямокутником $[0,1]\times [0,2]$, то маємо умову
+\begin{equation}
+    \alpha \iint_{[0,1] \times [0,2]} x^2y^4dxdy = 1 \implies \alpha = \left(\iint_{[0,1] \times [0,2]} x^2y^4dxdy\right)^{-1} =: I^{-1}
+\end{equation}
+
+за умови, що інтеграл $I$ має ненульове значення. Отже, обраховуємо сам інтеграл. За теоремою Фубіні, можемо записати:
+\begin{gather}
+    I = \int_0^1 \left(\int_0^2 x^2y^4dy\right)dx = \int_0^1 \left(\frac{x^2y^5}{5}\Big|_{y=0}^{y=2}\right)dx = \frac{32}{5}\int_0^1 x^2dx = \frac{32}{15}
+\end{gather}
+
+Звідси остаточно $\boxed{\alpha = \frac{15}{32}}$ і наша щільність розподілу вектору $(\xi,\eta)$ тому має вигляд
+\begin{equation}
+    f_{(\xi,\eta)}(x,y) = \frac{15}{32} \cdot x^2y^4 \cdot \mathds{1}_{[0,1]\times [0,2]}(x,y)
+\end{equation}
+
+Тепер потрібно знайти щільність розподілу $\xi$ за умови $\eta=y$. За означенням, маємо
+\begin{equation}
+f_{\xi \mid \eta}(x \mid y) = \begin{cases}
+    f_{(\xi,\eta)}(x,y)/f_{\eta}(y), & f_{\eta}(y) \neq 0 \\
+    0, & f_{\eta}(y) = 0
+\end{cases}    
+\end{equation}
+
+Отже бачимо, що нам потрібно знайти маргінальний розподіл $f_{\eta}(y)$. Більш того, буде зручно для наступного пункту також знайти маргінальний розподіл $f_{\xi}(x)$, тому пропоную це зробити одразу. Знову ж таки за означенням
+\begin{equation}
+    f_{\xi}(x) = \int_{\mathbb{R}}f_{(\xi,\eta)}(x,y)dy = \begin{cases}
+        \int_0^2 \frac{15}{32} \cdot x^2y^4 dy, & x \in [0,1] \\
+        0, & x \not\in [0,1]
+    \end{cases} 
+\end{equation}
+
+Тут значення інтегралу $\int_0^2 \frac{15}{32}\cdot x^2y^4dy = \frac{15x^2}{32} \cdot \frac{y^5}{5}\Big|_{y=0}^{y=2} = 3x^2$. Для $f_{\eta}(y)$ маємо
+\begin{equation}
+    f_{\eta}(y) = \int_{\mathbb{R}}f_{(\xi,\eta)}(x,y)dx = \begin{cases}
+        \int_0^1 \frac{15}{32} \cdot x^2y^4dx, & y \in [0,2] \\
+        0, & y \not\in [0,2]
+    \end{cases}
+\end{equation}
+
+Тут інтеграл $\int_0^1 \frac{15}{32}\cdot x^2y^4dx = \frac{15y^4}{32} \cdot \frac{x^3}{3}\Big|_{x=0}^{x=1} = \frac{5y^4}{32}$. Отже, остаточно:
+\begin{equation}
+    f_{\xi}(x) = 3x^2 \cdot \mathds{1}_{[0,1]}(x), \; f_{\eta}(y) = \frac{5y^4}{32} \cdot \mathds{1}_{[0,2]}(y)
+\end{equation}
+
+Проте, помітимо, що
+\begin{equation}
+    f_{\xi}(x)f_{\eta}(y) = \frac{15x^2y^4}{32}\cdot\mathds{1}_{[0,1]}(x)\cdot\mathds{1}_{[0,2]}(y) = f_{(\xi,\eta)}(x,y)
+\end{equation}
+
+Отже, $\xi,\eta$ є незалежними випадковими величинами. Тому, для всіх значень $y \in [0,2]$, маємо $f_{\xi \mid \eta}(x \mid y) \equiv f_{\xi}(x) = 3x^2 \mathds{1}_{[0,1]}(x)$, відповідно для $y \not\in [0,2]$, $f_{\xi \mid \eta}(x \mid y) \equiv 0$.
+
+\textbf{Пункт б.} Оскільки випадкові величини є незалежними, то і кореляція дорівнює $0$, тобто $\text{corr}[\xi,\eta] = 0$ (обернене, проте, не завжди справедливе). Тим не менш, про всяк випадок перевіримо це, показавши, що $\text{cov}[\xi,\eta]=0$. За означенням:
+\begin{equation}
+    \text{cov}[\xi,\eta] = \mathbb{E}[\xi\eta] - \mathbb{E}[\xi]\mathbb{E}[\eta]
+\end{equation}
+
+Знайдемо математичні сподівання:
+\begin{equation}
+    \mathbb{E}[\xi\eta] = \int_{\mathbb{R} \times \mathbb{R}}xyf_{(\xi,\eta)}(x,y)dxdy = \int_{[0,1]\times [0,2]}\frac{15}{32}x^3y^5dxdy = \frac{5}{4}
+\end{equation}
+\begin{equation}
+    \mathbb{E}[\xi] = \int_{\mathbb{R}}xf_{\xi}(x)dx = \int_0^1 3x^3dx = \frac{3}{4}
+\end{equation}
+\begin{equation}
+    \mathbb{E}[\eta] = \int_{\mathbb{R}}yf_{\eta}(y)dy = \int_0^2 \frac{5y^5}{32}dy = \frac{5}{3}
+\end{equation}
+
+Отже, коваріація:
+\begin{equation}
+    \text{cov}[\xi,\eta] = \mathbb{E}[\xi\eta] - \mathbb{E}[\xi]\mathbb{E}[\eta] = \frac{5}{4} - \frac{3}{4} \cdot \frac{5}{3} = 0
+\end{equation}
+
+Звідси випливає, що $\text{corr}[\xi,\eta]=0$.
+
+\textbf{Відповідь.} \textit{Пункт а.} $\alpha=\frac{15}{32},f_{\xi\mid\eta}(x\mid y) = 3x^2\mathds{1}_{0,1}(x)$ для $y \in [0,2]$ і 0 в іншому випадку. \textit{Пункт б.} Кореляція $0$, оскільки $\xi,\eta$ -- незалежні.
+
+\problem{Характеристична функція}
+
+\hspace{20px}\textbf{Умова.} За заданою характеристичною функцією 
+\begin{equation*}
+\varphi_{\xi}(t) = \frac{1}{3}\cos 3t + \frac{1}{3}\cos 2t + \frac{1}{3}e^{-4it}
+\end{equation*}
+відновити закон розподілу випадкової величини $\xi$.
+
+\textbf{Розв'язання.} За видом характеристичної функції можна вгадати, що випадкова величина $\xi$ є дискретною зі скінченною кількістю можливих значень. Тобто, розподіл має вигляд
+\begin{equation}
+    \text{Pr}[\xi = x_k] = p_k, \; k \in \{1,\dots,n\}
+\end{equation}
+
+За означенням, характеристична функція:
+\begin{equation}
+    \varphi_{\xi}(t) = \int_{-\infty}^{+\infty} e^{itx}dF_{\xi}(x) = \sum_{k=1}^n e^{itx_k}p_k
+\end{equation}
+
+Дійсно, задана $\varphi_{\xi}(t)$ є лінійною комбінацією експонент виду $e^{itx_k}$. Знайдемо цей вигляд конкретно, скориставшись тим фактом, що $\cos z = \frac{e^{iz} + e^{-iz}}{2}$:
+\begin{equation}
+    \varphi_{\xi}(t) = \frac{1}{6}e^{3it} + \frac{1}{6}e^{-3it} + \frac{1}{6}e^{2it} + \frac{1}{6}e^{-2it} + \frac{1}{3}e^{-4it}
+\end{equation}
+
+Отже, наш розподіл має вигляд:
+\begin{equation}
+    \boxed{\text{Pr}[\xi=\pm 3] = \text{Pr}[\xi = \pm 2] = \frac{1}{6}, \; \text{Pr}[\xi=-4] = \frac{1}{3}}
+\end{equation}
+
+\problem{Закон великих чисел}
+
+\hspace{20px}\textbf{Умова.} Дана послідовність незалежних випадкових величин $\{\xi_n\}_{n \in \mathbb{N}}$. Випадкова величина $\xi_n$ ($n \in \mathbb{N}$) приймає значення $\pm 1, 0$, причому 
+\begin{equation*}
+    \text{Pr}[\xi_n = \pm 1] = \frac{5n}{10n+2}.
+\end{equation*}
+
+Довести, що до цiєї послiдовностi застосовний закон великих чисел.
+
+\textbf{Розв'язання.} Знайдемо математичне сподівання та дисперсію кожної випадкової величини $\xi_n$ ($n \in \mathbb{N}$). Випадкова величина є симетричною відносно $0$, тому $\mathbb{E}[\xi_n] = 0$, а ось дисперсія
+\begin{equation}
+    \text{Var}[\xi_n] = 1^2 \cdot \frac{5n}{10n+2} + (-1)^2 \cdot \frac{5n}{10n+2} = \frac{10n}{10n+2} = \frac{1}{1 + \frac{1}{5n}}
+\end{equation}
+
+Тепер ми скористаємося \textbf{теоремою Чебишева}: якщо $\exists \rho > 0$ таке, що $\forall n \in \mathbb{N}: \text{Var}[\xi_n] \leq \rho$, то закон великих чисел застосовний. Оскільки границя $\lim_{n \to \infty}\text{Var}[\xi_n]=1$, то послідовність $\{\text{Var}[\xi_n]\}_{n \in \mathbb{N}}$ збіжна, а отже обмежена, тому таке $\rho$ знайдеться\footnote{Насправді для цієї послідовності легко знайти $\rho$: $
+    \text{Var}[\xi_n] = \frac{1}{1 + \frac{1}{5n}} < 1 =: \rho$.}. Отже, за теоремою Чебишева, закон великих чисел застосовний.
+
+\problem{Центральна гранична теорема}
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ є середнiм арифметичним незалежних однаково розподiленних випадкових величин, середнє квадратичне вiдхилення кожной з яких дорiвнює $\sigma^2 = 3$. Скiльки потрiбно узяти
+таких випадкових величин, щоб з ймовiрнiстю, не меншою за $p=0.96$, випадкова величина $\xi$ вiдхилялась
+за абсолютною величиною вiд свого математичесного сподiвання не бiльш нiж на $\delta = 0.02$?
+
+\textbf{Розв'язання.} Нехай ми маємо набір незалежних випадкових величин $\{\zeta_k\}_{k=1}^n$, а також за умовою $\xi = \frac{1}{n}\sum_{k=1}^n \zeta_k$. Ми знаємо, що $\text{Var}[\zeta_k]=\sigma^2=3$, а також позначимо $\mu := \mathbb{E}[\zeta_k]$. За умовою, треба знайти таке мінімальне $n$, що
+\begin{equation}
+    \text{Pr}[|\xi - \mathbb{E}[\xi]| \leq \delta] \geq p, \; \; \delta=0.02, \; p = 0.96
+\end{equation}
+
+Оскільки $\mathbb{E}[\xi] = \mathbb{E}[\frac{1}{n}\sum_{k=1}^n \zeta_k] = \frac{1}{n}\sum_{k=1}^n\mathbb{E}[\zeta_k] = \mu$, то задача еквівалентна знаходженню такого мінімального $n$, що
+\begin{equation}
+    \text{Pr}[|\xi - \mu| \leq \delta] \geq p, \; \; \delta=0.02, \; p = 0.96
+\end{equation}
+
+Далі скористаємось практичним наслідком центральної граничної теореми. Будемо вважати, що $n$ велике (в кінці розв'язку, коли ми отримаємо конкретне значення $n$, ми це перевіримо) і будемо розглядати випадкову величину $S_n := \sum_{k=1}^n \zeta_k$. Тоді, приблизно $S_n \sim \mathcal{N}(n\mu, n\sigma^2)$. Оскільки $\xi = \frac{S_n}{n}$, то за формулою перетворення нормального розподілу\footnote{Якщо $\zeta \sim \mathcal{N}(\mu,\sigma^2)$, тоді $a\zeta+b \sim \mathcal{N}(a\mu + b, a^2\sigma^2)$.}, $\xi \sim \mathcal{N}(\mu,\frac{\sigma^2}{n})$. Звідси випливає, що випадкова величина $\eta := (\xi-\mu)\frac{\sqrt{n}}{\sigma} \sim \mathcal{N}(0,1)$. Отже, тоді ми можемо порахувати шукану ймовірність наступним чином:
+\begin{equation}
+    \text{Pr}[|\xi-\mu|<\delta] = \text{Pr}\left[-\delta\cdot\frac{\sqrt{n}}{\sigma} < \underbrace{(\xi-\mu)\frac{\sqrt{n}}{\sigma}}_{\eta} < \delta\cdot\frac{\sqrt{n}}{\sigma}\right] = 2\Phi_0\left(\frac{\delta\sqrt{n}}{\sigma}\right),
+\end{equation}
+
+де $\Phi_0(x) = \frac{1}{\sqrt{2\pi}}\int_0^x e^{-\tau^2/2}d\tau$ -- функція Лапласа. Отже, наша задача звелась до того, що знайти мінімальне $n$, для якого
+\begin{equation}
+    2\Phi_0\left(\frac{\delta\sqrt{n}}{\sigma}\right) \geq p
+\end{equation}
+
+Через $\Phi_0^{-1}(x)$ позначимо обернену функцію Лапласа. Тоді
+\begin{equation}
+    \frac{\delta\sqrt{n}}{\sigma} \geq \Phi_0^{-1}\left(\frac{p}{2}\right) \implies \boxed{n \geq \frac{\sigma^2}{\delta^2}\cdot \Phi_0^{-1}\left(\frac{p}{2}\right)^2}
+\end{equation}
+
+Якщо порахувати, то $n \geq \frac{3}{0.02^2}\Phi_0^{-1}(0.48)^2 \approx \frac{3\cdot 2.06^2}{0.0004} = 31827$. Отже, потрібно взяти близько \textbf{31830} випадкових величин. 
+
+\textbf{Відповідь.} Потрібно взяти близько $31830$ випадкових величин. 
+
+\end{document}
