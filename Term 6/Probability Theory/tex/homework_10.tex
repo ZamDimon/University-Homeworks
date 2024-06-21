@@ -1,0 +1,58 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+\usepackage{float}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{18:00 1 травня, 2024}
+\assignno{10}
+\semester{Весняний семестр 2024}
+\mainproblem{Закон великих чисел}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Завдання 1} 
+
+\hspace{20px}\textbf{Умова.} Дана послідовність незалежних випадкових величин $\{\xi_n\}_{n \in \mathbb{N}}$. Випадкова величина $\xi_n, n \geq 3$ може приймати тільки три значення $-\sqrt{n},0,\sqrt{n}$ з ймовірностями, що дорівнюють, відповідно $\frac{1}{n},1-\frac{2}{n},\frac{1}{n}$, величини $\xi_1,\xi_2$ мають дисперсію. Чи можна застосувати до цієї послідовності закон великих чисел?
+
+\textbf{Розв'язання.} Маємо $\mathbb{E}[\xi_n]=0$ та $\text{Var}[\xi_n] = 2$, також нехай маємо дисперсії $\sigma_i^2 = \text{Var}[\xi_i],\; i\in\{1,2\}$. Тоді справедливо
+\begin{equation}
+    \forall n \in \mathbb{N}: \text{Var}[\xi_n] \leq \max\{\sigma_1^2, \sigma_2^2, 2\}
+\end{equation}
+
+Таким чином, за теоремою Чебишева, закон великих чисел застосовний.
+
+\problem{Завдання 2} 
+
+\hspace{20px}\textbf{Умова.} Дана послідовність незалежних випадкових величин $\{\xi_n\}_{n \in \mathbb{N}}$. Випадкова величина $\xi_n$ може приймати тільки три значення $-\alpha n, 0, \alpha n$ ($\alpha>0$) з ймовірностями, що дорівнюють, відповідно (a) $\frac{1}{2n^2},1-\frac{1}{n^2},\frac{1}{2n^2}$, (б) $\frac{1}{2^n},1-\frac{1}{2^{n-1}},\frac{1}{2^n}$. Чи можна застосувати до цієї послідовності закон великих чисел?
+
+\textbf{Розв'язання.} 
+
+\textit{Пункт а.} $\mathbb{E}[\xi_n]=0$, тому дисперсія:
+\begin{equation}
+    \text{Var}[\xi_n] = (-\alpha n)^2 \cdot \frac{1}{2n^2} + (\alpha n)^2 \cdot \frac{1}{2n^2} = \alpha^2
+\end{equation}
+
+Таким чином, за теоремою Чебишева, закон великих чисел застосовний.
+
+\textit{Пункт б.} Знову $\mathbb{E}[\xi_n]=0$, тому дисперсія:
+\begin{equation}
+    \text{Var}[\xi_n] = \frac{2 \cdot (\alpha n)^2}{2^n} = \frac{\alpha^2 n^2}{2^{n-1}}
+\end{equation}
+
+Легко бачити, що $\lim_{n \to \infty} \text{Var}[\xi_n] = 0$, тому послідовність $\{\text{Var}[\xi_n]\}_{n \in \mathbb{N}}$ обмежена, а отже за теоремою Чебишева, закон великих чисел застосовний.
+
+\end{document}

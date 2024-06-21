@@ -1,0 +1,157 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+\usepackage[shortlabels]{enumitem}
+
+\title{Контрольна робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{16:00 7 травня}
+\assignno{2}
+\semester{Весняний семестр 2024}
+\mainproblem{Контрольна робота 1, частина 2, варіант 5}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Номер 1}
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ має щільність розподілу
+\begin{equation}
+    f_{\xi}(x) = \alpha(x+4) \cdot \mathds{1}_{[-4,-3]}(x)
+\end{equation}
+
+\begin{enumerate}[(a)]
+    \item Знайти значення сталого параметру $\alpha$, функцію розподілу випадкової величини $F_{\xi}(x)$ та ймовірності $\text{Pr}[-3.2 \leq \xi \leq 8]$ та $\text{Pr}[-3.2 < \xi < 8]$.
+    \item Знайти математичне сподiвання та дисперсiю випадкової величини $\xi$.
+\end{enumerate}
+
+\textbf{Розв'язання.} 
+
+\textbf{Пункт а.} Спочатку знайдемо коефіцієнт $\alpha$. Для цього, використаємо \textit{умову нормування}, тобто $\int_{\mathbb{R}}f_{\xi}(x)dx=1$. Маємо:
+\begin{gather}
+    \int_{\mathbb{R}} f_{\xi}(x)dx = \int_{\mathbb{R}}\alpha(x+4) \cdot \mathds{1}_{[-4,-3]}(x)dx = \alpha \int_{-4}^{-3}(x+4)dx
+\end{gather}
+
+Для обчислення зручно замінити $z=x+4$, тоді нижня і верхня межа інтегрування $0$ та $1$, відповідно. Тому,
+\begin{equation}
+    \int_{\mathbb{R}}f_{\xi}(x)dx = \alpha\int_0^1 zdz = \alpha \cdot \frac{z^2}{2}\Big|_{z=0}^{z=1} = \frac{\alpha}{2} = 1 \implies \boxed{\alpha=2}
+\end{equation}
+
+Тепер знайдемо функцію розподілу. За означенням:
+\begin{equation}
+    F_{\xi}(x) \triangleq \text{Pr}[\xi \leq x] = \int_{-\infty}^x f_{\xi}(x)dx = \begin{cases}
+        0, & x < -4 \\
+        \int_{-4}^x f_{\xi}(t)dt, & x \in [-4,-3] \\
+        1, & x > -3
+    \end{cases}
+\end{equation}
+
+Отже, залишилось знайти $\int_{-4}^x f_{\xi}(t)dt$ для $x \in [-4,-3]$. Маємо:
+\begin{equation}
+    \int_{-4}^x f_{\xi}(t)dt = 2\int_{-4}^x (x+4)dx = \begin{vmatrix}
+        z = x+4 \\
+        dz = dx
+    \end{vmatrix} = 2\int_0^{x+4}zdz = (x+4)^2
+\end{equation}
+
+Таким чином, остаточно маємо функцію розподілу:
+\begin{equation}
+    \boxed{F_{\xi}(x) = \begin{cases}
+        0, & x < -4 \\
+        (x+4)^2, & -4 \leq x \leq -3 \\
+        1, & x > -3
+    \end{cases}}
+\end{equation}
+
+Тепер знайдемо ймовірності. По-перше, оскільки ми маємо неперервну випадкову величину, то $\text{Pr}[-3.2 \leq \xi \leq 8] = \text{Pr}[-3.2 < \xi < 8] = \int_{-3.2}^8 f_{\xi}(x)dx$\footnote{За теоремою у лекції: оскільки множини $[-3.2,8]$ та $(-3.2,8)$ відрізняються одна від іншої на множину $\{-3.2,8.0\}$ нульової міри Лебега, то вони мають однакові значення інтегралу по Лебегу.}. Отже, діло звелось до обрахунку стандартного інтегралу:
+\begin{gather}
+    \int_{-3.2}^{8.0} f_{\xi}(x)dx = 2\int_{-3.2}^{8.0} (x+4) \cdot \mathds{1}_{[-4,-3]}(x)dx = 2\int_{-3.2}^{-3.0}(x+4)dx \nonumber \\
+    = \begin{vmatrix}
+        z = x + 4 \\
+        dz = dx
+    \end{vmatrix} = 2\int_{0.8}^{1.0} zdz = z^2\Big|_{z=0.8}^{z=1.0} = 0.36
+\end{gather}
+
+Отже, $\boxed{\text{Pr}[-3.2 \leq \xi \leq 8] = \text{Pr}[-3.2 < \xi < 8] = 0.36}$.
+
+\textbf{Пункт б.} За означенням, математичне сподівання можна знайти як:
+\begin{gather}
+    \mathbb{E}[\xi] = \int_{\mathbb{R}}xf_{\xi}(x)dx = \int_{-4}^{-3} 2x(x+4)dx = \begin{vmatrix}
+        z = x + 4 \\
+        x = z-4 \\
+        dz = dx
+    \end{vmatrix} \nonumber \\
+    = 2\int_0^1 (z-4)zdz = 2\left(\underbrace{\int_0^1 z^2dz}_{=1/3} - 4\underbrace{\int_0^1 zdz}_{=1/2}\right) = \frac{2}{3} - 4 = \boxed{-\frac{10}{3}}
+\end{gather}
+
+Нарешті, для дисперсії потрібно знайти математичне сподівання квадрату випадкової величини, тобто
+\begin{gather}
+    \mathbb{E}[\xi^2] = \int_{\mathbb{R}}x^2f_{\xi}(x)dx = \int_{-4}^{-3} 2x^2(x+4)dx = \begin{vmatrix}
+        z = x + 4 \\
+        x = z - 4 \\
+        dz = dx
+    \end{vmatrix} \nonumber \\
+    = \int_0^1 2z(z-4)^2dz = 2\underbrace{\int_0^1 z^3dz}_{=1/4} - 16\underbrace{\int_0^1 z^2dz}_{=1/3} + 32\underbrace{\int_0^1 zdz}_{=1/2} \nonumber \\
+    = \frac{1}{2} - \frac{16}{3} + 16 = \frac{67}{6}
+\end{gather}
+
+Таким чином, дисперсію можна знайти як:
+\begin{equation}
+    \text{Var}[\xi] = \mathbb{E}[\xi^2] - \mathbb{E}[\xi]^2 = \frac{67}{6} - \frac{100}{9} = \boxed{\frac{1}{18}}
+\end{equation}
+
+\textbf{Відповідь.}
+
+\begin{enumerate}[(a)]
+    \item $\alpha=2, F_{\xi}(x)$ дивись у розв'язанні, $\text{Pr}[-3.2 \leq \xi \leq 8] = \text{Pr}[-3.2 < \xi < 8] = 0.36$.
+    \item $\mathbb{E}[\xi]=-\frac{10}{3}, \; \text{Var}[\xi] = \frac{1}{18}$.
+\end{enumerate}
+
+\problem{Номер 2}
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ має нормальний закон розподiлу з математичним сподiванням $6$
+та середнiм квадратичним вiдхиленням $3$. Знайти ймовiрнiсть $\text{Pr}[2 < \xi < 5]$.
+
+\textbf{Розв'язання.} Згідно умові, $\xi \sim \mathcal{N}(\mu,\sigma^2)$ де $\mu=6,\sigma=3$. Щоб знайти ймовірність $\text{Pr}[2<\xi<5]$, перейдемо до нормалізованої випадкової величини $\eta=\frac{\xi-\mu}{\sigma}$, для якої маємо таблицю функції Лапласа. Отже, запишемо ймовірність:
+\begin{equation}
+    \text{Pr}[2<\xi<5] = \text{Pr}\left[\frac{2-6}{3} < \underbrace{\frac{\xi-6}{3}}_{=\eta} < \frac{5-6}{3}\right] = \text{Pr}\left[-\frac{4}{3} < \eta < -\frac{1}{3}\right]
+\end{equation}
+
+Оскільки ми отримали $\eta \sim \mathcal{N}(0,1)$, то для обрахунку цієї ймовірності скористаємося наступною формулою:
+\begin{equation}
+    \text{Pr}\left[-\frac{4}{3} < \eta < -\frac{1}{3}\right] = \Phi_0\left(\left|-\frac{4}{3}\right|\right) - \Phi_0\left(\left|-\frac{1}{3}\right|\right) = \Phi_0\left(\frac{4}{3}\right) - \Phi_0\left(\frac{1}{3}\right),
+\end{equation}
+
+де $\Phi_0(x) \triangleq \frac{1}{\sqrt{2\pi}}\int_0^x e^{-t^2/2}dt$ -- функція Лапласа. Власне точну відповідь ми отримали, залишається надати чисельне значення. Для цього знаходимо з таблиці наступне:
+\begin{equation}
+    \Phi_0\left(\frac{4}{3}\right) \approx \Phi_0(1.33) \approx 0.4082, \;\;\; \Phi_0\left(\frac{1}{3}\right) \approx \Phi_0(0.33) \approx 0.1293
+\end{equation}
+
+Отже, шукана ймовірність:
+\begin{equation}
+    \text{Pr}[2 < \xi < 5] \approx 0.4082 - 0.1293 = \boxed{0.2789}
+\end{equation}
+
+Про всяк випадок, звіримо цю відповідь з більш точною, що отримана у \textit{Wolfram Mathematica}. Для цього порахуємо значення ``в лоб'', тобто проінтегрувавши густину $f_{\xi}(x) = \frac{1}{3\sqrt{2\pi}}\exp\left(-\frac{(x-6)^2}{18}\right)$ від $2.0$ до $5.0$ чисельно:
+
+\begin{lstlisting}[language=Mathematica]
+f[x_] = 1/(Sqrt[2*Pi]*3)*Exp[-((x-6)^2/18)];
+Integrate[f[x], {x, 2.0, 5.0}]
+\end{lstlisting}
+
+На виході маємо приблизно $0.27823$ -- доволі близьке значення до нашого $0.2789$. Неточність на 4 знаку після коми скоріше за все пов'язана з округленням $4/3$ та $1/3$ до $1.33$ та $0.33$, відповідно -- можна отримати дещо більшу точність, якщо округлювати до, скажімо, $1.333$, і інтерполювати між значеннями у таблиці, але дуже великий приріст у точності це не дасть.
+
+\textbf{Відповідь.} Приблизно $0.2789$.
+
+\end{document}

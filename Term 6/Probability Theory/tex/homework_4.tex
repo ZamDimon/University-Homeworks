@@ -1,0 +1,193 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{23:59 27 березня, 2024}
+\assignno{4}
+\semester{Весняний семестр 2024}
+\mainproblem{Випадкові величини}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Номер 1} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ задає кількість нулів в автомобільному номері з 4-х цифр. Скласти таблицю розподілу $\xi$, записати функцію розподілу $\xi$, побудувати її графік. Знайти ймовірність $\text{Pr}\left[\frac{1}{\pi} \leq \xi \leq \pi \right]$.
+
+\textbf{Розв'язання.} Множина можливих значень $\mathcal{X} = \{0,1,2,3,4\}$. З них на відрізок $[\pi^{-1},\pi]$ попадають лише $\{1,2,3\}$, тому
+\begin{gather}
+    \text{Pr}\left[\frac{1}{\pi} \leq \xi \leq \pi \right] = \sum_{\substack{x \in \mathcal{X} \\ \pi^{-1}\leq x \leq \pi}} \text{Pr}[\xi = x] \nonumber \\
+    = \text{Pr}[\xi=1] + \text{Pr}[\xi=2] + \text{Pr}[\xi=3] \nonumber \\
+    = 1 - (\text{Pr}[\xi=0] + \text{Pr}[\xi=4])
+\end{gather}
+
+Далі знаходимо ці ймовірності. Для цього покажемо, що перед нами біноміальний розподіл $\xi \sim \text{Bin}\left(4,\frac{1}{10}\right)$. Дійсно, окремим експериментом вважатимемо випадіння $0$ серед $10$ навмання обранних цифр; шанс цієї події в рамках експерименту $\frac{1}{10}$. Експериментів всього $4$ -- для кожної позиції на номері. Отже,
+\begin{equation}
+    \text{Pr}[\xi=x] \triangleq \begin{pmatrix}
+        4 \\ x
+    \end{pmatrix}\left(\frac{1}{10}\right)^x\left(\frac{9}{10}\right)^{4-x}, \; x \in \mathcal{X}
+\end{equation}
+
+З цього нам потрібно лише $\text{Pr}[\xi=0]$ та $\text{Pr}[\xi=4]$, тому
+\begin{gather}
+    \text{Pr}[\xi=0] = \left(\frac{9}{10}\right)^4 = 0.6561 \nonumber \\
+    \text{Pr}[\xi=4] = \left(\frac{1}{10}\right)^4 = 0.0001
+\end{gather}
+
+Остаточно
+\begin{equation}
+    \text{Pr}\left[\frac{1}{\pi} \leq \xi \leq \pi\right] = 1 - (0.6561 + 0.0001) = \boxed{0.3438}
+\end{equation}
+
+\textbf{Відповідь.} $0.3438$.
+
+\problem{Номер 2} 
+
+\hspace{20px}\textbf{Умова.} По лосю було випущено 3 балiстичнi ракети. Перша влучає з ймовiрнiстю $0.2$, друга -- з ймовiрнiстю $0.3$, третя -- з ймовiрнiстю $0.5$. Випадкова величина $\xi$ описує кiлькiсть ракет, що влучили в тварину. 
+
+Скласти таблицю розподiлу $\xi$, записати функцiю розподiлу $\xi$,
+побудувати її графiк. Знайти ймовірність $\text{Pr}[3\xi - \xi^2 \geq 2]$.
+
+\textbf{Розв'язання.} Множина можливих значень $\xi$ це $\mathcal{X} = \{0, 1, 2, 3\}$. Введемо три події: $E_j$ -- влучила ракета з номером $j$. Тоді, запишемо ймовірності подій $\xi=x,x \in \mathcal{X}$:
+\begin{align}
+    &\text{Pr}[\xi=0] = \text{Pr}[\overline{E}_1 \cap \overline{E}_2 \cap \overline{E}_3] \\
+    &\text{Pr}[\xi=1] = \text{Pr}[(E_1 \cap \overline{E}_2 \cap \overline{E}_3) \cup (\overline{E}_1 \cap E_2 \cap \overline{E}_3) \cup (\overline{E}_1 \cap \overline{E}_2 \cap E_3)] \\
+    &\text{Pr}[\xi=2] = \text{Pr}[(E_1 \cap E_2 \cap \overline{E}_3) \cup (E_1 \cap \overline{E}_2 \cap E_3) \cup (\overline{E}_1 \cap E_2 \cap E_3)] \\
+    &\text{Pr}[\xi=3] = \text{Pr}[E_1 \cap E_2 \cap E_3].
+\end{align}
+
+За умовою ми знаємо
+\begin{equation}
+    \text{Pr}[E_1] = 0.2 =: p_1, \; \text{Pr}[E_2] = 0.3 =: p_2, \; \text{Pr}[E_3] = 0.5 =: p_3.
+\end{equation}
+
+Тепер, запишемо $\text{Pr}[\xi=x],x\in \mathcal{X}$ в термінах $p_j,j \in \{1,2,3\}$:
+\begin{align}
+    &\text{Pr}[\xi=0] = (1-p_1)(1-p_2)(1-p_3) \\
+    &\text{Pr}[\xi=1] = p_1(1-p_2)(1-p_3) + (1-p_1)p_2(1-p_3) + (1-p_1)(1-p_2)p_3 \\
+    &\text{Pr}[\xi = 2] = p_1p_2(1-p_3) + p_1(1-p_2)p_3 + (1-p_1)p_2p_3 \\
+    &\text{Pr}[\xi=3] = p_1p_2p_3
+\end{align}
+
+Отже, підрахуємо:
+\begin{align}
+    \text{Pr}[\xi=0] = 0.28 \\
+    \text{Pr}[\xi=1] = 0.47\\
+    \text{Pr}[\xi=2] = 0.22\\
+    \text{Pr}[\xi=3] = 0.03
+\end{align}
+
+Це і є нашою таблицею розподілу величини $\xi$. Для підрахунку функції розподілу, знайдемо:
+\begin{equation}
+    F_{\xi}(t) \triangleq \sum_{x \in \mathcal{X}: x<t} \text{Pr}[\xi=x] = \begin{cases}
+        0.00, & t \leq 0 \\
+        0.28, & 0 < t \leq 1 \\
+        0.75, & 1 < t \leq 2 \\
+        0.97, & 2 < t \leq 3 \\
+        1.00, & t > 3
+    \end{cases}
+\end{equation}
+
+Отже, залишилось знайти $\text{Pr}[3\xi-\xi^2 \geq 2]$. Для цього розглянемо поліном $-\xi^2+3\xi - 2 \geq 0$: його корені -- це $\xi_1=1,\xi_2=2$. На проміжку $\xi \in [\xi_1,\xi_2]$ значення поліному невід'ємне, а значить для $\mathbb{R} \setminus [\xi_1,\xi_2]$ воно є строго від'ємним. Тому розв'язок рівняння $\xi \in [1,2]$, з них ті, що належать $\mathcal{X}$ -- це $\{1,2\}$. Отже:
+\begin{equation}
+    \text{Pr}[3\xi-\xi^2 \geq 2] = \text{Pr}[\xi=1] + \text{Pr}[\xi=2] = 0.69.
+\end{equation}
+
+\problem{Номер 3} 
+
+\hspace{20px}\textbf{Умова.} З п’яти карток, занумерованих числами вiд 1 до 5, одночасно витягли 3 картки. Нехай $\xi$ -- найменший витягнутий номер. Скласти таблицю розподiлу $\xi$, записати функцiю розподiлу $\xi$, побудувати її графiк. Знайти ймовірність $\text{Pr}[\xi^2-6\xi+8 \leq 0]$.
+
+\textbf{Розв'язання.} Множина можливих значень $\xi$ це $\mathcal{X} = \{1,\dots,3\}$, оскільки $4$ або $5$ не може бути мінімумом. Розглянемо ймовірність кожної з подій $\xi=x,x\in\mathcal{X}$:
+
+\textbf{Випадок $\xi=1$.} Нехай на будь-якій з карток випала $1$. Тоді кількість способів вибрати всі інші цифри $\begin{pmatrix}
+    4 \\ 2
+\end{pmatrix}$. Оскільки всього способів вибрати три картки це $\begin{pmatrix}
+    5 \\ 3
+\end{pmatrix}$, то $\text{Pr}[\xi=1] = \begin{pmatrix}
+    4 \\ 2
+\end{pmatrix}/\begin{pmatrix}
+    5 \\ 3
+\end{pmatrix} = \frac{3}{5}$.
+
+\textbf{Випадок $\xi=2$.} Нехай на одній з карток випала $2$. Тоді на інших картках випало щось з набору $\{3,4,5\}$, бо мінімум був би вже $\xi=1$. Тоді шукана ймовірність -- це відношення кількості варіантів $\begin{pmatrix}
+    3 \\ 2
+\end{pmatrix}$ до загальної кількості $\begin{pmatrix}
+    5 \\ 3
+\end{pmatrix}$, тобто $\text{Pr}[\xi=2]=\frac{3}{10}$.
+
+\textbf{Випадок $\xi=3$.} Якщо випало $3$, то інші дві картки -- це $4$ та $5$, тому $\text{Pr}[\xi=3]=1/\begin{pmatrix}
+    5 \\ 3
+\end{pmatrix} = \frac{1}{10}$.  
+
+Отже, таблиця розподілу:
+\begin{equation}
+    \text{Pr}[\xi=1] = \frac{3}{5}, \; \text{Pr}[\xi=2] = \frac{3}{10}, \; \text{Pr}[\xi=3] = \frac{1}{10},
+\end{equation}
+а функція розподілу:
+\begin{equation}
+    F_{\xi}(t) = \begin{cases}
+        0, & t \leq 1 \\
+        \frac{3}{5}, & 1 < t \leq 2 \\
+        \frac{9}{10}, & 2 < t \leq 3 \\
+        1, & t > 3
+    \end{cases}
+\end{equation}
+
+Щоб знайти ймовірність $\text{Pr}[\xi^2-6\xi+8 \leq 0]$, то помічаємо, що розв'язок рівняння у дужках це $\mathbb{R}\setminus (2,4)$, з яких множині $\mathcal{X}$ належать $\{1,2\}$, тому
+\begin{equation}
+    \text{Pr}[\xi^2-6\xi+8 \leq 0] = \text{Pr}[\xi=1] + \text{Pr}[\xi=2] = F_{\xi}(3) = \frac{9}{10}
+\end{equation}
+
+\problem{Номер 4} 
+
+\hspace{20px}\textbf{Умова.} Снайпер стрiляє в мiшень до першого влучення. Ймовiрнiсть влучення при одному пострiлi дорiвнює $\theta=0.2$. Нехай $\xi$ -- номер пострiлу, на якому
+вiн влучив вперше. Скласти таблицю розподiлу $\xi$ та знайти
+ймовiрнiсть того, що влучення станеться не ранiше 6-го пострiлу.
+
+\textbf{Розв'язання.} Нехай подія $E_n$ позначає, що снайпер влучив на пострілі $n \in \mathbb{N}$. Тоді, 
+\begin{equation}
+    \text{Pr}[\xi=n] = \text{Pr}\left[\left(\bigcap_{i=1}^{n-1}\overline{E}_i\right) \cap E_n\right] = (1-\theta)^{n-1}\theta
+\end{equation}
+
+Отже наша таблиця розподілу $\text{Pr}[\xi=n] = (0.8)^{n-1} \times 0.2$.
+
+Знайдемо, що влучення станеться не раніше 6-го пострілу. По суті, треба знайти $\text{Pr}[\xi \geq 6]$, або:
+\begin{gather}
+    \text{Pr}[\xi \geq 6] = \sum_{n=6}^{\infty}(1-\theta)^{n-1}\theta = \theta \sum_{n=6}^{\infty}(1-\theta)^{n-1} \nonumber \\
+    = \theta \cdot \sum_{n=0}^{\infty}(1-\theta)^{n+5} = \theta(1-\theta)^{5}\sum_{n=0}^{\infty}(1-\theta)^n \nonumber \\
+    = \theta(1-\theta)^5 \cdot \frac{1}{1-(1-\theta)} = (1-\theta)^5 = 0.8^5 = 0.32768
+\end{gather}
+
+\problem{Вправа 1} 
+
+\hspace{20px}\textbf{Умова.} Наведіть приклад дискретної випадкової величини, для якої виконується $\mathcal{F} \neq 2^{\Omega}$.
+
+\textbf{Розв'язання.} Задамо простір $(\Omega,\mathcal{F},\text{Pr})$ як $\Omega = \{1,2,3\}$, сігма-алгебра $\mathcal{F} = \{\Omega,\emptyset\}$, ймовірність $\text{Pr}(\Omega) = 1, \text{Pr}(\emptyset) = 0$. Очевидно, що при цьому $2^{\Omega} \neq \mathcal{F}$. \qed
+
+\problem{Вправа 3} 
+
+\hspace{20px}\textbf{Умова.} Перевірте коректність визначення розподілу Пуассона. 
+
+\textbf{Розв'язання.} Розподіл Пуассона:
+\begin{equation}
+    \text{Pr}[\xi=n] = \frac{\lambda^n}{n!}e^{-\lambda}, \; n \in \mathbb{Z}_+
+\end{equation}
+Для доведення коректності достатньо показати $\sum_{n \in \mathbb{Z}_+}\text{Pr}[\xi=n]=1$. Отже,
+\begin{equation}
+    \sum_{n \in \mathbb{Z}_+}\text{Pr}[\xi=n] = \sum_{n=0}^{\infty} \frac{\lambda^n e^{-\lambda}}{n!} = e^{-\lambda}\underbrace{\sum_{n=0}^{\infty} \frac{\lambda^n}{n!}}_{=e^{\lambda}} = 1.
+\end{equation}
+
+Тут ми скористались розкладенням у ряд $e^x=\sum_{n=0}^{\infty} \frac{x^n}{n!}$. \qed
+
+\end{document}

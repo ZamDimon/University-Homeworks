@@ -1,0 +1,142 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-control-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Домашня Робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Сморцова Т.І.}
+\date{\today}
+\duedate{10:10 8 березня, 2024}
+\assignno{1}
+\semester{Весняний семестр 2024}
+\mainproblem{Керованість лінійних систем}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Завдання 1}
+
+\hspace{20px}\textit{Умова.} Нехай задано систему
+\begin{equation*}
+    \begin{cases}
+        \dot{x}_1 = u \\
+        \dot{x}_2 = x_1
+    \end{cases}
+\end{equation*}
+Навесті кусково-неперервне керування з однією точкою розриву, що зі стану $[-2,2]^{\top}$ за проміжок $[0,2]$ переведе систему у точку $[0,0]^{\top}$, тобто
+\begin{equation}
+    u(t) = \begin{cases}
+        u_1(t), \; 0 \leq t < \tau \\
+        u_2(t), \; \tau \leq t \leq 2
+    \end{cases}
+\end{equation}
+
+\textit{Розв'язання.} Спробуємо наступну функцію:
+\begin{equation}
+    u(t) = \begin{cases}
+        \alpha t + \beta, \; 0 \leq t < \tau \\
+        \gamma t + \delta, \; \tau \leq t < 2
+    \end{cases}
+\end{equation}
+
+Якщо зафіксувати $\tau=1$, то маємо безліч значень відносно $(\alpha,\gamma)$. 
+
+\problem{Завдання 2}
+
+\hspace{20px}\textit{Умова.} Розглянемо систему
+\begin{equation*}
+    \begin{cases}
+        \dot{x}_1 = -x_1+2x_2 \\
+        \dot{x}_2 = -2x_1+3x_2+u
+    \end{cases}
+\end{equation*}
+Чи можна перевести систему з $[0,0]^{\top}$ за проміжок $[0,1]$ у точку $[x_1^0,x_2^0]^{\top}$.
+
+\textit{Розв'язання.} Запишемо систему у матричному вигляді, позначивши $\mathbf{x} := [x_1,x_2]^{\top}$, тоді
+\begin{equation}
+    \dot{\mathbf{x}} = \mathbf{A}\mathbf{x} + \mathbf{B}u,
+\end{equation}
+де в нашому випадку
+\begin{equation}
+    \mathbf{A} = \begin{bmatrix}
+        -1 & 2 \\ -2 & 3
+    \end{bmatrix}, \; \mathbf{B} = \begin{bmatrix}
+        0 \\ 1
+    \end{bmatrix}
+\end{equation}
+
+Побудуємо матрицю Калмана:
+\begin{equation}
+    \mathbf{Q} = \begin{bmatrix}
+        \mathbf{B} & \mathbf{AB}
+    \end{bmatrix} = \begin{bmatrix}
+        0 & 2 \\ 1 & 3
+    \end{bmatrix}
+\end{equation}
+
+Бачимо, що $\text{rang}\,\mathbf{Q} = 2$, тому система повністю керована на $[0,1]$. Знайдемо функцію керування за формулою:
+\begin{equation}
+    u(t) = \mathbf{B}^*e^{-\mathbf{A}^*t}\cdot\mathbf{N}^{-1}(0,1)\cdot e^{-\mathbf{A}}\mathbf{x}_1
+\end{equation}
+
+Отже, залишається лише підставити усе в цю формулу. Спочатку знайдемо експоненти:
+\begin{equation}
+    e^{-\mathbf{A}} = \exp \begin{bmatrix}
+        -1 & 2 \\ -2 & 3
+    \end{bmatrix} = \frac{1}{e}\begin{bmatrix}
+        3 & -2 \\ 2 & -1
+    \end{bmatrix}, \; e^{-\mathbf{A}^*t} = e^{-t}\begin{bmatrix}
+        1+2t & 2t \\ -2t & 1-2t
+    \end{bmatrix}
+\end{equation}
+
+Нарешті, матриця $\mathbf{N}(0,1)$:
+\begin{gather}
+    \mathbf{N}(0,1) = \int_0^1 e^{-\mathbf{A} t}\mathbf{B}\mathbf{B}^*e^{-\mathbf{A}^* t}dt \\
+    = \int_0^1 \begin{bmatrix}
+        -2te^{-t} \\ e^{-t}(1-2t)
+    \end{bmatrix}\begin{bmatrix}
+        -2te^{-t} & e^{-t}(1-2t)
+    \end{bmatrix}dt \\
+    = \int_0^1\begin{bmatrix}
+        4e^{-2t}t^2 & -2e^{-2t}(1-2t)t \\
+        -2e^{-2t}(1-2t)t & e^{-2t}(1-2t)^2
+    \end{bmatrix}dt \\
+    = \begin{bmatrix}
+        1 - \frac{5}{e^2} & \frac{1}{2} - \frac{7}{2e^2} \\
+        \frac{1}{2}-\frac{7}{2e^2} & \frac{1}{2} - \frac{5}{2e^2}
+    \end{bmatrix}
+\end{gather}
+В такому разі обернена матриця:
+\begin{equation}
+    \mathbf{N}^{-1}(0,1) = \frac{2e^2}{1-6e^2+e^4}\begin{bmatrix}
+        -5+e^2 & 7-e^2 \\
+        7-e^2 & 2(-5+e^2)
+    \end{bmatrix}
+\end{equation}
+В такому разі керування:
+\begin{equation*}
+    u(t) = \begin{bmatrix}
+        -2e^{-t}t & e^{-t}(1-2t)
+    \end{bmatrix} \cdot \frac{2e^2}{1-6e^2+e^4}\begin{bmatrix}
+        -5+e^2 & 7-e^2 \\
+        7-e^2 & 2(-5+e^2)
+    \end{bmatrix} \cdot \frac{1}{e}\begin{bmatrix}
+        3 & -2 \\ 2 & -1
+    \end{bmatrix}\begin{bmatrix}
+        x_1^0 \\ x_2^0
+    \end{bmatrix}
+\end{equation*}
+Якщо спростити:
+\begin{equation}
+    \boxed{u(t) = -\frac{2e^{1-t}((-1+e^2(4t-1)))x_1^0 - 2(-2+t+e^2t)x_2^0}{1-6e^2+e^4}}
+\end{equation}
+
+\end{document}

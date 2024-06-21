@@ -1,0 +1,311 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\usepackage{dsfont}
+\usepackage{float}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{18:00 1 травня, 2024}
+\assignno{9}
+\semester{Весняний семестр 2024}
+\mainproblem{Нормальний розподіл}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Завдання 1} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ має функцiю розподiлу
+\begin{equation}
+    F_{\xi}(x) = \begin{cases}
+        0, & x \leq 0 \\
+        4x, & x \in [0,0.25] \\
+        1, & x > 0.25
+    \end{cases}
+\end{equation}
+
+Знайти математичне сподівання та дисперсію випадкової величини $\xi$.
+
+\textbf{Розв'язання.} Густина розподілу має вигляд:
+\begin{equation}
+    f_{\xi}(x) = 4 \cdot \mathds{1}_{[0,0.25]}(x) \iff \xi \sim \mathcal{U}[0,0.25],
+\end{equation}
+
+де $\mathcal{U}[0,0.25]$ є рівномірним розподілом на відрізку $[0,0.25]$. Математичне сподівання це, очевидно, середина відрізка, тобто $\mathbb{E}[\xi] = 0.125$. Дисперсію знайти меньш очевидно:
+\begin{equation}
+    \mathbb{E}[\xi^2] = \int_{\mathbb{R}}x^2f_{\xi}(x)dx = \int_{0}^{0.25} 4x^2 dx = \frac{4x^3}{3}\Big|_{x=0}^{x=0.25} = \frac{4}{3 \cdot 4^3} = \frac{1}{48}
+\end{equation}
+
+Отже, дисперсія:
+\begin{equation}
+    \text{Var}[\xi] = \mathbb{E}[\xi^2] -  \mathbb{E}[\xi]^2 = \frac{1}{48} - \frac{1}{64} =  \frac{1}{192}
+\end{equation}
+
+\textbf{Відповідь.} $\mathbb{E}[\xi]=\frac{1}{8}, \; \text{Var}[\xi] = \frac{1}{192}$.
+
+\problem{Завдання 2} 
+
+\hspace{20px}\textbf{Умова.} Рiчний дохiд в у.о. пiдприємця має наступну щiльнiсть розподiлу
+\begin{equation}
+    f(x) = \frac{c}{x^4} \cdot \mathds{1}_{(1,+\infty)}
+\end{equation}
+
+Знайти значення сталої $c$, середнiй рiчний дохiд пiдприємця, середнє квадратичне вiдхилення цього доходу та ймовiрнiсть того, що рiчний дохiд пiдприємця на перевищує 16 у.о.
+
+\textbf{Розв'язання.} Для знаходження сталої скористуємося умовою нормування:
+\begin{equation}
+    \int_{\mathbb{R}}f(x)dx = 1
+\end{equation}
+
+Підставляючи нашу функцію, маємо
+\begin{equation}
+    \int_{1}^{+\infty} \frac{cdx}{x^4} = -\frac{c}{3x^3} \Big|_{x \to 1}^{x \to +\infty} = \frac{c}{3} = 1 \implies c = 3
+\end{equation}
+
+Знайдемо середній річних дохід:
+\begin{equation}
+    \mathbb{E}[\xi] = \int_{1}^{+\infty} \frac{3dx}{x^3} = -\frac{3}{2x^2}\Big|_{x \to 1}^{x \to +\infty} = \frac{3}{2}
+\end{equation}
+
+Знайдемо середнє квадратичне відхилення $\sigma[\xi] = \sqrt{\text{Var}[\xi]}$. Для дисперсії, у свою чергу, знаходимо математичне сподівання квадрату $\xi$:
+\begin{equation}
+    \mathbb{E}[\xi^2] = \int_1^{+\infty} \frac{3dx}{x^2} = -\frac{3}{x}\Big|_{x \to 1}^{x \to +\infty} = 3
+\end{equation}
+
+В такому разі
+\begin{equation}
+    \text{Var}[\xi] = \mathbb{E}[\xi^2] - \mathbb{E}[\xi]^2 = 3 - \frac{9}{4} = \frac{3}{4}
+\end{equation}
+
+Тому середнє квадратичне відхилення $\sigma[\xi] = \frac{\sqrt{3}}{2}$. Нарешті, ймовірність того, що річний дохід підприємця не веревищує 16 у.о.:
+\begin{equation}
+    \text{Pr}[\xi \leq 16] = \int_1^{16} \frac{3dx}{x^4} = -\frac{1}{x^3}\Big|_{x \to 1}^{x \to 16} = 1 - \frac{1}{16^3} = 1 - 2^{-12}
+\end{equation}
+
+\problem{Завдання 3} 
+
+\hspace{20px}\textbf{Умова.} Знайти дисперсію випадкової величини $\xi$, що має показниковий розподіл із параметром $\lambda>0$.
+
+\textbf{Розв'язання.} На лекції було показано, що дисперсія дорівнює $\frac{1}{\lambda^2}$.
+
+\problem{Завдання 4}
+
+\hspace{20px}\textbf{Умова.} При розслiдуваннi причин аварiї було встановлено, що вона могла статися через установку на автомобiль деталi, розмiри якої виходять за межi допустимого iнтервалу (15 мм; 25
+мм). Вiдомо, що розмiр деталей, якi поступають на конвеєр автозаводу, є випадковою величиною, яку розподiлено за нормальним законом з математичним сподiванням 20 мм, i середнiм квадратичним вiдхиленням 5 мм. Знайти ймовiрнiсть того, що причиною аварiї
+стало встановлення на автомобiль деталi нестандартного розмiру.
+
+\textbf{Розв'язання.} Нехай $\ell$ -- випадкова величина, що позначає розмір деталі. Згідно умові, $\ell \sim \mathcal{N}(20, 5^2)$, тобто $\mu=20, \sigma=5$. Ймовірність аварії $p$ відповідає події, де $\ell \notin [15, 25]$, тобто
+\begin{equation}
+    p = \text{Pr}[\ell \notin [15,25]] = 1 - \text{Pr}[15 \leq \ell \leq 25]
+\end{equation}
+
+Ймовірність знаходження в межах $15 \leq \ell \leq 25$ є приблизно $68\%$ за правилом сігми, оскільки це відповідає події $\mu-\sigma \leq \ell \leq \mu+\sigma$. Тому $p \approx 1-0.68 = 0.32$ -- відповідь.
+
+\problem{Завдання 5} 
+
+\hspace{20px}\textbf{Умова.} Цiна акцiї має нормальний розподiл з математичним сподiванням $15.28$ у.о. та середнiм
+квадратичним вiдхиленням $0.12$ у.о. Знайти ймовiрностi того, що цiна акцiї буде: а) не нижче $15.50$ у.о.; б) не вище $15.00$ у.о.; в) мiж $15.10$ у.о. та $15.40$ у.о.
+
+\textbf{Розв'язання.} Нехай випадкова величина ціни акції $\xi$. Згідно умові маємо $\xi \sim \mathcal{N}(15.28, 0.12^2)$, тобто $\mu=15.28,\sigma=0.12$. Будемо зводити обрахунки до нормалізованої випадкової величини $\eta = \frac{\xi-\mu}{\sigma} = \frac{\xi - 15.28}{0.12}$. Далі йдемо по пунктам.
+
+\textit{Пункт а.} Потрібно знайти
+\begin{gather}
+    \text{Pr}[\xi \geq 15.5] = \text{Pr}\left[\frac{\xi-15.28}{0.12} \geq \frac{15.5-15.28}{0.12}\right] = \text{Pr}\left[\eta \geq \frac{11}{6}\right] \nonumber \\
+    = \Phi_0(+\infty) - \Phi_0\left(\frac{11}{6}\right) \approx 0.0334
+\end{gather}
+
+\textit{Пункт б.} 
+\begin{gather}
+    \text{Pr}[\xi \leq 15.0] = \text{Pr}\left[\frac{\xi-15.28}{0.12} \leq \frac{15.0-15.28}{0.12}\right] = \text{Pr}\left[\eta \leq \frac{7}{3}\right] \nonumber \\
+    = \Phi_0(+\infty) + \Phi_0\left(\frac{7}{3}\right) \approx 0.9902
+\end{gather}
+
+\textit{Пункт c.} 
+\begin{gather}
+    \text{Pr}[15.10 \leq \xi \leq 15.40] = \text{Pr}\left[\frac{15.10-15.28}{0.12}\leq \frac{\xi-15.28}{0.12} \leq \frac{15.40-15.28}{0.12}\right] \nonumber \\ = \text{Pr}\left[-\frac{3}{2}\leq \eta \leq 1\right]
+    = \Phi_0(1.5)+\Phi_0(1) \approx 0.7745
+\end{gather}
+
+\problem{Завдання 6} 
+
+\hspace{20px}\textbf{Умова.} Нехай $\xi \sim \mathcal{N}(\mu,\sigma^2)$. Знайти $\text{Pr}[\mu-3\sigma < \xi < \mu + 3\sigma]$ (правило трьох сігм).
+
+\textbf{Розв'язання.} Нормалізуємо випадкову величину, тобто розглянемо величину $\eta = \frac{\xi-\mu}{\sigma}$. Як було доведено, $\eta \sim \mathcal{N}(0,1)$. З іншого боку:
+\begin{equation}
+    \text{Pr}[\mu-3\sigma < \xi < \mu + 3\sigma] = \text{Pr}\left[-3 < \frac{\xi-\mu}{\sigma} < 3\right] = \text{Pr}[-3 < \eta < 3]
+\end{equation}
+
+А цю ймовірність можна знайти просто по таблиці функції Лапласа. Чисельно маємо:
+\begin{equation}
+    \text{Pr}[-3<\eta<3] = \int_{-3}^3 \mathcal{N}(x \mid 0,1)dx \approx 0.9973
+\end{equation}
+
+Отже, маємо дуже просту інтерпретацію -- якщо взяти ймовірність потрапляння випадкової величини на відстань не більше $3\sigma$ від математичного сподівання $\mu$, то вона буде дорівнювати близько $99.73\%$. 
+
+\textbf{Відповідь.} $\approx 99.73\%$.
+
+\problem{Завдання 7} 
+
+\hspace{20px}\textbf{Умова.} Нехай $\xi \sim \mathcal{N}(\mu,\sigma^2)$, а також $\alpha,\beta \in \mathbb{R}, \alpha \neq 0$. Довести, що випадкова величини $\eta := \alpha \xi + \beta$ також має нормальний розподіл.
+
+\textbf{Розв'язання.} Запишемо функцію розподілу величини $\eta$:
+\begin{equation}
+    F_{\eta}(x) = \text{Pr}[\eta < x] = \text{Pr}[\alpha \xi + \beta < x] = \text{Pr}\left[\xi < \frac{x-\beta}{\alpha}\right] = F_{\xi}\left(\frac{x-\beta}{\alpha}\right)
+\end{equation}
+
+Продиференціюємо обидві частини:
+\begin{gather}
+    f_{\eta}(x) = \frac{1}{\alpha}f_{\xi}\left(\frac{x-\beta}{\alpha}\right) = \frac{1}{\sqrt{2\pi}\alpha\sigma}\exp\left(-\frac{1}{2\sigma^2}\left(\frac{x-\beta}{\alpha}-\mu\right)^2\right) \nonumber \\
+    = \frac{1}{\sqrt{2\pi}\alpha\sigma}\exp\left(-\frac{(x-(\beta+\alpha\mu))^2}{2\alpha^2\sigma^2}\right) = \mathcal{N}(x \mid \alpha\mu+\beta, \alpha^2\sigma^2)
+\end{gather}
+
+Отже, $\eta$ є нормально розподіленою величеною з математичним сподіванням $\alpha\mu+\beta$ і дисперсією $\alpha^2\sigma^2$.
+
+\textbf{Відповідь.} $\eta \sim \mathcal{N}(\alpha\mu+\beta,\alpha^2\sigma^2)$.
+
+\problem{Завдання 8} 
+
+\hspace{20px}\textbf{Умова.} Знайти моменти непарного порядку нормальної випадкової величини $\xi \sim \mathcal{N}(0,\sigma^2)$. 
+
+\textbf{Розв'язання.} Згадаємо, що густина розподілу величини $\xi$:
+\begin{equation}
+    f_{\xi}(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp \left(-\frac{x^2}{2\sigma^2}\right)
+\end{equation}
+
+В такому разі, момент непарного порядку $2n+1$ за означенням:
+\begin{equation}
+    m_{2n+1}:=\mathbb{E}[\xi^{2n+1}] = \int_{\mathbb{R}} f_{\xi}(x)x^{2n+1}dx = \frac{1}{\sqrt{2\pi}\sigma}\int_{\mathbb{R}} x^{2n+1}e^{-x^2/2\sigma^2}dx
+\end{equation}
+
+Такий інтеграл знаходити напряму важкувато, тому проінтегруємо частинами, взявши $v=e^{-x^2/2\sigma^2}$, в такому разі $dv = -\frac{1}{\sigma^2}xe^{-x^2/2\sigma^2}$. Відповідно, $du=x^{2n+1}dx$ і тому $u = \frac{x^{2n+2}}{2n+2}$. Тому,
+\begin{equation}
+    m_{2n+1} = \frac{1}{\sqrt{2\pi}\sigma}\left(\frac{x^{2n+2}}{2n+2}e^{-\frac{x^2}{2\sigma^2}}\Big|_{x \to -\infty}^{x \to +\infty} + \frac{1}{2(n+1)\sigma^2}\int_{\mathbb{R}}xe^{-\frac{x^2}{2\sigma^2}}\cdot x^{2n+2}dx\right)
+\end{equation}
+
+Вираз $\frac{x^{2n+2}}{2n+2}e^{-\frac{x^2}{2\sigma^2}}\Big|_{x \to -\infty}^{x \to +\infty}=0$, тому вираз можна сильно спростити:
+\begin{gather}
+    m_{2n+1} = \frac{1}{\sqrt{2\pi}\sigma} \cdot \frac{1}{2\sigma^2(n+1)}\int_{\mathbb{R}}x^{2n+3}e^{-\frac{x^2}{2\sigma^2}}dx \nonumber \\
+    = \frac{1}{2\sqrt{2\pi}\sigma^3(n+1)}\int_{\mathbb{R}} x^{2n+3}e^{-\frac{x^2}{2\sigma^2}}d = \frac{1}{2\sqrt{2\pi}\sigma^3} \cdot \frac{m_{2n+3}}{n+1}
+\end{gather}
+
+Таким чином, якщо позначити $x_n := m_{2n+1}$, то маємо рекурентне рівняння:
+\begin{equation}
+    x_{n+1} = 2\sqrt{2\pi}\sigma^3 (n+1)x_n, \; x_1 = \mathbb{E}[\xi] = 0
+\end{equation}
+
+Для непарних коефіцієнтів це дає послідовність, що тотожньо є нульовою, тобто моменти непарного порядку усі нулоьові.
+
+\textbf{Відповідь.} Усі дорівнюють нулю.
+
+\problem{Завдання 9} 
+
+\hspace{20px}\textbf{Умова.} Побудувати приклади дискретної випадкової величин, яка має математичне сподiвання,
+але не має дисперсiї. Побудувати аналогiчний приклад неперервної випадкової величини.
+
+\textbf{Розв'язання.} Нехай множина значень випадкової величини $x_n := (3/2)^n, n \in \mathbb{N}$, причому розподіл:
+\begin{equation}
+    \text{Pr}[\xi = x_n] = 2^{-n}, \; n \in \mathbb{N}
+\end{equation}
+
+По-перше, випадкова величина дійсно визначена коректно, оскільки сумарна ймовірність $\sum_{n \in \mathbb{N}}\text{Pr}[\xi=x_n] = \sum_{n \in \mathbb{N}}2^{-n} = 1$. Математичне сподівання:
+\begin{equation}
+    \mathbb{E}[\xi] = \sum_{n \in \mathbb{N}}\text{Pr}[\xi=x_n]x_n = \sum_{n \in \mathbb{N}}(3/2)^n \cdot 2^{-n} = \sum_{n \in \mathbb{N}} (3/4)^n
+\end{equation}
+
+Це геометрична прогресія зі знаменником меньшим за 1, а отже ряд збігається. Якщо ж знайти момент другого порядку:
+\begin{equation}
+    \mathbb{E}[\xi^2] = \sum_{n \in \mathbb{N}}\text{Pr}[\xi=x_n]x_n^2 = \sum_{n \in \mathbb{N}} (9/4)^n \cdot 2^{-n} = \sum_{n \in \mathbb{N}}(9/8)^n
+\end{equation}
+
+Цей ряд розбігається, оскільки знаменник прогресії більший за $1$.
+
+Для неперервної величини аналогічним прикладом візьмемо:
+\begin{equation}
+    f_{\xi}(x) = \frac{2}{x^3} \cdot \mathds{1}_{[1,+\infty)}(x)
+\end{equation}
+
+Помітимо, що функція невід'ємна і задовольняє умові нормування:
+\begin{equation}
+    \int_{\mathbb{R}}f_{\xi}(x)dx = \int_{1}^{+\infty} \frac{2}{x^3} = -\frac{1}{x^2}\Big|_{x \to 1}^{x \to +\infty} = 1
+\end{equation}
+
+Математичне сподівання в свою чергу:
+\begin{equation}
+    \mathbb{E}[\xi] = \int_{\mathbb{R}}xf_{\xi}(x)dx = \int_1^{+\infty} \frac{2}{x^2}dx = -\frac{2}{x}\Big|_{x \to 1}^{x \to +\infty} = 2
+\end{equation}
+
+В свою чергу момент другого порядку:
+\begin{equation}
+    \mathbb{E}[\xi^2] = \int_{\mathbb{R}}x^2f_{\xi}(x)dx = 2\int_1^{+\infty}\frac{dx}{x}
+\end{equation}
+
+Цей інтеграл розбігається, а отже і дисперсія не визначена.
+
+\problem{Завдання 10} 
+
+\hspace{20px}\textbf{Умова.} Випадкова величина $\xi$ має логнормальний розподіл з параметрами $\mu,\sigma^2$ якщо $\eta=\log \xi \sim \mathcal{N}(\mu,\sigma^2)$. Знайти математичне сподівання та дисперсію $\eta$.
+
+\textbf{Розв'язання.} Маємо $\xi = e^{\eta}$. Математичне сподівання:
+\begin{gather}
+    \mathbb{E}[\xi] = \mathbb{E}[e^{\eta}] = \int_{\mathbb{R}}\frac{e^x}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)dx \nonumber \\
+    = \frac{1}{\sqrt{2\pi}\sigma}\int_{\mathbb{R}}\exp\left(x-\frac{(x-\mu)^2}{2\sigma^2}\right)dx \nonumber \\
+    =\frac{1}{\sqrt{2\pi}\sigma}\int_{\mathbb{R}}\exp\left(-\frac{x^2}{2\sigma^2} + \frac{\mu + \sigma^2}{\sigma^2}x - \frac{\mu^2}{2\sigma^2}\right)dx
+\end{gather}
+
+Далі треба виділити повний квадрат:
+\begin{equation}
+    \mathbb{E}[\xi] = \frac{1}{\sqrt{2\pi}\sigma}\int_{\mathbb{R}}\exp\left(-\left(\frac{x}{\sqrt{2}\sigma} - \frac{(\mu+\sigma^2)}{\sqrt{2}\sigma}\right)^2 - \frac{\mu^2}{2\sigma^2} + \frac{(\mu+\sigma^2)^2}{2\sigma^2}\right)dx
+\end{equation}
+
+Далі помічаємо, що цей інтеграл можна дещо спростити:
+\begin{equation}
+    \mathbb{E}[\xi] = \frac{e^{-\mu^2/2\sigma^2 + (\mu+\sigma^2)^2/2\sigma^2}}{\sqrt{2\pi}\sigma}\int_{\mathbb{R}} \exp\left(-\frac{(x-(\mu+\sigma^2))^2}{2\sigma^2}\right)dx
+\end{equation}
+
+Інтеграл праворуч дорівнює $\sqrt{2\pi}\sigma$ (по суті, це лише константа нормування нормального розподілу. Здвиг на $\mu+\sigma^2$ не змінює значення інтегралу). Також експоненту можна спростити, розписавши різницю квадратів: 
+\begin{equation}
+    \frac{(\mu+\sigma^2)^2}{2\sigma^2} - \frac{\mu^2}{2\sigma^2} = \frac{\sigma^2 \cdot (2\mu + \sigma^2)}{2\sigma^2} = \mu + \frac{\sigma^2}{2}
+\end{equation}
+
+Тому, остаточно:
+\begin{equation}
+    \boxed{\mathbb{E}[\xi] = e^{\mu + \frac{\sigma^2}{2}}}
+\end{equation}
+
+Знайдемо дисперсію. Для цього знаходимо порядок другого порядку:
+\begin{equation}
+    \mathbb{E}[\xi^2] = \mathbb{E}[e^{2\eta}] = \frac{1}{\sqrt{2\pi}\sigma}\int_{\mathbb{R}}\exp\left(-\frac{x^2}{2\sigma^2} + \frac{\mu + 2\sigma^2}{\sigma^2}x - \frac{\mu^2}{2\sigma^2}\right)dx
+\end{equation}
+
+За аналогією, розкладання у повний квадрат буде наступним:
+\begin{equation}
+    \mathbb{E}[\xi^2] = \frac{1}{\sqrt{2\pi}\sigma}\int_{\mathbb{R}}\exp\left(-\left(\frac{x}{\sqrt{2}\sigma} - \frac{\mu+2\sigma^2}{\sqrt{2}\sigma}\right)^2 + \frac{(\mu+2\sigma^2)^2}{2\sigma^2} - \frac{\mu^2}{2\sigma^2}\right)dx
+\end{equation}
+
+Вираз праворуч знову спрощуємо:
+\begin{equation}
+    \frac{(\mu+2\sigma^2)^2}{2\sigma^2} - \frac{\mu^2}{2\sigma^2} = \frac{2\sigma^2(2\mu + 2\sigma^2)}{2\sigma^2} = 2(\mu+\sigma^2)
+\end{equation}
+
+Причому, значення інтегралу, що залишиться після винесення $e^{2(\mu+\sigma^2)}$, дасть $1$ при множенні на $\frac{1}{\sqrt{2\pi}\sigma}$, тому
+\begin{equation}
+    \mathbb{E}[\xi^2] = e^{2(\mu+\sigma^2)}
+\end{equation}
+
+Таким чином, дисперсія:
+\begin{equation}
+    \text{Var}[\xi] = \mathbb{E}[\xi^2] - \mathbb{E}[\xi]^2 = e^{2(\mu+\sigma^2)} - e^{2\mu+\sigma^2} = \boxed{e^{2\mu+\sigma^2}(e^{\sigma^2} - 1)}
+\end{equation}
+
+\end{document}

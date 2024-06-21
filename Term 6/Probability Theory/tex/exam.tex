@@ -1,0 +1,492 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{dsfont}
+\usepackage{cmbright}
+\usepackage[normalem]{ulem}
+\usepackage{indentfirst}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage[italicdiff]{physics}
+%\usepackage{pifont} %For unusual symbols
+%\usepackage{mathdots} %For unusual combinations of dots
+\usepackage{wrapfig}
+\usepackage[inline,shortlabels]{enumitem}
+\setlist{topsep=2pt,itemsep=2pt,parsep=0pt,partopsep=0pt}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, top=0.75in,bottom=1.0in, left=0.75in, right=0.75in, footskip=0.3in, includefoot]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz,tikz-3dplot,tikz-cd,tkz-tab,tkz-euclide,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{multicol}
+\usepackage[bottom,multiple]{footmisc} %ensures footnotes are at the bottom of the page, and separates footnotes by a comma if they are adjacent
+\usepackage{hyperref}
+\usepackage[nameinlink]{cleveref} %nameinlink ensures that the entire element is clickable in the pdf, not just the number
+
+\newcommand{\remind}[1]{\textcolor{red}{\textbf{#1}}} %To remind me of unfinished work to fix later
+\newcommand{\hide}[1]{} %To hide large blocks of code without using % symbols
+
+\newcommand{\ep}{\varepsilon}
+\newcommand{\vp}{\varphi}
+\newcommand{\lam}{\lambda}
+\newcommand{\Lam}{\Lambda}
+%\newcommand{\abs}[1]{\ensuremath{\left\lvert#1\right\rvert}} % This clashes with the physics package
+%\newcommand{\norm}[1]{\ensuremath{\left\lVert#1\right\rVert}} % This clashes with the physics package
+\renewcommand{\ip}[1]{\ensuremath{\left\langle#1\right\rangle}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\Y}{\mathbb{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\As}{\mathcal{A}}
+\newcommand{\Bs}{\mathcal{B}}
+\newcommand{\Cs}{\mathcal{C}}
+\newcommand{\Ds}{\mathcal{D}}
+\newcommand{\Es}{\mathcal{E}}
+\newcommand{\Fs}{\mathcal{F}}
+\newcommand{\Gs}{\mathcal{G}}
+\newcommand{\Hs}{\mathcal{H}}
+\newcommand{\Is}{\mathcal{I}}
+\newcommand{\Js}{\mathcal{J}}
+\newcommand{\Ks}{\mathcal{K}}
+\newcommand{\Ls}{\mathcal{L}}
+\newcommand{\Ms}{\mathcal{M}}
+\newcommand{\Ns}{\mathcal{N}}
+\newcommand{\Os}{\mathcal{O}}
+\newcommand{\Ps}{\mathcal{P}}
+\newcommand{\Qs}{\mathcal{Q}}
+\newcommand{\Rs}{\mathcal{R}}
+\newcommand{\Ss}{\mathcal{S}}
+\newcommand{\Ts}{\mathcal{T}}
+\newcommand{\Us}{\mathcal{U}}
+\newcommand{\Vs}{\mathcal{V}}
+\newcommand{\Ws}{\mathcal{W}}
+\newcommand{\Xs}{\mathcal{X}}
+\newcommand{\Ys}{\mathcal{Y}}
+\newcommand{\Zs}{\mathcal{Z}}
+\newcommand{\ab}{\textbf{a}}
+\newcommand{\bb}{\textbf{b}}
+\newcommand{\cb}{\textbf{c}}
+\newcommand{\db}{\textbf{d}}
+\newcommand{\ub}{\textbf{u}}
+%\renewcommand{\vb}{\textbf{v}} % This clashes with the physics package (the physics package already defines the \vb command)
+\newcommand{\wb}{\textbf{w}}
+\newcommand{\xb}{\textbf{x}}
+\newcommand{\yb}{\textbf{y}}
+\newcommand{\zb}{\textbf{z}}
+\newcommand{\Ab}{\textbf{A}}
+\newcommand{\Bb}{\textbf{B}}
+\newcommand{\Cb}{\textbf{C}}
+\newcommand{\Db}{\textbf{D}}
+\newcommand{\eb}{\textbf{e}}
+\newcommand{\ex}{\textbf{e}_x}
+\newcommand{\ey}{\textbf{e}_y}
+\newcommand{\ez}{\textbf{e}_z}
+\newcommand{\abar}{\overline{a}}
+\newcommand{\bbar}{\overline{b}}
+\newcommand{\cbar}{\overline{c}}
+\newcommand{\dbar}{\overline{d}}
+\newcommand{\ubar}{\overline{u}}
+\newcommand{\vbar}{\overline{v}}
+\newcommand{\wbar}{\overline{w}}
+\newcommand{\xbar}{\overline{x}}
+\newcommand{\ybar}{\overline{y}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\Abar}{\overline{A}}
+\newcommand{\Bbar}{\overline{B}}
+\newcommand{\Cbar}{\overline{C}}
+\newcommand{\Dbar}{\overline{D}}
+\newcommand{\Ubar}{\overline{U}}
+\newcommand{\Vbar}{\overline{V}}
+\newcommand{\Wbar}{\overline{W}}
+\newcommand{\Xbar}{\overline{X}}
+\newcommand{\Ybar}{\overline{Y}}
+\newcommand{\Zbar}{\overline{Z}}
+\newcommand{\Aint}{A^\circ}
+\newcommand{\Bint}{B^\circ}
+\newcommand{\limk}{\lim_{k\to\infty}}
+\newcommand{\limm}{\lim_{m\to\infty}}
+\newcommand{\limn}{\lim_{n\to\infty}}
+\newcommand{\limx}[1][a]{\lim_{x\to#1}}
+\newcommand{\liminfm}{\liminf_{m\to\infty}}
+\newcommand{\limsupm}{\limsup_{m\to\infty}}
+\newcommand{\liminfn}{\liminf_{n\to\infty}}
+\newcommand{\limsupn}{\limsup_{n\to\infty}}
+\newcommand{\sumkn}{\sum_{k=1}^n}
+\newcommand{\sumk}[1][1]{\sum_{k=#1}^\infty}
+\newcommand{\summ}[1][1]{\sum_{m=#1}^\infty}
+\newcommand{\sumn}[1][1]{\sum_{n=#1}^\infty}
+\newcommand{\emp}{\varnothing}
+\newcommand{\exc}{\backslash}
+\newcommand{\sub}{\subseteq}
+\newcommand{\sups}{\supseteq}
+\newcommand{\capp}{\bigcap}
+\newcommand{\cupp}{\bigcup}
+\newcommand{\kupp}{\bigsqcup}
+\newcommand{\cappkn}{\bigcap_{k=1}^n}
+\newcommand{\cuppkn}{\bigcup_{k=1}^n}
+\newcommand{\kuppkn}{\bigsqcup_{k=1}^n}
+\newcommand{\cappk}[1][1]{\bigcap_{k=#1}^\infty}
+\newcommand{\cuppk}[1][1]{\bigcup_{k=#1}^\infty}
+\newcommand{\cappm}[1][1]{\bigcap_{m=#1}^\infty}
+\newcommand{\cuppm}[1][1]{\bigcup_{m=#1}^\infty}
+\newcommand{\cappn}[1][1]{\bigcap_{n=#1}^\infty}
+\newcommand{\cuppn}[1][1]{\bigcup_{n=#1}^\infty}
+\newcommand{\kuppk}[1][1]{\bigsqcup_{k=#1}^\infty}
+\newcommand{\kuppm}[1][1]{\bigsqcup_{m=#1}^\infty}
+\newcommand{\kuppn}[1][1]{\bigsqcup_{n=#1}^\infty}
+\newcommand{\cappa}{\bigcap_{\alpha\in I}}
+\newcommand{\cuppa}{\bigcup_{\alpha\in I}}
+\newcommand{\kuppa}{\bigsqcup_{\alpha\in I}}
+\newcommand{\Rx}{\overline{\mathbb{R}}}
+\newcommand{\dx}{\,dx}
+\newcommand{\dy}{\,dy}
+\newcommand{\dt}{\,dt}
+\newcommand{\dax}{\,d\alpha(x)}
+\newcommand{\dbx}{\,d\beta(x)}
+\DeclareMathOperator{\glb}{\text{glb}}
+\DeclareMathOperator{\lub}{\text{lub}}
+\newcommand{\xh}{\widehat{x}}
+\newcommand{\yh}{\widehat{y}}
+\newcommand{\zh}{\widehat{z}}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\renewcommand{\iff}{\Leftrightarrow}
+\DeclareMathOperator{\im}{\text{im}}
+\let\spn\relax\let\Re\relax\let\Im\relax
+\DeclareMathOperator{\spn}{\text{span}}
+\DeclareMathOperator{\Re}{\text{Re}}
+\DeclareMathOperator{\Im}{\text{Im}}
+\DeclareMathOperator{\diag}{\text{diag}}
+
+\newtheoremstyle{mystyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{}
+\newtheoremstyle{cstyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{\thmnote{#3}}
+\makeatletter
+\renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}{\normalfont\sffamily\bfseries\topsep6\p@\@plus6\p@\relax #1\@addpunct{.} }}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\newcommand{\coolqed}[1]{\includegraphics[width=#1cm]{sunglasses_emoji.png}} %Defines the new QED symbol
+\renewcommand{\qedsymbol}{\coolqed{0.32}} %Implements the new QED symbol
+\theoremstyle{mystyle}{\newtheorem{definition}{Definition}[section]}
+\theoremstyle{mystyle}{\newtheorem{proposition}[definition]{Proposition}}
+\theoremstyle{mystyle}{\newtheorem{theorem}[definition]{Theorem}}
+\theoremstyle{mystyle}{\newtheorem{lemma}[definition]{Lemma}}
+\theoremstyle{mystyle}{\newtheorem{corollary}[definition]{Corollary}}
+\theoremstyle{mystyle}{\newtheorem*{remark}{Remark}}
+\theoremstyle{mystyle}{\newtheorem*{remarks}{Remarks}}
+\theoremstyle{mystyle}{\newtheorem*{example}{Example}}
+\theoremstyle{mystyle}{\newtheorem*{examples}{Examples}}
+\theoremstyle{definition}{\newtheorem*{exercise}{Exercise}}
+\theoremstyle{cstyle}{\newtheorem*{cthm}{}}
+
+%Warning environment
+\newtheoremstyle{warn}{}{}{}{}{\normalfont}{}{ }{}
+\theoremstyle{warn}
+\newtheorem*{warning}{\warningsign{0.2}\relax}
+
+%Symbol for the warning environment, designed to be easily scalable
+\newcommand{\warningsign}[1]{\tikz[scale=#1,every node/.style={transform shape}]{\draw[-,line width={#1*0.8mm},red,fill=yellow,rounded corners={#1*2.5mm}] (0,0)--(1,{-sqrt(3)})--(-1,{-sqrt(3)})--cycle;
+\node at (0,-1) {\fontsize{48}{60}\selectfont\bfseries!};}}
+
+\tcolorboxenvironment{definition}{boxrule=0pt,boxsep=0pt,colback={red!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{red},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proposition}{boxrule=0pt,boxsep=0pt,colback={Orange!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Orange},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{theorem}{boxrule=0pt,boxsep=0pt,colback={blue!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{blue},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{lemma}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{corollary}{boxrule=0pt,boxsep=0pt,colback={violet!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{violet},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proof}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{CadetBlue!80!white},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remark}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remarks}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{example}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{examples}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{cthm}{boxrule=0pt,boxsep=0pt,colback={gray!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{gray},sharp corners,before skip=10pt,after skip=10pt,breakable}
+
+%align and align* environments with inline size
+\newenvironment{talign}{\let\displaystyle\textstyle\align}{\endalign}
+\newenvironment{talign*}{\let\displaystyle\textstyle\csname align*\endcsname}{\endalign}
+
+\usepackage[explicit]{titlesec}
+\titleformat{\section}{\fontsize{24}{30}\sffamily\bfseries}{\thesection}{20pt}{#1}
+\titleformat{\subsection}{\fontsize{16}{18}\sffamily\bfseries}{\thesubsection}{12pt}{#1}
+\titleformat{\subsubsection}{\fontsize{10}{12}\sffamily\large\bfseries}{\thesubsubsection}{8pt}{#1}
+
+\titlespacing*{\section}{0pt}{5pt}{5pt}
+\titlespacing*{\subsection}{0pt}{5pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{5pt}{5pt}
+
+%\newcommand{\sectionbreak}{\clearpage} %Start every section on a new page
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+\setlength{\parindent}{0.2in}
+\setlength{\parskip}{0pt}
+\setlength{\columnseprule}{0pt}
+
+\title{\huge\sffamily\bfseries Екзамен з Теорії Ймовірності}
+\author{\Large\sffamily Захарова Дмитра Олеговича, МП-31}
+\date{\sffamily \today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \textbf{Білет №5}
+\end{center}
+
+%Custom colors for different environments
+\definecolor{contcol1}{HTML}{72E094}
+\definecolor{contcol2}{HTML}{24E2D6}
+\definecolor{convcol1}{HTML}{C0392B}
+\definecolor{convcol2}{HTML}{8E44AD}
+
+\begin{tcolorbox}[title=Вміст, fonttitle=\sffamily\bfseries\selectfont,interior style={left color=contcol1!40!white,right color=contcol2!40!white},frame style={left color=contcol1!80!white,right color=contcol2!80!white},coltitle=black,top=2mm,bottom=2mm,left=2mm,right=2mm,drop fuzzy shadow,enhanced,breakable]
+\makeatletter
+\@starttoc{toc}
+\makeatother
+\end{tcolorbox}
+
+\newpage
+
+\section{Теоретичне питання}
+
+\textbf{Умова.} Теорема Хінчина (закон великих чисел).
+
+\textbf{Відповідь.} Отже, сформулюємо саму теорему.
+
+\begin{theorem}
+    Нехай маємо послідовність незалежних однаково розподілених випадкових величин $\{\xi_n\}_{n \in \mathbb{N}}$, що визначені
+    на однаковому ймовірністному просторі $(\Omega,\mathcal{F}, \text{Pr})$, причому їх математичне сподівання скінченне і $\mu=\mathbb{E}[\xi_n]$. Тоді,
+    справедливий \textbf{закон великих чисел у формі Хінчина}:
+    \begin{equation}
+        \forall \varepsilon > 0: \lim_{n \to \infty}\text{Pr}\left[\left|\frac{1}{n}\sum_{k=1}^n \xi_k - \mu\right|\geq\varepsilon\right] = 0
+    \end{equation}
+\end{theorem}
+
+\begin{remark}
+    Практично, теорема означає наступне: середнє арифметичне великої кількості незалежних однаково розподілених випадкових величин з великою ймовірністю
+    зближується до їхнього спільного математичного сподівання. На відміну від теореми Чебишева, тут не вимагається існування дисперсії.
+\end{remark}
+
+\textbf{Доведення.} Спочатку зафіксуємо \textit{ідею доведення}. Зафіксуємо $\delta>0$ і введемо наступні випадкові величини:
+\begin{equation}
+    \eta_j(\omega) = \xi_j(\omega) \cdot \mathds{1}(|\xi_j(\omega)| < \delta n), \; \zeta_j(\omega) = \xi_j(\omega) \cdot \mathds{1}(|\xi_j(\omega)|\geq \delta n)
+\end{equation}
+
+За побудовою видно, що $\xi_j \equiv \eta_j + \zeta_j$. Далі, ми окремо розглянемо величини
+$\{\eta_j\}_{j=1}^n$ та $\{\zeta_j\}_{j=1}^n$, для яких знайдемо оцінки, які врешті-решт допоможуть
+нам оцінити і $\xi_j$.
+
+\textcolor{purple}{\textbf{Випадкові величини $\{\eta_j\}$}}. Нехай тепер $\Phi_{\xi}(x)$ -- функція розподілу кожної з випадкових величин $\xi_j$.
+Помітимо, що для величин $\eta_j$ існує як математичне сподівання, так і дисперсія. Дійсно,
+\begin{gather}
+    \mu_n := \mathbb{E}[\eta_j] = \int_{(-\delta n, +\delta n)}x d\Phi_{\xi}(x) \leq \int_{\mathbb{R}}x d\Phi_{\xi}(x) = \mu, \\
+    \text{Var}[\eta_j] = \int_{(-\delta n,+\delta n)}x^2d\Phi_{\xi}(x) - \mu_n^2 \leq \delta n\int_{(-\delta n, +\delta n)}|x|d\Phi_{\xi}(x) \leq \delta \beta n,
+\end{gather}
+
+де ми позначили $\beta := \int_{\mathbb{R}}|x|d\Phi_{\xi}(x) < \infty$. Отже, звідси $\mu_n \xrightarrow[n \to \infty]{} \mu$, тобто 
+\begin{equation}
+    (\forall \varepsilon > 0) \; (\exists n_{\varepsilon} \in \mathbb{N}) \; (\forall n \geq n_{\varepsilon}): \{|\mu_n-\mu| < \varepsilon\}
+\end{equation}
+
+Тепер, введемо наступну борельову функцію $f_n(x) = x \cdot \mathds{1}(|x| < \delta n)$. Оскільки $\{\xi_j\}_{j=1}^n$ є незалежними, то
+і група величин $\{f_n(\xi_j)\}_{j=1}^n$ теж є незалежними. Також видно, що $\eta_j:=f_n(\xi_j)$. Застосуємо другу нерівність Чебушева для 
+випадкової величини $M_n := \frac{1}{n}\sum_{j=1}^n\eta_j$:
+\begin{equation}
+    \text{Pr}\left[\left|M_n - \mu n\right|\geq\varepsilon\right] \leq \frac{\text{Var}\left[\sum_{j=1}^n\eta_j\right]}{n^2\varepsilon^2} = \frac{\sum_{j=1}^n\text{Var}\left[\eta_j\right]}{n^2\varepsilon^2} \leq \frac{\delta \beta}{\varepsilon^2}
+\end{equation}
+
+Тепер помітимо дуже важливий факт:
+\begin{gather}
+    \{\omega \in \Omega: |M_n-\mu| \geq 2\varepsilon\} = \{\omega \in \Omega: |M_n-\mu_n+\mu_n-\mu| \geq 2\varepsilon\} \nonumber \\
+    \subset \{\omega \in \Omega: |M_n-\mu| \geq \varepsilon\} \cup \{\omega \in \Omega: |\mu_n-\mu| \geq \varepsilon\}
+\end{gather}
+
+Тоді, з півадитивності і монотонності міри випливає
+\begin{gather}
+    \text{Pr}[|M_n-\mu| \geq 2\varepsilon] \leq \text{Pr}[|M_n-\mu_n| \geq \varepsilon] + \text{Pr}[|\mu_n-\mu| \geq \varepsilon]
+\end{gather}
+
+Помітимо, що для всіх $n \geq n_{\varepsilon}$ подія $|\mu_n-\mu| \geq \varepsilon$ не виконується, а тому
+\begin{gather}
+    (\forall n \geq n_{\varepsilon}): \{\text{Pr}[|M_n-\mu| \geq 2\varepsilon] \leq \frac{\beta\delta}{\varepsilon^2}\}
+\end{gather}
+
+\textcolor{blue}{\textbf{Випадкові величини $\{\zeta_j\}$}}. Тепер перейдемо до величин $\zeta_j$. Вони однаково розподілені, а тому $\text{Pr}[\zeta_j \neq 0] = \text{Pr}[\zeta_n \neq 0]$. Окрім того,
+\begin{equation}
+    \text{Pr}[\zeta_j \neq 0] = \text{Pr}[\zeta_n \neq 0] = \text{Pr}[|\xi_n|\geq n\delta] = \int_{|x|\geq \delta n}d\Phi_{\xi}(x) \leq \frac{1}{\delta n}\int_{|x| \geq \delta n}|x|d\Phi_{\xi}(x)
+\end{equation}
+
+Оскільки $\mathbb{E}[|\xi_n|]=\beta = \int_{\mathbb{R}}|x|d\Phi_{\xi}(x) < \infty$, то
+\begin{equation}
+    \lim_{n \to \infty}\int_{|x| \geq \delta n}|x|d\Phi_{\xi}(x) = 0
+\end{equation}
+
+Звідси випливає
+\begin{equation}
+    (\forall \delta > 0) \; (\exists n_{\delta} \in \mathbb{N}) \; (\forall n \geq n_{\delta}): \left\{\int_{|x|\geq\delta n}|x|d\Phi_{\xi}(x) < \delta^2\right\}
+\end{equation}
+
+Звідси для всіх $n \geq n_{\delta}$ справедливо $\text{Pr}[\zeta_j \neq 0] = \text{Pr}[\zeta_n \neq 0] \leq \frac{\delta}{n}$. Далі, оскільки 
+\begin{equation}
+    \bigcap_{j=1}^n \{\omega \in \Omega: \zeta_j(\omega) = 0\} \subset \{\omega \in \Omega: \sum_{j=1}^n \zeta_j(\omega)=0\},
+\end{equation}
+
+то $\{\omega \in \Omega: \sum_{j=1}^n \zeta_j(\omega) \neq 0\} \subset \bigcup_{j=1}^n\{\omega \in \Omega: \zeta_j(\omega) \neq 0\}$. Тому,
+\begin{equation}
+    \text{Pr}\left[\sum_{j=1}^n \zeta_j \neq 0\right] \leq \sum_{j=1}^n \text{Pr}[\zeta_j \neq 0] \leq \delta
+\end{equation}
+
+\textcolor{ForestGreen}{\textbf{Оцінка $\{\xi_j\}$}}.Тому, остаточно
+\begin{gather}
+    \text{Pr}\left[\left|\frac{1}{n}\sum_{j=1}^n \xi_j - \mu\right| \geq 4\varepsilon\right] = \text{Pr}\left[\left|\frac{1}{n}\sum_{j=1}^n (\eta_j+\zeta_j) - \mu\right| \geq 4\varepsilon\right] \nonumber \\
+    \leq \text{Pr}\left[\left|\frac{1}{n}\sum_{j=1}^n \eta_j - \mu\right| \geq 2\varepsilon\right] + \text{Pr}\left[\left|\frac{1}{n}\sum_{j=1}^n \zeta_j\right|\geq 2\varepsilon\right] \nonumber \\
+    \text{Pr}\left[\left|\frac{1}{n}\sum_{j=1}^n \eta_j - \mu\right|\geq 2\varepsilon\right] + \text{Pr}\left[\sum_{j=1}^n \zeta_j \neq 0\right]
+\end{gather}
+
+Тепер, зафіксуємо $n' = \max\{n_{\varepsilon},n_{\delta}\}$, тоді для всіх $n \geq n'$:
+\begin{equation}
+    \text{Pr}\left[\left|\frac{1}{n}\sum_{j=1}^n \xi_j - \mu\right| \geq 4\varepsilon\right] \leq \frac{\beta\delta}{\varepsilon^2} + \delta
+\end{equation}
+
+Оскільки $\varepsilon,\delta > 0$ -- довільні додатні числа, то остаточно
+\begin{equation}
+    (\forall \varepsilon > 0) \; \exists \lim_{n \to \infty}\text{Pr}\left[\left|\frac{1}{n}\sum_{j=1}^n \xi_j - \mu\right| \geq 4\varepsilon\right] = 0
+\end{equation}
+
+Теорему доведено.
+
+\pagebreak
+
+\section{Практичне питання №1}
+
+\textbf{Умова.} В жовтій коробці 4 шоколадних цукерки і 6 карамельок, а в блакитній коробці -- 7 шоколадних
+цукерок і 3 карамельки. Із навмання обраної коробки дитина взяла 2 цукерки. Яка
+ймовірність, що вони взяті із жовтій коробки, якщо обидві цукерки виявились шоколадними
+?
+
+\textbf{Відповідь.} Розглянемо три події: $E$ -- обидві цукерки виявились шоколадними, $Y$ -- обидві цукерки взяті з жовтої коробки, $B$ -- з блакитної. Тоді, за умовою, нам треба знайти ймовірність події $Y$ при умові $E$, тобто $\text{Pr}[Y|E]$. 
+За \textbf{формулою Баєса}, маємо
+\begin{equation}
+    \text{Pr}[Y|E] = \frac{\text{Pr}[E \mid Y]\text{Pr}[Y]}{\text{Pr}[E]} = \frac{\text{Pr}[E \mid Y]\text{Pr}[Y]}{\text{Pr}[E \mid Y]\text{Pr}[Y] + \text{Pr}[E \mid B]\text{Pr}[B]}
+\end{equation}
+
+(тут $Y,B$ утворюють повну групу подій). Легко бачити, що оскільки коробка обирається навмання, то $\text{Pr}[Y] = \text{Pr}[B]=\frac{1}{2}$. Отже, залишається 
+знайти лише $\text{Pr}[E \mid Y]$ та $\text{Pr}[E \mid B]$.
+
+Якщо випала жовта коробка, то маємо $C_4^2$ способів вибрати шоколадну цукерку та $C_{10}^2$ вибрати $2$ цукерки з $10$. Тому, за класичним означенням ймовірності, 
+ймовірність дістати дві шоколадні цукерки дорівнює $C_{4}^2\Big/C_{10}^2$. Аналогічно, якщо випала синя коробка, то $C_{7}^2 \Big/ C_{10}^2$. Таким чином,
+\begin{equation}
+    \text{Pr}[E \mid Y] = \frac{C_4^2}{C_{10}^2} = \frac{2}{15}, \; \text{Pr}[E \mid B] = \frac{C_7^2}{C_{10}^2} = \frac{7}{15}
+\end{equation}
+
+Отже, остаточно:
+\begin{equation}
+    \text{Pr}[Y|E] =\frac{\text{Pr}[E \mid Y]\text{Pr}[Y]}{\text{Pr}[E \mid Y]\text{Pr}[Y] + \text{Pr}[E \mid B]\text{Pr}[B]} = \frac{\frac{2}{15}\cdot \frac{1}{2}}{\frac{2}{15}\cdot\frac{1}{2} + \frac{7}{15} \cdot \frac{1}{2}} = \frac{2}{9}
+\end{equation}
+
+\textbf{Відповідь.} $\frac{2}{9}$.
+
+\pagebreak
+
+\section{Практичне питання №2}
+
+\textbf{Умова.} Ймовірність того, що деяка банкнота виявиться фальшивою дорівнює $p=0.0001$. Знайти
+ймовірність того, що з $N=4000$ перевірених купюр буде знайдено більш ніж $n=2$ фальшиві.
+
+\textbf{Відповідь.} Введемо випадкову величину $\xi$ -- кількість фальшивих купюр. Тоді, цю величину 
+можна вважати випадковою величиною, що має біноміальний розподіл з параметрами $N=4000$ та $p=0.0001$, 
+де в якості експерименту вважаємо ``чи є банкнота фальшивою'', де подія ``банкнота фальшива'' відбувається 
+з ймовірністю $p$. В такому разі, оскільки $\xi \sim \text{Bin}(N,p)$, то розподіл має вигляд
+\begin{equation}
+    \text{Pr}[\xi = k] = C_N^k p^k(1-p)^{N-k}, k \in \{0,1,\ldots,N\}.
+\end{equation}
+
+Подія ``більш ніж $n=2$ фальшиві купюри'' відповідає $\xi > 2$, тобто шукана подія має вигляд $\text{Pr}[\xi>n]$. В цілому,
+на цьому етапі можна знайти ймовірність ``в лоб'':
+\begin{equation}
+    \text{Pr}[\xi > n] = \sum_{k=n+1}^N C_N^k p^k(1-p)^{N-k},
+\end{equation}
+
+проте її дуже складно обрахувати. Можна трошки спростити життя і замість події $\xi>2$ розглядати подію $\xi \leq 2$, тоді
+\begin{equation}
+    \text{Pr}[\xi > 2] = 1 - \text{Pr}[\xi \leq 2] = 1 - \sum_{k=0}^2 C_N^k p^k(1-p)^{N-k}.
+\end{equation}
+
+В цьому випадку, нам лише залишиться порахувати три наступних вирази: $C_N^0(1-p)^{N},C_N^1 p(1-p)^{N-1},C_N^2p^2(1-p)^{N-2}$, проте це все ще 
+достатньо складно, оскільки треба рахувати значення накшталт $(0.0001)^{4000}$. 
+
+Тому, можемо скористатися апроксимацією біноміального розподілу за розподілом Пуасона. Згідно цієї апроксимації, якщо $N$ велике, 
+а $Np$ мале, то наближено можна вважати, що $\xi \sim \text{Poiss}(\lambda)$, де $\lambda = Np=0.4$. В такому разі, можемо знайти ймовірність
+події $\xi \leq 2$ за формулою
+\begin{equation}
+    \text{Pr}[\xi \leq 2] = \sum_{k=0}^2 \frac{\lambda^k}{k!}e^{-\lambda} = e^{-0.4}\left(1 + 0.4 + \frac{0.4^2}{2}\right) \approx 0.9921.
+\end{equation}
+
+Отже, шукана ймовірність дорівнює
+\begin{equation}
+    \text{Pr}[\xi > 2] = 1 - \text{Pr}[\xi \leq 2] \approx 1 - 0.9921 = 0.0079.
+\end{equation}
+
+\textbf{Відповідь.} Ймовірність того, що з $N=4000$ перевірених купюр буде знайдено більш ніж $n=2$ фальшиві наближено дорівнює $0.0079$.
+
+\pagebreak
+
+\section{Практичне питання №3}
+
+\textbf{Умова.} Випадкова величина $\xi$ має стандартний нормальний розподіл, а випадкова величина $\eta$ має
+показниковий розподіл із математичним сподіванням $1.5$. Знайти щільність розподілу
+випадкового вектору $(\xi,\eta)$, якщо його компоненти є незалежними випадковими величинами
+
+\textbf{Відповідь.} Згідно означенню, $\xi \sim \mathcal{N}(0,1)$, тобто щільність розподілу $\xi$ має вигляд
+\begin{equation}
+    f_{\xi}(x) = \frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}, \; x \in \mathbb{R}.
+\end{equation}
+
+Оскільки $\eta \sim \text{Exp}(\lambda)$, то її щільність розподілу має вигляд
+\begin{equation}
+    f_{\eta}(x) = \begin{cases}
+        \lambda e^{-\lambda x}, & x \geq 0, \\
+        0, & x < 0.
+    \end{cases}
+\end{equation}
+
+За умовою ми знаємо, що $\mathbb{E}[\xi]=\frac{3}{2}$, звідси можна знайти $\lambda$. Дійсно,
+\begin{equation}
+    \mathbb{E}[\xi] = \int_{\mathbb{R}}xf_{\eta}(x)dx = \lambda\int_0^{+\infty} xe^{-\lambda x}dx
+\end{equation}
+
+Далі можна проінтегрувати частинами, якщо візьмемо $u=x,du=dx$ та $dv=e^{-\lambda x}dx$:
+\begin{equation}
+    \mathbb{E}[\xi] = \lambda\left[-\frac{1}{\lambda}xe^{-\lambda x}\Big|_{x \to 0}^{x \to +\infty} + \frac{1}{\lambda}\int_0^{+\infty}e^{-\lambda x}dx\right] = \int_0^{+\infty}e^{-\lambda x}dx = \frac{1}{\lambda}
+\end{equation}
+
+Отже, $\lambda = \frac{2}{3}$. Як відомо, якщо дві випадкові величини є незалежними, то їхній спільний розподіл є добутком їхніх щільностей розподілу. Тобто щільність розподілу випадкового вектору $(\xi,\eta)$ має вигляд
+\begin{equation}
+    f_{(\xi,\eta)}(x,y) = f_{\xi}(x)f_{\eta}(y) = \begin{cases}
+        \frac{2}{3\sqrt{2\pi}}e^{-\frac{x^2}{2}}e^{-\frac{2y}{3}}, & y \geq 0 \\
+        0, & y < 0
+    \end{cases}.
+\end{equation}
+
+Отже, маємо нульову щільність розподілу випадкового вектору $(\xi,\eta)$ при $y < 0$, а при $y \geq 0$ маємо
+\begin{equation}
+    f_{(\xi,\eta)}(x,y) = \frac{2}{3\sqrt{2\pi}}\exp\left\{-\frac{x^2}{2} - \frac{2y}{3}\right\}.
+\end{equation}
+
+\textbf{Відповідь.} $f_{(\xi,\eta)}(x,y) = \frac{2}{3\sqrt{2\pi}}e^{-\frac{x^2}{2} - \frac{2y}{3}} \cdot \mathds{1}_{[0,+\infty)}(y)$
+
+\end{document}

@@ -1,0 +1,149 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{template}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Бебія М.О.}
+\date{\today}
+\duedate{11:20 25 травня}
+\assignno{1}
+\semester{Весняний семестр 2024}
+\mainproblem{Умова Веєрштрасса-Ердмана}
+
+\begin{document}
+
+\maketitle
+
+\section{Завдання}
+
+\textbf{Умова.}
+\begin{equation*}
+    \begin{cases}
+        J(y) = \int_0^1 ((y')^4 - 2(y')^2+3)dx \to \inf \\
+        y(0) = y(1) = 0
+    \end{cases}
+\end{equation*}
+
+\textbf{Розв'язок.} Знайдемо точну нижню грань:
+\begin{gather*}
+    J(y) = \int_0^1 ((y')^4 - 2(y')^2 + 3)dx = \int_0^1 ((y'^2-1)^2 + 2)dx \\
+    = \underbrace{\int_0^1 (y'^2-1)^2dx}_{\geq 0} + \underbrace{2\int_0^1 dx}_{=2} \geq 2
+\end{gather*}
+Отже, $2$ -- точна нижня грань, причому досягається вона при
+\begin{equation*}
+    \int_0^1 (y'^2 - 1)^2dx = 0 \implies y'^2 = 1 \implies y' = \pm 1
+\end{equation*}
+Отже, $J(y^*)=2$ -- точна нижня грань для будь-якої функції
+\begin{equation*}
+    y^*(x)' = \pm 1, \; y^*(0) = y^*(1) = 0
+\end{equation*}
+
+Тепер знайдемо екстремаль з однією точкою зламу. Запишемо рівняння Ейлера:
+\begin{equation*}
+    \frac{\partial F}{\partial y} - \frac{d}{d x} \frac{\partial F}{\partial y'} = 0, \; F(x,y,y') = y'^4 - 2y'^2+3
+\end{equation*}
+Підставляючи, маємо:
+\begin{equation*}
+    0 - \frac{d}{dx}\left(4y'^3 - 4y'\right) = 0 \implies y'(y'^2-1) = \text{const} \implies y' = \text{const}
+\end{equation*}
+Отже, якщо $y'$ є константою, то $y$ має вигляд $y=\alpha x + \beta$ на кожному проміжку гладкості.
+
+Якщо перед нами одна точку зламу, то функцію можна записати як:
+\begin{equation*}
+    y = \begin{cases}
+        \alpha_- x + \beta_-, \; x \in [0,\xi] \\
+        \alpha_+ x + \beta_+, \; x \in [\xi,1]
+    \end{cases}
+\end{equation*}
+
+Підставимо умову $y(0)=y(1)=0$:
+\begin{gather*}
+    y(0) = 0 \implies \beta_- = 0 \\
+    y(1) = 0 \implies \alpha_+ + \beta_+ = 0 \implies \beta_+ = - \alpha_+
+\end{gather*}
+Тому, функцію можна дещо спростити:
+\begin{equation*}
+    y = \begin{cases}
+        \alpha_- x, & x \in [0,\xi] \\
+        \alpha_+(x-1), & x \in [\xi,1]
+    \end{cases}, \;\;\; y' = \begin{cases}
+        \alpha_-, & x \in [0,\xi) \\
+        \alpha_+, & x \in (\xi, 1]
+    \end{cases}
+\end{equation*}
+
+Далі треба впевнитись, що $y$ -- неперервна. Для цього має виконуватись:
+\begin{equation*}
+    \lim_{x\to\xi^-}y(x) = \lim_{x \to \xi^+}y(x) \implies \alpha_-\xi = \alpha_+(\xi-1)
+\end{equation*}
+
+Звідси зручно виразити $\xi$:
+\begin{equation*}
+    \xi = \frac{\alpha_+}{\alpha_+-\alpha_-}
+\end{equation*}
+
+Отже, лишається лише дві невідомі: $(\alpha_+,\alpha_-)$. 
+
+Для їх знаходження скористаємося умовою Веєрштрасса-Ердмана:
+\begin{gather*}
+    \frac{\partial F}{\partial y'}\Big|_{x=\xi^-} = \frac{\partial F}{\partial y'}\Big|_{x=\xi^+} \\
+    \left(F-y'\frac{\partial F}{\partial y'}\right)\Big|_{x=\xi^-} = \left(F-y'\frac{\partial F}{\partial y'}\right)\Big|_{x=\xi^+}
+\end{gather*}
+
+Перед тим, як розписати ці умови, знайдемо $F-y'F_{y'}$:
+\begin{equation*}
+    F-y'\frac{\partial F}{\partial y'} = y'^4 - 2y'^2 + 3 - y'(4y'^3-4y') = -3y'^4+2y'^2+3
+\end{equation*}
+
+Отже, маємо наступну систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        \alpha_-^3-\alpha_- = \alpha_+^3 - \alpha_+ \\
+        -3\alpha_-^4 + 2\alpha_-^2 = -3\alpha_+^4 + 2\alpha_+^2
+    \end{cases}
+\end{equation*}
+
+Далі залишається розв'язати. Запишемо:
+\begin{equation*}
+    \begin{cases}
+        \alpha_+^3 - \alpha_-^3 = \alpha_+-\alpha_- \\
+        3(\alpha_+^4 - \alpha_-^4) = 2(\alpha_+^2 - \alpha_-^2)
+    \end{cases} \implies \begin{cases}
+        (\alpha_+ - \alpha_-)(\alpha_+^2+\alpha_+\alpha_- + \alpha_-^2) = \alpha_+-\alpha_- \\
+        3(\alpha_+^2+\alpha_-^2)(\alpha_+^2-\alpha_-^2) = 2(\alpha_+^2 - \alpha_-^2)
+    \end{cases}
+\end{equation*}
+
+Далі користуємось тим, що $\alpha_+ \neq \alpha_-$, бо інакше при $x=\xi$ не було б точки зламу. Тому, в першому рівнянні можемо скоротити на $\alpha_+-\alpha_-$.
+
+З другим складніше: на $\alpha_+^2-\alpha_-^2$ скоротити не можемо, бо може статися (і воно станеться), що $\alpha_-=-\alpha_+$. Перевіримо цей випадок, підставивши у перше рівняння:
+\begin{equation*}
+    2\alpha_+^2 - \alpha_+^2 = 1 \implies \alpha_+^2 = 1
+\end{equation*}
+Тому звідси або $(\alpha_+,\alpha_-)=(1,-1)$, або $(\alpha_+,\alpha_-)=(-1,1)$ -- підходить. При цьому, $\xi=\frac{1}{2}$ у обох випадках.
+
+Якщо ж $\alpha_+^2 \neq \alpha_-^2$, то тоді маємо систему:
+\begin{equation*}
+    \begin{cases}
+        \alpha_+^2 + \alpha_+\alpha_- + \alpha_-^2 = 1 \\
+        3\alpha_+^2 + 3\alpha_-^2 = 2
+    \end{cases}
+\end{equation*}
+Розв'язавши, маємо або $\alpha_+=\alpha_-=\pm\frac{1}{\sqrt{3}}$ -- немає точки зламу, тоді це не підходить. 
+
+\textbf{Відповідь.} $J(y^*) = 2$ -- точна нижня грань при 
+\begin{equation*}
+    y^* = \begin{cases}
+        x, & x \in [0,\frac{1}{2}] \\
+        1-x, & x \in [\frac{1}{2},1]
+    \end{cases} \vee y^* = \begin{cases}
+        -x, & x \in [0,\frac{1}{2}] \\
+        x-1, & x \in [\frac{1}{2},1]
+    \end{cases}
+\end{equation*}
+\end{document}

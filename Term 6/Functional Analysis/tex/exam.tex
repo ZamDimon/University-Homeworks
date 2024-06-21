@@ -1,0 +1,572 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{dsfont}
+\usepackage{cmbright}
+\usepackage[normalem]{ulem}
+\usepackage{indentfirst}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage[italicdiff]{physics}
+%\usepackage{pifont} %For unusual symbols
+%\usepackage{mathdots} %For unusual combinations of dots
+\usepackage{wrapfig}
+\usepackage[inline,shortlabels]{enumitem}
+\setlist{topsep=2pt,itemsep=2pt,parsep=0pt,partopsep=0pt}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, top=0.75in,bottom=1.0in, left=0.75in, right=0.75in, footskip=0.3in, includefoot]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz,tikz-3dplot,tikz-cd,tkz-tab,tkz-euclide,pgf,pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{multicol}
+\usepackage[bottom,multiple]{footmisc} %ensures footnotes are at the bottom of the page, and separates footnotes by a comma if they are adjacent
+\usepackage{hyperref}
+\usepackage[nameinlink]{cleveref} %nameinlink ensures that the entire element is clickable in the pdf, not just the number
+
+\newcommand{\remind}[1]{\textcolor{red}{\textbf{#1}}} %To remind me of unfinished work to fix later
+\newcommand{\hide}[1]{} %To hide large blocks of code without using % symbols
+
+\newcommand{\ep}{\varepsilon}
+\newcommand{\vp}{\varphi}
+\newcommand{\lam}{\lambda}
+\newcommand{\Lam}{\Lambda}
+%\newcommand{\abs}[1]{\ensuremath{\left\lvert#1\right\rvert}} % This clashes with the physics package
+%\newcommand{\norm}[1]{\ensuremath{\left\lVert#1\right\rVert}} % This clashes with the physics package
+\renewcommand{\ip}[1]{\ensuremath{\left\langle#1\right\rangle}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\Y}{\mathbb{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\As}{\mathcal{A}}
+\newcommand{\Bs}{\mathcal{B}}
+\newcommand{\Cs}{\mathcal{C}}
+\newcommand{\Ds}{\mathcal{D}}
+\newcommand{\Es}{\mathcal{E}}
+\newcommand{\Fs}{\mathcal{F}}
+\newcommand{\Gs}{\mathcal{G}}
+\newcommand{\Hs}{\mathcal{H}}
+\newcommand{\Is}{\mathcal{I}}
+\newcommand{\Js}{\mathcal{J}}
+\newcommand{\Ks}{\mathcal{K}}
+\newcommand{\Ls}{\mathcal{L}}
+\newcommand{\Ms}{\mathcal{M}}
+\newcommand{\Ns}{\mathcal{N}}
+\newcommand{\Os}{\mathcal{O}}
+\newcommand{\Ps}{\mathcal{P}}
+\newcommand{\Qs}{\mathcal{Q}}
+\newcommand{\Rs}{\mathcal{R}}
+\newcommand{\Ss}{\mathcal{S}}
+\newcommand{\Ts}{\mathcal{T}}
+\newcommand{\Us}{\mathcal{U}}
+\newcommand{\Vs}{\mathcal{V}}
+\newcommand{\Ws}{\mathcal{W}}
+\newcommand{\Xs}{\mathcal{X}}
+\newcommand{\Ys}{\mathcal{Y}}
+\newcommand{\Zs}{\mathcal{Z}}
+\newcommand{\ab}{\textbf{a}}
+\newcommand{\bb}{\textbf{b}}
+\newcommand{\cb}{\textbf{c}}
+\newcommand{\db}{\textbf{d}}
+\newcommand{\ub}{\textbf{u}}
+%\renewcommand{\vb}{\textbf{v}} % This clashes with the physics package (the physics package already defines the \vb command)
+\newcommand{\wb}{\textbf{w}}
+\newcommand{\xb}{\textbf{x}}
+\newcommand{\yb}{\textbf{y}}
+\newcommand{\zb}{\textbf{z}}
+\newcommand{\Ab}{\textbf{A}}
+\newcommand{\Bb}{\textbf{B}}
+\newcommand{\Cb}{\textbf{C}}
+\newcommand{\Db}{\textbf{D}}
+\newcommand{\eb}{\textbf{e}}
+\newcommand{\ex}{\textbf{e}_x}
+\newcommand{\ey}{\textbf{e}_y}
+\newcommand{\ez}{\textbf{e}_z}
+\newcommand{\abar}{\overline{a}}
+\newcommand{\bbar}{\overline{b}}
+\newcommand{\cbar}{\overline{c}}
+\newcommand{\dbar}{\overline{d}}
+\newcommand{\ubar}{\overline{u}}
+\newcommand{\vbar}{\overline{v}}
+\newcommand{\wbar}{\overline{w}}
+\newcommand{\xbar}{\overline{x}}
+\newcommand{\ybar}{\overline{y}}
+\newcommand{\zbar}{\overline{z}}
+\newcommand{\Abar}{\overline{A}}
+\newcommand{\Bbar}{\overline{B}}
+\newcommand{\Cbar}{\overline{C}}
+\newcommand{\Dbar}{\overline{D}}
+\newcommand{\Ubar}{\overline{U}}
+\newcommand{\Vbar}{\overline{V}}
+\newcommand{\Wbar}{\overline{W}}
+\newcommand{\Xbar}{\overline{X}}
+\newcommand{\Ybar}{\overline{Y}}
+\newcommand{\Zbar}{\overline{Z}}
+\newcommand{\Aint}{A^\circ}
+\newcommand{\Bint}{B^\circ}
+\newcommand{\limk}{\lim_{k\to\infty}}
+\newcommand{\limm}{\lim_{m\to\infty}}
+\newcommand{\limn}{\lim_{n\to\infty}}
+\newcommand{\limx}[1][a]{\lim_{x\to#1}}
+\newcommand{\liminfm}{\liminf_{m\to\infty}}
+\newcommand{\limsupm}{\limsup_{m\to\infty}}
+\newcommand{\liminfn}{\liminf_{n\to\infty}}
+\newcommand{\limsupn}{\limsup_{n\to\infty}}
+\newcommand{\sumkn}{\sum_{k=1}^n}
+\newcommand{\sumk}[1][1]{\sum_{k=#1}^\infty}
+\newcommand{\summ}[1][1]{\sum_{m=#1}^\infty}
+\newcommand{\sumn}[1][1]{\sum_{n=#1}^\infty}
+\newcommand{\emp}{\varnothing}
+\newcommand{\exc}{\backslash}
+\newcommand{\sub}{\subseteq}
+\newcommand{\sups}{\supseteq}
+\newcommand{\capp}{\bigcap}
+\newcommand{\cupp}{\bigcup}
+\newcommand{\kupp}{\bigsqcup}
+\newcommand{\cappkn}{\bigcap_{k=1}^n}
+\newcommand{\cuppkn}{\bigcup_{k=1}^n}
+\newcommand{\kuppkn}{\bigsqcup_{k=1}^n}
+\newcommand{\cappk}[1][1]{\bigcap_{k=#1}^\infty}
+\newcommand{\cuppk}[1][1]{\bigcup_{k=#1}^\infty}
+\newcommand{\cappm}[1][1]{\bigcap_{m=#1}^\infty}
+\newcommand{\cuppm}[1][1]{\bigcup_{m=#1}^\infty}
+\newcommand{\cappn}[1][1]{\bigcap_{n=#1}^\infty}
+\newcommand{\cuppn}[1][1]{\bigcup_{n=#1}^\infty}
+\newcommand{\kuppk}[1][1]{\bigsqcup_{k=#1}^\infty}
+\newcommand{\kuppm}[1][1]{\bigsqcup_{m=#1}^\infty}
+\newcommand{\kuppn}[1][1]{\bigsqcup_{n=#1}^\infty}
+\newcommand{\cappa}{\bigcap_{\alpha\in I}}
+\newcommand{\cuppa}{\bigcup_{\alpha\in I}}
+\newcommand{\kuppa}{\bigsqcup_{\alpha\in I}}
+\newcommand{\Rx}{\overline{\mathbb{R}}}
+\newcommand{\dx}{\,dx}
+\newcommand{\dy}{\,dy}
+\newcommand{\dt}{\,dt}
+\newcommand{\dax}{\,d\alpha(x)}
+\newcommand{\dbx}{\,d\beta(x)}
+\DeclareMathOperator{\glb}{\text{glb}}
+\DeclareMathOperator{\lub}{\text{lub}}
+\newcommand{\xh}{\widehat{x}}
+\newcommand{\yh}{\widehat{y}}
+\newcommand{\zh}{\widehat{z}}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\renewcommand{\iff}{\Leftrightarrow}
+\DeclareMathOperator{\im}{\text{im}}
+\let\spn\relax\let\Re\relax\let\Im\relax
+\DeclareMathOperator{\spn}{\text{span}}
+\DeclareMathOperator{\Re}{\text{Re}}
+\DeclareMathOperator{\Im}{\text{Im}}
+\DeclareMathOperator{\diag}{\text{diag}}
+
+\newtheoremstyle{mystyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{}
+\newtheoremstyle{cstyle}{}{}{}{}{\sffamily\bfseries}{.}{ }{\thmnote{#3}}
+\makeatletter
+\renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}{\normalfont\sffamily\bfseries\topsep6\p@\@plus6\p@\relax #1\@addpunct{.} }}{\popQED\endtrivlist\@endpefalse}
+\makeatother
+\newcommand{\coolqed}[1]{\includegraphics[width=#1cm]{sunglasses_emoji.png}} %Defines the new QED symbol
+\renewcommand{\qedsymbol}{\coolqed{0.32}} %Implements the new QED symbol
+\theoremstyle{mystyle}{\newtheorem{definition}{Definition}[section]}
+\theoremstyle{mystyle}{\newtheorem{proposition}[definition]{Proposition}}
+\theoremstyle{mystyle}{\newtheorem{theorem}[definition]{Theorem}}
+\theoremstyle{mystyle}{\newtheorem{lemma}[definition]{Lemma}}
+\theoremstyle{mystyle}{\newtheorem{corollary}[definition]{Corollary}}
+\theoremstyle{mystyle}{\newtheorem*{remark}{Remark}}
+\theoremstyle{mystyle}{\newtheorem*{remarks}{Remarks}}
+\theoremstyle{mystyle}{\newtheorem*{example}{Example}}
+\theoremstyle{mystyle}{\newtheorem*{examples}{Examples}}
+\theoremstyle{definition}{\newtheorem*{exercise}{Exercise}}
+\theoremstyle{cstyle}{\newtheorem*{cthm}{}}
+
+%Warning environment
+\newtheoremstyle{warn}{}{}{}{}{\normalfont}{}{ }{}
+\theoremstyle{warn}
+\newtheorem*{warning}{\warningsign{0.2}\relax}
+
+%Symbol for the warning environment, designed to be easily scalable
+\newcommand{\warningsign}[1]{\tikz[scale=#1,every node/.style={transform shape}]{\draw[-,line width={#1*0.8mm},red,fill=yellow,rounded corners={#1*2.5mm}] (0,0)--(1,{-sqrt(3)})--(-1,{-sqrt(3)})--cycle;
+\node at (0,-1) {\fontsize{48}{60}\selectfont\bfseries!};}}
+
+\tcolorboxenvironment{definition}{boxrule=0pt,boxsep=0pt,colback={red!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{red},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proposition}{boxrule=0pt,boxsep=0pt,colback={Orange!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Orange},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{theorem}{boxrule=0pt,boxsep=0pt,colback={blue!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{blue},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{lemma}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{corollary}{boxrule=0pt,boxsep=0pt,colback={violet!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{violet},sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{proof}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{CadetBlue!80!white},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remark}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{remarks}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{example}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{examples}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Black},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt,breakable}
+\tcolorboxenvironment{cthm}{boxrule=0pt,boxsep=0pt,colback={gray!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{gray},sharp corners,before skip=10pt,after skip=10pt,breakable}
+
+%align and align* environments with inline size
+\newenvironment{talign}{\let\displaystyle\textstyle\align}{\endalign}
+\newenvironment{talign*}{\let\displaystyle\textstyle\csname align*\endcsname}{\endalign}
+
+\usepackage[explicit]{titlesec}
+\titleformat{\section}{\fontsize{24}{30}\sffamily\bfseries}{\thesection}{20pt}{#1}
+\titleformat{\subsection}{\fontsize{16}{18}\sffamily\bfseries}{\thesubsection}{12pt}{#1}
+\titleformat{\subsubsection}{\fontsize{10}{12}\sffamily\large\bfseries}{\thesubsubsection}{8pt}{#1}
+
+\titlespacing*{\section}{0pt}{5pt}{5pt}
+\titlespacing*{\subsection}{0pt}{5pt}{5pt}
+\titlespacing*{\subsubsection}{0pt}{5pt}{5pt}
+
+%\newcommand{\sectionbreak}{\clearpage} %Start every section on a new page
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+\setlength{\parindent}{0.2in}
+\setlength{\parskip}{0pt}
+\setlength{\columnseprule}{0pt}
+
+\title{\huge\sffamily\bfseries Екзамен з Функціонального Аналізу}
+\author{\Large\sffamily Захарова Дмитра Олеговича, МП-31}
+\date{\sffamily \today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \textbf{Білет №16}
+\end{center}
+
+%Custom colors for different environments
+\definecolor{contcol1}{HTML}{72E094}
+\definecolor{contcol2}{HTML}{24E2D6}
+\definecolor{convcol1}{HTML}{C0392B}
+\definecolor{convcol2}{HTML}{8E44AD}
+
+\begin{tcolorbox}[title=Вміст, fonttitle=\sffamily\bfseries\selectfont,interior style={left color=contcol1!40!white,right color=contcol2!40!white},frame style={left color=contcol1!80!white,right color=contcol2!80!white},coltitle=black,top=2mm,bottom=2mm,left=2mm,right=2mm,drop fuzzy shadow,enhanced,breakable]
+\makeatletter
+\@starttoc{toc}
+\makeatother
+\end{tcolorbox}
+
+\newpage
+
+\section{Стискаючі відображення}
+
+\textbf{Умова.} Стискаючі відображення. Теорема Банаха.
+
+\textbf{Відповідь.} Перед тим, як перейти до стискаючих зображень, ми розглянемо Ліпшицеві відображення, з яких стискаючі відображення будуть частковим випадком. Далі, ми наведемо означення стискаючого відображення і його застосування для доведення теореми Пікара.
+
+\subsection{Ліпшицеві відображення}
+
+Отже, наведемо означення $K$-Ліпшицевого відображення.
+
+\begin{definition}
+    Нехай $(X,d_X)$ та $(Y,d_Y)$ є метричними просторами. Тоді функцію $f: X \to Y$ називають \textbf{Ліпшицевою} або \textbf{$K$-Ліпшицевою}, якщо існує таке $K>0$, що:
+    \begin{equation}
+        (\forall x,y \in X) \; \{d_Y(f(x),f(y)) \leq K d_X(x,y)\}
+    \end{equation}
+\end{definition}
+
+Тут і далі будемо наводити багато прикладів, щоб зрозуміти кожне означення і поняття.
+
+\begin{example}
+    Нехай $(X,d_X)=(Y,d_Y)=(\mathbb{R},|\cdot|)$ -- стандартний простір дійсних чисел з модулем в якості метрики. Тоді, $K$-Ліпшицевою називають такі функції $f: \mathbb{R} \to \mathbb{R}$, у яких $\sup |f'(x)| = K$. Наприклад, функція $f(x)=\sqrt{1+x^2}$ є 1-Ліпшицевою.
+\end{example}
+
+\subsection{Стискаючі відображення}
+
+\begin{definition}
+    Функція $f: X \to Y$ є стискаючою, якщо вона є $k$-Ліпшицевою для деякого $k \in [0,1)$.
+\end{definition}
+
+Теорема Банаха, про яку далі піде мова, також включає в себе наступне поняття.
+
+\begin{definition}
+    Нехай маємо відображення $f: X \to X$. Тоді, $x^* \in X$ називають \textbf{нерухомою}, якщо $f(x^*)=x^*$. 
+\end{definition}
+
+\begin{example}
+    Нехай маємо функцію $f: x \mapsto -x^2-1$. Якщо вона задана над комплексним простором, то щоб знайти нерухому точку, потрібно розв'язати наступне рівняння:
+    \begin{equation}
+        z = -z^2 - 1 \implies z^2+z+1 = 0
+    \end{equation}
+    Звідси маємо дві нерухомі точки: $z_1^*= e^{2\pi i/3}$ та $z_2^*=e^{4\pi i/3}$.
+
+    Якщо ж мова б йшла про простір над $\mathbb{R}$, то нерухомих точок не було б.
+\end{example}
+
+Отже, ми готові розглянути ключову теорему цього питання.
+
+\begin{theorem}
+    \textbf{Банаха про стискаючі відображення.} Нехай $(X,d)$ -- непустий повний метричний простір та $f: X \to X$ є стискаючою. Тоді $f$ має єдину фіксовану точку.
+\end{theorem}
+
+\textbf{Доведення.} Отже за означенням потрібно довести існування такого $x^* \in X$, для якого $f(x^*)=x^*$. Як ми це зробимо?
+
+Доведення буде конструктивим. Візьмемо будь-яке $x_0 \in X$ і задамо послідовність $\{x_n\}_{n \in \mathbb{Z}_{\geq 0}}$ рекурсивно: $x_{n+1} = f(x_n)$. Покажемо cправедливість леми.
+
+\begin{lemma}
+    Послідовність $\{x_n\}_{n \in \mathbb{Z}_{\geq 0}}$ для довільного $x_0$ та $x_{n+1}=f(x_n)$ для всіх $n \in \mathbb{Z}_{\geq 0}$ є фундаментальною.
+\end{lemma}
+
+Для цього доведемо те, що
+    \begin{equation}
+        d(x_{n+1},x_n) \leq k^nd(x_1,x_0)
+    \end{equation}
+
+Це достатньо легко показати за означенням нашої послідовності:
+\begin{equation}
+    d(x_{n+1},x_n) = d(f(x_n),f(x_{n-1})) \leq kd(x_n,x_{n-1}) \leq \dots \leq k^nd(x_1,x_0)
+\end{equation}
+
+В першій рівності ми за означенням послідовності виписали $x_{n+1}=f(x_n),x_n=f(x_{n-1})$, а нерівності випливають з означення стискаючого відображення. Отже, це твердження ми довели.
+
+Отже, тепер візьмемо деякі два $n,m \in \mathbb{N}$ такі, що $m\geq n$. Тоді:
+\begin{equation}
+    d(x_m,x_n) \leq \sum_{i=n}^{m-1}d(x_{i+1},x_i) \leq \sum_{i=n}^{m-1}k^i d(x_1,x_0) = d(x_1,x_0)\sum_{i=n}^{m-1}k^i =: d(x_1,x_0)C_{n,m}
+\end{equation}
+
+Перша нерівність випливає з нерівності трикутника, а наступна з доведеної пропозиції. Отже, зашилилось знайти простий вираз для $C_{n,m}=\sum_{i=n}^{m-1}k^i$. Маємо:
+\begin{equation}
+    C_{n,m} = k^n \sum_{i=0}^{m-n-1}k^i = \frac{k^n (1 - k^{m-n})}{1-k} \leq \frac{k^n}{k-1}
+\end{equation}
+
+Отже, отримали:
+\begin{equation}
+    d(x_m,x_n) \leq \frac{k^n}{k-1} \cdot d(x_1,x_0)
+\end{equation}
+
+Отже, видно, що $d(x_m,x_n) \xrightarrow[n \to \infty]{}0$, а отже послідовність є фундаментальною. Звідси випливає існування $\exists x \in X: x_n \to x$. Доведемо наступне твердження.
+
+\begin{proposition}
+    Побудоване $x$ і є єдиною фіксованою точкою. 
+\end{proposition}
+
+Спочатку покажемо, що вона є фіксованою:
+\begin{equation}
+    f(x) = f(\lim_{n \to \infty}x_n) = \lim_{n \to \infty}f(x_n) = \lim_{n \to \infty}x_{n+1} = x
+\end{equation}
+
+Тепер покажемо єдиність. Нехай $y$ -- також фіксована точка. Тоді:
+\begin{equation}
+    d(x,y) = d(f(x), f(y)) \leq kd(x,y) \implies (1-k)d(x,y) \leq 0
+\end{equation}
+
+Оскільки $|k|<1$ та $d(x,y) \geq 0$, то маємо $d(x,y)=0$, звідки з визначення метрики одразу випливає $x=y$. Теорема доведена.
+
+\section{Продовження оператора.}
+
+\textbf{Умова.} Продовження оператора по неперервності.
+
+\textbf{Відповідь.} Отже, ключовою в цьому питання є \textbf{теорема Хана-Банаха}.
+
+\begin{theorem}
+    \textbf{Хана-Банаха.} Нехай $V$ -- нормований векторний простір і нехай $W \subset V$ -- підпростір. Якщо $T: W \to \mathbb{C}$ є лінійним відображенням для якого $\|T(w)\| \leq C\|w\|$ для всіх $w \in W$ (тобто маємо обмежений лінійний функціонал), тоді існує неперервне продовження оператора $\overline{T}: V \to \mathbb{C}$ таке, що $\overline{T}\Big|_{W}=T$ та $\|\overline{T}(v)\| \leq C\|v\|$ для всіх $v \in V$.
+\end{theorem}
+
+Проте, для доведення нам потрібно розібрати ще одну теорему.
+
+\subsection{Допоміжна Лема}
+
+Для доведення теореми Хана-Банаха, розглянемо допоміжну лему.
+
+\begin{lemma}
+    Нехай $V$ -- нормований простір, $W \subset V$ -- підпростір. Нехай $T: W \to \mathbb{C}$ -- лінійний з $|T(w)| \leq C\|w\|$ для всіх $w \in W$. Якщо $x \notin W$, то існує функція $T': W' \to \mathbb{C}$, що є лінійною на просторі $W'=W+\mathbb{C}x$ з $T'\Big|_{W} = T$ та $|T'(w')| \leq C\|w'\|$ для всіх $w' \in W'$.
+\end{lemma}
+
+\textbf{Доведення Леми.} По-перше, треба дізнатися трошки більше про простір $W'$. Доведемо, що:
+\begin{enumerate}
+    \item $W'$ є підпростором $W$.
+    \item Репрезентація довільного $w' \in W'$ як $w'=ax+w, w \in W, a \in \mathbb{C}$ є єдиним.
+\end{enumerate}
+
+Перше твердження достатньо очевидне, а друге доводиться наступним чином: нехай вийшло, що $w'=\widetilde{a}x+\widetilde{w}$ для $\widetilde{a}\neq a,\widetilde{w} \neq w$. Тоді:
+\begin{equation}
+    ax+w = \widetilde{a}x+\widetilde{w} \implies (a-\widetilde{a})x = \widetilde{w}-w \in W
+\end{equation}
+
+Проте, при $a \neq \widetilde{a}$ звідси випливає $x \in W$ -- протиріччя. Якщо ж $a=\widetilde{a}$, то і $w=\widetilde{w}$. Таким чином, $w'$ задано єдиним чином через вираз $ax+w$.
+
+Цей факт потрібен, щоб коректно визначити відображення $T'$ наступним чином:
+\begin{equation}
+    T'(ax+w) = T(w) + a\lambda
+\end{equation}
+
+для деякого $\lambda \in \mathbb{C}$. Якщо $C=0$, то $T \equiv 0$ і тоді $T' \equiv 0$. Якщо ж $C \neq 0$, то без обмеження загальності будемо вважати, що $C=1$.
+
+Отже, лише залишилось підібрати таке $\lambda$, щоб для всіх $a \in \mathbb{C}, w \in W$ виконувалось $|T(w)| \leq \|ax+w\|$. По-перше, це очевидно виконується за $a=0$ з умови. Тому, сфокусуємось на випадку $a \neq 0$ і поділимо обидві частини на $|a|$:
+\begin{equation}
+    \left|T\left(\frac{w}{-a}\right)-\lambda\right| \leq \left\|\frac{w}{-a} - x\right\|
+\end{equation}
+
+Оскільки $w/-a \in W$, то це твердження еквівалентно:
+\begin{equation}
+    |T(w)-\lambda| \leq \|w-x\| \; \forall w \in W
+\end{equation}
+
+Доведемо існування такого $\alpha \in \mathbb{R}$, що для $R(w) = \text{Re}\{T(w)\}$ виконується
+\begin{equation}
+    |R(w)-\alpha| \leq \|w-x\|
+\end{equation}
+
+Помітимо, що $|R(w)| \leq \|T(w)\| \leq \|w\|$ і оскільки $R$ є функцією над $\mathbb{R}$:
+\begin{equation}
+    R(w_1)-R(w_2) = R(w_1-w_2) \leq |R(w_1-w_2)| \leq \|w_1-w_2\|
+\end{equation}
+
+Отже, продовжуючи, бачимо, що
+\begin{equation}
+    R(w_1)-R(w_2) \leq \|(w_1-x)+(x-w_2)\| \leq \|w_1-x\|+\|w_2-x\|
+\end{equation}
+
+Отже, для довільних $w_1,w_2 \in W$ маємо:
+\begin{equation}
+    R(w_1)-\|w_1-x\| \leq R(w_2) + \|w_2-x\|
+\end{equation}
+
+Отже, візьмемо супремум по лівій частині:
+\begin{equation}
+    \sup_{w \in W}\{R(w)-\|w-x\|\} \leq R(w_2) + \|w_2-x\| \; \forall w_2 \in W
+\end{equation}
+
+і тому 
+\begin{equation}
+    \underbrace{\sup_{w \in W}\{R(w)-\|w-x\|\}}_{=L} \leq \underbrace{\inf_{w \in W}\{R(w) + \|w-x\|\}}_{=U}
+\end{equation}
+
+\textbf{Твердження.} Дійсно, якщо обрати будь-який $L \leq \alpha \leq U$, то він підійде. Дійсно, тоді для всіх $w \in W$:
+\begin{equation}
+    R(w)-\|w-x\| \leq \alpha \leq R(w)+\|w-x\|
+\end{equation}
+
+Звідси $|R(w)-\alpha|\leq\|w-x\|$. 
+
+Такі самі міркування справедливі і для $I(w) = \text{Im}\{T(w)\}$. 
+
+\subsection{Доведення теореми Хана-Банаха}
+
+Для доведення згадаємо одне означення з математичної логіки.
+
+\begin{definition}
+    \textbf{Частковий порядок} на множині $E$ це відношення $\preceq$, що має наступні властивості: 
+    \begin{enumerate}
+        \item Для всіх $e \in E: e \preceq e$.
+        \item Для всіх $e,e' \in E: e \preceq e' \wedge e' \preceq e \implies e=e'$.
+        \item Для всіх $e,e',e'' \in E: e \preceq e' \wedge e' \preceq e'' \implies e \preceq e''$.
+    \end{enumerate}
+\end{definition}
+
+\begin{example}
+    Нехай $S$ множина, а на $E=2^S$ ми задали частковий порядок: $A \preceq B$ якщо $A$ є підмножиною $B$.
+\end{example}
+
+\begin{definition}
+    Нехай $(E,\preceq)$ є частково упорядкована множина. Тоді множина $C \subset E$
+\end{definition}
+
+\begin{theorem}
+    \textbf{Лема Цорна.} 
+\end{theorem}
+
+\textbf{Доведення теореми.} 
+
+\section{Практичне завдання}
+
+\textbf{Умова.} Перевірити, що множина функцій $\{\sqrt{\frac{2}{\pi}}\sin nt\}_{n \in \mathbb{N}}$ утворюють ортонормований базис в $L^2[0,\pi]$, але в просторі $L^2[-\pi,\pi]$ є тільки ортонормованою системою, яка не утворює базис.
+
+\textbf{Розв'язання.} 
+
+Будемо позначати $e_n := \sqrt{\frac{2}{\pi}}\sin nt, n \in \mathbb{N}$. Розіб'ємо розв'язок на дві частини: спочатку покажемо, що системи є ортонормованими, а далі вже покажемо чому лише для $[0,\pi]$ маємо базис.
+
+\subsection{Ортонормованість систем}
+Отже, спочатку покажемо, що перед нами дійсно ортонормована система в обох випадках. Згадаємо означення.
+
+\begin{definition}
+    Нехай $H$ є пре-Гільбертовим простором. Підпростір $\{e_{\lambda}\}_{\lambda \in \Lambda} \subset H$ є \textbf{ортонормованим} якщо $\|e_{\lambda}\|=1 \; \forall \lambda \in \Lambda$ а також для усіх $\lambda_1 \neq \lambda_2 \in \Lambda$ маємо $\langle e_{\lambda_1}, e_{\lambda_2} \rangle = 0$.
+\end{definition}
+
+Отже, нехай маємо простір $L^2(\Omega)$, де $\Omega \subset \mathbb{R}$ вимірна, а функції $f: \Omega \to \mathbb{C}$ є вимірними і $\int_{\Omega}fd\mu < \infty$, то внутрішній добуток на норма задаються наступним чином:
+\begin{equation}
+    \langle f,g \rangle_{L^2(\Omega)} \triangleq \int_{\Omega} f\overline{g}d\mu, \; \|f\|_{L^2(\Omega)} \triangleq \left(\int_{\Omega}|f|^2d\mu\right)^{1/2}
+\end{equation}
+
+Розглянемо випадок $\Omega = [0,\pi]$. Для двох $n,m \in \mathbb{N}$ маємо:
+\begin{equation}
+    \langle e_n, e_m \rangle = \frac{2}{\pi}\int_{0}^{\pi} \sin nt \sin mt dt
+\end{equation}
+
+Згадаємо наступну тригонометричну формулу:
+\begin{equation}
+    \sin nt \sin mt = \frac{1}{2}\left(\cos (n-m)t - \cos (n+m)t\right)
+\end{equation}
+
+Нехай $n \neq m$. Отже, наш добуток має вигляд:
+\begin{equation}
+    \langle e_n, e_m \rangle = \frac{1}{\pi}\left(\int_0^{\pi} \cos((n-m)t)dt - \int_0^{\pi} \cos((n+m)t)dt\right)
+\end{equation}
+
+Окремо інтеграли знайти легко. Маємо:
+\begin{gather}
+    \langle e_n, e_m \rangle = \frac{1}{\pi}\left(\frac{\sin (n-m)t}{n-m}\Big|_{t=0}^{t=\pi} - \frac{\sin(n+m)t}{n+m}\Big|_{t=0}^{t=\pi}\right) \nonumber = 0
+\end{gather}
+
+Якщо ж $n=m$, то тоді
+\begin{equation}
+    \langle e_n, e_n \rangle = \frac{2}{\pi}\int_0^{\pi} \sin^2 ntdt = \frac{2}{\pi}\int_0^{\pi}\frac{1-\cos 2nt}{2}dt = \frac{1}{\pi}\left(\pi-\int_0^{\pi}\cos (2nt)dt\right)
+\end{equation}
+
+Інтеграл праворуч у дужках нуль, а тому $\langle e_n, e_n \rangle=1$, а отже остаточно:
+\begin{equation}
+    \langle e_n, e_m \rangle = \delta_{n,m},
+\end{equation}
+
+що означає ортонормованість системи. Тепер розглянемо $[-\pi,\pi]$. Добре видно, що зміняться лише межі підстановки і тому видно, що результат такий самий. Перейдемо до того, що з цього є базисом.
+
+\subsection{Ортонормований базис}
+
+Введемо два додаткових означення:
+
+\begin{definition}
+    Ортонормована підмножина $\{e_{\lambda}\}_{\lambda \in \Lambda}$ пре-Гільбертового простору є \textbf{максимальною} якщо для кожного $u \in H$, що задовольняє $\langle u, e_{\lambda}\rangle=0$ для кожного $\lambda \in \Lambda$, виконується $u=0$.
+\end{definition}
+
+\begin{definition}
+    Нехай $H$ Гільбертів простір. \textbf{Ортонормованим базисом} називають зліченну максимальну ортонормовану підмножину $H$.
+\end{definition}
+
+Оскільки наша множина $\{e_n\}_{n \in \mathbb{N}}$ є зліченною і ортонормованою, залишилось довести, що для $\Omega=[0,\pi]$ вона є максимальною, а для $\Omega=[-\pi,\pi]$ -- ні. 
+
+Легше одразу розглянути $\Omega = [-\pi,\pi]$. Доведемо, що знайдеться така вимірна $u \in L^2[-\pi,\pi]$, що $\langle u, e_n \rangle = 0$ для всіх $n \in \mathbb{N}$, але $u \not\equiv 0$. Отже умова $\langle u, e_n \rangle = 0$ означає:
+\begin{equation}\label{eq:fourier}
+    \int_{-\pi}^{\pi}u(t) \sin ntdt = 0, \; n \in \mathbb{N}
+\end{equation}
+
+Проте, нехай $u(t) = \cos t$. Тоді легко показати, що $\langle u, e_n \rangle = 0$ для всіх $n \in \mathbb{N}$. Дійсно, $\cos t \sin nt$ є непарною, а інтеграл по симетричному відносно $0$ відрізку дасть $0$. Отже, аналогічно можна було взяти будь-яке парне $u \in L^2[-\pi,\pi]$, як наприклад $u(t)=t^2$.
+
+Добре, залишилось розібратись з $\Omega = [0,\pi]$. Доводити аналог Рівняння \ref{eq:fourier} буде надто складно, оскільки по суті ми повторимо доведення максимальності базису Фур'є. Тому скористаємося тим, що ми вже знаємо, що наступна система функцій $\{\cos nx: n \in \mathbb{Z}_{\geq 0}\} \cup \{\sin nx: n \in \mathbb{N}\}$ є ортогональним базисом $L^2[-\pi,\pi]$ (позначимо через $\{e_{\lambda}'\}_{\lambda \in \Lambda}$). Також нехай $\langle u,e_n \rangle_{L^2[0,\pi]}=0, n \in \mathbb{N}$ Розглянемо розширену функцію:
+\begin{equation}
+    g(t) = \begin{cases}
+        u(t), & t \in [0,\pi] \\
+        -u(t), & t \in [-\pi,0]
+    \end{cases} \in L^2[-\pi,\pi]
+\end{equation}
+
+Ця функція є неперервною, а також непарною: $g(-t)=-g(t)$. Тоді, за теоремою про ряд Фур'є-Бесселя, маємо наступне розкладання $g$ у ряд:
+\begin{equation}
+    g = \sum_{\lambda \in \Lambda}b_{\lambda}e_{\lambda},
+\end{equation}
+
+де $b_{\lambda}$ пропорційне $\langle g,e_{\lambda}'\rangle$. Для базисів виду $\{\cos nt: n \in \mathbb{N}\}$ будемо мати $\langle g, \cos nt \rangle = \int_{-\pi}^{\pi} g(t)\cos nt = 0$, оскільки функція $g$ непарна, а для базисів $\{\sin nt: n \in \mathbb{N}\}$ за припущенням маємо $\langle g, \sin nt \rangle = \langle u, \sin nt \rangle = 0$. Отже, $g \equiv 0$ на $L^2[-\pi,\pi]$, а отже і на $L^2[0,\pi]$. Що і треба було довести.
+
+\end{document}

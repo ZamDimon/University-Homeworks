@@ -1,0 +1,253 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Домашня робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{15:00 21 лютого, 2024}
+\assignno{3}
+\semester{Весняний семестр 2024}
+\mainproblem{Геометрична Ймовірність}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Номер 8.1 (п. 3, 6), Турчин} 
+
+\hspace{20px}\textbf{Умова.} У квадрат $[0,1]\times[0,1]$ навмання кидають точку. Обчислити ймовірність того, що для її координат $(x,y)$ справджуються співвідношення:
+\begin{enumerate}
+    \item $\min\{y-x^2,x-y^2\}\geq 0$.
+    \item $x^2+y^2<\frac{1}{4}$.
+\end{enumerate}
+
+\textbf{Розв'язання.} 
+
+\textit{Пункт 1.} Ця умова еквівалентна тому, що одночасно $y-x^2\geq 0, x-y^2 \geq 0$. Геометрично, перша умова еквівалентна тому, що точка лежить вище $y=x^2$, а друга умова -- лежить нижче $y=\sqrt{x}$. Отже, шукана ймовірність:
+\begin{equation}
+    \int_0^1 (\sqrt{x}-x^2)dx = \boxed{\frac{1}{3}}
+\end{equation}
+
+\textit{Пункт 2.} Ця умова означає, що точка лежить у колі радіусу $\frac{1}{2}$ з центром у початку координат. Площа кругу $\frac{\pi}{4}$, проте лише одна чверть лежить у квадраті $[0,1]^2$, тому шукана ймовірність $\boxed{\frac{\pi}{16}}$.
+
+\problem{Номер 8.3 (п. 1), Турчин} 
+
+\hspace{20px}\textbf{Умова.} На відрізок $[0,1]$ навмання кидають пару точок $x,y$. Знайти ймовірність $\max\{x,y\}<\frac{1}{2}$.
+
+\textbf{Розв'язання.} Подія $\max\{x,y\}<\frac{1}{2}$ означає, що як $x$, так і $y$ одночасно меньше $\frac{1}{2}$. Тому $\mathbb{P}(\max\{x,y\}<\frac{1}{2})=\mathbb{P}(x<\frac{1}{2})\mathbb{P}(y<\frac{1}{2}) = \boxed{\frac{1}{4}}$.
+
+\problem{Номер 8.7, Турчин} 
+
+\hspace{20px}\textbf{Умова.} Два судна мають підійти до одного причалу. Моменти підходу суден до причалу -- незалежні випадкові події, рівноможливі протягом доби (позначимо $\tau=24 \; \text{год}$). Знайти ймовірність того, що одному із суден доведеться чекати звільнення причалу, якщо час стоянки першого судна -- $\Delta_1=1 \; \text{год}$, а другого $\Delta_2=2 \; \text{год}$.
+
+\textbf{Розв'язання.} Зафіксуємо час стоянки першого судна $T_1 \in [0,\tau]$. Тоді, чекати доведеться другому судну якщо $T_2$ буде у проміжку між $T_1$ до $\min\{\tau,T_1+\Delta_1\}$, тобто ймовірність такого дорівнює:
+\begin{equation}
+   f(T_1)=\frac{1}{\tau}\left(\min\{\tau,T_1+\Delta_1\}- T_1\right)
+\end{equation}
+Далі будемо пробігати від $0$ до $\tau$, щоб знайти шукану ймовірність:
+\begin{gather}
+    p_1 = \frac{1}{\tau^2}\int_0^{\tau}\left(\min\{\tau,T_1+\Delta_1\}- T_1\right)dT_1 \nonumber \\
+    = \frac{1}{\tau^2}\int_0^{\tau-\Delta_1}\Delta_1 dT_1 + \frac{1}{\tau^2}\int_{\tau-\Delta_1}^{\tau}(\tau-T_1)dT_1 \\
+    = \frac{\Delta_1(\tau-\Delta_1)}{\tau^2} + \frac{\Delta_1^2}{2\tau^2} = \frac{2\Delta_1\tau - \Delta_1^2}{2\tau^2} = \frac{\Delta_1}{\tau} - \frac{\Delta_1^2}{2\tau^2}
+\end{gather}
+Аналогічно, якщо фіксувати друге судно, то ймовірність очікування $\frac{\Delta_2}{\tau} - \frac{\Delta_2^2}{2\tau^2}$. Таким чином, відповідь:
+\begin{equation}
+    \frac{\Delta_1+\Delta_2}{\tau} - \frac{\Delta_1^2+\Delta_2^2}{2\tau^2} = \frac{139}{1152} \approx \boxed{0.12065}
+\end{equation}
+
+\problem{Номер 8.8, Турчин} 
+
+\hspace{20px}\textbf{Умова.} на паркетну підлогу навмання кидають монету діаметра $d$. Паркет має форму квадратів зі стороною $a$ ($a > d$). Яка ймовірність того, що монета не перетне жодної сторони квадратів паркету?
+
+\textbf{Розв'язання.} Положення монети задамо координатою центра $(x,y)$, причому обидві координати вибираються рівномірно з відрізку $[-a/2,a/2]$ (будемо вважати, що центр квадратного паркету знаходиться у $(0,0)$). Тоді подія $E$, що відповідає тому, що монета не перетнула паркету, можна записати як:
+\begin{equation}
+    E = \left\{(x,y): x-\frac{d}{2}>-\frac{a}{2} \wedge y - \frac{d}{2} > -\frac{a}{2} \wedge x + \frac{d}{2} < \frac{a}{2} \wedge y + \frac{d}{2} < \frac{a}{2}\right\}
+\end{equation}
+Простіше це можна описати як $E=\{(x,y): \left|x\right| < \frac{a-d}{2} \wedge |y|<\frac{a-d}{2}\}$, що відповідає квадрату зі стороною $a-d$. Тому, за геометричною ймовірністю, ймовірність такої події:
+\begin{equation}
+    \mathbb{P}(E) = \frac{\lambda(E)}{a^2} = \frac{(a-d)^2}{a^2} = \boxed{\left(1 - \frac{d}{a}\right)^2}
+\end{equation}
+
+\problem{Номер 8.16, Турчин} 
+
+\hspace{20px}\textbf{Умова.} Дві особи, які вирішили зустрітися протягом години, домовилися, що кожна незалежно від іншої приходить на місце зустрічі у навмання обранний момент зазначенної години.
+
+\begin{enumerate}
+    \item Якщо особи домовилися, що кожна чекатиму іншу впродовж $t$ годин, після чого піде з місця зустрічі, то яка ймовірність, що зустріч відбудеться?
+    \item Яка ймовірність того, що дана особа прийде на місце зустрічі (a) раніше від іншої, (б) раніше від іншої на час, не менший ніж $q$ годин.
+\end{enumerate}
+
+
+\textbf{Розв'язок.} 
+
+\textit{Пункт 1.} Нехай дві особи прийшли у моменти $\xi,\eta \sim \mathcal{U}[0,1]$. Нам потрібно знайти ймовірність того, що $|\xi-\eta|<t$, тобто наша ймовірність:
+\begin{gather}
+    \mathbb{P}_{\xi,\eta \sim \mathcal{U}[0,1]} = \frac{\mu\left\{\langle x,y \rangle \in [0,1]^2: |x-y|<t\right\}}{\mu [0,1]^2}\\ = \mu\left\{\langle x,y \rangle \in [0,1]^2: |x-y|<t\right\}
+\end{gather}
+Легше знайти протилежну подію -- для цього достатньо знайти площи двох прямокутник трикутників зі стороною $1-t$. Така площа дорівнює $(1-t)^2$, тому шукана ймовірність $1-(1-t)^2=\boxed{t(2-t)}$. 
+
+\textit{Пункт 2.} (а) Зафіксуємо $\eta \in [0,1]$, тоді ймовірність того, що $\xi \sim \mathcal{U}[0,1]$ буде меньше за $\eta$ дорівнює $\eta$. Якщо тепер проінтегрувати $\eta$ по всім можливим значенням, то отримаємо $\int_0^1\eta d\eta = \boxed{\frac{1}{2}}$. 
+
+(б) Знову фіксуємо $\eta \in [0,1]$. Ймовірність того, що $\xi \sim \mathcal{U}[0,1]$ буде меньше $\eta$ не меньше ніж на $q$ дорівнює $\max\{0,\eta-q\}$. Тоді загальна ймовірність:
+\begin{equation}
+    \int_0^1 \max\{0,\eta-q\}d\eta = \int_q^1 (\eta-q)d\eta = \boxed{\frac{(1-q)^2}{2}}
+\end{equation}
+
+\problem{Номер 8.18, Турчин} 
+
+\hspace{20px}\textbf{Умова.} Яка ймовірність того, що з трьох навмання взятих відрізків, довжина яких не перевищує $1$, можна побудувати трикутник?
+
+\textbf{Розв'язок.} Нехай ми обрали $a,b,c \sim \mathcal{U}[0,1]$. Щоб з них можна було побудувати трикутник, нам потрібно мати $a+b>c, a+c>b, b+c>a$. Тобто, ми шукаємо ймовірність:
+\begin{equation}
+    \mathbb{P}_{a,b,c \sim \mathcal{U}[0,1]}\left[a+b>c \wedge a+c>b \wedge b+c>a\right]
+\end{equation}
+Усі можливі $a,b,c$ на $[0,1]$ описують одиничний куб із центром у $\left(\frac{1}{2},\frac{1}{2},\frac{1}{2}\right)$. Тоді, наша ймовірність може бути описана як:
+\begin{gather}
+    \mathbb{P}_{a,b,c \sim \mathcal{U}[0,1]}\left[a+b>c \wedge a+c>b \wedge b+c>a\right] \nonumber \\
+    = \mu\left(\left\{ \langle x,y,z\rangle \in [0,1]^3: x+y>z \wedge x+z>y \wedge y+z>x \right\}\right)
+\end{gather}
+
+Можна обрахувати такий об'єм, а можна діяти наступним чином: зафіксуємо найбільшу сторону $c$. Тоді ймовірність сформувати трикутник з двох інших сторін $a,b$ дорівнює мірі $\mu\left(\left\{(a,b):0 \leq a\leq c, 0 \leq b \leq c, a+b \geq c\right\}\right)$. Така площа є просто площою прямокутного трикутиника з двома сторонами $c$, тобто $\frac{c^2}{2}$. Оскільки $c\in[0,1]$, то загальна ймовірність $\int_0^1 \frac{c^2dc}{2} = \frac{1}{6}$. Оскільки ми зафіксували лише одну сторону з трьох, то аналогічна ймовірність буде, якщо фіксувати $a,b$. Тоді загальна ймовірність дорівнює $\boxed{\frac{1}{2}}$.
+
+\problem{Номер 8.19, Турчин}
+
+\hspace{20px}\textbf{Умова.} На відрізку $[-1,1]$ навмання вибирають дві точки. Нехай $p,q$ -- координати цих точок. Знайти ймовірність того, що квадратне $x^2+px+q=0$:
+\begin{enumerate}
+    \item має дійсні корені;
+    \item не має дійсних коренів.
+\end{enumerate}
+
+\textbf{Розв'язок.} Щоб квадратне рівняння $x^2+px+q=0$ мало дійсні корені, дискримінант $p^2-4q$ має бути невід'ємним. Отже, задача полягає у знаходженні
+\begin{equation}
+    \mathbb{P}_{p,q \sim \mathcal{U}[-1,1]}\left[p^2 \geq 4q\right]
+\end{equation}
+
+Помітимо, що геометрично, набір $(p,q)$, де кожна компонента обирається з відрізку $[-1,1]$, задає квадрат з центром у $(0,0)$ зі стороною довжини $2$.
+
+Нехай ми відкладаємо $p$ по $x$, а $q$ по $y$. Тоді подія $p^2 \geq 4q$ геометрично задає частину площини на $\mathbb{R}^2$ під кривою $y = \frac{x^2}{4}$. Таким чином, наша шукана ймовірність:
+\begin{equation}
+    \mathbb{P}_{p,q \sim \mathcal{U}[-1,1]}\left[p^2 \geq 4q\right] = \frac{\mu(\{\langle x, y \rangle \in [-1,1]^2: y \leq \frac{1}{4}x^2\})}{\mu([-1,1]^2)},
+\end{equation}
+де $\mu$ -- міра Лебега на $\mathbb{R}^2$. Порахувати $\mu([-1,1]^2)$ дуже легко -- це $4$. А ось з виразом у чисельнику трошки складніше. 
+
+$y=\frac{1}{4}x^2$ задає параболу з вершиною у $(0,0)$, що проходить через точки $(\pm 1, 1/4)$ -- точки на лівій і правій сторін квадрату. Тому таку міру можна обрахувати як:
+\begin{equation}
+    \mu(\{\langle x, y \rangle \in [-1,1]^2: y \leq \frac{1}{4}x^2\}) = 2 + \int_{-1}^1 \frac{1}{4}x^2dx = \frac{13}{6},
+\end{equation}
+тут ми додаємо $2$, оскільки треба додати прямутник зі сторонами $2 \times 1$.
+
+Таким чином, остаточна ймовірність дорівнює $\boxed{\frac{13}{24}}$. Відповідно, ймовірність другого пункту $1-\frac{13}{24}=\boxed{\frac{11}{24}}$. 
+
+\problem{Номер 8.21, Турчин}
+
+\hspace{20px}\textbf{Умова.} У круг вписано квадрат. Точку навмання кидають у круг. Знайти умовірність того, що вона потрапить у квадрат.
+
+\textbf{Розв'язок.} Нехай радіус кругу $r$. Тоді, оскільки діагональ квадрату є діаметром кругу, то діагональ квадрата дорівнює $2r$. Це означає, що сторона квадрата $\sqrt{2}r$, а тому площа $2r^2$.
+
+У свою чергу, площа кругу $\pi r^2$. Тому ймовірність потрапляння у квадрат -- відношення площі квадрата до площі круга $\frac{2r^2}{\pi r^2} = \boxed{\frac{2}{\pi}}$.
+
+\problem{Стор. 10, В, №5(а)}
+
+\hspace{20px}\textbf{Умова.} Довести, що $\mathbb{P}(A \Delta B)=\mathbb{P}(A)+\mathbb{P}(B)-2\mathbb{P}(A\cap B)$.
+
+\textbf{Розв'язання.} 
+\begin{gather}
+    \mathbb{P}(A \Delta B) = \mathbb{P}((A \setminus B) \cup (B \setminus A)) = \mathbb{P}(A \setminus B) + \mathbb{P}(B \setminus A) \nonumber \\
+    = \mathbb{P}(A) - \mathbb{P}(A \cap B) + \mathbb{P}(B) - \mathbb{P}(B \cap A) = \mathbb{P}(A)+\mathbb{P}(B)-2\mathbb{P}(A \cap B)
+\end{gather}
+
+Тут ми скористалися тим, що події $A \setminus B$ та $B \setminus A$ мають нульовий перетин, а також те, що $\mathbb{P}(A \setminus B) = \mathbb{P}(A) - \mathbb{P}(A \cap B)$ (було доведено на попередній парі). \qed 
+
+\problem{Стор. 10, В, №5(б)}
+
+\hspace{20px}\textbf{Умова.} Довести нерівність трикутника:
+\begin{equation}
+    \mathbb{P}(A \Delta B) \leq \mathbb{P}(A \Delta C)+\mathbb{P}(C \Delta B)
+\end{equation}
+
+\textbf{Розв'язання.} Помітимо наступний факт:
+\begin{equation}
+    A \Delta B \subset (A \Delta C) \cup (C \Delta B)
+\end{equation}
+Дійсно,
+\begin{gather}
+    A \Delta B = (A \Delta B) \Delta (B \Delta C)\nonumber \\ = ((A \Delta C) \cup (C \Delta B)) \setminus ((A \Delta C) \cap (C \Delta B)) \nonumber \\ \subset (A \Delta C) \cup (C \Delta B)
+\end{gather}
+Отже,
+\begin{equation}
+    \mathbb{P}(A \Delta B) \leq \mathbb{P}\left((A \Delta C) \cup (C \Delta B)\right) \leq \mathbb{P}(A \Delta C) + \mathbb{P}(C \Delta B)\qed
+\end{equation}
+
+\problem{Стор. 10, В, №7}
+
+\hspace{20px}\textbf{Умова.} Нехай $A_k \in \mathcal{F}$, $\mathbb{P}(A_k)=1,k \geq 1$. Довести, щоб $\mathbb{P}(\bigcap_{k \in \mathbb{N}}A_k)=1$.
+
+\textbf{Розв'язок.} 
+\begin{gather}
+    1 \geq \mathbb{P}\left(\bigcap_{k \in \mathbb{N}}A_k\right) = 1 - \mathbb{P}\left(\overline{\bigcap_{k \in \mathbb{N}}A_k}\right) \nonumber \\
+    = 1 - \mathbb{P}\left(\bigcup_{k \in \mathbb{N}}\overline{A}_k\right) \geq 1 - \sum_{k \in \mathbb{N}}\underbrace{\mathbb{P}(\overline{A}_k)}_{=0} = 1
+\end{gather}
+Отже, ми отримали $1 \geq \mathbb{P}\left(\bigcap_{k \in \mathbb{N}}A_k\right) \geq 1$, тому $\mathbb{P}\left(\bigcap_{k \in \mathbb{N}}A_k\right)=1$. \qed
+
+\problem{Стор. 11, №2(a)}
+
+\hspace{20px}\textbf{Умова.} Довести нерівність Буля:
+\begin{equation}
+    \mathbb{P}(A \cap B) \geq 1 - \mathbb{P}(\overline{A}) - \mathbb{P}(\overline{B})
+\end{equation}
+\textbf{Розв'язання.} 
+\begin{equation}
+    \mathbb{P}(A \cap B) = \mathbb{P}(\Omega \setminus \overline{A \cap B}) = 1 - \mathbb{P}(\overline{A} \cup \overline{B}) \geq 1-\mathbb{P}(\overline{A}) - \mathbb{P}(\overline{B})\qed
+\end{equation}
+
+\problem{Стор. 11, №4}
+
+\hspace{20px}\textbf{Умова.} Подія $C$ вдвічі більш ймовірна, ніж $A$, а подія $B$ настільки ж ймовірна, як події $A$ і $C$ разом. Ці події несумісні, і їх об'єднання співпадає з усім простором елементарних подій. Знайти ймовірності $A,B,C$.
+
+\textbf{Розв'язання.} 
+
+\begin{enumerate}
+    \item Подія $C$ вдвічі більш ймовірна, ніж $A$ означає, що $\mathbb{P}(C) = 2\mathbb{P}(A)$.
+    \item Подія $B$ настільки ж ймовірна, як події $A$ і $C$ разом -- $\mathbb{P}(B) = \mathbb{P}(A \cup C)$.
+    \item Ці події несумісні -- тобто попарно і разом є неперетинними.
+    \item Об'єднання збігається з простором елементарних подій -- $A \cup B \cup C = \Omega$.
+\end{enumerate}
+
+З третього та четвертого пунктів випливає $\mathbb{P}(A) + \mathbb{P}(B)+\mathbb{P}(C)=1$, а другу умову можна записати як $\mathbb{P}(B)=\mathbb{P}(A)+\mathbb{P}(C)$. Якщо позначимо $\mathbb{P}(A)=p_A,\mathbb{P}(B)=p_B,\mathbb{P}(C)=p_C$, то отримаємо
+\begin{equation}
+    \begin{cases}
+        p_C = 2p_A \\
+        p_B = p_A+p_C \\
+        p_A+p_B+p_C=1
+    \end{cases}
+\end{equation}
+Підставимо перше рівняння у наступні дві:
+\begin{equation}
+    \begin{cases}
+    p_B = 3p_A \\
+    3p_A+p_B = 1
+    \end{cases}
+\end{equation}
+Звідси одразу $p_B=\frac{1}{2}$, $p_A=\frac{1}{6}$. Тому $p_C=\frac{1}{3}$.
+
+\textbf{Відповідь.} $p_A=\frac{1}{6},p_B=\frac{1}{2},p_C=\frac{1}{3}$.
+
+\problem{Стор. 11, №9}
+
+\hspace{20px}\textbf{Умова.} Нехай $\mathbb{P}(A) \geq 0.8,\mathbb{P}(B) \geq 0.8$. Довести, що $\mathbb{P}(A\cap B) \geq 0.6$.
+
+\textbf{Розв'язання.} 
+\begin{equation}
+    \mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B) = 1.6 - \mathbb{P}(A \cap B) \leq 1
+\end{equation}
+Звідси отримуємо $\mathbb{P}(A \cap B) \geq 0.6$. \qed
+
+\end{document}

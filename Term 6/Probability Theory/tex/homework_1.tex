@@ -1,0 +1,211 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-prob-theory-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Домашня Робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Півень О.Л.}
+\date{\today}
+\duedate{15:00 21 лютого, 2024}
+\assignno{1}
+\semester{Весняний семестр 2024}
+\mainproblem{Аксiоматичне означення ймовiрностей}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{Сторінка 8, номер А(1)}
+
+\hspace{20px}\textit{Умова.} Монету пiдкидають тричi. Описати простiр елементарних подiй. Описати подiї: $A$ -- один раз з’явиться герб, $B$ -- при другому пiдкиданнi
+з’явиться герб. Описати подiї: $A \cap B$, $A \cup \overline{B}$, $\overline{A}$.
+
+\textit{Розв'язання.} У якості ймовірностного простору візьмемо наступну множину:
+\begin{equation}
+    \Omega := \{0,1\}^3 \equiv \{\langle \omega_1,\omega_2,\omega_3 \rangle: \omega_i \in \{0,1\}\},
+\end{equation}
+де для $\omega \in \Omega$, $\omega_i = 1$ ($i \in \{1,2,3\}$) позначає, що на $i^{\text{ому}}$ кидку випав герб, а $\omega_i=0$ -- відповідно ціна. 
+
+Для події $A$ достатньо легко перерахувати усі елементи:
+\begin{equation}
+    A = \{\langle 1,0,0\rangle,\langle 0,1,0\rangle,\langle 0,0,1\rangle\}.
+\end{equation}
+Подія $B$ формально записується як $B=\{\omega \in \Omega: \omega_2=1\}$, але можна і перерахувати ці події:
+\begin{equation}
+    B = \{\langle 0,1,0\rangle,\langle 1,1,0\rangle,\langle 0,1,1\rangle,\langle 1,1,1\rangle\}.
+\end{equation}
+З події $A$ лише одна елементарна подія $\langle 0,1,0\rangle$, де $\omega_2=1$, тому
+\begin{equation}
+    A \cap B = \{\langle 0,1,0\rangle\}.
+\end{equation}
+Для події $A \cup \overline{B}$ запишемо усі елементи $\overline{B}$:
+\begin{equation}
+    \overline{B} \triangleq \omega \setminus B = \{\langle 0,0,0\rangle,\langle 1,0,0\rangle,\langle 0,0,1\rangle,\langle 1,0,1\rangle\}.
+\end{equation}
+Тому об'єднання:
+\begin{equation}
+    A \cup \overline{B} = \{\langle 1,0,0\rangle,\langle 0,1,0\rangle,\langle 0,0,1\rangle,\langle 0,0,0\rangle,\langle 1,0,1\rangle\}
+\end{equation}
+Нарешті, знайдемо $\overline{A}$:
+\begin{equation}
+    \overline{A} = \{\langle 0,0,0\rangle,\langle 0,1,1\rangle,\langle 1,1,0\rangle,\langle 1,0,1\rangle,\langle 1,1,1\rangle\}
+\end{equation}
+
+\problem{Сторінка 8, номер B(1)}
+
+\hspace{20px}\textit{Умова.} Подiя $A$ полягає в тому, що число, взяте навмання з вiдрiзка $[-10, 10]$ не бiльше $4$, а подiя $B$ -- модуль цього числа не перевищує $2$. Що означають подiї: $A\cup B, A \cap B, B \setminus A, \overline{B},A \cap \overline{B},\overline{A}$.
+
+\textit{Розв'язання.} Простором елементарних подій є $\Omega = [-10,10]$. Подія $A=[-10,4]$, відповідно $B=[-2,2]$. Випишемо відповіді:
+\begin{equation}
+    A \cup B = [-10,4] \cup [-2,2] = [-10,4] = A
+\end{equation}
+\begin{equation}
+    A \cap B = [-10,4] \cap [-2,2] = [-2,2] = B
+\end{equation}
+\begin{equation}
+    B \setminus A = [-2,2] \setminus [-10,4] = \emptyset
+\end{equation}
+\begin{equation}
+    \overline{B} \triangleq \Omega \setminus B = [-10,10] \setminus [-2,2] = [-10,-2) \cup (2,10]
+\end{equation}
+\begin{equation}
+    A \cap \overline{B} = [-10,4] \cap ([-10,-2) \cup (2,10]) = [-10,-2)
+\end{equation}
+\begin{equation}
+    \overline{A} \triangleq \Omega \setminus A = [-10,10] \setminus [-10,4] = (4,10]
+\end{equation}
+
+\problem{Сторінка 11, номер 5}
+
+\hspace{20px}\textit{Умова.} Відомі $p_A:=\mathbb{P}(A),p_B:=\mathbb{P}(B),p_{AB}:=\mathbb{P}(A \cap B)$. Знайти ймовірності $A \cup B,\overline{A} \cup \overline{B},\overline{A} \cup B,\overline{A} \cap B,\overline{A \cup B},\overline{A \cap B}$. 
+
+\textit{Розв'язання.} Для першого випадку використовуємо відомий результат:
+\begin{equation}
+    \boxed{\mathbb{P}(A \cup B) = p_A + p_B - p_{AB}}
+\end{equation}
+Для другого виразу помітимо, що $\overline{A} \cup \overline{B} = \overline{A \cap B}=\Omega \setminus (A \cap B)$, тому
+\begin{equation}
+    \boxed{\mathbb{P}(\overline{A} \cup \overline{B}) = \mathbb{P}(\overline{A \cap B}) = 1 - p_{AB}}
+\end{equation}
+Для $\overline{A} \cap B$ помітимо, що це те саме, що $B \setminus A$. Також замічаємо, що $B = (A \cap B) \cup (B \setminus A)$, причому $A \cap B$ і $B \setminus A$ не перетинаються. Таким чином, $\mathbb{P}(B) = \mathbb{P}(A \cap B) + \mathbb{P}(B \setminus A)$, звідки випливає $\mathbb{P}(B \setminus A) = p_B-p_{AB}$. Остаточно:
+\begin{equation}
+    \boxed{\mathbb{P}(\overline{A} \cap B) = p_B - p_{AB}}
+\end{equation}
+
+Для $\overline{A} \cap B$, помітимо що це в точності $\overline{A \setminus B}$, а оскільки $\mathbb{P}(A \setminus B)=p_A-p_{AB}$, тому
+\begin{equation}
+    \boxed{\mathbb{P}(\overline{A} \cap B)=1+p_{AB}-p_A}
+\end{equation}
+
+Нарешті,
+\begin{equation}
+    \boxed{\mathbb{P}(\overline{A \cup B}) = 1 + p_{AB} - p_A - p_B}
+\end{equation}
+
+\problem{Лекція. Запитання 1}
+
+\hspace{20px}\textit{Умова.} Чи можуть бути рiвноймовiрнi елементарнi подiї у випадку злiченного простору $\Omega$?
+
+\textit{Розв'язання.} Від протилежного: нехай $\Omega = \{\omega_n\}_{n \in \mathbb{N}}$, причому 
+\begin{equation}
+\exists q \in (0,1): \mathbb{P}(\omega_n)=q \; \forall n \in \mathbb{N}.
+\end{equation}
+Тоді якщо розподіл $\mathbb{P}$ коректно задано, то $\lim_{N \to \infty}\sum_{n=1}^N \mathbb{P}(\omega_n) = 1$. Проте, оскільки $\sum_{n=1}^N \mathbb{P}(\omega_n)=\sum_{n=1}^N q = qN$, то границя суми $\lim_{N \to \infty}qN = +\infty$ -- розбігається. Отже, отримали протиріччя, тому рівнойморівний розподіл не є можливим на зліченному ймовірностному просторі. \qed
+
+\problem{Лекція. Запитання 2}
+
+\hspace{20px}\textit{Умова.} Пiдкидається монета до тих пiр, доки не випаде герб. Результат -- кiлькiсть пiдкидань. Тут $\Omega = \mathbb{N}$, де $\omega \in \mathbb{N}$ -- число пiдкидань монети. Як означити тут $\mathbb{P}(\omega)$ для $\omega \in \mathbb{N}?$
+
+\textit{Відповідь.} Нехай ймовірність випадіння герба дорівнює $\theta$ (тобто, взагалі кажучи, монета не обов'язково чесна). Ймовірність того, що підкидання буде одне -- це ймовірність випадіння ціни на першому кидку, тобто $1-\theta$. Ймовірність мати два підкидання -- це ймовірність на першому підкиданні отримати герб, а на другому -- ціну. Оскільки підкидання є незалежними, то маємо $\theta(1-\theta)$. Продовжуючи міркування, можемо отрмати:
+\begin{equation}
+    \mathbb{P}(\omega) = \theta^{\omega-1}(1-\theta)
+\end{equation}
+Щоб довести коректність цього розподіла, помітимо, що
+\begin{equation}
+    \sum_{\omega \in \mathbb{N}}\mathbb{P}(\omega) = \sum_{\omega \in \mathbb{N}}\theta^{\omega-1}(1-\theta) = (1-\theta)\underbrace{\sum_{\omega \in \mathbb{N}}\theta^{\omega-1}}_{=1/(1-\theta)} = 1.
+\end{equation}
+
+\pagebreak
+\problem{Лекція. Вправа 3}
+
+\hspace{20px}\textit{Умова.} Довести властивості ймовірності на просторі $(\Omega,\mathcal{F},\mathbb{P})$.
+
+\textit{Розв'язання.} Пункти 1--3 доведені на лекції.
+
+\vspace{10px}
+
+\textit{Пункт 4. $\forall A \in \mathcal{F}: \mathbb{P}(A) \in [0,1]$.} 
+
+\textit{Доведення.} Оскільки $A \subset \Omega$, а $\mathbb{P}(\Omega)=1$ за означенням, то з властивостей міри маємо $\mathbb{P}(A) \leq \mathbb{P}(\Omega) = 1$. Також оскільки міра -- невід'ємна функція на $\sigma$-алгебрі підмножин, то $\mathbb{P}(A) \geq 0$. \qed
+
+\vspace{10px}
+\textit{Пункт 5. Якщо $A \subset B$, то $\mathbb{P}(B \setminus A) = \mathbb{P}(B) - \mathbb{P}(A)$ (субтрактивнiсть мiри $\mathbb{P}$) та $\mathbb{P}(A) \leq \mathbb{P}(B)$ (монотоннiсть мiри $\mathbb{P}$).} 
+
+\textit{Доведення.} Помітимо, що $B = A \cup (B \setminus A)$, причому $A$ та $B \setminus A$ не перетинаються. Тому, з адитивності міри, маємо $\mathbb{P}(B) = \mathbb{P}(A) + \mathbb{P}(B \setminus A)$, звідки $\mathbb{P}(B \setminus A) = \mathbb{P}(B) - \mathbb{P}(A)$. Оскільки міра невід'ємна, то $\mathbb{P}(B \setminus A) \geq 0$, тоді і $\mathbb{P}(B) - \mathbb{P}(A) \geq 0$, звідки випливає $\mathbb{P}(B) \geq \mathbb{P}(A)$. \qed
+
+\vspace{10px}
+\textit{Пункт 6. $\forall A,B \in \mathcal{F}: \mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)$.}
+
+\textit{Доведення.} Оскільки $A = (A \cap B) \cup (A \setminus B)$, причому $A \cap B$ та $A \setminus B$ не перетинаються, тому $\mathbb{P}(A) = \mathbb{P}(A \cap B) + \mathbb{P}(A \setminus B)$, звідки $\mathbb{P}(A \setminus B) = \mathbb{P}(A) - \mathbb{P}(A \cap B)$. Аналогічно $\mathbb{P}(B \setminus A) = \mathbb{P}(B) - \mathbb{P}(A \cap B)$.
+
+Тепер розкладемо $A \cup B = (A \setminus B) \cup (A \cap B) \cup (B \setminus A)$, а оскільки три множини в об'єднанні не перетинаються, то
+\begin{gather}
+    \mathbb{P}(A \cup B) = \mathbb{P}(A \setminus B) + \mathbb{P}(A \cap B) + \mathbb{P}(B \setminus A) \nonumber \\
+    = \mathbb{P}(A) - \mathbb{P}(A \cap B) + \mathbb{P}(A \cap B) + \mathbb{P}(B) - \mathbb{P}(A \cap B) \nonumber \\
+    = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B)\qed
+\end{gather}
+
+\vspace{10px}
+\textit{Пункт 7. $\mathbb{P}\left(\bigcup_{n\in\mathbb{N}}A_n\right) \leq \sum_{n \in \mathbb{N}}\mathbb{P}(A_n) \; \forall A_n \in \mathcal{F}(n \in \mathbb{N})$.}
+
+\textit{Доведення.} Позначимо $G_n := A_n \setminus \bigcup_{k=1}^{n-1}A_k$. Видно, що $\bigcup_{n \in \mathbb{N}}G_n = \bigcup_{n \in \mathbb{N}}A_n$, причому $G_i \cap G_j = \emptyset \; \forall i \neq j$, тому $\mathbb{P}\left(\bigcup_{n \in \mathbb{N}}G_n\right) = \sum_{n \in \mathbb{N}}\mathbb{P}(G_n)$. Також, оскільки $G_n \subset A_n \; \forall n \in \mathbb{N}$, то і $\mathbb{P}(G_n) \leq \mathbb{P}(A_n)$, тому $\sum_{n \in \mathbb{N}}\mathbb{P}(G_n) \leq \sum_{n \in \mathbb{N}}\mathbb{P}(A_n)$. Отже, остаточно 
+\begin{equation}
+    \sum_{n \in \mathbb{N}}\mathbb{P}(G_n) = \mathbb{P}\left(\bigcup_{n \in \mathbb{N}}G_n\right) = \boxed{\mathbb{P}\left(\bigcup_{n \in \mathbb{N}}A_n\right) \leq \sum_{n \in \mathbb{N}}\mathbb{P}(A_n)}.\qed
+\end{equation}
+
+\vspace{10px}
+\textit{Пункт 8. $A_n \in \mathcal{F},A_n \subset A_{n+1}$, тоді $\mathbb{P}\left(\bigcup_{n \in \mathbb{N}}A_n\right) = \lim_{n \to \infty}\mathbb{P}(A_n)$.}
+
+\textit{Доведення.} Розглянемо допоміжні множини $B_n:=A_n \setminus A_{n-1},B_1:=A_1$. При такій конструкції, $A_n = \bigcup_{k=1}^n B_k$, і усі $\{B_n\}_{n \in \mathbb{N}}$ попарно не перетинаються, тому
+\begin{equation}
+    \mathbb{P}\left(\bigcup_{n \in \mathbb{N}}A_n\right) = \mathbb{P}\left(\bigcup_{n \in \mathbb{N}}B_n\right) = \sum_{n \in \mathbb{N}}\mathbb{P}(B_n) = \lim_{N \to \infty}\sum_{n=1}^N \mathbb{P}(B_n) = \lim_{N \to \infty} \mathbb{P}(A_N). \qed
+\end{equation}
+
+\vspace{10px}
+\textit{Пункт 9. $A_n \in \mathcal{F},A_{n} \supset A_{n+1}$, тоді $\mathbb{P}\left(\bigcap_{n \in \mathbb{N}}A_n\right) = \lim_{n \to \infty}\mathbb{P}(A_n)$.}
+
+\textit{Доведення.} Ідея: якщо $A_n \supset A_{n+1}$, то $\overline{A}_n \subset \overline{A}_{n+1}$. 
+
+Тому, користуючись минулим пунктом,
+\begin{gather}
+    \mathbb{P}\left(\bigcap_{n \in \mathbb{N}}A_n\right) = 1 - \mathbb{P}\left(\overline{\bigcap_{n \in \mathbb{N}}A_n}\right) = 1 - \mathbb{P}\left(\bigcup_{n \in \mathbb{N}}\overline{A}_n\right)\nonumber\\
+    = 1 - \lim_{n \to \infty}\mathbb{P}(\overline{A}_n) = \lim_{n \to \infty}(1-\mathbb{P}(\overline{A}_n)) = \lim_{n \to \infty} \mathbb{P}(A_n).\qed
+\end{gather}
+
+
+\problem{Лекція. Вправа 4}
+
+\hspace{20px}\textit{Умова.} Навести приклад злiченного ймовiрнiсного простору з $\Omega = \mathbb{N}$.
+
+\textit{Відповідь.} Наприклад, розподіл Пуасона, де відсутній нульовий елемент, тобто
+\begin{equation}
+    \mathbb{P}(\omega;\lambda) := \frac{\lambda^{\omega-1}}{(\omega-1)!}e^{-\lambda}, \; \omega \in \mathbb{N}=\Omega.
+\end{equation}
+
+\problem{Лекція. Вправа 5}
+
+\hspace{20px}\textit{Умова.} Нехай $\Omega \subset \mathbb{R}^n$ -- обмежена вимiрна за Лебегом множина, $\mu$ – мiра Лебега в $\mathbb{R}^n$ та $\mathcal{F}$ -- $\sigma$-алгебра вимiрних за Лебегом пiдмножин $\Omega$. Припустимо, що $\mu(\Omega) \neq 0$. Тодi \textbf{геометрична ймовiрнiсть} подiї $A$ визначається формулою:
+\begin{equation}
+    \mathbb{P}(A) \triangleq \frac{\mu(A)}{\mu(\Omega)}.
+\end{equation}
+Перевiрити, що $\mathbb{P}$ -- ймовiрнiсна мiра на $\sigma$–алгебрi $\mathcal{F}$.
+
+\textit{Доведення.} Якщо $\mu(\Omega)\neq 0$, то $\mu(\Omega) =: \gamma \in \mathbb{R}_{>0}$. Тоді очевидно, що $\mathbb{P}$ є мірою, оскільки множення на додатню константу $\gamma^{-1}>0$ не змінює властивостей міри. Окрім того, $\mathbb{P}(\Omega) = \frac{\mu(\Omega)}{\mu(\Omega)}=1$, тому $\mathbb{P}$ є і ймовірностною мірою. \qed
+
+\end{document}

@@ -1,0 +1,139 @@
+%! TEX program = pdflatex
+
+\documentclass[oneside,solution]{karazin-complan-assign}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+\title{Контрольна робота}
+\author{Захаров Дмитро}
+\studentID{МП-31}
+\instructor{Гиря Н.П.}
+\date{\today}
+\duedate{11:30 4 березня, 2024}
+\assignno{1}
+\semester{Весняний семестр 2024}
+\mainproblem{Обчислення лишків. Варіант 12}
+
+\begin{document}
+
+\maketitle
+
+% \startsolution[print]
+
+\problem{}
+
+\hspace{20px}\textbf{Умова.} Обчислити лишок: $\text{Res}_{z=-3/2}\tan \pi z$.
+
+\textbf{Розв'язання.} Спочатку запишемо, що
+\begin{equation}
+    f(z) = \frac{\sin \pi z}{\cos \pi z}
+\end{equation}
+Бачимо, що точка $z=-3/2$ є нулем знаменника і не є нулем чисельника. Окрім того, вона є полюсом першого порядку (оскільки $(\cos \pi z)'\Big|_{z=-3/2}\neq 0$). Тому, лишок можемо обрахувати за допомогою формули 
+\begin{equation}
+    \text{Res}_{z=z_0}f(z)=\lim_{z \to z_0}(z-z_0)f(z).
+\end{equation}
+Підставимо:
+\begin{equation}
+    \text{Res}_{z=-3/2}f(z) = \lim_{z \to -3/2} \left(z+\frac{3}{2}\right)\tan \pi z
+\end{equation}
+Далі обраховуємо границю:
+\begin{equation}
+    \text{Res}_{z=-3/2}f(z) = \lim_{\epsilon \to 0} \epsilon \tan \left(\pi \epsilon - \frac{3\pi}{2}\right) = -\lim_{\epsilon \to 0} \frac{\epsilon}{\tan \pi \epsilon}
+\end{equation}
+Оскільки $\tan \pi \epsilon \sim_{\epsilon \to 0} \pi \epsilon$, остаточно отримуємо:
+\begin{equation}
+    \boxed{\text{Res}_{z=-3/2}f(z) = -\frac{1}{\pi}}
+\end{equation} 
+
+\textbf{Відповідь.} $\text{Res}_{z=-3/2}f(z) = -\frac{1}{\pi}$
+
+\problem{}
+
+\hspace{20px}\textbf{Умова.} Вказати усі особливі точки (з детальним поясненням):
+\begin{equation}
+    f(z) = \frac{\sin z}{e^z-1}
+\end{equation}
+
+\textbf{Розв'язання.} Спочатку знайдемо нулі знаменника:
+\begin{equation}
+    e^z = 1 \implies z = 2\pi i \cdot k, \; k \in \mathbb{Z}
+\end{equation}
+З цих точок лише $z=0$ є також нулем чисельника. Причому, оскільки $\sin z \sim_{z \to 0} z, e^{z}-1 \sim_{z \to 0}z$, то
+\begin{equation}
+    \lim_{z \to 0} \frac{\sin z}{e^{z}-1} = \lim_{z \to 0} \frac{z}{z} = 1.
+\end{equation}
+Тому, $z=0$ є \textit{усувною особливістю}. 
+
+Для усіх інших точок помічаємо, що вони є нулями першого порядку знаменника, але не є нулями чисельника. Дійсно, для похідної $(e^z-1)'\Big|_{z=2\pi k i}=e^z\Big|_{z=2\pi k i}=1 \neq 0$. Тому, точки
+\begin{equation}
+    z_k = 2\pi k i, \; k \in \mathbb{Z} \setminus \{0\},
+\end{equation}
+є \textit{полюсами першого порядку} (можна також переконатись, що $\{z_k\}_{k \in \mathbb{Z} \setminus \{0\}}$ є усувними особливостями функцій $\{(z-z_k)f(z)\}_{k \in \mathbb{Z} \setminus \{0\}}$). 
+
+Нарешті, оскільки в нас нескінченно багато нулів знаменника, причому розкиданних рівномірно по уявній вісі, то $z=\infty$ є \textit{неізольованою особливістю}.
+
+\textbf{Відповідь.} 
+\begin{itemize}
+    \item $z=0$ -- усувна особливість.
+    \item $z_k=2\pi k i, \; k \in \mathbb{Z} \setminus \{0\}$ -- полюси першого порядку.
+    \item $z=\infty$ -- неізольована особливість.
+\end{itemize}
+\pagebreak
+\problem{}
+
+\hspace{20px}\textbf{Умова.} Обчислити лишок:
+\begin{equation*}
+    \text{Res}_{z=\infty}f(z), \; f(z)= \frac{\sin z}{z^2}
+\end{equation*}
+
+\textbf{Розв'язання.} 
+
+\textbf{Спосіб 1.} По-перше бачимо, що $z=\infty$ є усувною особливістю, оскільки $\lim_{z \to \infty} \frac{\sin z}{z^2} = f(\infty)= 0$. Далі, скористаємось наступною формулу для обрахунку лишка:
+\begin{equation}
+    \text{Res}_{z=\infty}f(z) = \lim_{z \to \infty} z(f(\infty)-f(z)) = -\lim_{z \to \infty} \frac{\sin z}{z} = \boxed{-1}
+\end{equation}
+
+\textbf{Спосіб 2.} Скористаємось формулою:
+\begin{equation}
+    \text{Res}_{z=\infty}f(z) = -\text{Res}_{z=0}\frac{1}{z^2}f\left(\frac{1}{z}\right) = -\text{Res}_{z=0}\sin\frac{1}{z}
+\end{equation}
+Оскільки
+\begin{equation}
+    \sin \frac{1}{z} = \frac{1}{z} - \frac{1}{3!\cdot z^3} + \frac{1}{5!\cdot z^5} + \dots,
+\end{equation}
+то лишок у $z=0$ відповідає коефіцієнту $c_{-1}$, що дорівнює $1$. Отже, $\text{Res}_{z=\infty}f(z)=-1$.
+
+\textbf{Відповідь.} $\text{Res}_{z=\infty}f(z) = -1$.
+
+\problem{}
+
+\hspace{20px}\textbf{Умова.} Обчислити лишок:
+\begin{equation*}
+    \text{Res}_{z=0}f(z), \; f(z) = \frac{z}{(e^{5z}-1)^2}
+\end{equation*}
+
+\textbf{Розв'язання.} Спочатку визначимо тип точки $z=0$. По-перше, це нуль як чисельника, так і знаменника. Тому, потрібно з'ясувати степінь нуля у кожній з частин. У чисельнику очевидно маємо нуль першого порядку. У знаменнику, спочатку знайдемо степінь нуля для $e^{5z}-1$. Як мінімум маємо першу степінь. Якщо взяти похідну, то отримаємо $(e^{5z}-1)' = 5e^{5z}\Big|_{z=0}=5 \neq 0$. Тому, $z=0$ є нулем другого порядку для $(e^{5z}-1)^2$, а значить $z=0$ є полюсом першого порядку для нашої функції. Тому, лишок обраховуємо за допомогою формули:
+\begin{equation}
+    \text{Res}_{z=0}f(z) = \lim_{w \to 0}wf(w) = \frac{w^2}{(e^{5w}-1)^2}.
+\end{equation}
+Оскільки $e^{\alpha w}-1 \sim_{w \to 0} \alpha w$, то маємо:
+\begin{equation}
+    \text{Res}_{z=0}f(z) = \lim_{w \to 0} \frac{w^2}{25w^2} = \boxed{\frac{1}{25}}
+\end{equation}
+
+\textbf{Відповідь.} $\text{Res}_{z=0}f(z)=\frac{1}{25}$.
+
+\problem{}
+
+\textbf{Умова.} Вказати функцію $f(z)$, у якої в $z=\infty$ полюс другого порядку, а лишок дорівнює $0$.
+
+\textbf{Розв'язання.} Те, що $z=\infty$ є полюсом другого порядку $f(z)$ означає, що $z=0$ є полюсом другого порядку для функції $\phi(z)=f(\frac{1}{z})$. Для умови з лишками згадаємо, що
+\begin{equation}
+    \text{Res}_{z=\infty}f(z) = -\text{Res}_{z=0}\frac{\phi(z)}{z^2} = 0
+\end{equation}
+Тобто, якщо розкласти $\phi(z)$ у ряд Лорана, то коефіцієнт $c_{1}$ (важливо, що не $c_{-1}$, а саме $c_1$) дорівнює $0$. Отже, достатньо обрати $\phi(z)=\frac{1}{z^2}$, а тоді вираз для $f(z)$ виходить дуже простий: $f(z) = z^2$.
+
+\textbf{Відповідь.} $f(z)=z^2$.
+
+\end{document}
