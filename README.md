@@ -78,6 +78,6 @@ This repository contains my homework from _V.N. Karazin Kharkiv National Univers
 | [General Probability Theory](Term%206/Probability%20Theory/pdf)| 4 | **97** |
 | [Stability and Controlability](Term%206/Control%20and%20Stabilization/pdf) | 4 | **96** |
 | [Functional Analysis](Term%206/Functional%20Analysis/pdf) | 4 | **95** |
-| [Variational Analysis and Optimal Control](Term%206/Variational%20Analysis/pdf/) | 4 | **95** |
+| [Variational Analysis](Term%206/Variational%20Analysis/pdf/) | 4 | **95** |
 | [Data Processing in IT](Term%206/Data%20Processing%20in%20IT/) | 4 | **100** |
 | [Mobile App Development (Android)](https://github.com/ZamDimon/android-course) | 3 | **92** |
