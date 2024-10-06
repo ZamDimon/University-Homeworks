@@ -1,0 +1,505 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Математичної Статистики \#2}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 8 вересня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Вправи з лекції}
+
+\subsection{Вправа 1. Характеристики розподілу $\chi_n^2$}
+\begin{problem}
+    Нехай $\xi \sim \chi_n^2$. Довести, що $\mathbb{E}[\xi]=n, \text{Var}[\xi]=2n$.
+\end{problem}
+
+\textbf{Розв'язання.} За означенням величина $\xi$ дорівнює:
+\begin{equation*}
+    \xi = \sum_{j=1}^n \xi_j^2, \quad (\xi_1,\dots,\xi_n) \sim \mathcal{N}(\mathbf{0}_n, E_{n \times n}).
+\end{equation*}
+
+Знаходимо математичне сподівання:
+\begin{equation*}
+    \mathbb{E}[\xi] = \mathbb{E}\left[\sum_{j=1}^n \xi_j^2\right] = \sum_{j=1}^n \mathbb{E}[\xi_j^2]
+\end{equation*}
+
+Тепер треба знайти $\mathbb{E}[\xi_j^2]$. Можна зробити це означенням, шукаючи $\int_{\mathbb{R}}z^2f_{\xi_j}(z)dz$, де $f_{\xi_j}(z)=\exp(-z^2/2)/\sqrt{2\pi}$ --- щільність розподілу $\xi_j$. Проте, легше діяти так: ми знаємо, що $\text{Var}[\xi_j] = 1$, а з іншого боку $\text{Var}[\xi_j] = \mathbb{E}[\xi_j^2]-\mathbb{E}[\xi_j]^2$. Математичне сподівання $\xi_j$ дорівнює нулю, тому $\mathbb{E}[\xi_j^2] = 1$. Отже,
+\begin{equation*}
+    \mathbb{E}[\xi] = \sum_{j=1}^n \mathbb{E}[\xi_j^2] = \sum_{j=1}^n 1 = n.
+\end{equation*}
+
+Тепер знаходимо дисперсію:
+\begin{equation*}
+    \text{Var}[\xi] = \text{Var}\left[\sum_{j=1}^n \xi_j^2\right] = \sum_{j=1}^n \text{Var}[\xi_j^2] = \sum_{j=1}^n \left(\mathbb{E}[\xi_j^4] - \mathbb{E}[\xi_j^2]^2\right) = \sum_{j=1}^n \mathbb{E}[\xi_j^4] - n
+\end{equation*}
+
+Тут ми скористалися тим, що $\xi_j^2$ --- незалежні величини, тому дисперсія суми дорівнює сумі дисперсій. Нарешті, потрібно знайти $\mathbb{E}[\xi_j^4]$. Тут я лише бачу спосіб зробити це за означенням, але одразу розглянемо $\mathbb{E}[\xi_j^{2n}]$:
+\begin{equation*}
+    \mathbb{E}[\xi_j^{2n}] = \frac{1}{\sqrt{2\pi}}\int_{\mathbb{R}} z^{2n} \exp\left\{-\frac{z^2}{2}\right\}dz
+\end{equation*}
+
+Будемо інтегрувати частинами. Нехай $du := z^{2n}dz, v = \exp\left\{-\frac{z^2}{2}\right\}$. Тоді:
+\begin{equation*}
+    \mathbb{E}[\xi_j^{2n}] = \frac{1}{\sqrt{2\pi}} \left( \frac{z^{2n+1}}{2n+1}\exp\left\{-\frac{z^2}{2}\right\}\Big|_{z \to -\infty}^{z \to +\infty} + \int_{\mathbb{R}}\frac{z^{2n+1}}{2n+1} \cdot z \exp\left\{-\frac{z^2}{2}\right\}dz \right)
+\end{equation*}
+
+Звичайно, що границя всередині дужок занулиться, оскільки експонента спадає швидше за будь-яку степінь полінома. Тому:
+\begin{equation*}
+    \mathbb{E}[\xi_j^{2n}] = \frac{1}{(2n+1)\sqrt{2\pi}}\int_{\mathbb{R}}z^{2n+2}\exp\left\{-\frac{z^2}{2}\right\}dz = \frac{1}{2n+1} \cdot \mathbb{E}[\xi_j^{2n+2}]
+\end{equation*}
+
+Отже отримали рекурентну формулу $\mathbb{E}[\xi_j^{2n+2}] = (2n+1)\mathbb{E}[\xi_j^{2n}]$. Зокрема, $\mathbb{E}[\xi_j^4] = 3\mathbb{E}[\xi_j^2] = 3$. Тому:
+\begin{equation*}
+    \text{Var}[\xi] = \sum_{j=1}^n \mathbb{E}[\xi_j^4] - n = 3n - n = 2n. \quad \hfill \blacksquare
+\end{equation*}
+
+\subsection{Вправа 2. Вибіркова дисперсія}
+
+\begin{problem}
+    Нехай маємо $x_1,\dots,x_n \sim X$, причому $\mathbb{E}[X]=\mu$, $\text{Var}[X] = \sigma^2$. \textbf{Вибірковою дисперсією} називають точкову оцінку:
+    \begin{equation*}
+        \overline{\sigma}_X = \frac{1}{n}\sum_{i=1}^n (x_i - \overline{x})^2.
+    \end{equation*}
+
+    \begin{enumerate}[(a)]
+        \item Доведіть наступну формулу для обчислення вибіркової дисперсії, яку зручно використовувати при її підрахунку:
+        \begin{equation*}
+            \overline{\sigma}_X^2 = \left(\frac{1}{n}\sum_{i=1}^n x_i^2\right) - \overline{x}^2.
+        \end{equation*}
+        \item Доведіть наступне зображення для вибіркової дисперсії:
+        \begin{equation*}
+            \overline{\sigma}_X^2 = \left(\frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2\right) - (\overline{x} - \mu)^2.
+        \end{equation*}
+        Чому цю формулу не можна зазвичай застосовувати на практиці при обчисленні вибіркової дисперсії?
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.}
+
+\textit{Пункт (а).} Просто перетворимо вираз з означення для $\overline{\sigma}_X$:
+\begin{equation*}
+    \overline{\sigma}_X = \frac{1}{n}\sum_{i=1}^n (x_i - \overline{x})^2 = \frac{1}{n}\sum_{i=1}^n (x_i^2 - 2x_i\overline{x} + \overline{x}^2) = \frac{1}{n}\sum_{i=1}^n x_i^2 - \frac{2\overline{x}}{n}\sum_{i=1}^n x_i + \frac{1}{n}\sum_{i=1}^n\overline{x}^2 
+\end{equation*}
+
+Помітимо, що $\sum_{i=1}^n x_i = n\overline{x}$, а тому:
+\begin{equation*}
+    \overline{\sigma}_X = \frac{1}{n}\sum_{i=1}^n x_i^2 - 2\overline{x}^2 + \overline{x}^2 = \frac{1}{n}\sum_{i=1}^n x_i^2 - \overline{x}^2. \quad \hfill \blacksquare
+\end{equation*}
+
+\textit{Пункт (б).} Знову, алгебраїчно маємо:
+\begin{equation*}
+    \overline{\sigma}_X^2 = \frac{1}{n}\sum_{i=1}^n (x_i - \mu)^2 - (\overline{x} - \mu)^2 = \frac{1}{n}\sum_{i=1}^n x_i^2 - 2\mu\overline{x} + \mu^2 - \overline{x}^2 + 2\mu\overline{x} - \mu^2 = \frac{1}{n}\sum_{i=1}^n x_i^2 - \overline{x}^2. \quad \hfill \blacksquare
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 3. Незміщена оцінка дисперсії}
+
+\begin{problem}
+    \textbf{Незміщеною оцінкою дисперсії} називають вираз:
+    \begin{equation*}
+        \hat{\sigma}_X^2 = \frac{1}{n-1}\sum_{i=1}^n (x_i - \overline{x})^2.
+    \end{equation*}
+
+    Чому ця оцінка називається незміщеною?
+\end{problem}
+
+\textbf{Розв'язання.} Незміщеність означає, що математичне сподівання оцінки дорівнює справжньому значенню параметра, тобто
+\begin{equation*}
+    \mathbb{E}[\hat{\sigma}_X^2] = \sigma^2.
+\end{equation*}
+
+З лекції показано, що $\hat{\sigma}_X^2 = \frac{n}{n-1} \cdot \overline{\sigma}_X^2$, де $\overline{\sigma}_X^2$ --- вибіркова дисперсія. Тому:
+\begin{equation*}
+    \mathbb{E}[\hat{\sigma}_X^2] = \frac{n}{n-1} \cdot \mathbb{E}[\overline{\sigma}_X^2]
+\end{equation*}
+
+На лекції також доведено, що $\mathbb{E}[\overline{\sigma}_X^2] = \frac{n-1}{n} \cdot \sigma^2$. Отже, 
+\begin{equation*}
+    \mathbb{E}[\hat{\sigma}_X^2] = \frac{n}{n-1} \cdot \frac{n-1}{n} \cdot \sigma^2 = \sigma^2. \quad \hfill \blacksquare
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 4. Слушність незміщеної оцінки дисперсії}
+
+\begin{problem}
+    Довести слушність незміщеної оцінки дисперсії.
+\end{problem}
+
+\textbf{Розв'язання.} Потрібно довести, за означенням:
+\begin{equation*}
+    \forall \varepsilon > 0: \lim_{n \to \infty}\text{Pr}[|\hat{\sigma}_{X,n}^2 - \sigma^2| \geq \varepsilon] = 0.
+\end{equation*}
+
+З нерівності Маркова маємо:
+\begin{equation*}
+    \text{Pr}[|\hat{\sigma}_{X,n}^2 - \sigma^2| \geq \varepsilon] \leq \frac{\mathbb{E}[|\hat{\sigma}_{X,n}^2 - \sigma^2|]}{\varepsilon}.
+\end{equation*}
+
+Звідси мені не вдалося строго довести, що $\mathbb{E}[|\hat{\sigma}_{X,n}^2 - \sigma^2|] \xrightarrow[n \to \infty]{} 0$.
+
+\subsection{Вправа 5. Вибірковий центральний момент порядку 1}
+
+\begin{problem}
+    Доведіть, що $\overline{\mu}_1 = \frac{1}{n}\sum_{k=1}^n (x_k - \overline{x}) = 0$.
+\end{problem}
+
+\textbf{Розв'язання.}
+
+\begin{equation*}
+    \overline{\mu}_1 = \frac{1}{n}\sum_{k=1}^n (x_k - \overline{x}) = \frac{1}{n}\sum_{k=1}^n x_k - \frac{1}{n}\sum_{k=1}^n \overline{x} = \overline{x} - \overline{x} = 0. \quad \hfill \blacksquare
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 6. Груповані дані}
+
+\begin{problem}
+    Нехай маємо інтервали $[x_1,x_2), [x_2,x_3), \dots, [x_m, x_{m+1})$ з числами даних, що потрапили у відповідний проміжок, $n_1,\dots,n_m$. Для обчислення точкових оцінок, заміняємо інтервали на середини $z_j := \frac{x_j+x_{j+1}}{2}$. Запишіть формули для обчислення вибіркового середнього та вибіркової дисперсії в термінах цієї таблиці.
+\end{problem}
+
+\textbf{Розв'язання.} Будемо вважати, що наш розподіл має вигляд:
+\begin{equation*}
+    \text{Pr}[\xi = z_j] = \frac{n_j}{\sum_{\ell=1}^m n_{\ell}},
+\end{equation*}
+
+а $\underbrace{z_1,z_1,\dots,z_1}_{n_1}, \underbrace{z_2,\dots,z_2}_{n_2}, \dots, \underbrace{z_m, \dots, z_m}_{n_m}$ --- це вибірка з розподілу $\xi$. Тоді, згідно означенню, вибіркове середнє $\hat{\mu}$ дорівнює:
+\begin{equation*}
+    \hat{\mu} = \frac{1}{\sum_{j=1}^m n_j} \cdot \sum_{j=1}^m n_jz_j = \frac{\sum_{j=1}^m n_jz_j}{\sum_{j=1}^m n_j}
+\end{equation*}
+
+Тепер знайдемо вибіркову дисперсію. За означенням, вона дорівнює:
+\begin{equation*}
+    \hat{\sigma}^2 = \frac{1}{\sum_{j=1}^m n_j} \cdot \sum_{j=1}^m n_jz_j^2 - \hat{\mu}^2 = \frac{\left(\sum_{j=1}^m n_j\right)\left(\sum_{j=1}^m n_jz_j^2\right) - \left(\sum_{j=1}^m n_jz_j\right)^2}{\left(\sum_{j=1}^m n_j\right)^2}
+\end{equation*}
+
+\pagebreak
+
+\section{Вправи з практики}
+
+\subsection{Вправа 1. Укладені контракти}
+
+\begin{problem}
+    Провадились спостереження числа укладених контрактів різними фірмами міста, в результаті яких отримано наступні вибіркові дані про числа контрактів фірмами міста протягом місяця:
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            Число контрактів & 20 & 40 & 60 & 80 \\
+            \hline
+            Число фірм & 10 & 15 & 25 & 10 \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Побудувати полігон частот, вибіркову функцію розподілу та гістограму вибірки. Знайти вибіркове середнє, вибіркову дисперсію та незміщену оцінку дисперсії.
+\end{problem}
+
+\textbf{Розв'язання.} Побудуємо полігон частот. Для цього спочатку знайдемо відносні частоти. Загальна кількість укладених контрактів:
+
+\begin{equation*}
+    N = 20 \cdot 10 + 40 \cdot 15 + 60 \cdot 25 + 80 \cdot 10 = 200 + 600 + 1500 + 800 = 3100.
+\end{equation*}
+
+Таким чином, відносні частоти дорівнюють:
+\begin{equation*}
+    \begin{aligned}
+        p_1 &= \frac{10 \cdot 20}{3100} = \frac{2}{31}, \\
+        p_2 &= \frac{15 \cdot 40}{3100} = \frac{6}{31}, \\
+        p_3 &= \frac{25 \cdot 60}{3100} = \frac{15}{31}, \\
+        p_4 &= \frac{10 \cdot 80}{3100} = \frac{8}{31}.
+    \end{aligned}
+\end{equation*}
+
+Тепер можемо побудувати полігон частот:
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel={Число контрактів},
+            ylabel={Відносні частоти},
+            ybar,
+            ymin=0,
+            ymax=1,
+            xtick=data,
+            xticklabels={20, 40, 60, 80},
+            bar width=1cm,
+            width=0.8\textwidth,
+            height=0.5\textwidth,
+            grid=major,
+            grid style={dashed,gray!30},
+            ymajorgrids=true,
+            legend pos=north west
+        ]
+            \addplot coordinates {
+                (1, 2/31)
+                (2, 6/31)
+                (3, 15/31)
+                (4, 8/31)
+            };
+        \end{axis}
+
+        % We also draw a line on top
+
+        \begin{axis}[
+            %xlabel={Число контрактів},
+            ylabel={Відносні частоти},
+            ymin=0,
+            ymax=1,
+            bar width=1cm,
+            width=0.8\textwidth,
+            height=0.5\textwidth,
+            grid=major,
+            grid style={dashed,gray!30},
+            ymajorgrids=true,
+            legend pos=north west
+        ]
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (1, 2/31)
+                (2, 6/31)
+                (3, 15/31)
+                (4, 8/31)
+            };
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+Тепер побудуємо вибіркову функцію розподілу. Для цього відсортуємо дані за зростанням, а потім знайдемо відносні частоти для кожного інтервалу:
+
+\begin{equation*}
+    \hat{F}(x) = \begin{cases}
+        0, & x \leq 20, \\
+        \frac{2}{31}, & 20 < x \leq 40, \\
+        \frac{2}{31} + \frac{6}{31}, & 40 < x \leq 60, \\
+        \frac{2}{31} + \frac{6}{31} + \frac{15}{31}, & 60 < x \leq 80, \\
+        1, & x > 80.
+    \end{cases} 
+\end{equation*}
+
+Тепер можемо побудувати вибіркову функцію розподілу:
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel={Число контрактів $x$},
+            ylabel={Функція розподілу $\hat{F}(x)$},
+            xmin=0,
+            xmax=100,
+            ymin=-0.1,
+            ymax=1.1,
+            bar width=1cm,
+            width=0.8\textwidth,
+            height=0.5\textwidth,
+            grid=major,
+            grid style={dashed,gray!30},
+            ymajorgrids=true,
+            legend pos=north west
+        ]   
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (-10, 0)
+                (20, 0)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (20, 2/31)
+                (40, 2/31)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (40, 8/31)
+                (60, 8/31)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (60, 23/31)
+                (80, 23/31)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (80, 1)
+                (120, 1)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (20, 0)
+                (20, 2/31)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (40, 2/31)
+                (40, 8/31)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (60, 8/31)
+                (60, 23/31)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (80, 23/31)
+                (80, 31/31)
+            };
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+Гістограму сил намалювати не вистачило :(
+
+Знайдемо вибіркове середнє:
+\begin{equation*}
+    \hat{\mu} = \frac{10 \cdot 20 + 15 \cdot 40 + 25 \cdot 60 + 10 \cdot 80}{10 + 15 + 25 + 10} = \frac{3100}{60} = \frac{310}{6} \approx 51.7.
+\end{equation*}
+
+Тепер знайдемо вибіркову дисперсію:
+\begin{align*}
+    \overline{\sigma}^2 = \frac{1}{60} \left(10 \cdot 20^2 + 15 \cdot 40^2 + 25 \cdot 60^2 + 10 \cdot 80^2\right) - \hat{\mu}^2 \\
+    \approx 3033.33 - 2669.44 \approx 363.89.
+\end{align*}
+
+Незміщена оцінка дисперсії:
+\begin{equation*}
+    \hat{\sigma}^2 = \frac{n}{n-1} \cdot \overline{\sigma}^2 \approx \frac{60}{59} \cdot 363.89 \approx 370.
+\end{equation*}
+
+\subsection{Вправа 2. Час на виготовлення деталі}
+
+\begin{problem}
+    Нижче наведені дані про час, витрачений робочими на виготовлення однієї
+    деталі. Побудувати вибіркову функцію розподілу, гістограму вибірки та
+    полігон частот. Знайти вибіркове середнє, вибіркову дисперсію і незміщену
+    оцінку дисперсії.
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+            Інтервали часу, хвил. & $[4,4.4)$ & $[4.4,4.8)$ & $[4.8,5.2)$ & $[5.2,5.6)$ & $[5.6,6.0)$ \\
+            \hline
+            Кількість робочих & 5 & 8 & 21 & 31 & 19 \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{problem}
+
+\textbf{Розв'язання.} Побудуємо вибіркову функцію розподілу. Знайдемо відносні частоти:
+\begin{equation*}
+    \begin{aligned}
+        p_1 &= \frac{5}{84}, \\
+        p_2 &= \frac{8}{84}, \\
+        p_3 &= \frac{21}{84}, \\
+        p_4 &= \frac{31}{84}, \\
+        p_5 &= \frac{19}{84}.
+    \end{aligned}
+\end{equation*}
+
+Відповідні середини інтервалів:
+\begin{equation*}
+    \begin{aligned}
+        z_1 &= \frac{4+4.4}{2} = 4.2, \\
+        z_2 &= \frac{4.4+4.8}{2} = 4.6, \\
+        z_3 &= \frac{4.8+5.2}{2} = 5, \\
+        z_4 &= \frac{5.2+5.6}{2} = 5.4, \\
+        z_5 &= \frac{5.6+6}{2} = 5.8.
+    \end{aligned}
+\end{equation*}
+
+Тепер можемо побудувати вибіркову функцію розподілу. Для цього відсортуємо дані за зростанням, а потім знайдемо відносні частоти для кожного інтервалу:
+
+\begin{equation*}
+    \hat{F}(x) = \begin{cases}
+        0, & x \leq 4.2, \\
+        \frac{5}{84}, & 4.2 < x \leq 4.6, \\
+        \frac{5}{84} + \frac{8}{84}, & 4.6 < x \leq 5.0, \\
+        \frac{5}{84} + \frac{8}{84} + \frac{21}{84}, & 5.0 < x \leq 5.4, \\
+        \frac{5}{84} + \frac{8}{84} + \frac{21}{84} + \frac{31}{84}, & 5.4 < x \leq 5.8, \\
+        1, & x > 5.8.
+    \end{cases}
+\end{equation*}
+
+Тепер можемо побудувати вибіркову функцію розподілу:
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel={Час виготовлення деталі, хв.},
+            ylabel={Функція розподілу $\hat{F}(x)$},
+            xmin=3.8,
+            xmax=6,
+            ymin=-0.1,
+            ymax=1.1,
+            bar width=1cm,
+            width=0.8\textwidth,
+            height=0.5\textwidth,
+            grid=major,
+            grid style={dashed,gray!30},
+            ymajorgrids=true,
+            legend pos=north west
+        ]   
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (-10, 0)
+                (4.2, 0)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (4.2, 5/84)
+                (4.6, 5/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (4.6, 13/84)
+                (5.0, 13/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (5.0, 34/84)
+                (5.4, 34/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (5.4, 65/84)
+                (5.8, 65/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square] coordinates {
+                (5.8, 1)
+                (10, 1)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (4.2, 0)
+                (4.2, 5/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (4.6, 5/84)
+                (4.6, 13/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (5.0, 13/84)
+                (5.0, 34/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (5.4, 34/84)
+                (5.4, 65/84)
+            };
+            \addplot[draw=red,mark=none,ultra thick,mark=square,dashed] coordinates {
+                (5.8, 65/84)
+                (5.8, 1)
+            };
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+Знайдемо вибіркове середнє:
+
+\begin{equation*}
+    \hat{\mu} = \frac{5 \cdot 4.2 + 8 \cdot 4.6 + 21 \cdot 5 + 31 \cdot 5.4 + 19 \cdot 5.8}{5 + 8 + 21 + 31 + 19} = \frac{440.4}{84} \approx 5.25.
+\end{equation*}
+
+Тепер знайдемо вибіркову дисперсію:
+
+\begin{align*}
+    \overline{\sigma}^2 = \frac{1}{84} \left(5 \cdot 4.2^2 + 8 \cdot 4.6^2 + 21 \cdot 5^2 + 31 \cdot 5.4^2 + 19 \cdot 5.8^2\right) - \hat{\mu}^2 \\
+    \approx 27.69 - 27.56 \approx 0.13.
+\end{align*}
+
+Незміщена оцінка дисперсії:
+
+\begin{equation*}
+    \hat{\sigma}^2 = \frac{84}{83} \cdot 0.13 \approx 0.132.
+\end{equation*}
+
+\end{document}

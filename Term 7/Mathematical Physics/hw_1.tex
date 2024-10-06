@@ -1,0 +1,271 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#1}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 15 вересня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Вправа 1. Файл практики, номер 1.4.}
+
+\begin{problem}
+    Звести диференціальне рівняння з частинними похідними другого порядку з двома змінними до канонічного вигляду:
+    \begin{equation*}
+        \sin^2 x \cdot \frac{\partial^2 u}{\partial x^2} - 2y \sin x \cdot \frac{\partial^2 u}{\partial x \partial y} + y^2 \cdot \frac{\partial^2 u}{\partial y^2} = 0
+    \end{equation*}
+\end{problem}
+
+\subsubsection{Визначення типу рівняння}
+
+Для початку, запишемо характеристичне рівняння:
+\begin{equation*}
+    \chi(\lambda) = \det \begin{bmatrix}
+        A(x,y) - \lambda & B(x,y) \\
+        B(x,y) & C(x,y) - \lambda
+    \end{bmatrix},
+\end{equation*}
+
+де в нашому випадку маємо $A(x,y) = \sin^2 x$, $C(x,y) = y^2$, $B(x,y)=-y\sin x$. Отже:
+\begin{equation*}
+    \chi(\lambda) = \det\begin{bmatrix}
+        \sin^2 x - \lambda & -y\sin x \\
+        -y\sin x & y^2 - \lambda
+    \end{bmatrix} = (\sin^2 x - \lambda)(y^2 - \lambda) - y^2 \sin^2 x = \lambda^2 - \lambda(\sin^2 x + y^2).
+\end{equation*}
+
+Таким чином, маємо два наступних кореня:
+\begin{equation*}
+    \lambda_1 = 0, \quad \lambda_2 = y^2 + \sin^2 x.
+\end{equation*}
+
+Отже, перед нами \textbf{параболічний тип} рівняння, оскільки один з коренів дорівнює нулю (також, легко бачити, що $A(x)C(y)-B(x,y)^2=0$). 
+
+\subsubsection{Знаходження загальних інтегралів}
+
+Тепер, знайдемо загальний інтеграл наступного рівняння:
+\begin{equation*}
+    \frac{dy}{dx} = \frac{B(x,y)\pm\sqrt{B(x,y)^2-A(x)C(y)}}{A(x)} = \frac{B(x,y)}{A(x)} = -\frac{y\sin x}{\sin^2 x} = -\frac{y}{\sin x}
+\end{equation*}
+
+Перед нами відносно просте диференціальне рівняння з розділеними змінними:
+\begin{equation*}
+    \frac{dy}{y} = -\frac{dx}{\sin x}
+\end{equation*}
+
+Лівий інтеграл знаходиться легко (це просто $\log |y|+\mathsf{const}$)\footnote{Запис $\log x$ надалі розуміємо як натуральний логарифм від $x$.}, а ось правий розберемо більш детально. Достатньо скористатись універсальною тригонометричною підстановкою $\theta = \tan \frac{x}{2}$. Тоді:
+\begin{equation*}
+    \sin x = \frac{2\theta}{1+\theta^2}, \quad dx = \frac{2d\theta}{1+\theta^2},
+\end{equation*}
+
+і тому наш інтеграл знаходиться наступним чином:
+\begin{equation*}
+    \int \frac{dx}{\sin x} = \int \frac{2d\theta}{(1+\theta^2) \cdot \frac{2\theta}{1+\theta^2}} = \int \frac{d\theta}{\theta} = \log |\theta| + \mathsf{const}
+\end{equation*}
+
+Якщо згадати, що $\theta = \tan \frac{x}{2}$, отримаємо остаточно $\int \frac{dx}{\sin x} = \log \left|\tan \frac{x}{2}\right| + \mathsf{const}$.
+
+Повернемось до нашого диференціального рівняння. Маємо:
+\begin{equation*}
+    \log |y| = -\log \left|\tan \frac{x}{2}\right| + \mathsf{const} \quad \text{або} \quad \log \left|y\tan \frac{x}{2}\right| = \mathsf{const}
+\end{equation*}
+
+Нарешті, звідси наш \textbf{загальний інтеграл}:
+\begin{equation*}
+    \boxed{\xi(x,y) = y\tan \frac{x}{2} = \mathsf{const}}
+\end{equation*}
+
+Візьмемо $\eta(x,y) \in \mathcal{C}^2$, незалежну від $\xi(x,y)$. Наприклад, $\eta(y) := y$ (можна додатково для себе переконатись, що Якобіан $\det \begin{bmatrix}
+    \xi_x' & \xi_y' \\
+    \eta_x' & \eta_y'
+\end{bmatrix} = \frac{1}{2}y \sec^2 \frac{x}{2} \neq 0$). Згідно матеріалу лекції, ця підстановка зведе наше початкове рівняння до канонічного вигляду:
+\begin{equation*}
+    \frac{\partial^2 u}{\partial \eta^2} + \widetilde{\Phi}\left(\xi,\eta,u,\frac{\partial u}{\partial \xi}, \frac{\partial u}{\partial \eta}\right) = 0,
+\end{equation*}
+
+де $\widetilde{\Phi}(\star)$ --- деяка функція. Отже, переконаємось в цьому і знайдемо $\widetilde{\Phi}$. 
+
+\subsubsection{Знаходження часткових похідних}
+
+Знаходимо похідні $u_x',u_y',u_{xx}'',u_{xy}'',u_{yy}''$. Але для цього, скористаємось допоміжною лемою.
+
+\begin{lemma}
+    Нехай $\xi(x,y) = y \tan \frac{x}{2}, \eta(y) = y$. Тоді справедливо наступне:
+    \begin{enumerate}[(a)]
+        \item $\partial \xi/\partial x = \frac{1}{2}\eta\left(1+\xi^2/\eta^2\right)$.
+        \item $\partial \xi/\partial y = \xi/\eta$.
+        \item $\partial \eta/\partial x = 0, \partial \eta/\partial y = 1$.
+    \end{enumerate}
+\end{lemma}
+
+\textbf{Доведення.} Твердження (в) достатньо очевидно випливає з того, що $\eta(x,y)=y$. Отже, доводимо друге. Маємо:
+\begin{equation*}
+    \frac{\partial \xi}{\partial y} = \tan \frac{x}{2}
+\end{equation*} 
+
+Оскільки $\xi = y \tan \frac{x}{2}$, то $\tan \frac{x}{2} = \frac{\xi}{y} = \frac{\xi}{\eta}$, звідки і випливає твердження (б). Для твердження (а), знаходимо похідну:
+\begin{equation*}
+    \frac{\partial \xi}{\partial x} = \frac{1}{2}y \sec^2 \frac{x}{2}
+\end{equation*}
+
+Тепер, ми хочемо виразити $y \sec^2 \frac{x}{2}$ через $\xi$ та $\eta$. Для цього помітимо, що:
+\begin{equation*}
+    \tan^2 \frac{x}{2} = \sin^2 \frac{x}{2}\sec^2 \frac{x}{2} = \left(1 - \frac{1}{\sec^2 \frac{x}{2}}\right)\sec^2 \frac{x}{2} = \sec^2 \frac{x}{2} - 1 \Rightarrow \sec^2 \frac{x}{2} = \tan^2 \frac{x}{2} + 1 = \frac{\xi^2}{\eta^2} + 1
+\end{equation*}
+
+Тоді звідси остаточно
+\begin{equation*}
+    \frac{\partial \xi}{\partial x} = \frac{1}{2}\cdot\underbrace{y}_{=\eta} \cdot \underbrace{\sec^2 \frac{x}{2}}_{=1+\xi^2/\eta^2} = \frac{\eta}{2}\left(1+\frac{\xi^2}{\eta^2}\right),
+\end{equation*}
+
+що і завершує доведення леми. $\hfill\blacksquare$
+
+\vspace{10px}
+
+Отже, почнемо з перших похідних. Починаємо з $u_x'$:
+\begin{equation*}
+    \frac{\partial u}{\partial x} = \frac{\partial u}{\partial \xi} \cdot \frac{\partial \xi}{\partial x} + \frac{\partial u}{\partial \eta} \cdot \frac{\partial \eta}{\partial x} = \boxed{\frac{\partial u}{\partial \xi} \cdot \frac{\eta}{2}\left(1 + \frac{\xi^2}{\eta^2}\right)}
+\end{equation*}
+
+Тепер знаходимо $u_y'$:
+\begin{equation*}
+    \frac{\partial u}{\partial y} = \frac{\partial u}{\partial \xi} \cdot \frac{\partial \xi}{\partial y} + \frac{\partial u}{\partial \eta} \cdot \frac{\partial \eta}{\partial y} = \boxed{\frac{\partial u}{\partial \xi} \cdot \frac{\xi}{\eta} + \frac{\partial u}{\partial \eta}}
+\end{equation*}
+
+Діло дійшло до других похідних. Почнемо з $u_{xx}''$:
+\begin{align*}
+    \frac{\partial^2 u}{\partial x^2} = \frac{\partial}{\partial x} \frac{\partial u}{\partial x} = \frac{\partial}{\partial \xi}\left(\frac{\partial u}{\partial x}\right) \cdot \frac{\partial \xi}{\partial x} + \frac{\partial}{\partial \eta}\left(\frac{\partial u}{\partial x}\right) \cdot \underbrace{\frac{\partial \eta}{\partial x}}_{=0} = \frac{\partial}{\partial \xi}\left(\frac{\partial u}{\partial \xi} \cdot \frac{\eta}{2}\left(1 + \frac{\xi^2}{\eta^2}\right)\right) \cdot \frac{\eta}{2}\left(1+\frac{\xi^2}{\eta^2}\right) \\
+    = \left(\frac{\partial^2 u}{\partial \xi^2} \cdot \frac{\eta}{2}\left(1+\frac{\xi^2}{\eta^2}\right) + \frac{\partial u}{\partial \xi} \cdot \frac{\xi}{\eta}\right) \cdot \frac{\eta}{2}\left(1+\frac{\xi^2}{\eta^2}\right) = \boxed{\frac{\eta^2}{4}\left(1+\frac{\xi^2}{\eta^2}\right)^2 \frac{\partial^2 u}{\partial \xi^2} + \frac{\xi}{2}\left(1 + \frac{\xi^2}{\eta^2}\right) \frac{\partial u}{\partial \xi}}
+\end{align*}
+
+Вийшло неприємно, але ми не зупиняємося. Знаходимо $u_{xy}''$:
+\begin{align*}
+    \frac{\partial^2 u}{\partial x\partial y} = \frac{\partial}{\partial x}\left(\frac{\partial u}{\partial y}\right) = \frac{\partial}{\partial \xi}\left(\frac{\partial u}{\partial y}\right)\frac{\partial \xi}{\partial x} + \frac{\partial}{\partial \eta}\left(\frac{\partial u}{\partial y}\right)\underbrace{\frac{\partial \eta}{\partial x}}_{=0} = \frac{\partial}{\partial \xi}\left(\frac{\xi}{\eta} \frac{\partial u}{\partial \xi} + \frac{\partial u}{\partial \eta}\right) \cdot \frac{\eta}{2}\left(1+\frac{\xi^2}{\eta^2}\right) \\
+    = \left(\frac{1}{\eta} \cdot \frac{\partial u}{\partial \xi} + \frac{\xi}{\eta} \cdot \frac{\partial^2 u}{\partial \xi^2} + \frac{\partial^2 u}{\partial\xi\partial\eta}\right) \cdot \frac{\eta}{2}\left(1+\frac{\xi^2}{\eta^2}\right) \\ = \boxed{\frac{1}{2}\left(1+\frac{\xi^2}{\eta^2}\right) \frac{\partial u}{\partial \xi} + \frac{\xi}{2}\left(1+\frac{\xi^2}{\eta^2}\right) \frac{\partial^2 u}{\partial \xi^2} + \frac{\eta}{2}\left(1+\frac{\xi^2}{\eta^2}\right) \cdot \frac{\partial^2 u}{\partial \xi\partial\eta}}
+\end{align*}
+
+Ще гірше, але ми сильні. Знаходимо $u_{yy}''$:
+\begin{align*}
+    \frac{\partial^2 u}{\partial y^2} = \frac{\partial}{\partial y}\left(\frac{\partial u}{\partial y}\right) = \frac{\partial}{\partial \xi}\left(\frac{\partial u}{\partial y}\right)\frac{\partial \xi}{\partial y} + \frac{\partial}{\partial \eta}\left(\frac{\partial u}{\partial y}\right)\underbrace{\frac{\partial \eta}{\partial y}}_{=1} = \frac{\partial}{\partial \xi}\left(\frac{\xi}{\eta} \frac{\partial u}{\partial \xi} + \frac{\partial u}{\partial \eta}\right) \cdot \frac{\xi}{\eta} + \frac{\partial}{\partial \eta}\left(\frac{\xi}{\eta} \frac{\partial u}{\partial \xi} + \frac{\partial u}{\partial \eta}\right) \\
+    = \left(\frac{1}{\eta} \cdot \frac{\partial u}{\partial \xi} + \frac{\xi}{\eta} \cdot \frac{\partial^2 u}{\partial \xi^2} + \frac{\partial^2 u}{\partial\xi\partial\eta}\right) \cdot \frac{\xi}{\eta} - \frac{\xi}{\eta^2} \frac{\partial u}{\partial \xi} + \frac{\xi}{\eta} \cdot \frac{\partial^2 u}{\partial \xi \partial \eta} + \frac{\partial^2 u}{\partial \eta^2} = \boxed{\frac{\xi^2}{\eta^2}\frac{\partial^2 u}{\partial \xi^2} + \frac{2\xi}{\eta} \frac{\partial^2 u}{\partial \xi\partial \eta} + \frac{\partial^2 u}{\partial \eta^2}}
+\end{align*}
+
+Впорались. Тепер треба виразити $\sin x$ через $\xi,\eta$ і ми будемо готові підставляти. З універсальної тригонометричної підстановки маємо:
+\begin{equation*}
+    \sin x = \frac{2\tan \frac{x}{2}}{1+\tan^2\frac{x}{2}} = \frac{2\xi/\eta}{1+\xi^2/\eta^2} = \frac{2\xi\eta}{\xi^2+\eta^2}
+\end{equation*}
+
+Отже, наше рівняння зводиться до:
+\begin{equation*}
+    \frac{4\xi^2\eta^2}{(\xi^2+\eta^2)^2} \cdot \frac{\partial^2 u}{\partial x^2} - \frac{4\xi\eta^2}{\xi^2+\eta^2} \cdot \frac{\partial^2 u}{\partial x\partial y} + \eta^2 \cdot \frac{\partial^2u}{\partial y^2} = 0
+\end{equation*}
+
+Після доволі довгих розрахунків, результат виходить несподівано гарним:
+\begin{equation*}
+    \boxed{\frac{\partial^2 u}{\partial \eta^2} + \widetilde{\Phi}\left(\xi,\eta,\frac{\partial u}{\partial \xi}\right) = 0, \quad \text{де} \quad \widetilde{\Phi}\left(\xi,\eta,\frac{\partial u}{\partial \xi}\right) = -\frac{2\xi}{\eta^2+\xi^2} \cdot \frac{\partial u}{\partial \xi}}
+\end{equation*}
+
+\subsection{Вправа 2. Файл практики, номер 2.4.}
+
+\begin{problem}
+    Звести диференціальне рівняння з частинними похідними другого порядку з двома змінними до канонічного вигляду:
+    \begin{equation*}
+        y^2 \cdot \frac{\partial^2 u}{\partial x^2} + x^2 \cdot \frac{\partial^2 u}{\partial y^2} = 0
+    \end{equation*}
+\end{problem}
+
+\subsubsection{Визначення типу рівняння}
+
+Як і в попередньому випадку, знайдемо характеристичне рівняння:
+\begin{equation*}
+    \chi(\lambda) = \det \begin{bmatrix}
+        A(x,y) - \lambda & B(x,y) \\
+        B(x,y) & C(x,y) - \lambda
+    \end{bmatrix},
+\end{equation*}
+
+де в нашому випадку маємо $A(x,y) = y^2$, $C(x,y) = x^2$, $B(x,y)=0$. Отже:
+\begin{equation*}
+    \chi(\lambda) = \det\begin{bmatrix}
+        y^2 - \lambda & 0 \\
+        0 & x^2 - \lambda
+    \end{bmatrix} = (y^2 - \lambda)(x^2 - \lambda)
+\end{equation*}
+
+Таким чином, маємо два наступних кореня:
+\begin{equation*}
+    \lambda_1 = y^2, \quad \lambda_2 = x^2.
+\end{equation*}
+
+Тут маємо три випадки:
+\begin{enumerate}[(a)]
+    \item $x=y=0$: вироджений випадок, рівняння не має сенсу (формально, будь-яка функція $u$ є розв'язком).
+    \item $x=0$ або $y=0$: один з коренів дорівнює нулю, а отже маємо \textbf{параболічний тип}. Оскільки рівняння в такому випадку зведеться до або $x^2 \frac{\partial^2 u}{\partial y^2}=0$ або $y^2 \frac{\partial^2 u}{\partial x^2} = 0$, то рівняння вже знаходиться в канонічному вигляді (достатньо скоротити або на $x^2$, або на $y^2$, відповідно, бо вони ненульові).
+    \item $x \neq 0$ та $y \neq 0$: маємо \textbf{еліптичний тип} рівняння, оскільки $\lambda_1, \lambda_2 > 0$.  
+\end{enumerate}
+
+Звичайно, що нас цікавить саме третій випадок, адже він є нетривіальним. За теоремою з лекції, він зводиться до канонічного вигляду:
+\begin{equation*}
+    \frac{\partial^2 u}{\partial \xi^2} + \frac{\partial^2 u}{\partial \eta^2} + \widetilde{\Phi}\left(\xi,\eta,u,\frac{\partial u}{\partial \xi}, \frac{\partial u}{\partial \eta}\right) = 0
+\end{equation*}
+
+Отже, перевіримо це і знайдемо $\widetilde{\Phi}(\star)$.
+
+\subsubsection{Знаходження загальних інтегралів}
+
+Тепер, знайдемо загальний інтеграл наступного рівняння:
+\begin{equation*}
+    \frac{dy}{dx} = \pm\frac{\sqrt{-x^2y^2}}{y^2} = \pm\frac{ixy}{y^2} = \pm\frac{ix}{y} \Rightarrow \int ydy = \pm i \int xdx
+\end{equation*}
+
+Отже, звідси:
+\begin{equation*}
+    y^2 \pm i x^2 = \mathsf{const}
+\end{equation*}
+
+Тому робимо заміну $\xi = y^2, \; \eta = x^2$. 
+
+\subsubsection{Знаходження часткових похідних}
+
+Знаходимо похідні $u_x',u_y',u_{xx}'',u_{yy}''$ (тут вираз $u_{xy}''$ нам не потрібен):
+\begin{align*}
+    \frac{\partial u}{\partial x} = \frac{\partial u}{\partial \xi} \underbrace{\frac{\partial \xi}{\partial x}}_{=0} + \frac{\partial u}{\partial \eta} \frac{\partial \eta}{\partial x} = 2x \cdot \frac{\partial u}{\partial \eta} = \boxed{2\sqrt{\eta} \cdot \frac{\partial u}{\partial \eta}}, \\
+    \frac{\partial u}{\partial y} = \frac{\partial u}{\partial \xi} \frac{\partial \xi}{\partial y} + \frac{\partial u}{\partial \eta} \underbrace{\frac{\partial \eta}{\partial y}}_{=0} = 2y \cdot \frac{\partial u}{\partial \xi} = \boxed{2\sqrt{\xi} \cdot \frac{\partial u}{\partial \xi}}.
+\end{align*}
+
+Тепер переходимо до других похідних:
+\begin{align*}
+    \frac{\partial^2 u}{\partial x^2} = \frac{\partial}{\partial x}\left(\frac{\partial u}{\partial x}\right) = \frac{\partial}{\partial \xi}\left(2\sqrt{\eta} \cdot \frac{\partial u}{\partial \eta}\right) \cdot \underbrace{\frac{\partial \xi}{\partial x}}_{=0} + \frac{\partial}{\partial \eta}\left(2\sqrt{\eta} \cdot \frac{\partial u}{\partial \eta}\right) \cdot \frac{\partial \eta}{\partial x} \\
+    = 2\sqrt{\eta}\left(\frac{1}{\sqrt{\eta}}\cdot \frac{\partial u}{\partial \eta} + 2\sqrt{\eta} \cdot \frac{\partial^2 u}{\partial \eta^2}\right) = \boxed{4\eta\cdot\frac{\partial^2 u}{\partial \eta^2} + 2 \cdot \frac{\partial u}{\partial \eta}}
+\end{align*}
+
+\begin{align*}
+    \frac{\partial^2 u}{\partial y^2} = \frac{\partial}{\partial y}\left(\frac{\partial u}{\partial y}\right) = \frac{\partial}{\partial \xi}\left(2\sqrt{\xi} \cdot \frac{\partial u}{\partial \xi}\right) \cdot \frac{\partial \xi}{\partial y} + \frac{\partial}{\partial \eta}\left(2\sqrt{\xi} \cdot \frac{\partial u}{\partial \xi}\right) \cdot \underbrace{\frac{\partial \eta}{\partial y}}_{=0} \\
+    = 2\sqrt{\xi}\left(\frac{1}{\sqrt{\xi}} \cdot \frac{\partial u}{\partial \xi} + 2\sqrt{\xi} \cdot \frac{\partial^2 u}{\partial \xi^2}\right) = \boxed{4\xi \cdot \frac{\partial^2 u}{\partial \xi^2} + 2 \cdot \frac{\partial u}{\partial \xi}}
+\end{align*}
+
+Підставляємо все це діло у початкове рівняння:
+\begin{equation*}
+    \xi \cdot \frac{\partial^2 u}{\partial x^2} + \eta \cdot \frac{\partial^2 u}{\partial y^2} = 0
+\end{equation*}
+
+Отже, маємо:
+\begin{equation*}
+    \xi \cdot \left(4\eta \cdot \frac{\partial^2 u}{\partial \eta^2} + 2 \cdot \frac{\partial u}{\partial \eta}\right) + \eta\cdot\left(4\xi \cdot \frac{\partial^2 u}{\partial \xi^2} + 2 \cdot \frac{\partial u}{\partial \xi}\right) = 0
+\end{equation*}
+
+Або, це може бути спрощено до:
+\begin{equation*}
+    \boxed{\frac{\partial^2 u}{\partial \xi^2} + \frac{\partial^2 u}{\partial \eta^2} + \widetilde{\Phi}\left(\xi,\eta,\frac{\partial u}{\partial \xi}, \frac{\partial u}{\partial \eta}\right) = 0, \quad \text{де} \quad \widetilde{\Phi}\left(\xi,\eta,\frac{\partial u}{\partial \xi}, \frac{\partial u}{\partial \eta}\right) = \frac{1}{2\xi\eta}\left(\eta \cdot \frac{\partial u}{\partial \xi} + \xi \cdot \frac{\partial u}{\partial \eta}\right)}
+\end{equation*}
+
+\end{document}

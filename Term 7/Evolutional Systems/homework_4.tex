@@ -1,0 +1,227 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Еволюційних Систем \#4}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 20 вересня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Лінійні однорідні рівняння}
+
+\begin{problem}
+    Знайти дійсний загальний розв’язок лінійного однорідного різницевого стаціонарного рівняння
+    \begin{enumerate}[(A)]
+        \item $x_{k+2}-2x_{k+1}+2x_k = 0$.
+        \item $x_{k+2}+4x_{k+1}+8x_k = 0$.
+        \item $x_{k+2}-6x_{k+1}+18x_k = 0$.
+        \item $x_{k+3} - 8x_k = 0$.
+        \item $x_{k+4}+8x_{k+2}+16x_k = 0$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textit{Пункт (A).} Маємо характеристичний поліном $\lambda^2-2\lambda+2=0$, звідки корені:
+\begin{equation*}
+    \lambda_{1,2} = 1 \pm \sqrt{1-2} = 1 \pm i.
+\end{equation*}
+
+Отже, маємо $\lambda_1 = \sqrt{2}e^{i\pi/4}, \lambda_2 = \overline{\lambda}_1$. Отже, загальний розв'язок має вигляд:
+\begin{equation*}
+    x_k = c_1 \cdot 2^{k/2}\cos\left(\frac{\pi k}{4}\right) + c_2\cdot 2^{k/2}\sin\left(\frac{\pi k}{4}\right).
+\end{equation*}
+
+\textit{Пункт (Б).} Маємо характеристичний поліном $\lambda^2+4\lambda+8=0$, звідки корені:
+\begin{equation*}
+    \lambda_{1,2} = -2 \pm 2i = -2(1 \pm i)
+\end{equation*}
+
+Звідси $\lambda_1 = 2\sqrt{2}e^{5i\pi/4}$ та $\lambda_2 = \overline{\lambda}_1$. Отже, загальний розв'язок має вигляд:
+
+\begin{equation*}
+    x_k = c_1 \cdot 2^{3k/2}\cos\left(\frac{5\pi k}{4}\right) + c_2\cdot 2^{3k/2}\sin\left(\frac{5\pi k}{4}\right).
+\end{equation*}
+
+\textit{Пункт (В).} Маємо характеристичний поліном $\lambda^2-6\lambda+18=0$, звідки корені:
+\begin{equation*}
+    \lambda_{1,2} = 3 \pm 3i = 3(1 \pm i)
+\end{equation*}
+
+Звідси $\lambda_1 = 3\sqrt{2}e^{i\pi/4}$ та $\lambda_2 = \overline{\lambda}_1$. Отже, загальний розв'язок має вигляд:
+
+\begin{equation*}
+    x_k = c_1 \cdot 3^k \cdot 2^{k/2}\cos\left(\frac{\pi k}{4}\right) + c_2\cdot 3^{k} \cdot 2^{k/2}\sin\left(\frac{\pi k}{4}\right).
+\end{equation*}
+
+\textit{Пункт (Г).} Маємо характеристичний поліном $\lambda^3-8=0$, звідки $\lambda_1=2$ --- один корінь, а два інших знаходяться з рівняння:
+\begin{equation*}
+    \lambda^2 + 2\lambda + 4 = 0,
+\end{equation*}
+
+Отже, $\lambda_2 = -1 \pm \sqrt{3}i$ та $\lambda_3 = \overline{\lambda}_2$. Або, $\lambda_2 = 2e^{4i\pi/3}$. Тому, загальний розв'язок має вигляд:
+\begin{equation*}
+    x_k = c_1 \cdot 2^k + c_2 \cdot 2^k\cos\left(\frac{4\pi k}{3}\right) + c_3 \cdot 2^k\sin\left(\frac{4\pi k}{3}\right).
+\end{equation*}
+
+\textit{Пункт (Д).} Маємо характеристичний поліном $\lambda^4+8\lambda^2+16=0$, звідки $(\lambda^2+4)^2=0$. Тому, маємо два корені $\lambda_1 = 2i$ та $\lambda_2 = -2i$, причому кратності 2. Оскільки $i=e^{i\pi/2}, -i = e^{3i\pi/2}$, то загальний розв'язок має вигляд:
+\begin{equation*}
+    x_k = c_1 \cdot 2^{k}\cos\left(\frac{\pi k}{2}\right) + c_2\cdot 2^{k}\sin\left(\frac{3\pi k}{2}\right) + c_3 \cdot k \cdot 2^{k}\cos\left(\frac{\pi k}{2}\right) + c_4 \cdot k \cdot 2^{k}\sin\left(\frac{3\pi k}{2}\right).
+\end{equation*}
+
+\section{Початкові задачі}
+
+\begin{problem}
+    Розв’язати початкову задачу
+    \begin{enumerate}[(A)]
+        \item $x_{k+1}-4x_k = (2k+2)3^k, x_0=0$.
+        \item $x_{k+1}+6x_k = (4k-2)(-6)^k, x_0=3$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.}
+
+\textit{Пункт (А).} Шукаємо загальний розв'язок однорідного рівняння $\widetilde{x}_{k+1}-4\widetilde{x}_k=0$. Його загальний розв'язок має вигляд $\widetilde{x}_k = c\cdot 4^k$. 
+
+Повертаємось до однорідного. Права частина має вигляд $f_k = \lambda^k Q_s(k)$, де $\lambda=3$, $Q_s(k)=2k+2$, $s=1$. Отже, частковий розв'язок має вигляд $x_k = (ak+b)3^k$. Підставляємо в рівняння:
+\begin{align*}
+    &(a(k+1)+b)3^{k+1} - 4(ak+b)3^k = (2k+2)3^k \\
+    &3ak \cdot 3^{k}+ 3a \cdot 3^k + 3b \cdot 3^{k} - 4ak \cdot 3^k - 4b \cdot 3^k = 2k \cdot 3^k + 2 \cdot 3^k \\
+    &-a \cdot k \cdot 3^k + (3a-b) \cdot 3^k = 2k \cdot 3^k + 2 \cdot 3^k
+\end{align*}
+
+Отже, $a=-2 \Rightarrow b=-8$ і тому загальний розв'язок має вигляд:
+\begin{equation*}
+    x_k = c \cdot 4^k - 2(k+4)3^k
+\end{equation*}
+
+Оскільки $x_0=c-8=0$, то $c=8$ і тому
+\begin{equation*}
+    x_k = 2 \cdot 4^{k+1} - 2(k+4)3^k
+\end{equation*}
+
+\textit{Пункт (Б).} Ідея аналогічна.
+
+\pagebreak
+
+\section{Лінійне неоднорідне різницеве стаціонарне рівняння}
+
+\begin{problem}
+    Знайти дійсний загальний розв’язок лінійного неоднорідного різницевого стаціонарного рівняння (тут розв'язую \textbf{лише пункт 5}):
+    \begin{equation*}
+        x_{k+3} - x_{k+2} + 4x_{k+1} - 4x_k = 26 \cdot 3^k + 10k + 9
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Шукаємо загальний розв'язок однорідного рівняння $\widetilde{x}_{k+3}-\widetilde{x}_{k+2}+4\widetilde{x}_{k+1}-4\widetilde{x}_k=0$. Маємо характеристичне рівняння:
+\begin{equation*}
+    \lambda^3 - \lambda^2 + 4\lambda - 4 = 0
+\end{equation*}
+
+Маємо $\lambda_1=1$, $\lambda_{2,3}=\pm 2i$, отже загальний розв'язок однорідного рівняння має вигляд:
+\begin{equation*}
+    \widetilde{x}_k = c_1 + c_2 \cdot 2^k \cdot \cos\left(\frac{\pi k}{2}\right) + c_3 \cdot 2^k \cdot \sin\left(\frac{\pi k}{2}\right)
+\end{equation*}
+
+Далі, знайдемо розв'язки неоднорідної частини. Скористаємося наступною лемою.
+
+\begin{lemma}
+    Нехай маємо рівняння $\sum_{\delta=0}^m \alpha_{\delta}x_{k+\delta} = \lambda^kP_s(k) + \mu^kQ_r(k)$. Нехай $\widetilde{x}_k$ є розв'язком рівняння $\sum_{\delta=0}^m \alpha_{\delta}x_{k+\delta} = 0$ і також маємо два часткових розв'язки:
+    \begin{align*}
+        x_k^{(\lambda)} & \;\text{для}\; \sum_{\delta=0}^m \alpha_{\delta}x_{k+\delta} = \lambda^kP_s(k) \\
+        x_k^{(\mu)} & \;\text{для}\; \sum_{\delta=0}^m \alpha_{\delta}x_{k+\delta} = \mu^kQ_r(k)
+    \end{align*}
+
+    Тоді загальний розв'язок має вигляд:
+    \begin{equation*}
+        x_k = \widetilde{x}_k + x_k^{(\lambda)} + x_k^{(\mu)}
+    \end{equation*}
+\end{lemma}
+
+\begin{remark}
+    Розв'язок $x_k = \widetilde{x}_k + x_k^{(\lambda)} + x_k^{(\mu)}$ підходить, бо:
+    \begin{equation*}
+        \sum_{\delta=0}^m \alpha_{\delta}x_{k+\delta} = \sum_{\delta=0}^m \alpha_{\delta}\widetilde{x}_{k+\delta} + \sum_{\delta=0}^m \alpha_{\delta}x_{k+\delta}^{(\lambda)} + \sum_{\delta=0}^m \alpha_{\delta}x_{k+\delta}^{(\mu)} = \lambda^kP_s(k) + \mu^kQ_r(k)
+    \end{equation*}
+\end{remark}
+
+В такому разі спочатку знайдемо частковий розв'язок для $f_k^{(\lambda)} = 26 \cdot 3^k$. Маємо $\lambda = 3$, $P_s(k)=26$, $s=0$. В такому разі частковий розв'язок має вигляд $x_k^{(\lambda)} = a \cdot 3^k$. Підставляємо в рівняння:
+\begin{align*}
+    &a \cdot 3^{k+3} - a \cdot 3^{k+2} + 4a \cdot 3^{k+1} - 4a \cdot 3^k = 26 \cdot 3^k \\
+    &a \cdot 3^k \cdot (27 - 9 + 12 - 4) = 26 \cdot 3^k \\
+    &26a = 26 \Rightarrow a=1
+\end{align*}
+
+Отже, перший частковий розв'язок має вигляд $x_k^{(\lambda)} = 3^k$.
+
+Тепер знайдемо частковий розв'язок для $f_k^{(\mu)} = 10k+9$. Маємо $\mu=1$, $Q_r(k)=10k+9$, $r=1$. В такому разі частковий розв'язок має вигляд $x_k^{(\mu)} = ak+b$. Підставляємо в рівняння:
+\begin{align*}
+    &a(k+3)+b - a(k+2) - b + 4(a(k+1)+b) - 4(ak+b) = 10k+9 \\
+    &5a = 10
+\end{align*}
+
+Результату не дало, отже візьмемо $x_k^{(\mu)} := ak^2+bk+c$. Тоді, після підстановки буде
+\begin{align*}
+    10ak + 9a + 5b = 10k+9,
+\end{align*}
+
+Звідки $a=1,b=0,c \in \mathbb{R}$. Оберемо $c := 0$ і тоді $x_k^{(\mu)} = k^2$.
+
+Отже, загальний розв'язок має вигляд:
+\begin{equation*}
+    \boxed{x_k = c_1 + c_2 \cdot 2^k \cdot \cos\left(\frac{\pi k}{2}\right) + c_3 \cdot 2^k \cdot \sin\left(\frac{\pi k}{2}\right) + 3^k + k^2}
+\end{equation*}
+
+\pagebreak
+
+\section{Початкова задача \#2}
+
+\begin{problem}
+    Розв'язати початкову задачу
+    \begin{equation*}
+        x_{k+4} + 18x_{k+2} + 81x_k = 10(10k+14), \quad x_0=1, x_1=2, x_2=21, x_3=4
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Шукаємо загальний розв'язок однорідного рівняння $\widetilde{x}_{k+4}+18\widetilde{x}_{k+2}+81\widetilde{x}_k=0$. Маємо характеристичне рівняння:
+\begin{equation*}
+    \lambda^4 + 18\lambda^2 + 81 = (\lambda^2+9)^2 = 0
+\end{equation*}
+
+Маємо $\lambda_1 = 3i$, $\lambda_2 = -3i$ --- корені другого ступеня. Отже, загальний розв'язок однорідного рівняння має вигляд:
+\begin{equation*}
+    \widetilde{x}_k = c_1 \cdot 3^k \cdot \cos\left(\frac{\pi k}{2}\right) + c_2 \cdot 3^k \cdot \sin\left(\frac{\pi k}{2}\right) + c_3 \cdot k \cdot 3^k \cdot \cos\left(\frac{\pi k}{2}\right) + c_4 \cdot k \cdot 3^k \cdot \sin\left(\frac{\pi k}{2}\right)
+\end{equation*}
+
+Тепер знайдемо частковий розв'язок для $f_k = 10(10k+14)$. Маємо $\lambda=1$, $P_s(k)=100k+140$, $s=1$. Частковий розв'язок має вигляд $x_k^{(\lambda)} = ak+b$. Підставляємо в рівняння:
+\begin{align*}
+    &a(k+4)+b + 18(a(k+2)+b) + 81(ak+b) = 10(10k+14) \\
+    &100ak + 40a + 100b = 100k + 140 \Rightarrow a=1, b=1
+\end{align*}
+
+Отже, частковий розв'язок має вигляд $x_k^{(\lambda)} = k+1$. Отже, загальний розв'язок має вигляд:
+\begin{equation*}
+    x_k = c_1 \cdot 3^k \cdot \cos\left(\frac{\pi k}{2}\right) + c_2 \cdot 3^k \cdot \sin\left(\frac{\pi k}{2}\right) + c_3 \cdot k \cdot 3^k \cdot \cos\left(\frac{\pi k}{2}\right) + c_4 \cdot k \cdot 3^k \cdot \sin\left(\frac{\pi k}{2}\right) + k+1
+\end{equation*}
+
+Підставимо початкові умови:
+\begin{align*}
+    &x_0 = c_1 + 1 = 1 \Rightarrow c_1 = 0 \\
+    &x_1 = 2 + 3c_2 + 3c_4 = 2 \\
+    &x_2 = 3 - 9c_1 - 18c_3 = 3 - 18c_3 = 21 \Rightarrow c_3 = -1 \\
+    &x_3 = 4 - 27c_2 - 81c_4 = 4
+\end{align*}
+
+Отже одразу $c_1=0,c_3=-1$. З другого рівняння $c_2=-c_4$, а з четвертого $c_2 = -3c_4$, тому $c_2=c_4=0$ і тому остаточно
+\begin{equation*}
+    \boxed{x_k = - k \cdot 3^k \cdot \cos\left(\frac{\pi k}{2}\right) + k + 1}
+\end{equation*}
+
+\end{document}

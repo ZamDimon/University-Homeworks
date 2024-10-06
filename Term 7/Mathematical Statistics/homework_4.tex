@@ -1,0 +1,294 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Математичної Статистики \#4}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 29 вересня, 2024}
+
+% Define \argmax command
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Вправи з файлу}
+
+\subsection{Вправа 1. Біноміальний закон розподілу}
+
+\begin{problem}
+    Знайти методом моментів і методом максимальної правдоподібності оцінку параметру $\theta$
+    біноміального закону розподілу, якщо $N$ --- відоме:
+    \begin{equation*}
+        p[X = k|\theta] = \begin{pmatrix}
+        N \\ k
+        \end{pmatrix} \theta^k (1-\theta)^{N-k}, \quad k \in [N]
+    \end{equation*}
+
+    Дана вибірка $\mathcal{D} = \{x_1,\dots,x_n\}$ з розподілу $X$.
+\end{problem}
+
+\textbf{Розв'язання.} У нас один параметр ($\theta$), тому достатньо взяти один момент:
+\begin{equation*}
+    \mathbb{E}[X] = \overline{x}    
+\end{equation*}
+
+Як було доведено на курсі дискретної теорії ймовірності, $\mathbb{E}[X] = N\theta$, тому
+\begin{equation*}
+    \hat{\theta}_{\text{MM}} = \frac{\overline{x}}{N}
+\end{equation*}
+
+Тепер скористаємося методом максимальної правдоподібності. Маємо наступну функцію правдоподібності:
+\begin{equation*}
+    p(\mathcal{D} | \theta) = \prod_{j=1}^n p(x_j | \theta) = \prod_{j=1}^n \begin{pmatrix}
+        N \\ x_j
+    \end{pmatrix} \theta^{x_j}(1-\theta)^{N-x_j} \propto \prod_{j=1}^n \theta^{x_j}(1-\theta)^{N-x_j}
+\end{equation*}
+
+Отже, наша оцінка має вигляд:
+\begin{align*}
+    \hat{\theta}_{\text{MLE}} &= \argmax_{\theta \in [0,1]} \log p(\mathcal{D}|\theta) = \argmax_{\theta \in [0,1]} \sum_{j=1}^n \log\left(\theta^{x_j}(1-\theta)^{N-x_j}\right) \\ &= \argmax_{\theta \in [0,1]} \left(\sum_{j=1}^n x_j \log \theta + \sum_{j=1}^{n}(N - x_j)\log(1 - \theta)\right) \\ &= \argmax_{\theta \in [0,1]}\left(\overline{x}\log\theta + (N - \overline{x})\log(1-\theta)\right)
+\end{align*}
+
+Тепер розглянемо функцію $\phi(x|\alpha,\beta) = \alpha \log x + \beta \log (1-x)$ для $\alpha,\beta > 0$, і дослідимо його на екстремуми на відрізку $x \in [0,1]$. Розглянемо вираз для похідної:
+\begin{equation*}
+    \phi'(x) = \frac{\alpha}{x} - \frac{\beta}{1-x} = \frac{\alpha - (\alpha+\beta)x}{x(1-x)}
+\end{equation*}
+
+Маємо, що нуль похідної знаходиться у $x_0 = \frac{\alpha}{\alpha+\beta}$. Для $\alpha,\beta>0$, $x_0 \in (0,1)$, тому $\phi(x)$ має екстремум на відрізку $[0,1]$. Розглянемо другу похідну:
+\begin{equation*}
+    \phi''(x) = -\frac{\alpha}{x^2} - \frac{\beta}{(1-x)^2} < 0,
+\end{equation*}
+
+отже перед нами дійсно максимум. Отже, маємо:
+\begin{equation*}
+    \hat{\theta}_{\text{MLE}} = \argmax_{\theta \in [0,1]}\phi(\theta|\overline{x}, N - \overline{x}) = \frac{\overline{x}}{N} \;\Rightarrow\; \boxed{\hat{\theta}_{\text{MLE}} = \hat{\theta}_{\text{MM}} = \frac{\overline{x}}{N}}
+\end{equation*}
+
+\subsection{Вправа 2. Геометричний розподіл}
+
+\begin{problem}
+    Знайти методом моментів і методом максимальної правдоподібності оцінку параметру $\theta$
+    геометричного закону розподілу:
+    \begin{equation*}
+        p[X = k|\theta] = (1-\theta)\theta^k, \quad k \in \mathbb{Z}_{\geq 0}
+    \end{equation*}
+
+    Дана вибірка $\mathcal{D} = \{x_1,\dots,x_n\}$ з розподілу $X$.
+\end{problem}
+
+\textbf{Розв'язання.} У нас один параметр ($\theta$), тому достатньо взяти один момент:
+\begin{equation*}
+    \mathbb{E}[X] = \overline{x}
+\end{equation*}
+
+Знайдемо математичне сподівання:
+\begin{align*}
+    \mathbb{E}[X] = \sum_{k=0}^{\infty} k(1-\theta)\theta^k = \theta(1-\theta)\sum_{k=0}^{\infty} k\theta^{k-1} = \theta(1-\theta)\frac{d}{d\theta}\sum_{k=0}^{\infty} \theta^k = \theta(1-\theta)\frac{d}{d\theta}\left(\frac{1}{1-\theta}\right) = \frac{\theta}{1-\theta}
+\end{align*}
+
+Отже, маємо:
+\begin{equation*}
+    \frac{\hat{\theta}_{\text{MM}}}{1-\hat{\theta}_{\text{MM}}} = \overline{x} \;\Rightarrow\; \boxed{\hat{\theta}_{\text{MM}} = \frac{\overline{x}}{1+\overline{x}}}
+\end{equation*}
+
+Тепер скористаємося методом максимальної правдоподібності. Маємо наступну функцію правдоподібності:
+\begin{align*}
+    p(\mathcal{D} | \theta) &= \prod_{j=1}^n p(x_j | \theta) = \prod_{j=1}^n (1-\theta)\theta^{x_j} = (1-\theta)^n\prod_{j=1}^n \theta^{x_j} \\ &= (1-\theta)^n\theta^{\sum_{j=1}^n x_j} = (1-\theta)^n\theta^{n\overline{x}} = ((1-\theta)\theta^{\overline{x}})^n
+\end{align*}
+
+Отже,
+\begin{align*}
+    \hat{\theta}_{\text{MLE}} &= \argmax_{\theta \in [0,1]} \log p(\mathcal{D}|\theta) = \argmax_{\theta \in [0,1]} \left(\log(1-\theta) + \overline{x}\log\theta\right) = \argmax_{\theta \in [0,1]} \phi(\theta|\overline{x}, 1) = \boxed{\frac{\overline{x}}{1+\overline{x}}}
+\end{align*}
+
+Означення $\phi(x|\alpha,\beta)$ дивись в попередній вправі. Отже, маємо, що $\hat{\theta}_{\text{MLE}} = \hat{\theta}_{\text{MM}} = \frac{\overline{x}}{\overline{x}+1}$.
+
+\pagebreak
+
+\subsection{Вправа 3. Розподіл Кептейна}
+
+\begin{problem}
+    Нехай $\omega(x) \in \mathcal{C}^1(\mathbb{R})$. Знайти методом максимальної правдоподібності оцінку параметрів $\mu,\sigma^2$ розподілу Кептейна, щільність якого має вигляд:
+    розподілу Кептейна:
+    \begin{equation*}
+        p(x|\mu,\sigma^2) = \frac{\omega'(x)}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(\omega(x)-\mu)^2}{2\sigma^2}\right), \quad x \in \mathbb{R}
+    \end{equation*}
+
+    Дана вибірка $\mathcal{D} = \{x_1,\dots,x_n\}$ з розподілу $X$.
+\end{problem}
+
+\textbf{Розв'язання.} Складемо функцію правдоподібності:
+\begin{align*}
+    p(\mathcal{D} | \mu,\sigma^2) &= \prod_{j=1}^n p(x_j | \mu,\sigma^2) = \prod_{j=1}^n \frac{\omega'(x_j)}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(\omega(x_j)-\mu)^2}{2\sigma^2}\right) \\
+    & = \frac{1}{(2\pi\sigma^2)^{n/2}}\left(\prod_{j=1}^n \omega'(x_j)\right)\left(\prod_{j=1}^n \exp\left(-\frac{(\omega(x_j)-\mu)^2}{2\sigma^2}\right) \right) \\
+    & \propto \frac{1}{\sigma^n} \cdot \exp \left(-\sum_{j=1}^n \frac{(\omega(x_j)-\mu)^2}{2\sigma^2}\right)
+\end{align*}
+
+Складемо логарифм функції правдоподібності:
+\begin{align*}
+    \log p(\mathcal{D} | \mu,\sigma^2) &\propto -n\log\sigma - \frac{1}{2\sigma^2}\sum_{j=1}^n (\omega(x_j) - \mu)^2
+\end{align*}
+
+Розглянемо стаціонарні точки (як функції від $(\mu,\sigma)$):
+\begin{align*}
+    \frac{\partial}{\partial \mu} \log p(\mathcal{D} | \mu,\sigma^2) &\propto \frac{1}{\sigma^2}\sum_{j=1}^n (\omega(x_j) - \mu) \\
+    \frac{\partial}{\partial \sigma} \log p(\mathcal{D} | \mu,\sigma^2) &\propto -\frac{n}{\sigma} + \frac{1}{\sigma^3}\sum_{j=1}^n (\omega(x_j) - \mu)^2
+\end{align*}
+
+Оскільки $\sigma \neq 0$, то з першого рівняння маємо, що $\hat{\mu} = \frac{1}{n}\sum_{j=1}^n \omega(x_j)$. З другого:
+\begin{equation*}
+    \hat{\sigma}^2 = \frac{1}{n}\sum_{j=1}^n (\omega(x_j) - \hat{\mu})^2 = \frac{1}{n}\sum_{j=1}^n \omega^2(x_j) - \hat{\mu}^2
+\end{equation*}
+
+Аналіз на екстремум такий самий, як у випадку нормального розподілу. Завдань багато, тому виписувати його детально не буду.
+
+\pagebreak
+
+\subsection{Вправа 4. Розподіл Релея}
+
+\begin{problem}
+    Знайти методом максимальної правдоподібності оцінку параметра $\theta$ розподілу Релея, щільність якого має вигляд:
+    \begin{equation*}
+        p(x|\theta) = \frac{x}{\theta^2}\exp\left(-\frac{x^2}{2\theta^2}\right), \quad x \in (0,+\infty)
+    \end{equation*}
+
+    Дана вибірка $\mathcal{D} = \{x_1,\dots,x_n\}$ з розподілу $X$.
+\end{problem}
+
+\textbf{Розв'язання.} Складемо функцію правдоподібності:
+\begin{align*}
+    p(\mathcal{D} | \theta) &= \prod_{j=1}^n p(x_j | \theta) = \prod_{j=1}^n \frac{x_j}{\theta^2}\exp\left(-\frac{x_j^2}{2\theta^2}\right) \\
+    &= \frac{1}{\theta^{2n}}\exp\left(-\frac{1}{2\theta^2}\sum_{j=1}^n x_j^2\right)\prod_{j=1}^n x_j \\
+    &\propto \frac{1}{\theta^{2n}}\exp\left(-\frac{1}{2\theta^2}\sum_{j=1}^n x_j^2\right)
+\end{align*}
+
+Складемо логарифм функції правдоподібності:
+\begin{align*}
+    \log p(\mathcal{D} | \theta) &\propto -2n\log\theta - \frac{1}{2\theta^2}\sum_{j=1}^n x_j^2
+\end{align*}
+
+Розглянемо стаціонарну точку:
+\begin{equation*}
+    \frac{\partial}{\partial \theta} \log p(\mathcal{D} | \theta) \propto -\frac{2n}{\theta} + \frac{1}{\theta^3}\sum_{j=1}^n x_j^2 = 0 \Rightarrow \boxed{\hat{\theta}^2 = \frac{1}{2n}\sum_{j=1}^n x_j^2}
+\end{equation*}
+
+Поглянемо на другу похідну, щоб переконатися, що це дійсно максимум:
+\begin{equation*}
+    \frac{\partial^2}{\partial \theta^2} \log p(\mathcal{D} | \theta) \propto \frac{2n}{\theta^2} - \frac{3}{\theta^4}\sum_{j=1}^n x_j^2 
+\end{equation*}
+
+Помітимо, що якщо підставити $\theta = \hat{\theta}$, то $\sum_{j=1}^n x_j^2 = 2n\hat{\theta}^2$ і тому
+\begin{equation*}
+    \frac{\partial^2}{\partial\theta^2}\log p(\mathcal{D} | \theta)\Big|_{\theta = \hat{\theta}} = \frac{2n}{\hat{\theta}^2} - \frac{3 \cdot 2n\hat{\theta}^2}{\hat{\theta}^4} = -\frac{4n}{\hat{\theta}^2} < 0
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 5. Показниковий розподіл}
+
+\begin{problem}
+    Знайти методом моментів та максимальної правдоподібності оцінку параметра $\lambda$ показникового розподілу, щільність якого має вигляд:
+    \begin{equation*}
+        p(x|\lambda) = \lambda\exp(-\lambda x), \quad x \in [0,+\infty)
+    \end{equation*}
+
+    Дана вибірка $\mathcal{D} = \{x_1,\dots,x_n\}$ з розподілу $X$.
+\end{problem}
+
+\textbf{Розв'язання.} У нас один параметр ($\lambda$), тому достатньо взяти один момент:
+\begin{equation*}
+    \mathbb{E}[X] = \overline{x}
+\end{equation*}
+
+Як відомо з курсу теорії ймовірностей, $\mathbb{E}[X] = \frac{1}{\lambda}$, тому
+\begin{equation*}
+    \hat{\lambda}_{\text{MM}} = \frac{1}{\overline{x}}
+\end{equation*}
+
+Тепер скористаємося методом максимальної правдоподібності. Маємо наступну функцію правдоподібності:
+\begin{equation*}
+    p(\mathcal{D} | \lambda) = \prod_{j=1}^n p(x_j | \lambda) = \prod_{j=1}^n \lambda\exp(-\lambda x_j) = \lambda^n\exp\left(-\lambda\sum_{j=1}^n x_j\right)
+\end{equation*}
+
+Візьмемо логарифм:
+\begin{equation*}
+    \log p(\mathcal{D} | \lambda) = n\log\lambda - \lambda\sum_{j=1}^n x_j = n \log\lambda - n\overline{x}\lambda \propto \log\lambda - \overline{x}\lambda
+\end{equation*}
+
+Розглянемо стаціонарну точку:
+\begin{equation*}
+    \frac{\partial}{\partial \lambda} \log p(\mathcal{D} | \lambda) \propto \frac{1}{\lambda} - \overline{x} = 0 \Rightarrow \boxed{\hat{\lambda} = \frac{1}{\overline{x}}}
+\end{equation*}
+
+Переконаємось, що це дійсно максимум:
+\begin{equation*}
+    \frac{\partial^2}{\partial \lambda^2} \log p(\mathcal{D} | \lambda) \propto -\frac{1}{\lambda^2} < 0
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 6. Рівномірний розподіл}
+
+\begin{problem}
+    Знайти методом моментів та максимальної правдоподібності оцінку параметрів $\theta,h$ рівномірного розподілу, щільність якого має вигляд:
+    \begin{equation*}
+        p(x|\theta,h) = \frac{1}{2h} \cdot \mathds{1}[x \in [\theta-h,\theta+h]], \quad x \in \mathbb{R}
+    \end{equation*}
+
+    Дана вибірка $\mathcal{D} = \{x_1,\dots,x_n\}$ з розподілу $X$.
+\end{problem}
+
+\textbf{Розв'язання.} Цю задачу ми вже розв'язали для рівномірного розподілу:
+\begin{equation*}
+    \widetilde{p}(x|a,b) = \frac{1}{b-a} \cdot \mathds{1}[x \in [a,b]], \quad x \in \mathbb{R}
+\end{equation*}
+
+Легко бачити, що
+\begin{equation*}
+    p(x|\theta,h) = \widetilde{p}(x|\theta-h,\theta+h)
+\end{equation*}
+
+Для методу максимальної правдоподібності для $\widetilde{p}$, була отримана наступна оцінка:
+\begin{equation*}
+    \hat{a} = \min_{i \in \{1,\dots,n\}}x_i, \quad \hat{b} = \max_{i \in \{1,\dots,n\}}x_i
+\end{equation*}
+
+Тому, оцінка для $\theta$ та $h$ буде:
+\begin{equation*}
+    \begin{cases}
+        \hat{\theta}_{\text{MLE}} - \hat{h}_{\text{MLE}} = \min_{i \in \{1,\dots,n\}}x_i, \\
+        \hat{\theta}_{\text{MLE}} + \hat{h}_{\text{MLE}} = \max_{i \in \{1,\dots,n\}}x_i
+    \end{cases}
+\end{equation*}
+
+Отже:
+\begin{equation*}
+    \boxed{\hat{\theta}_{\text{MLE}} = \frac{\max_{i \in \{1,\dots,n\}}x_i+\min_{i \in \{1,\dots,n\}}x_i}{2}, \quad \hat{h}_{\text{MLE}} = \frac{\max_{i \in \{1,\dots,n\}}x_i-\min_{i \in \{1,\dots,n\}}x_i}{2}}
+\end{equation*}
+
+Для методу моментів була отримана наступна оцінка:
+\begin{equation*}
+    \hat{a} = \overline{x} - \sqrt{3}\overline{\sigma}_X, \quad \hat{b} = \overline{x} + \sqrt{3}\overline{\sigma}_X
+\end{equation*}
+
+Тому, оцінка для $\theta$ та $h$ буде:
+\begin{equation*}
+    \begin{cases}
+        \hat{\theta}_{\text{MM}} - \hat{h}_{\text{MM}} = \overline{x} - \sqrt{3}\overline{\sigma}_X, \\
+        \hat{\theta}_{\text{MM}} + \hat{h}_{\text{MM}} = \overline{x} + \sqrt{3}\overline{\sigma}_X
+    \end{cases}
+\end{equation*}
+
+Звідси остаточно:
+\begin{equation*}
+    \boxed{\hat{\theta}_{\text{MM}} = \overline{x}, \quad \hat{h}_{\text{MM}} = \sqrt{3}\overline{\sigma}_X}
+\end{equation*}
+
+
+\end{document}

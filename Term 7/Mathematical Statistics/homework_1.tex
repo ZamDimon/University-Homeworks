@@ -1,0 +1,412 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Математичної Статистики \#1}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 8 вересня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Вправи з лекції}
+
+\subsection{Вправа 1. Випадкові матриці.}
+\begin{problem}
+    Довести, що:
+    \begin{enumerate}[(a)]
+        \item Якщо $A \in \mathbb{R}^{m \times n}$ --- детермінована матриця та $B$ є випадковою матрицею розміру $n \times p$ з математичним сподіванням $\mathbb{E}[B]$, то $\mathbb{E}[AB] = A\cdot\mathbb{E}[B]$.
+        \item Якщо $B \in \mathbb{R}^{n \times p}$ --- детермінована матриця та $A$ є випадковою матрицею розміру $m \times n$ з математичним сподіванням $\mathbb{E}[A]$, то $\mathbb{E}[AB] = \mathbb{E}[A]\cdot B$.
+        \item Якщо $A,B$ --- дві випадкові матриці розміру $m \times n$ та існують $\mathbb{E}[A],\mathbb{E}[B]$, то $\mathbb{E}[A+B]=\mathbb{E}[A]+\mathbb{E}[B]$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textit{Пункт (а).} Нехай $A = \{a_{i,j}\}_{i,j=1}^{m \times n}$, де $a_{i,j} \in \mathbb{R}$ фіксовані, а $B=\{b_{i,j}\}_{i,j=1}^{n \times p}$ --- випадкова матриця. Якщо $\mathbb{E}[B]$ існує, то існують $\mathbb{E}[b_{i,j}]$ для всіх $i,j$. 
+
+Розглянемо $\mathbb{E}[AB]$. Маємо за означенням, що $AB=\{c_{i,j}\}_{i,j=1}^{m \times p}$, де $c_{i,j} = \sum_{\ell=1}^{n} a_{i,\ell}b_{\ell,j}$. Тоді справедливо, що:
+\begin{equation*}
+    \mathbb{E}[AB] = \{\mathbb{E}[c_{i,j}]\}_{i,j=1}^{m \times p} = \left\{\mathbb{E}\left[\sum_{\ell=1}^{n} a_{i,\ell}b_{\ell,j}\right]\right\}_{i,j=1}^{m \times p} = \left\{\sum_{\ell=1}^{n} a_{i,\ell}\mathbb{E}[b_{\ell,j}]\right\}_{i,j=1}^{m \times p}.
+\end{equation*}
+
+З іншого боку, $A\cdot\mathbb{E}[B] = \{a_{i,j}\}_{i,j=1}^{m\times n} \cdot \{\mathbb{E}[b_{i,j}]\}_{i,j=1}^{n\times p} = \{c_{i,j}'\}_{i,j=1}^{m \times p}$, де $c_{i,j}' = \sum_{\ell=1}^{n} a_{i,\ell}\mathbb{E}[b_{\ell,j}]$. Отже, $c_{i,j}=c_{i,j}'$ для всіх $i,j$ і тому $\mathbb{E}[AB] = A\cdot\mathbb{E}[B]$.
+
+\textit{Пункт (б).} Доводиться аналогічно за вийнятком рівності $\mathbb{E}[a_{i,j}b_{i,j}]=\mathbb{E}[a_{i,j}]b_{i,j}$.
+
+\textit{Пункт (c).} Нехай $A=\{a_{i,j}\}_{i,j=1}^{m \times n}$ та $B=\{b_{i,j}\}_{i,j=1}^{m \times n}$ --- дві випадкові матриці. Якщо існують $\mathbb{E}[A]$ та $\mathbb{E}[B]$, то існують $\mathbb{E}[a_{i,j}]$ та $\mathbb{E}[b_{i,j}]$ для всіх $i,j$.
+
+Отже, розглядаємо $\mathbb{E}[A+B]$. Маємо за означенням, що $A+B=\{a_{i,j}+b_{i,j}\}_{i,j=1}^{m \times n}$ та за означенням математичного сподівання матриці тоді, $\mathbb{E}[A+B] = \{\mathbb{E}[a_{i,j}+b_{i,j}]\}_{i,j=1}^{m \times n} = \{\mathbb{E}[a_{i,j}]+\mathbb{E}[b_{i,j}]\}_{i,j=1}^{m \times n}$. З іншого боку, $\mathbb{E}[A] + \mathbb{E}[B] = \{\mathbb{E}[a_{i,j}]+\mathbb{E}[b_{i,j}]\}_{i,j=1}^{m \times n}$. Отже, $\mathbb{E}[A+B] = \mathbb{E}[A] + \mathbb{E}[B]$.
+
+\pagebreak
+
+\subsection{Вправа 2. Стандартний нормальний розподіл}
+
+\begin{problem}
+    Довести, що якщо випадковий вектор $\boldsymbol{\xi} = (\xi_1,\dots,\xi_n)$ має стандартний нормальний розподіл, то її коваріаційна матриця $\Sigma = E_{n \times n}$.
+\end{problem}
+
+\textbf{Розв'язання.} За означенням, якщо випадковий вектор $\boldsymbol{\xi}$ має стандартний нормальний розподіл, то $\xi_1,\dots,\xi_n$ є незалежними в сукупності і $\xi_j \sim \mathcal{N}(0,1), j \in \{1,\dots,n\}$. За визначенням, коваріаційна матриця:
+\begin{equation*}
+    \Sigma = \begin{bmatrix}
+        \text{Var}[\xi_1] & \text{Cov}[\xi_1,\xi_2] & \cdots & \text{Cov}[\xi_1,\xi_n] \\
+        \text{Cov}[\xi_2,\xi_1] & \text{Var}[\xi_2] & \cdots & \text{Cov}[\xi_2,\xi_n] \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \text{Cov}[\xi_n,\xi_1] & \text{Cov}[\xi_n,\xi_2] & \cdots & \text{Var}[\xi_n]
+    \end{bmatrix}
+\end{equation*}
+
+За умовою, $\text{Var}[\xi_j] = 1, j \in \{1,\dots,n\}$. Оскільки випадкові величини незалежні, то $\text{Cov}[\xi_i,\xi_j] = 0$ для всіх $i \neq j$. Отже, $\Sigma = E_{n \times n}$.
+
+\subsection{Вправа 3. Ортогональні матриці.}
+
+\begin{problem}
+    Наведіть приклади ортогональних матриць другого та третього порядку, відмінні від одиничної матриці.
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textbf{Випадок $\mathbb{R}^{2\times 2}$.} За означенням матриця $U$ ортогональна, якщо $U^{-1} = U^{\top}$. Оскільки $\det[U^{-1}] = \frac{1}{\det[U]}$ та $\det[U^{\top}]=\det[U]$, то $\det[U]^2 = 1$, а отже $\det[U] = \pm 1$. Для нашого прикладу візьмемо $\det[U] = 1$. Нехай $U = \begin{bmatrix}
+    u_{1,1} & u_{1,2} \\
+    u_{2,1} & u_{2,2}
+\end{bmatrix}$. Тоді справедливо:
+\begin{equation*}
+    U^{\top} = \begin{bmatrix}
+        u_{1,1} & u_{2,1} \\
+        u_{1,2} & u_{2,2}
+    \end{bmatrix}, \quad U^{-1} = \begin{bmatrix}
+        u_{2,2} & -u_{1,2} \\
+        -u_{2,1} & u_{1,1}
+    \end{bmatrix} \implies \begin{cases}
+        u_{1,1} = u_{2,2} \\
+        u_{2,1} = -u_{1,2}
+    \end{cases}
+\end{equation*}
+
+Отже, нехай $u_{1,1}=u_{2,2}=\lambda$ та $u_{1,2}=\mu,u_{2,1}=-\mu$. Тоді маємо $U=\begin{bmatrix}
+    \lambda & \mu \\
+    -\mu & \lambda
+\end{bmatrix}$ з умовою на те, що $\det[U]=\lambda^2+\mu^2=1$. Тоді ми можемо параметризувати $\lambda = \cos\theta, \mu=\sin\theta$ для деякого $\theta \in [0,2\pi)$. Таким чином, 
+\begin{equation*}
+    U = \begin{bmatrix}
+        \cos\theta & \sin\theta \\
+        -\sin\theta & \cos\theta
+    \end{bmatrix}
+\end{equation*}
+
+Отже достатньо вказати будь-яку матрицю повороту на кут $\theta$.
+
+\textbf{Випадок $\mathbb{R}^{3 \times 3}$.} За аналогією, достатньо взяти деяку матрицю повороту, але в просторі $\mathbb{R}^3$. Для простоти можна взяти щось подібне:
+\begin{equation*}
+    U = \begin{bmatrix}
+        \cos\theta & \sin\theta & 0 \\
+        -\sin\theta & \cos\theta & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 4. Некорельовані залежні випадкові величини.}
+
+\begin{problem}
+    Наведіть приклад двох некорельованих, проте залежних дискретних випадкових величин.
+\end{problem}
+
+\textbf{Розв'язання.} Нехай $\xi$ має рівномірний розподіл на множині $\{-1,0,1\}$, а $\eta = \mathds{1}[\xi=0]$. Тоді розподіл $\eta$ має вигляд:
+\begin{equation*}
+    \text{Pr}[\eta=1] = \frac{1}{3}, \quad \text{Pr}[\eta=0] = \frac{2}{3}
+\end{equation*}
+
+Також маємо $\mathbb{E}[\xi]=0,\mathbb{E}[\eta] = 1 \cdot \frac{1}{3} + 0 \cdot \frac{2}{3} = \frac{1}{3}$ і
+\begin{equation*}
+    \mathbb{E}[\xi\eta] = \sum_{x \in \{-1,0,1\}}\text{Pr}[\xi=x]\cdot x \cdot \mathds{1}[x=0] = 0
+\end{equation*}
+
+Отже, коваріація:
+\begin{equation*}
+    \text{Cov}[\xi,\eta] = \mathbb{E}[\xi\eta] - \mathbb{E}[\xi]\mathbb{E}[\eta] = 0
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 5. Підвектор нормального вектору.}
+
+\begin{problem}
+    Довести, що будь-який підвектор нормально розподіленого випадкового вектору має нормальний закон розподілу. Зокрема, будь-яка компонента нормально розподіленого випадкового вектору є нормально розподіленою випадковою величиною.
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textbf{Спосіб 1.} Скористаємось тим, що якщо $B \in \mathbb{R}^{k \times n}$ і $\text{rank}(B) = k \leq n$, то якщо $\boldsymbol{\xi} = (\xi_1,\dots,\xi_n) \sim \mathcal{N}(\boldsymbol{\mu},\Sigma)$, то $B\boldsymbol{\xi} \sim \mathcal{N}(B\boldsymbol{\mu}, B\Sigma B^{\top})$. Без обмеження загальності, нехай $k<n$ та ми розглядаємо відвектор $\boldsymbol{\xi}_{[:k]} = (\xi_1,\dots,\xi_k)$. Тоді ми можемо задати 
+\begin{equation*}
+    B := \diag\{\underbrace{1,\dots,1}_{\text{$k$ разів}},0,\dots,0\} = \begin{bmatrix}
+        E_{k \times k} & O_{k \times (n-k)} \\
+        O_{(n-k) \times k} & O_{(n-k) \times (n-k)}
+    \end{bmatrix}
+\end{equation*}
+
+Очевидно, що $\text{rank}(B) = k$ та $B\boldsymbol{\xi} = \boldsymbol{\xi}_{[:k]}$. Отже, $\boldsymbol{\xi}_{[:k]} \sim \mathcal{N}(\boldsymbol{\mu}_{[:k]}, \Sigma_{[:k,:k]})$. Узагальнити це на будь-який підвектор вектору $\boldsymbol{\xi}$ досить просто --- нехай нам потрібно вибрати номери $\mathcal{I} \subset \{1,\dots,n\}, |\mathcal{I}| = k$. Тоді достатньо покласти $B := \text{diag}\{\mathds{1}(j \in \mathcal{I})\}_{j=1}^n$.
+
+\textbf{Спосіб 2.} Нехай маємо $\boldsymbol{\xi} = (\xi_1,\dots,\xi_n) \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)$ для математичного сподівання $\boldsymbol{\mu} = (\mu_1,\dots,\mu_n) \in \mathbb{R}^n$ та коваріаційної матриці $\Sigma \in \mathbb{R}^{n \times n}$. Без обмеження загальності, нехай $k<n$ та ми розглядаємо відвектор $\boldsymbol{\xi}_{[:k]} = (\xi_1,\dots,\xi_k)$. Спочатку подивимось на його матрицю коваріації $\Sigma_{[:k]}$ та математичне сподівання $\boldsymbol{\mu}_{[:k]}$.
+\begin{equation*}
+    \Sigma_{[:k]} = \begin{bmatrix}
+        \text{Var}[\xi_1] & \text{Cov}[\xi_1,\xi_2] & \cdots & \text{Cov}[\xi_1,\xi_k] \\
+        \text{Cov}[\xi_2,\xi_1] & \text{Var}[\xi_2] & \cdots & \text{Cov}[\xi_2,\xi_k] \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \text{Cov}[\xi_k,\xi_1] & \text{Cov}[\xi_k,\xi_2] & \cdots & \text{Var}[\xi_k]
+    \end{bmatrix} = \Sigma_{[:k,:k]},
+\end{equation*}
+
+де $\Sigma_{[:k,:k]}$ --- це підматриця $\Sigma$ з перших $k$ рядків та перших $k$ стовпців. Також, аналогічно, $\boldsymbol{\mu}_{[:k]} = (\mu_1,\dots,\mu_k)$. Отже ми знаємо математичне сподівання та матрицю коваріації, залишається довести, що перед нами дійсно нормальний вектор.
+
+Для цього скористаємося тим, що $\boldsymbol{\xi} = \boldsymbol{\mu} + U\hat{\boldsymbol{\xi}}$ для $UU^{\top}=\Sigma$ та $\hat{\boldsymbol{\xi}} \sim \mathcal{N}(\mathbf{0}, E_{n \times n})$. Отже, маємо
+\begin{equation*}
+    \begin{bmatrix}
+        \boldsymbol{\xi}_{[:k]} \\
+        \boldsymbol{\xi}_{[k:]}
+    \end{bmatrix} = \begin{bmatrix}
+        \boldsymbol{\mu}_{[:k]} \\
+        \boldsymbol{\mu}_{[k:]}
+    \end{bmatrix} + \begin{bmatrix}
+        U_{[:k,:k]} & U_{[:k,k:]} \\
+        U_{[k:,:k]} & U_{[k:,k:]}
+    \end{bmatrix} \begin{bmatrix}
+        \hat{\boldsymbol{\xi}}_{[:k]} \\
+        \hat{\boldsymbol{\xi}}_{[k:]}
+    \end{bmatrix}
+\end{equation*}
+
+Звичайно, за означенням, оскільки усі компоненти стандартного нормально розподіленого вектору незалежні в сукупності та мають стандартний розподіл, то $\hat{\boldsymbol{\xi}}_{[:k]} \sim \mathcal{N}(\mathbf{0}, E_{k \times k})$ та $\hat{\boldsymbol{\xi}}_{[k:]} \sim \mathcal{N}(\mathbf{0}, E_{(n-k)\times (n-k)})$. Також, з твердження вище,
+\begin{equation*}
+    \boldsymbol{\xi}_{[:k]} = \boldsymbol{\mu}_{[:k]} + U_{[:k,:k]}\hat{\boldsymbol{\xi}}_{[:k]} + U_{[:k,k:]}\hat{\boldsymbol{\xi}}_{[k:]}
+\end{equation*}
+
+Маємо лінійну комбінацію нормально розподілених величин (причому $U_{[:k,:k]},U_{[:k,k:]}$ невироджені), тому $\boldsymbol{\xi}_{[:k]}$ має нормальний розподіл.
+
+\pagebreak
+
+\subsection{Вправа 6. Двовимірний нормальний розподіл.}
+
+\begin{problem}
+    Нехай випадковий вектор $\boldsymbol{\xi} = (\xi_1,\xi_2)$ має нормальний розподіл, причому задані математичні сподівання компонент $\mu_1,\mu_2$, дисперсії $\sigma_1^2,\sigma_2^2$ та коефіцієнт кореляції $r$. Довести, що густина розподілу вектора $\boldsymbol{\xi}$ має вигляд:
+    \begin{align*}
+        f_{\xi}(x_1,x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-r^2}}\exp\left\{-\frac{z_1^2 - 2rz_1z_2 + z_2^2}{2(1-r^2)}\right\},
+    \end{align*}
+
+    де було введено позначення $z_1 = \frac{x_1-\mu_1}{\sigma_1}$ та $z_2 = \frac{x_2-\mu_2}{\sigma_2}$.
+\end{problem}
+
+\textbf{Розв'язання.} Потрібно знайти математичне сподівання $\boldsymbol{\mu}_{\xi}$ та матрицю коваріації $\Sigma_{\xi}$ вектора $\boldsymbol{\xi}$. За визначенням, $\boldsymbol{\mu}_{\xi} = (\mathbb{E}[\xi_1],\mathbb{E}[\xi_2])=(\mu_1,\mu_2)$. В свою чергу матриця коваріації має вигляд:
+\begin{equation*}
+    \Sigma_{\xi} = \begin{bmatrix}
+        \text{Var}[\xi_1] & \text{Cov}[\xi_1,\xi_2] \\
+        \text{Cov}[\xi_2,\xi_1] & \text{Var}[\xi_2]
+    \end{bmatrix} = \begin{bmatrix}
+        \sigma_1^2 & r\sigma_1\sigma_2 \\
+        r\sigma_1\sigma_2 & \sigma_2^2
+    \end{bmatrix}
+\end{equation*},
+
+де ми скористалися тим фактом, що $r[\xi_1,\xi_2] = \text{Cov}[\xi_1,\xi_2]\big/\sigma[\xi_1]\sigma[\xi_2]$, звідки легко отримуємо $\text{Cov}[\xi_1,\xi_2] = r[\xi_1,\xi_2]\sigma[\xi_1]\sigma[\xi_2] = r\sigma_1\sigma_2$. Далі залишається лише підставити ці значення у формулу густини двовимірного нормального розподілу. Маємо:
+\begin{equation*}
+    f_{\boldsymbol{\xi}}(x_1,x_2) = \frac{1}{2\pi\sqrt{\det\Sigma_{\xi}}}\exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{\xi})^{\top}\Sigma_{\xi}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{\xi})\right)
+\end{equation*}
+
+Подивимось на детермінант матриці:
+\begin{equation*}
+    \det\Sigma_{\xi} = \sigma_1^2\sigma_2^2 - r^2\sigma_1^2\sigma_2^2 = \sigma_1^2\sigma_2^2(1-r^2) \implies \sqrt{\det \Sigma_{\xi}} = \sigma_1\sigma_2\sqrt{1-r^2}
+\end{equation*}
+
+Нарешті, у дужках у нас квадратична форма з матрицею
+\begin{equation*}
+    \Sigma_{\xi}^{-1} = \frac{1}{\det\Sigma_{\xi}}\begin{bmatrix}
+        \sigma_2^2 & -r\sigma_1\sigma_2 \\
+        -r\sigma_1\sigma_2 & \sigma_1^2
+    \end{bmatrix} = \frac{1}{\sigma_1^2\sigma_2^2(1-r^2)}\begin{bmatrix}
+        \sigma_2^2 & -r\sigma_1\sigma_2 \\
+        -r\sigma_1\sigma_2 & \sigma_1^2
+    \end{bmatrix}.
+\end{equation*}
+
+Позначимо $\mathbf{y} := \boldsymbol{x} - \boldsymbol{\mu}$ тому після підстановки ми отримаємо:
+\begin{equation*}
+    -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{\xi})^{\top}\Sigma_{\xi}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{\xi}) = -\frac{1}{2\sigma_1^2\sigma_2^2(1-r^2)}(\sigma_2^2y_1^2 + \sigma_1^2y_2^2 - 2y_1y_2r\sigma_1\sigma_2)
+\end{equation*}
+
+Поділивши доданки у внутрішній скобці на $\sigma_1^2\sigma_2^2$ і позначивши $z_1 := y_1/\sigma_1,z_2 := y_2/\sigma_2$, отримаємо вираз, що потрібно було довести:
+\begin{equation*}
+    f_{\xi}(x_1,x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-r^2}}\exp\left\{-\frac{z_1^2 - 2rz_1z_2 + z_2^2}{2(1-r^2)}\right\}.
+\end{equation*}
+
+\pagebreak
+
+\subsection{Вправа 7. Нормальність по компонентам не означає нормальність всього вектору.}
+
+\begin{problem}
+    Наведіть приклад двовимірного випадкового вектору, який не має нормального розподілу, проте його компоненти мають нормальний розподіл.
+\end{problem}
+
+\textbf{Відповідь.} Нехай $\xi \sim \mathcal{N}(0,1)$ --- нормально розподілений вектор і
+\begin{equation*}
+    \eta := \begin{cases}
+        \xi, & |\xi| < a \\
+        -\xi, & |\xi| \geq a
+    \end{cases}
+\end{equation*}
+
+\begin{lemma}
+    Випадкова величина $\eta$ має нормальний розподіл.
+\end{lemma}
+
+\textbf{Доведення.} Розглянемо функцію розподілу $\eta$:
+\begin{align*}
+    \text{Pr}[\eta < y] = \text{Pr}[\xi < y, |\xi| < a] + \text{Pr}[-\xi < y, |\xi| \geq a] \\= \text{Pr}[\xi < y, |\xi| < a] + \text{Pr}[\xi < y, \xi \geq a] = \text{Pr}[\xi < y]
+\end{align*}
+
+Проте, легко побачити, що $(\xi,\eta)$ не є нормально розподіленим вектором. Скористаємося тим, що будь-яка лінійна комбінація з компонент вектора $(\xi,\eta)$ має нормальний розподіл. Проте, розглянемо таку лінійну комбінацію: $\zeta := \xi-\eta$:
+\begin{equation*}
+    \zeta := \xi - \eta = \begin{cases}
+        0, & |\xi| < a \\
+        2\xi, & |\xi| \geq a
+    \end{cases},
+\end{equation*} 
+
+що не є нормально розподіленою випадковою величиною.
+
+\pagebreak
+
+\section{Вправи з практики}
+
+\subsection{Двовимірний розподіл}
+
+\begin{problem}
+    Вектор $\boldsymbol{\xi} = (\xi_1,\xi_2)$ має нормальний розподіл, причому $\mathbb{E}[\xi_1]=1,\mathbb{E}[\xi_2]=2,\text{Var}[\xi_1]=4,\text{Var}[\xi_2]=9$, коефіцієнт кореляції $r[\xi_1,\xi_2]=-0.5$. Знайти:
+    \begin{enumerate}[(a)]
+        \item Щільність випадкового вектору $\boldsymbol{\eta} = B\boldsymbol{\xi}$, де
+        \begin{equation*}
+            B = \begin{bmatrix}
+                2 & -1 \\ -1 & 1
+            \end{bmatrix}
+        \end{equation*}
+        \item Щільність розподілу $\eta = 2\xi_1 - \xi_2$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textit{Пункт (а).} Для початку помітимо, що середньоквадратичні відхилення дорівнюють $\sigma_1 = \sqrt{\text{Var}[\xi_1]}=2, \sigma_2 = \sqrt{\text{Var}[\xi_2]} = 3$. Тепер помітимо, що наш початковий вектор $\boldsymbol{\xi}$ має наступне математичне сподівання та матрицю коваріації:
+\begin{equation*}
+    \boldsymbol{\mu}_{\xi} = \begin{bmatrix}
+    \mu_1 \\ \mu_2
+    \end{bmatrix} = \begin{bmatrix}
+        1 \\ 2
+    \end{bmatrix}, \; \Sigma_{\xi} = \begin{bmatrix}
+        \sigma_1^2 & r\sigma_1\sigma_2 \\
+        r\sigma_1\sigma_2 & \sigma_2^2
+    \end{bmatrix} = \begin{bmatrix}
+        4 & -3 \\ -3 & 9
+    \end{bmatrix}
+\end{equation*}
+
+Тепер, оскільки $B$ є невиродженою матрицею, то згідно доведеній теоремі з лекції, $\boldsymbol{\eta} = B\boldsymbol{\xi} \sim \mathcal{N}(B\boldsymbol{\mu}_{\xi}, B\Sigma_{\xi}B^{\top})$. Тому:
+\begin{align*}
+    \boldsymbol{\mu}_{\eta} := B\boldsymbol{\mu}_{\xi} = \begin{bmatrix}
+        2 & -1 \\ -1 & 1
+    \end{bmatrix} \begin{bmatrix}
+        1 \\ 2
+    \end{bmatrix} = \begin{bmatrix}
+        0 \\ 1
+    \end{bmatrix}, \\ B_{\eta} := B\Sigma_{\xi}B^{\top} = \begin{bmatrix}
+        2 & -1 \\ -1 & 1
+    \end{bmatrix} \begin{bmatrix}
+        4 & -3 \\ -3 & 9
+    \end{bmatrix} \begin{bmatrix}
+        2 & -1 \\ -1 & 1
+    \end{bmatrix} = \begin{bmatrix}
+        37 & -26 \\ -26 & 19
+    \end{bmatrix}
+\end{align*}
+
+Також для щільності знадобиться обернена матриця та детермінант нової матриці коваріації:
+\begin{equation*}
+    \det \Sigma_{\eta} = 27, \; \Sigma_{\eta}^{-1} = \begin{bmatrix}
+        \frac{19}{27} & \frac{26}{27} \\
+        \frac{26}{27} & \frac{37}{27}
+    \end{bmatrix}
+\end{equation*}
+
+Тоді щільність запишеться як:
+\begin{align*}
+    f_{\boldsymbol{\eta}}(x_1,x_2) = \frac{1}{2\pi\sqrt{\det B\Sigma_{\xi}B^{\top}}}\exp\left\{-\frac{1}{2}(\boldsymbol{x}-B\boldsymbol{\mu}_{\xi})^{\top}(B\Sigma_{\xi}B^{\top})^{-1}(\boldsymbol{x}-B\boldsymbol{\mu}_{\xi})\right\} \\
+    = \frac{1}{6\pi\sqrt{3}}\exp\left\{-\frac{1}{2}\left(\frac{19}{27}x_1^2 - \frac{52}{27}x_1(x_2-1) + \frac{37}{27}(x_2-1)^2\right)\right\}
+\end{align*}
+
+\textit{Пункт (б).} Скористаємось тим, що якщо $B \in \mathbb{R}^{k \times n}$ і $\text{rank}(B) = k \leq n$, то якщо $\boldsymbol{\xi} = (\xi_1,\dots,\xi_n) \sim \mathcal{N}(\boldsymbol{\mu},\Sigma)$, то $B\boldsymbol{\xi} \sim \mathcal{N}(B\boldsymbol{\mu}, B\Sigma B^{\top})$. В нашому конкретному випадку задамо $B = \begin{bmatrix}
+    2 & -1
+\end{bmatrix}$, тоді $\eta = B\boldsymbol{\xi} = 2\xi_1-\xi_2$ --- шукана випадкова величина. Очевидно, її ранг дорівнює 1, тому ми можемо скористатися теоремою. Тоді $B\boldsymbol{\mu} = 0$ та
+\begin{equation*}
+    B\Sigma B^{\top} = \begin{bmatrix}
+        2 & -1
+    \end{bmatrix} \begin{bmatrix}
+        4 & -3 \\ -3 & 9
+    \end{bmatrix} \begin{bmatrix}
+        2 \\ -1
+    \end{bmatrix} = 37
+\end{equation*}
+
+Отже $\eta \sim \mathcal{N}(0, 37)$ і тому $f_{\eta}(x) = \frac{1}{\sqrt{74\pi}}e^{-x^2/74}$.
+
+\subsection{Трьохвимірний розподіл}
+
+\begin{problem}
+    Вектор $\boldsymbol{\xi}$ має нормальний закон розподілу з математичним сподіванням $\boldsymbol{\mu}_{\xi}=(2,0,-1)$ і коваріаційною матрицею $\Sigma_{\xi} = \begin{bmatrix}
+        2 & -1 & 0 \\ -1 & 2 & -1 \\ 0 & -1 & 1
+    \end{bmatrix}$. Знайти щільність розподілу вектору $\boldsymbol{\eta} = B\boldsymbol{\xi}$, де $B = \begin{bmatrix}
+        1 & 1 & 0 \\ -1 & 1 & 1
+    \end{bmatrix}$
+\end{problem}
+
+\textbf{Розв'язання.} Очевидно $\text{rank}(B) = 2$, а тому ми можемо застосувати теорему про лінійні перетворення нормальних величин. Тоді $\boldsymbol{\eta} = B\boldsymbol{\xi} \sim \mathcal{N}(B\boldsymbol{\mu}_{\xi}, B\Sigma_{\xi}B^{\top})$. Отже:
+\begin{equation*}
+    \boldsymbol{\mu}_{\eta} = B\boldsymbol{\mu}_{\xi} = \begin{bmatrix}
+        2 \\ -3
+    \end{bmatrix}, \; \Sigma_{\eta} = B\Sigma_{\xi}B^{\top} = \begin{bmatrix}
+        1 & 1 & 0 \\ -1 & 1 & 1
+    \end{bmatrix} \begin{bmatrix}
+        2 & -1 & 0 \\ -1 & 2 & -1 \\ 0 & -1 & 1
+    \end{bmatrix} \begin{bmatrix}
+        1 & -1 \\ 1 & 1 \\ 0 & 1
+    \end{bmatrix} = \begin{bmatrix}
+        2 & -1 \\ -1 & 5
+    \end{bmatrix}
+\end{equation*}
+
+Отже, остаточно маємо:
+\begin{equation*}
+    \eta \sim \mathcal{N}\left(\begin{bmatrix}
+        2 \\ -3
+    \end{bmatrix}, \begin{bmatrix}
+        2 & -1 \\ -1 & 5
+    \end{bmatrix}\right)
+\end{equation*}
+
+Тепер, для щільності розподілу, знайдемо детермінант та обернену матрицю:
+\begin{equation*}
+    \det \Sigma_{\eta} = 9, \; \Sigma_{\eta}^{-1} = \frac{1}{9}\begin{bmatrix}
+        5 & 1 \\ 1 & 2
+    \end{bmatrix}
+\end{equation*}
+
+Щільність розподілу в такому випадку має вигляд:
+\begin{align*}
+    f_{\eta}(x_1,x_2) = \frac{1}{2\pi\sqrt{\det \Sigma_{\eta}}} \exp\left\{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{\eta})^{\top}\Sigma_{\eta}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{\eta})\right\} \\
+    = \frac{1}{6\pi}\exp\left\{ -\frac{1}{2}\left( \frac{5}{9}(x_1-2)^2 + \frac{2}{9}(x_1-2)(x_2+3) + \frac{2}{9}(x_2+3)^2 \right) \right\}
+\end{align*}
+
+\end{document}

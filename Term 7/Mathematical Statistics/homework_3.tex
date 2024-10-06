@@ -1,0 +1,218 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Математичної Статистики \#3}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 20 вересня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Вправи з практики}
+
+\subsection{Вправа 1. Статистика мінімума вибірки}
+
+\begin{problem}
+    Маємо вибірку $x_1,\dots,x_n \sim \mathcal{U}[a,b]$. Для оцінювання параметру $a$ пропонується статистика $\hat{a} = \min \{x_1,\dots,x_n\}$. Чи буде ця оцінка незміщеною, слушною оцінкою параметру $a$?   
+\end{problem}
+
+\textbf{Розв'язання.} Знайдемо розподіл статистики $\hat{a}$. Якщо $x_1,\dots,x_n \sim \mathcal{U}[a,b]$, то функція розподілу $\Phi_i$ для кожного $x_i$ має наступний вигляд:
+\begin{equation*}
+    \Phi_{i}(x) =: \widetilde{\Phi}(x) = 
+    \begin{cases}
+        0, & x < a, \\
+        \frac{x-a}{b-a}, & a \leq x \leq b, \\
+        1, & x > b.
+    \end{cases}
+\end{equation*}
+
+В такому разі, функція розподілу для $\hat{a}$ має вигляд:
+\begin{align*}
+    \Phi_{\hat{a}}(x) = \text{Pr}[\hat{a} < x] = 1 - P[\hat{a} \geq x] \\ = 1 - \text{Pr}\left[\min_{i \in \{1,\dots, n\}} x_i \geq x\right] = 1 - \text{Pr}\left[\bigwedge_{i=1}^n \{x_i \geq x\}\right]
+\end{align*}
+
+Оскільки $x_i$ незалежні, то
+\begin{align*}
+    \Phi_{\hat{a}}(x) = 1 - \prod_{i=1}^n \text{Pr}[x_i \geq x] = 1 - \prod_{i=1}^n (1 - \Phi_{x_i}(x)) = 1 - (1 - \widetilde{F}(x))^n
+\end{align*}
+
+Якщо розписати, то отримаємо:
+\begin{equation*}
+    \Phi_{\hat{a}}(x) = 
+    \begin{cases}
+        0, & x < a, \\
+        1 - \left(1 - \frac{x-a}{b-a}\right)^n, & a \leq x \leq b, \\
+        1, & x > b.
+    \end{cases}
+\end{equation*}
+
+Тепер знайдемо функцію щільності:
+\begin{equation*}
+    f_{\hat{a}}(x) = \frac{d}{dx} \Phi_{\hat{a}}(x) = 
+    \begin{cases}
+        \frac{n}{b-a}\left(1 - \frac{x-a}{b-a}\right)^{n-1}, & x \in [a,b], \\
+        0, & x \not\in [a,b].
+    \end{cases}
+\end{equation*}
+
+Отже, знаходимо математичне сподівання $\hat{a}$:
+\begin{align*}
+    \E[\hat{a}] = \int_{a}^{b} x \cdot f_{\hat{a}}(x) \, dx = \int_{a}^{b} x \cdot \frac{n}{b-a}\left(1 - \frac{x-a}{b-a}\right)^{n-1} \, dx = \frac{an + b}{n + 1}
+\end{align*}
+
+Видно, що $\E[\hat{a}] \neq a$, тобто оцінка $\hat{a}$ не є незміщеною. Проте, вона є асимптотично незміщеною:
+\begin{align*}
+    \lim_{n \to \infty} \E[\hat{a}] = \lim_{n \to \infty} \left(\underbrace{\frac{n}{n+1}}_{\to 1}a + \underbrace{\frac{b}{n+1}}_{\to 0}\right) = a
+\end{align*}
+
+Також перевіримо слушність. Візьмемо достатньо мале $\varepsilon > 0$ і розглянемо
+\begin{align*}
+    \text{Pr}\left[|\hat{a} - a| > \varepsilon\right] = 1 - \text{Pr}\left[|\hat{a}-a|\leq\varepsilon\right] \\= 1 - \text{Pr}\left[\hat{a} \in [a-\varepsilon, a+\varepsilon]\right] = 1 - \big(\Phi_{\hat{a}}(a+\varepsilon) - \Phi_{\hat{a}}(a-\varepsilon)\big)
+\end{align*}
+
+Помітимо, що $\Phi_{\hat{a}}(a-\varepsilon)=0$, а тому маємо:
+\begin{equation*}
+    \text{Pr}\left[|\hat{a} - a| > \varepsilon\right] = 1 - \left(1 - \left(1 - \frac{\varepsilon}{b-a}\right)^n\right) = \left(1 - \frac{\varepsilon}{b-a}\right)^n \xrightarrow[n \to \infty]{} 0
+\end{equation*}
+
+Тому $\text{Pr}[|\hat{a} - a| > \varepsilon] \xrightarrow[n \to \infty]{} 0$, тобто оцінка $\hat{a}$ є слушною.
+
+\textbf{Коментар.} Тут ми допустили невелику неточність; а саме, що ми вважали $\varepsilon$ достатньо малим, тому $\left|1-\frac{\varepsilon}{b-a}\right| < 1$. Проте, слушність оцінки має виконуватись для всіх $\varepsilon > 0$. Проте, якщо $\varepsilon > b-a$, то $\Phi_{\hat{a}}(a+\varepsilon) = 1$ і тому $\text{Pr}[|\hat{a} - a| > \varepsilon] = 0$. 
+
+\pagebreak
+\subsection{Завдання 14.10, Турчин}
+
+\begin{problem}
+    Нехай $\xi_1,\dots,\xi_n$ --- вибірка з розподілу
+    \begin{equation*}
+        f(x;\theta) = \exp \{\theta - x\} \cdot \mathds{1}[x \geq \theta]
+    \end{equation*}
+
+    Чи є оцінка $\hat{\theta} = -\frac{1}{n} + \min_{i \in \{1,\dots,n\}}\{\xi_i\}$ незміщеною оцінкою параметра $\theta$?
+\end{problem}
+
+\textbf{Розв'язання.} Знайдемо розподіл статистики $\hat{\theta}$:
+\begin{equation*}
+    \Phi_{\hat{\theta}}(x) = \text{Pr}[\hat{\theta} < x] = 1 - \text{Pr}[\hat{\theta} \geq x] = 1 - \text{Pr}\left[\min_{i \in \{1,\dots,n\}}\{\xi_i\} \geq x + \frac{1}{n}\right]
+\end{equation*}
+
+Оскільки $\xi_i$ незалежні, то
+\begin{equation*}
+    \Phi_{\hat{\theta}}(x) = 1 - \prod_{i=1}^n \text{Pr}\left[\xi_i \geq x + \frac{1}{n}\right] = 1 - \prod_{i=1}^n \left(1 - \Phi_{\xi_i}\left(x + \frac{1}{n}\right)\right) = 1 - \left(1 - \widetilde{F}\left(x + \frac{1}{n}\right)\right)^n,
+\end{equation*}
+
+де $\widetilde{\Phi}(x)$ --- функція розподілу для $\xi_i$. Знайдемо її:
+\begin{equation*}
+    \widetilde{\Phi}(x) = 
+    \begin{cases}
+        0, & x < \theta, \\
+        1 - \exp\{\theta - x\}, & x \geq \theta.
+    \end{cases}
+\end{equation*}
+
+Тому наш розподіл для $\hat{\theta}$ має вигляд:
+\begin{equation*}
+    \Phi_{\hat{\theta}}(x) = 
+    \begin{cases}
+        0, & x < \theta - \frac{1}{n}, \\
+        1 - \exp\{\theta - x - \frac{1}{n}\}^n, & x \geq \theta - \frac{1}{n}.
+    \end{cases}
+\end{equation*}
+
+Або, можна це далі спростити як
+\begin{equation*}
+    \Phi_{\hat{\theta}}(x) = 
+    \begin{cases}
+        0, & x < \theta - \frac{1}{n}, \\
+        1 - \exp\{n(\theta - x) - 1\}, & x \geq \theta - \frac{1}{n}.
+    \end{cases}
+\end{equation*}
+
+Тепер знайдемо функцію щільності:
+\begin{equation*}
+    f_{\hat{\theta}}(x) = \frac{d}{dx} \Phi_{\hat{\theta}}(x) = 
+    \begin{cases}
+        n \exp\{n(\theta - x) - 1\}, & x \geq \theta - \frac{1}{n}, \\
+        0, & x < \theta - \frac{1}{n}.
+    \end{cases}
+\end{equation*}
+
+Знайдемо математичне сподівання $\hat{\theta}$:
+\begin{align*}
+    \E[\hat{\theta}] = \int_{\theta - \frac{1}{n}}^{\infty} x \cdot f_{\hat{\theta}}(x) \, dx = \int_{\theta - \frac{1}{n}}^{\infty} x \cdot n \exp\{n(\theta - x) - 1\} \, dx = \theta
+\end{align*}
+
+Отже, $\E[\hat{\theta}] = \theta$, тобто оцінка $\hat{\theta}$ є незміщеною. Доведемо слушність. Для цього візьмемо довільне $\varepsilon > 0$ і розглянемо
+\begin{align*}
+    \text{Pr}[|\hat{\theta} - \theta| > \varepsilon] = 1 - \text{Pr}[|\hat{\theta} - \theta| < \varepsilon] = 1 - \text{Pr}[\theta - \varepsilon < \hat{\theta} < \theta + \varepsilon] \\
+    = 1 - (\Phi_{\hat{\theta}}(\theta + \varepsilon) - \Phi_{\hat{\theta}}(\theta - \varepsilon))
+\end{align*}
+
+Помітимо, що з деякого номеру $n_0 \in \mathbb{N}$ завжди $\varepsilon > \frac{1}{n}$ для всіх $n \geq n_0$. В такому разі $\Phi_{\hat{\theta}}(\theta-\varepsilon) = 0$ і тоді для достатньо великих $n$ ($n \geq n_0$):
+\begin{equation*}
+    \text{Pr}[|\hat{\theta} - \theta| > \varepsilon] = 1 - \Phi_{\hat{\theta}}(\theta + \varepsilon) = 1 - \frac{1}{e} \cdot e^{-\theta n} \xrightarrow[n \to \infty]{} 0
+\end{equation*}
+
+\subsection{Завдання 14.26, Турчин}
+
+\begin{problem}
+    Нехай $\xi_1,\dots,\xi_n$ --- вибірка з розподілу
+    \begin{equation*}
+        f(x;\alpha) = \frac{1}{\alpha} \exp \left\{-\frac{1}{\alpha} \cdot x\right\} \cdot \mathds{1}[x > 0]
+    \end{equation*}
+
+    \begin{enumerate}[(a)]
+        \item Довести, що $\hat{\theta}_1 = \frac{1}{n}\sum_{i=1}^n \xi_i$ є незсуненою та спроможною оцінкою параметра $\alpha$.
+        \item Чи є $\hat{\theta}_2 = \frac{1}{2}(\xi_{n-1}+\xi_n)$ незсувною та спроможною оцінкою параметра $\alpha$?
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.}
+
+\textit{Пункт (а).} По-перше, знайдемо математичне сподівання кожного з $\xi_i$:
+\begin{align*}
+    \E[\xi_i] = \int_{0}^{\infty} x \cdot \frac{1}{\alpha} \exp\left\{-\frac{1}{\alpha} \cdot x\right\} \, dx = \alpha
+\end{align*}
+
+Тепер знайдемо математичне сподівання $\hat{\theta}_1$:
+\begin{align*}
+    \E[\hat{\theta}_1] = \E\left[\frac{1}{n}\sum_{i=1}^n \xi_i\right] = \frac{1}{n}\sum_{i=1}^n \E[\xi_i] = \alpha
+\end{align*}
+
+Слушність оцінки випливає з \textbf{закону великих чисел у формі Хінчина}. А саме, маємо $n$ незалежних однаково розподілених випадкових величин $\xi_i$, які мають математичне сподівання $\alpha$. Тоді $\frac{1}{n}\sum_{i=1}^n \xi_i \xrightarrow[]{\text{Pr}} \alpha$.
+
+\textit{Пункт (б).} Знайдемо математичне сподівання $\hat{\theta}_2$:
+\begin{align*}
+    \E[\hat{\theta}_2] = \E\left[\frac{1}{2}(\xi_{n-1} + \xi_n)\right] = \frac{1}{2}\left(\E[\xi_{n-1}] + \E[\xi_n]\right) = \alpha
+\end{align*}
+
+Оцінка незміщена. Проте, покажемо, що оцінка $\hat{\theta}_2$ не є слушною. Знайдемо закон розподілу $\hat{\theta}_2$. Скористаємося тим, що сума двох незалежних випадкових величин $\zeta = \xi_{n-1}+\xi_n$ з експоненційним розподілом має наступний розподіл:
+\begin{equation*}
+    f_{\zeta}(x;\alpha) = \frac{x}{\alpha^2} \cdot e^{-x/\alpha}, \quad x > 0
+\end{equation*}
+
+В такому разі розподіл $f_{\hat{\theta}_2}$ має вигляд:
+\begin{equation*}
+    f_{\hat{\theta}_2}(x;\alpha) = \frac{1}{2} \cdot f_{\zeta}\left(\frac{x}{2};\alpha\right) = \frac{x}{4\alpha^2} \cdot e^{-x/2\alpha}, \quad x > 0
+\end{equation*}
+
+Отже, розглянемо деяке $\varepsilon > 0$ і знайдемо ймовірність
+\begin{align*}
+    \text{Pr}[|\hat{\theta}_2 - \alpha| > \varepsilon] = 1 - \text{Pr}[|\hat{\theta}_2 - \alpha| \leq \varepsilon] = 1 - \text{Pr}[\alpha - \varepsilon \leq \hat{\theta}_2 \leq \alpha + \varepsilon] \\
+    = 1 - \int_{\alpha - \varepsilon}^{\alpha + \varepsilon} f_{\hat{\theta}_2}(x;\alpha) \, dx
+\end{align*}
+
+Бачимо, що ця ймовірність абсолютно ніяк не залежить від $n$. Тому, візьмемо деяке мале $\varepsilon < \alpha$ і позначимо:
+\begin{equation*}
+    \beta := 1 - \int_{\alpha - \varepsilon}^{\alpha + \varepsilon} f_{\hat{\theta}_2}(x;\alpha) \, dx = 1 - \frac{1}{4\alpha^2}\int_{\alpha - \varepsilon}^{\alpha + \varepsilon} x \cdot e^{-x/2\alpha} \, dx
+\end{equation*}
+
+Тоді $\text{Pr}[|\hat{\theta}_2 - \alpha| > \varepsilon] = \beta \xrightarrow[n \to \infty]{} \beta \neq 0$. Отже, оцінка $\hat{\theta}_2$ не є слушною.
+
+\end{document}
