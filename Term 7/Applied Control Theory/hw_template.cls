@@ -14,7 +14,7 @@
 \RequirePackage{graphicx}
 \RequirePackage{framed}
 \RequirePackage{dsfont}
-\RequirePackage{cmbright}
+%\RequirePackage{cmbright}
 \RequirePackage{extarrows}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{indentfirst}
@@ -27,7 +27,7 @@
 \setlist{topsep=2pt,itemsep=2pt,parsep=0pt,partopsep=0pt}
 \RequirePackage[dvipsnames]{xcolor}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage[a4paper, top=1.0in,bottom=1.0in, left=0.8in, right=0.8in, footskip=0.4in, includefoot]{geometry}
+\RequirePackage[a4paper, top=1.0in,bottom=1.0in, left=1.2in, right=1.2in, footskip=0.4in, includefoot]{geometry}
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{multicol}
 \RequirePackage[bottom,multiple]{footmisc} % ensures footnotes are at the bottom of the page, and separates footnotes by a comma if they are adjacent
@@ -312,15 +312,6 @@
 % align and align* environments with inline size
 \newenvironment{talign}{\let\displaystyle\textstyle\align}{\endalign}
 \newenvironment{talign*}{\let\displaystyle\textstyle\csname align*\endcsname}{\endalign}
-
-\usepackage[explicit]{titlesec}
-\titleformat{\section}{\fontsize{24}{30}\sffamily\bfseries}{\thesection}{20pt}{#1}
-\titleformat{\subsection}{\fontsize{16}{18}\sffamily\bfseries}{\thesubsection}{12pt}{#1}
-\titleformat{\subsubsection}{\fontsize{10}{12}\sffamily\large\bfseries}{\thesubsubsection}{8pt}{#1}
-
-\titlespacing*{\section}{0pt}{5pt}{5pt}
-\titlespacing*{\subsection}{0pt}{5pt}{5pt}
-\titlespacing*{\subsubsection}{0pt}{5pt}{5pt}
 
 % \newcommand{\sectionbreak}{\clearpage} % Start every section on a new page
 % \newcommand{\subsectionbreak}{\clearpage} % Start every subsection on a new page

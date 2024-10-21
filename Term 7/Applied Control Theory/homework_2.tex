@@ -1,0 +1,215 @@
+\documentclass{hw_template}
+
+\title{\bfseries Контрольна Робота. Частина \#2}
+\author{\bfseries Захаров Дмитро}
+\date{12 жовтня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\section{Умова}
+
+Нехай маємо систему пружин з жорсткістю $k_1=5\,\frac{\text{Н}}{\text{м}}$, $k_2 = 1\,\frac{\text{Н}}{\text{м}}$ та нульовими довжинами $\ell_1$, $\ell_2$ (де $\ell_1=\ell_2=1 \, \text{м}$). Координати мас $m_1 = 1\,\text{кг}$, $m_2 = 1\,\text{кг}$ описуються наступною системою рівнянь:
+
+\begin{equation*}
+    \begin{cases}
+        m_1\ddot{x}_1 = -k_1(x_1 - \ell_1) + k_2(x_2 - x_1 - \ell_2), \\
+        m_2\ddot{x}_2 = -k_2(x_2 - x_1 - \ell_2) + F(t)
+    \end{cases}
+\end{equation*}
+
+де $|F(t)| \leq F_0$ --- керування (сила, прикладена до другої маси). 
+
+\begin{enumerate}
+    \item За допомогою заміни змінних звести двовимірну лінійну систему до чотиривимірної лінійної (\emph{4 бали}).
+    \item Застосувати принцип максимуму Понтрягіна для знаходження
+    розв’язку задачі швидкодії. Виписати функцію Гамільтона-Понтрягіна,
+    рівняння на спряжені змінні (\emph{2 бали}). Розв’язати це рівняння за
+    допомогою комп’ютера (\emph{4 бали}). Виписати принцип максимума (\emph{2 бали}).
+    \item Застосувати теорему Фельдбаума про число перемикань для цієї задачі
+    (\emph{3 бали}), можна рахувати на комп’ютері.
+    \item Побудувати за допомогою комп’ютера траєкторію яка переводить початкову точку у кінцеву. Взяти керування або $+1$, або $-1$, тобто без
+    перемикань. Початкові умові взяти самостійно. У вас вийде 4 вимірна
+    траєкторія, ви малюєте проекцію цієї 4 вимірної траєкторії на площини
+    $(x_1,x_2)$ та $(x_3,x_4)$.
+\end{enumerate}
+
+\pagebreak
+\section{Розв'язання}
+
+\subsection{Пункт 1}
+
+Зробимо просту заміну: нехай $v_1 := \dot{x}_1, v_2 := \dot{x}_2$. Також, для зручності, нехай маємо $\omega_1^2:=k_1/m_1$, $\omega_2^2 := k_2/m_2$, а також $\eta := m_2/m_1$. Тоді маємо систему
+\begin{equation*}
+    \begin{cases}
+        \dot{v}_1 = -\omega_1^2(x_1 - \ell_1) + \eta\omega_2^2(x_2 - x_1 - \ell_2), \\
+        \dot{v}_2 = -\omega_2^2(x_2 - x_1 - \ell_2) + u(t), \\
+        \dot{x}_1 = v_1, \\
+        \dot{x}_2 = v_2.
+    \end{cases}
+\end{equation*}
+
+з керуванням $u(t)$ за умови $|u(t)| \leq u_m$, де ми позначили $u_m := F_0/m_2$. Трошки її розпишемо і переупорядкуємо:
+\begin{equation*}
+    \begin{cases}
+        \dot{x}_1 = v_1, \\
+        \dot{x}_2 = v_2, \\
+        \dot{v}_1 = -(\omega_1^2 + \eta\omega_2^2)x_1 + \eta\omega_2^2x_2 + \omega_1^2\ell_1 - \eta\omega_2^2\ell_2, \\
+        \dot{v}_2 = \omega_2^2x_1 - \omega_2^2x_2 + \omega_2^2\ell_2 + u(t).
+    \end{cases}
+\end{equation*}
+
+Позначимо вектор стану як $\boldsymbol{z} := (x_1,x_2,v_1,v_2)$, тоді маємо систему
+\begin{equation*}
+    \dot{\boldsymbol{z}} = A\boldsymbol{z} + \boldsymbol{\beta}u(t) + \boldsymbol{\gamma}.
+\end{equation*}
+
+Матриці та вектори в цих позначеннях:
+\begin{equation*}
+    A = \begin{pmatrix}
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1 \\
+        -(\omega_1^2 + \eta\omega_2^2) & \eta\omega_2^2 & 0 & 0 \\
+        \omega_2^2 & -\omega_2^2 & 0 & 0
+    \end{pmatrix}, \quad
+    \boldsymbol{\beta} = \begin{pmatrix}
+        0 \\ 0 \\ 0 \\ 1
+    \end{pmatrix}, \quad
+    \boldsymbol{\gamma} = \begin{pmatrix}
+        0 \\ 0 \\ \omega_1^2\ell_1 - \eta\omega_2^2\ell_2 \\ \omega_2^2\ell_2
+    \end{pmatrix}.
+\end{equation*}
+
+Щоб прибрати доданок $\boldsymbol{\gamma}$, зробимо заміну $\boldsymbol{z} = \boldsymbol{w} + \boldsymbol{\delta}$, тоді маємо:
+\begin{equation*}
+    \dot{\boldsymbol{w}} = A(\boldsymbol{w} + \boldsymbol{\delta}) + \boldsymbol{\beta}u(t) + \boldsymbol{\gamma} \implies \dot{\boldsymbol{w}} = A\boldsymbol{w} + \boldsymbol{\beta}u(t) + A\boldsymbol{\delta} + \boldsymbol{\gamma}.
+\end{equation*}
+
+Ми хочемо занулити доданок $A\boldsymbol{\delta} + \boldsymbol{\gamma}$, тому оберемо
+\begin{equation*}
+    \boldsymbol{\delta} = -A^{-1}\boldsymbol{\gamma} = \begin{pmatrix}
+        \ell_1 \\ \ell_1+\ell_2 \\ 0 \\ 0
+    \end{pmatrix}
+\end{equation*}
+
+В такому разі маємо наступне рівняння $\dot{\boldsymbol{w}} = A\boldsymbol{w} + \boldsymbol{\beta}u(t)$, де $A$ та $\boldsymbol{\beta}$ виглядають так:
+\begin{equation*}
+    A = \begin{pmatrix}
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1 \\
+        -(\omega_1^2 + \eta\omega_2^2) & \eta\omega_2^2 & 0 & 0 \\
+        \omega_2^2 & -\omega_2^2 & 0 & 0
+    \end{pmatrix}, \quad
+    \boldsymbol{\beta} = \begin{pmatrix}
+        0 \\ 0 \\ 0 \\ 1
+    \end{pmatrix}, \quad
+    \boldsymbol{w} = \boldsymbol{z} - \begin{pmatrix}
+        \ell_1 \\ \ell_1+\ell_2 \\ 0 \\ 0
+    \end{pmatrix}
+\end{equation*}
+\pagebreak
+
+\subsection{Пункт 2}
+
+Спочатку, сформулюємо принцип максимуму Понтрягіна.
+
+\begin{lemma}{Спрощене формулювання принципу максимума Понтрягіна.} 
+
+Нехай маємо наступну динамічну систему:
+\begin{equation*}
+    \dot{\mathbf{x}} = f(\mathbf{x}(t), \mathbf{u}(t)), \; \mathbf{x}(0) = \mathbf{x}_0, \; \mathbf{u}(t) \in \Omega, \; t \in [0,T]
+\end{equation*}
+і ми маємо функціонал $\mathcal{L}(\mathbf{u}) = \Psi(\mathbf{x}(T)) + \int_0^T \ell(\mathbf{x}(t), \mathbf{u}(t))dt \to \inf$. Введемо вектор множників Лагранжа $\boldsymbol{\psi}(t)$, деяке $\lambda_0 < 0$ та Гамільтоніан
+\begin{equation*}
+    \mathcal{H}(\mathbf{x}(t), \mathbf{u}(t), \boldsymbol{\psi}(t), t) := \boldsymbol{\psi}^{\top}f(\mathbf{x}(t), \mathbf{u}(t)) + \lambda_0\ell(\mathbf{x}(t), \mathbf{u}(t))
+\end{equation*}
+
+Принцип максимуму Понтрягіна стверджує, що оптимальна траєкторія $\mathbf{x}^*(t)$, керування $\mathbf{u}^*(t)$, та відповідний вектор множників Лагранжа $\boldsymbol{\psi}^*(t)$ має максимізувати Гамільтоніан $\mathcal{H}$, тобто
+\begin{equation*}\label{pontryagin-condition-1}
+    (\forall t \in [0,T]) \; (\forall \mathbf{u}(t) \in \Omega)\; \{\mathcal{H}(\mathbf{x}^*(t), \mathbf{u}^*(t), \boldsymbol{\psi}^*(t), t) \geq \mathcal{H}(\mathbf{x}(t), \mathbf{u}(t), \boldsymbol{\psi}(t), t)\},
+\end{equation*}
+де вектор множників знаходиться з рівнянь
+\begin{equation*}\label{pontryagin-condition-2}
+    \dot{\boldsymbol{\psi}}(t) = -\nabla_{\mathbf{x}} \mathcal{H}(\mathbf{x}^*(t), \mathbf{u}^*(t), \boldsymbol{\psi},t), \; \boldsymbol{\psi}(T) = -\nabla_{\mathbf{x}}\Psi(\mathbf{x}(T))
+\end{equation*}
+\end{lemma}
+
+Тепер запишемо вище виписане у наших позначеннях. Отже, маємо:
+\begin{equation*}
+    f(\boldsymbol{w}, u) = A\boldsymbol{w} + \boldsymbol{\beta}u, \quad \Psi(\boldsymbol{w}) \equiv 0, \quad \ell(\boldsymbol{w}, u) \equiv 1.
+\end{equation*}
+
+Також, оскільки $\ell \equiv \mathsf{const}$, то доданок $\lambda_0\ell(\mathbf{x}(t), u(t))$ в Гамільтоніані не впливає на максимум, тому можемо його взагалі не враховувати. Таким чином, маємо Гамільтоніан
+\begin{align*}
+    \mathcal{H}(\boldsymbol{w}, u, \boldsymbol{\psi}, t) & = \boldsymbol{\psi}^{\top}f(\boldsymbol{w}, u) = \langle \boldsymbol{\psi}, f(\boldsymbol{w}, u) \rangle \\
+    & = \psi_1w_3 + \psi_2w_4 + (\eta \omega_2^2w_2 - (\omega_1^2+\eta\omega_2^2)w_1)\psi_3 + (u+\omega_2^2w_1 - \omega_2^2w_2)\psi_4
+\end{align*}
+
+Отже, маємо обрати $u^* = \arg\max_{u \in \Omega}\mathcal{H}(\mathbf{w}(t), u(t), \boldsymbol{\psi}(t), t)$. Видно, що єдиний доданок, що залежить від $u$ --- це $u\psi_4$, тому максимум буде досягнуто при $u^* = \text{sign}(\psi_4)u_m$. Залишилось записати рівняння на множник Лагранжа. Маємо
+\begin{equation*}
+    \dot{\boldsymbol{\psi}} = -\nabla_{\boldsymbol{w}}\mathcal{H} = -A^{\top}\boldsymbol{\psi}
+\end{equation*}
+
+Звідси рівняння має вигляд:
+\begin{equation*}
+    \begin{cases}
+        \dot{\psi}_1 = -\omega_2^2\psi_4 + (\omega_1^2 + \eta\omega_2^2)\psi_3 \\
+        \dot{\psi}_2 = -\eta\omega_2^2\psi_3 + \omega_2^2\psi_4 \\
+        \dot{\psi}_3 = -\psi_1 \\
+        \dot{\psi}_4 = -\psi_2
+    \end{cases}
+\end{equation*}
+
+Систему можна розв'язати і чисельно, проте оскільки у нас немає умов трансверсальності, то розв'язок буде надто складно виглядати (навіть в чисельних розрахунках, містити невідомі константи). У файлу він наведений.
+
+\subsection{Пункт 3}
+
+Сформулюємо теорему Фельдбаума про число перемикань (спрощено).
+
+\begin{theorem}{Теорема Фельдбаума про число перемикань.}
+    Нехай маємо задачу швидкодії для рівняння $\dot{\mathbf{x}} = A\mathbf{x} + Bu$ за умови $|u| \leq 1$ (кінці задані), $\mathbf{x} \in \mathbb{R}^n$. Нехай система є повністю керованою. Тоді, якщо спектр $\sigma(A) \subset \mathbb{R}$, то оптимальне керування $u^*(t)$ має $\leq (n-1)$ перемикань.
+\end{theorem}
+
+По-перше, з'ясуємо, чи є наша система повністю керованою. Для цього знайдемо матрицю керованості $K = [B, AB, A^2B, A^3B]$. Маємо:
+\begin{equation*}
+    B = \begin{pmatrix}
+        0 \\ 0 \\ 0 \\ 1
+    \end{pmatrix}, \quad
+    AB = \begin{pmatrix}
+        0 \\ 1 \\ 0 \\ 0
+    \end{pmatrix}, \quad
+    A^2B = \begin{pmatrix}
+        0 \\ 0 \\ \eta\omega_2^2 \\ -\omega_2^2
+    \end{pmatrix}, \quad 
+    A^3B = \begin{pmatrix}
+        \eta\omega_2^2 \\ -\omega_2^2 \\ 0 \\ 0
+    \end{pmatrix}
+\end{equation*}
+
+Отже,
+\begin{equation*}
+    K = \begin{pmatrix}
+        0 & 0 & 0 & \eta\omega_2^2 \\
+        0 & 1 & 0 & -\omega_2^2 \\
+        0 & 0 & \eta\omega_2^2 & 0 \\
+        1 & 0 & -\omega_2^2 & 0
+    \end{pmatrix}
+\end{equation*}
+
+Видно, що ранг матриці $K$ дорівнює 4, тому система є повністю керованою. Подивимось тепер на спектр матриці $A$. Тут підставимо наші конкретні значення ($\omega_1=\sqrt{5}$,$\omega_2=1$,$\eta=1$). В такому разі, власні значення будуть:
+\begin{equation*}
+    \lambda_{1,2} = \pm i\sqrt{\frac{7+\sqrt{29}}{2}}, \quad \lambda_{3,4} = \pm i\sqrt{\frac{7-\sqrt{29}}{2}}
+\end{equation*}
+
+Тому $\sigma(A) \subset \mathbb{C} \setminus \mathbb{R}$, тобто теорема Фельдбаума не застосовується.
+
+\pagebreak
+
+\subsection{Пункт 4}
+
+Цей пункт вирішив не виконувати :)
+
+\end{document}
