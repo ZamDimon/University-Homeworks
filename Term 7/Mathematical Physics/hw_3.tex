@@ -1,0 +1,164 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#3}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 26 жовтня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Номер 3.1 (4).}
+
+\begin{problem}
+    Знайти функцію Гріна методом конформних відображень для області:
+    \begin{equation*}
+        \Omega = \{(x_1,x_2) \in \mathbb{R}^2: x_1^2 + x_2^2 < R^2, x_2 > 0\}
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Метод конформних відображень полягає у тому, що якщо конформне відображення $w: \Omega \to \mathbb{C}$ відображає область $\Omega$ у одиничне коло $|z|<1$, то функція Гріна для області $\Omega$ може бути знайдена у вигляді:
+\begin{equation*}
+    G(\mathbf{x},\boldsymbol{\xi}) = \frac{1}{2\pi}\log\left|\frac{1-w(z)\overline{w(\zeta)}}{w(z)-w(\zeta)}\right|, \; \text{де} \; z = x_1+ix_2, \; \zeta = \xi_1+i\xi_2.
+\end{equation*}
+
+Отже, наша ціль --- це побудувати $w(z)$, що переведе верхню половину півкулі на одиничне коло. Це можна зробити за допомогою чотирьох відображень:
+\begin{enumerate}
+    \item $w_1: z \mapsto z/R$ відображає верхнє півколо радіусу $R$ у одиничне півколо радіусу $R$;
+    \item $w_2: z \mapsto (1+z)/(1-z)$ відобразить верхню півкулю у перший квадрант;
+    \item $w_3: z \mapsto z^2$ відобразить перший квадрант у верхню півплощину;
+    \item $w_4: z \mapsto (z-i)/(z+i)$ відобразить верхню півплощину у одиничне коло.
+\end{enumerate}
+
+Отже, наше відображення має вигляд $w(z) = w_4 \circ w_3 \circ w_2 \circ w_1(z)$.  Треба це розписати:
+\begin{align*}
+    w(z) &= \frac{\left(\frac{1+z/R}{1-z/R}\right)^2-i}{\left(\frac{1+z/R}{1-z/R}\right)^2+i}
+    = \frac{(1+z/R)^2-i(1-z/R)^2}{(1+z/R)^2+i(1-z/R)^2} \\
+    &= \frac{\frac{1-i}{R^2}(z^2+2iRz+R^2)}{\frac{1+i}{R^2}(z^2-2iRz+R^2)} = -i \cdot \frac{z^2+2iRz+R^2}{z^2-2iRz+R^2}
+\end{align*}
+
+Далі, нам потрібно знайти спряжений вираз до цього:
+\begin{align*}
+    \overline{w(\zeta)} = \frac{\overline{-i(\zeta^2+2iR\zeta+R^2)}}{\overline{\zeta^2-2iR\zeta+R^2}} = \frac{i(\overline{\zeta}^2+2R\overline{i\zeta}+R^2)}{\overline{\zeta}^2-2R\overline{i\zeta}+R^2} = i \cdot \frac{\overline{\zeta}^2-2iR\overline{\zeta}+R^2}{\overline{\zeta}^2+2iR\overline{\zeta}+R^2}
+\end{align*}
+
+Далі починаємо рахувати сам дріб. Почнемо з чисельнику:
+\begin{equation*}
+    1-w(z)\overline{w(\zeta)} = 1 - \frac{z^2+2iRz+R^2}{z^2-2iRz+R^2} \cdot \frac{\overline{\zeta}^2-2iR\overline{\zeta}+R^2}{\overline{\zeta}^2+2iR\overline{\zeta}+R^2} = \frac{4iR(\overline{\zeta}-z)(R^2-\overline{\zeta}z)}{(R^2+2iR\overline{\zeta}+\overline{\zeta}^2)(R^2-2iRz+z^2)}
+\end{equation*}
+
+Тепер знайдемо знаменник:
+\begin{equation*}
+    w(z)-w(\zeta) = -i \cdot \frac{z^2+2iRz+R^2}{z^2-2iRz+R^2} + i \cdot \frac{\overline{\zeta}^2-2iR\overline{\zeta}+R^2}{\overline{\zeta}^2+2iR\overline{\zeta}+R^2} = -\frac{4R(\zeta-z)(R^2-\zeta z)}{(R^2-2iR\zeta+\zeta^2)(R^2-2iRz+z^2)}
+\end{equation*}
+
+Отже, маємо:
+\begin{equation*}
+    T(z,\zeta) = \frac{1-w(z)\overline{w(\zeta)}}{w(z)-w(\zeta)} = -i \cdot \frac{(\overline{\zeta}-z)(R^2-\overline{\zeta}z)(R^2-2iR\zeta+\zeta^2)}{(\zeta-z)(R^2-\zeta z)(R^2+2iR\overline{\zeta}+\overline{\zeta}^2)}
+\end{equation*}
+
+Спочатку знайдемо модулі ось цих двох довгих виразів:
+\begin{align*}
+    |R^2-2iR \zeta + \zeta^2| &= |R^2-2iR(\xi_1+i\xi_2)+(\xi_1+i\xi_2)^2| \\
+    &= |R^2+\xi_1^2-\xi_2^2+2R\xi_2 - 2iR\xi_1 + 2i\xi_1\xi_2| \\
+    &= \sqrt{(R^2+\xi_1^2-\xi_2^2+2R\xi_2)^2 + 4\xi_1^2(\xi_2-R)^2} 
+\end{align*}
+\begin{align*}
+    |R^2+2iR\overline{\zeta}+\overline{\zeta}^2| &= |R^2+2iR(\xi_1-i\xi_2)+(\xi_1-i\xi_2)^2| \\
+    &= |R^2+2R\xi_2+\xi_1^2-\xi_2^2 + (2R\xi_1-2\xi_1\xi_2)i| \\
+    &= \sqrt{(R^2+\xi_1^2-\xi_2^2+2R\xi_2)^2 + 4\xi_1^2(\xi_2-R)^2} 
+\end{align*}
+
+Модулі вийшли однаковими. Дійсно, бо ці два вирази є спряженими:
+\begin{equation*}
+    \overline{R^2-2iR \zeta + \zeta^2} = R^2-2R\overline{i\zeta} + \overline{\zeta}^2 = R^2+2iR\overline{\zeta} + \overline{\zeta}^2
+\end{equation*}
+
+Тому, маємо:
+\begin{equation*}
+    |T(z,\zeta)| = |-i| \cdot \frac{|\overline{\zeta}-z|\cdot |R^2-\overline{\zeta}z|}{|\zeta-z| \cdot |R^2-\zeta z|} =  \frac{|\overline{\zeta}-z|\cdot |R^2-\overline{\zeta}z|}{|\zeta-z| \cdot |R^2-\zeta z|}  
+\end{equation*}
+
+З цього моменту можемо рахувати модулі усіх виразів:
+\begin{align*}
+    |\overline{\zeta}-z| &= |(\xi_1-i\xi_2)-(x_1+ix_2)| = \sqrt{(\xi_1-x_1)^2 + (\xi_2+x_2)^2}, \\
+    |\zeta - z| &= |(\xi_1+i\xi_2)-(x_1+ix_2)| = \sqrt{(\xi_1-x_1)^2 + (\xi_2-x_2)^2},
+\end{align*}
+І наступних двох:
+\begin{align*}
+    |R^2-\overline{\zeta}z| &= |R^2-(\xi_1-i\xi_2)(x_1+ix_2)| = |R^2-\xi_1 x_1-\xi_2 x_2 + (x_1\xi_2-x_2\xi_1)i| \\
+    &=\sqrt{(R^2-\xi_1 x_1-\xi_2 x_2)^2 + (x_1\xi_2-x_2\xi_1)^2}, \\
+    |R^2-\zeta z| &= |R^2-(\xi_1+i\xi_2)(x_1+ix_2)| = |R^2-\xi_1 x_1+\xi_2 x_2 - (x_1\xi_2+x_2\xi_1)i| \\
+    &=\sqrt{(R^2-\xi_1 x_1+\xi_2 x_2)^2 + (x_1\xi_2+x_2\xi_1)^2}.
+\end{align*}
+
+Отже, остаточно наша функція Гріна має вигляд:
+\begin{align*}
+    G(\mathbf{x},\boldsymbol{\xi}) &= \frac{1}{2\pi} \log \frac{|\overline{\zeta}-z|\cdot |R^2-\overline{\zeta}z|}{|\zeta-z| \cdot |R^2-\zeta z|} \\ 
+    &= \frac{1}{2\pi} \log \frac{\sqrt{(\xi_1-x_1)^2 + (\xi_2+x_2)^2} \cdot \sqrt{(R^2-\xi_1 x_1-\xi_2 x_2)^2 + (x_1\xi_2-x_2\xi_1)^2}}{\sqrt{(\xi_1-x_1)^2 + (\xi_2-x_2)^2} \cdot \sqrt{(R^2-\xi_1 x_1+\xi_2 x_2)^2 + (x_1\xi_2+x_2\xi_1)^2}} \\
+    &= \frac{1}{4\pi} \log \frac{(\xi_1-x_1)^2 + (\xi_2+x_2)^2}{(\xi_1-x_1)^2 + (\xi_2-x_2)^2} + \frac{1}{4\pi} \log \frac{(R^2-\xi_1 x_1-\xi_2 x_2)^2 + (x_1\xi_2-x_2\xi_1)^2}{(R^2-\xi_1 x_1+\xi_2 x_2)^2 + (x_1\xi_2+x_2\xi_1)^2}
+\end{align*}
+
+\pagebreak
+
+\subsection{Номер 3.2 (1).}
+
+\begin{problem}
+    Розв'язати задачу для рівняння $\Delta u = 0$, $x_2 > 0$ з граничними умовами:
+    \begin{equation*}
+        u\Big|_{x_2=0} = \theta(x_1-1), \quad \theta(x) = \begin{cases}
+            1, x > 0 \\
+            0, x < 0
+        \end{cases}
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Для початку згадаємо, що на практиці ми вже виписували функцію Гріна для такої задачі:
+\begin{equation*}
+    G(\mathbf{x}, \boldsymbol{\xi}) = \frac{1}{4\pi}\left(\log\left((x_1-\xi_1)^2 + (x_2+\xi_2)^2\right) - \log((x_1-\xi_1)^2+(x_2-\xi_2)^2)\right)
+\end{equation*}
+
+Тепер згадаємо, що розв'язок задачі Діріхле для рівняння Лапласа можна записати у вигляді:
+\begin{equation*}
+    u(\mathbf{x}) = \int_{\Omega} G(\mathbf{x}, \boldsymbol{\xi})f(\boldsymbol{\xi})d\boldsymbol{\xi} - \int_{\partial\Omega}\frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}}\phi(\boldsymbol{\xi})dS_{\xi}
+\end{equation*}
+
+В нашому випадку $f(\boldsymbol{\xi}) \equiv 0$, тому все зводиться до обчислення другого інтегралу:
+\begin{equation*}
+    u(\mathbf{x}) = -\int_{\partial\Omega}\frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}}\phi(\boldsymbol{\xi})dS_{\xi}
+\end{equation*}
+
+Отже, треба знайти часткову похідну за нормаллю. В нашому випадку, нормаль дивиться вертикально ``вниз'' від верхньої півплощини, тому $\boldsymbol{\nu} = (0,-1)$. Таким чином, маємо:
+\begin{equation*}
+    \frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}} = -\frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \xi_2} = -\frac{1}{2\pi} \cdot \frac{x_2+\xi_2}{(x_1-\xi_1)^2+(x_2+\xi_2)^2} - \frac{1}{2\pi} \cdot \frac{x_2-\xi_2}{(x_1-\xi_1)^2+(x_2-\xi_2)^2}
+\end{equation*}
+
+Далі, оскільки ми інтегруємо за границею, то $\xi_2 = 0$. Тому, спростимо вираз і далі:
+\begin{equation*}
+    \frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}}\Big|_{\xi_2=0} = -\frac{1}{2\pi} \cdot \frac{x_2}{(x_1-\xi_1)^2+x_2^2} - \frac{1}{2\pi} \cdot \frac{x_2}{(x_1-\xi_1)^2+x_2^2} = -\frac{1}{\pi} \cdot \frac{x_2}{(x_1-\xi_1)^2+x_2^2}
+\end{equation*}
+
+Отже, наш інтеграл запишеться як:
+\begin{equation*}
+    u(\mathbf{x}) = \int_{-\infty}^{+\infty} \frac{1}{\pi} \cdot \frac{x_2}{(x_1-\xi_1)^2+x_2^2} \cdot \theta(\xi_1-1)d\xi_1 = \frac{x_2}{\pi}\int_{-\infty}^{+\infty} \frac{\theta(\xi_1-1)d\xi_1}{(x_1-\xi_1)^2+x_2^2}
+\end{equation*}
+
+Помітимо, що за $\xi_1 < 1$, вираз під інтегралом нульовий, тому можемо змінити межі інтегрування:
+\begin{equation*}
+    u(\mathbf{x}) = \frac{x_2}{\pi}\int_{1}^{+\infty} \frac{d\xi_1}{(x_1-\xi_1)^2+x_2^2} = \frac{1}{\pi x_2}\int_1^{+\infty} \frac{d\xi_1}{1+\left(\frac{x_1-\xi_1}{x_2}\right)^2}
+\end{equation*}
+
+Отже, зробимо заміну $\zeta := \frac{\xi_1-x_1}{x_2}$, тоді $x_2d\zeta = d\xi_1$ і тому:
+\begin{equation*}
+    u(\mathbf{x}) = \frac{1}{\pi}\int_{(1-x_1)/x_2}^{+\infty} \frac{d\zeta}{1+\zeta^2} = \frac{1}{\pi}\arctan \left(\frac{\xi_1-x_1}{x_2}\right)\Big|_{1}^{+\infty} = \boxed{\frac{1}{\pi}\left(\frac{\pi}{2} - \arctan \left(\frac{1-x_1}{x_2}\right)\right)}
+\end{equation*}
+
+\end{document}
