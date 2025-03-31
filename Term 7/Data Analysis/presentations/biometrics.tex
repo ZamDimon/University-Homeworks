@@ -1,0 +1,553 @@
+\documentclass{zkdl-presentation-template}
+\usepackage[utf8]{inputenc}
+\usepackage[english,ukrainian]{babel}
+
+% -- Including some standard packages --
+\usepackage{graphicx}
+\usepackage{soul}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{dsfont}
+
+% Tikz
+\usepackage{tikz}
+\usetikzlibrary{matrix,positioning,fit,backgrounds,intersections}
+
+% -- Cross signs --
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\title{\textbf{Аналіз біометрії. Вектори характеристик.}}
+\author{Захаров Дмитро}
+\date{26 листопада 2024 р.}
+
+\titlegraphic{
+    \includegraphics[width=0.7\textwidth]{images/preview.png}
+}
+
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+  \insertshorttitle\hfill%
+  \insertframenumber\,/\,\inserttotalframenumber}
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+\begin{document}
+	\frame {
+		\titlepage
+	}
+ 
+	\begin{frame}{План}
+        \tableofcontents
+    \end{frame}
+	 
+	\section{Вступ}
+	\subsection{Supervised Learning}
+	\begin{frame}{Формулювання задачі}	
+		\begin{columns}
+            % -- Description --
+            \begin{column}{0.6\textwidth}
+                Зазвичай, на вхід подається набір даних виду:
+                \begin{equation*}
+                    \mathcal{D} = \{(x_1,y_1),(x_2,y_2),\dots,(x_n,y_n)\},
+                \end{equation*}
+                
+                де задача -- побудувати функцію $f$, що ``достатньо точно'' відображає $x_i$ на $y_i$ (\textit{Supervised Learning}).
+    
+                \begin{exampleblock}{Приклад}
+                    Розпізнавання цифри з зображення. $x_i$ (вхід) -- зображення, $y_i$ (вихід) -- цифра від $0$ до $9$.
+                \end{exampleblock}
+            \end{column}
+
+            % -- Figure --
+            \begin{column}{0.4\textwidth}
+                \begin{figure}
+                \centering
+                \includegraphics[width=1\textwidth]{images/mapping.png}
+                \caption{Вхідний набір данних $\mathcal{D}$ -- послідовність пар виду $x_i \mapsto y_i$.}
+                \end{figure}
+            \end{column}
+        \end{columns}
+	\end{frame}
+
+    \begin{frame}{Приклад: MNIST}	
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.8\textwidth]{images/mnist.png}
+            \caption{Розпізнавання цифр. Набір данних MNIST -- найбільш популярний вибір для написання прототипів (\textit{Proof of Concept}).}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Ефективність відображення}	
+        \begin{exampleblock}{Питання}
+            Як оцінити, що задана функція $f$ є ``гарною'' або ``поганою''?
+        \end{exampleblock}
+        
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\textwidth]{images/loss.png}
+            \caption{$f(x_i)$ ``промахнулось'' і дало відхилення від $y_i$ -- що далі?}
+        \end{figure}
+	\end{frame}
+
+    \begin{frame}{Функція втрати}
+        \textcolor{ForestGreen}{\cmark} Введемо втрату $\ell$ -- міра відстані між передбаченням $\hat{\boldsymbol{y}}=f(\boldsymbol{x})$ та фактичним значенням $\boldsymbol{y}$.
+    
+        \begin{exampleblock}{Приклад функції втрати}
+            Якщо вихідне значення -- вектор, то можна покласти $\ell(\boldsymbol{y},\hat{\boldsymbol{y}}) := \text{відстань}(\boldsymbol{y},\hat{\boldsymbol{y}})$.
+        \end{exampleblock}
+    
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{images/loss_R3.png}
+            \caption{Для $\mathcal{Y}=\mathbb{R}^3$ беремо Евклідову відстань для $\ell$.}
+        \end{figure}
+	\end{frame}
+ 
+    \begin{frame}{Оптимізаційна задача}
+        \begin{columns}
+            % -- Text Column --
+            \begin{column}{0.5\textwidth}
+                Нехай функція $f(\star;\theta)$ параметризована набором параметрів $\theta$. 
+
+                \begin{exampleblock}{Приклад параметризації}
+                    Наприклад, нехай ми шукаємо
+                    \begin{equation*}
+                        f(x) = a x + b,
+                    \end{equation*}
+                    де $\theta=(a,b)$
+                \end{exampleblock}
+
+                Задача -- мінімізувати втрату $\ell(f(x_i),y_i)$.
+            \end{column}
+            % -- Figure --
+            \begin{column}{0.5\textwidth}
+                \begin{figure}
+                    \centering
+                    \includegraphics[width=\textwidth]{images/regression.png}
+                    \caption{Підбираємо пряму, що проходить максимально близько до інших точок.}
+                \end{figure}
+            \end{column}
+        \end{columns}
+    \end{frame}
+    
+    \subsection{Dense Neural Networks}
+    \begin{frame}{Повнозв'язні нейронні мережі (Dense Neural Networks)}
+        Будуємо функцію, що на вхід приймає вектор довжини $n_{\text{in}}$, на вихід видає вектор довжини $n_{\text{out}}$, а також параметризована матрицями ваг та зсувами (bias).
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.45\textwidth]{images/flat_network.png}
+            \caption{Приклад повнозв'язаної нейронної мережі з трьома шарами.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Вхідні нейрони}
+        \begin{block}{Що таке нейрон?}
+            Нейрон -- структурна одиниця нейронної мережі. По своїй суті -- вершина, що містить число -- активацію.
+        \end{block}
+    
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{images/flatten.png}
+            \caption{Нейрони у першому шарі. Матрицю зображення перетворюємо у плоский вектор.}
+        \end{figure}
+    \end{frame}
+    \begin{frame}{Forward Propagation}
+        \begin{equation*}
+            \boldsymbol{a}^{(\ell+1)} = \phi\left(\boldsymbol{W}^{(\ell)}\boldsymbol{a}^{(\ell)} + \boldsymbol{\beta}^{(\ell)}\right).
+        \end{equation*}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{images/forward_prop.png}
+            \caption{Пряме поширення. Спочатку знаходимо матричний добуток, додаємо зсув і накладаємо нелінійну функцію.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Пряме поширення: обрахунок втрати}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{images/full_forward_prop.png}
+        \caption{Пряме поширення: обрахунок значення втрати}
+    \end{figure}
+
+    \end{frame}
+
+    \begin{frame}{Резюме}
+        \begin{itemize}
+            \item Нейронна мережа $f$ -- багатопараметризована функція.
+            \item Dense нейронна мережа приймає вектор і ``випльовує'' також вектор.
+            \item Маючи набір данних, ми намагаємося мінімізувати певну задану функцію $\ell$, підбираючи параметри у сімействі функцій.
+        \end{itemize}    
+	\end{frame}
+
+    \subsection{Convolutional Neural Networks}
+	\begin{frame}{Мотивація використання конволюційної нейронної мережі}
+	    \begin{figure}
+        \centering
+            \includegraphics[width=0.73\textwidth]{images/cnn_motivation.png}
+        \end{figure}
+	\end{frame}
+
+    \begin{frame}{Конволюційна операція}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{images/convolution.png}
+            \caption{Механізм знаходження конволюції $X*\mathcal{K}$ для $\mathcal{K} \in \mathbb{R}^{3 \times 3}$ та $X \in \mathbb{R}^{7 \times 7}$.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Фільтри Собеля}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{images/sobel.png}
+            \caption{Демонстрація фільтрів Собеля.}
+        \end{figure}
+    \end{frame}
+    
+    \begin{frame}{Конволюційний шар}
+        \begin{itemize}
+            \item Фільтр по зображенню $W \times H \times n_C$ з $n_C$ каналами -- це набір з $n_C$ фільтрів.
+            \item Один набір -- один шар у вихідному ``об'ємі''. $n_f$ фільтрів дає вихід з $n_f$ каналами.
+            \item Тренувальні параметри -- параметри фільтрів, зсуви (один на кожен фільтр), гіперпараметр -- активаційна функція.
+        \end{itemize}        
+
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.55\textwidth]{images/cnn_volume.png}
+        \end{figure}
+    \end{frame}
+	
+    \begin{frame}{Max Pooling}
+        \begin{enumerate}
+            \item Рухаємо $2\times 2 \times n_C$ фільтр по зображенню. 
+            \item Взяти максимальний елемент на кожному каналі і записати у вихідне зображення.
+        \end{enumerate}
+
+        \textit{Навіщо це треба?} Ми зменьшуємо зображення в $4$ рази.
+
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.55\textwidth]{images/max-pooling-a.png}
+            \caption{Ілюстрація MaxPool шару. \scriptsize Зображення взято з \href{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks}{Afshine Amidi, Stanford CS 230 -- Deep Learning, CNN Cheatsheat}}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Конволюційна нейронна мережа, підсумовуючи}
+        1. Використовуємо конволюційні шари (\textsf{Conv2D}).
+        
+        2. Зменьшуємо розмір зображення за допомогою \texttt{Conv2D} з $s=2$ або \texttt{MaxPool} шаром.
+        
+        3. Повторити, поки об'єм зображення не стане достатньо маленьким.
+
+        4. Перевести у повнозв'язану нейронну мережу $\implies$ вихід.
+
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.8\textwidth]{images/cnn.png}
+            \caption{Повнозв'язана нейронна мережа в кінці CNN. \scriptsize Зображення взято з \href{https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks}{Afshine Amidi, Stanford CS 230 -- Deep Learning, CNN Cheatsheat}}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Конволюційна нейронна мережа, підсумовуючи}
+        \begin{figure}
+        \centering
+            \includegraphics[width=\textwidth]{images/cnn_full.png}
+            \caption{Повний вигляд конволюційної мережі.  \scriptsize Зображення взято з роботи Iuliana Tabian et al. 2019. A Convolutional Neural Network for Impact Detection and Characterization of Complex Composite Structures.}
+        \end{figure}
+    \end{frame}
+
+    \section{Deep Pattern Recognition}
+    \subsection{Embedding Neural Network}
+    \begin{frame}{Постановка задачі}
+        Маючи два зображення $X,Y$, сказати чи відповідають вони одній людині чи ні.
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.57\textwidth]{images/face_comparison.png}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Перша ідея}
+        Нехай кожній людині відповідає номер. Тоді, будуємо класифікаційну нейронну мережу ($C$ -- кількість класів):
+        \begin{equation*}
+            \mathcal{F}: \mathsf{Image} \to \{1,\dots,C\}
+        \end{equation*}
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.7\textwidth]{images/recognition_classes.png}
+            \caption{Даємо номер кожній людині і будуємо мультикласифікаційну модель.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Чому ні?}
+        \begin{itemize}
+            \item Людей м'яко кажучи багато -- близько $8.1$ млрд на момент написання цієї презентації :)
+            \item Навіть маючи фіксований набір людей, потрібно більше 50-100 фотографій на людину (One-shot problem).
+        \end{itemize}
+        
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.7\textwidth]{images/too_many_people.png}
+            \caption{Набір класів не є фіксованим, інакше нам доведеться зафіксувати 8+ млрд класів}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Класичні методи: Eigenfaces}
+        % Make two columns with two images
+
+        \begin{columns}
+            % Description
+            \begin{column}{0.5\textwidth}
+                \begin{figure}
+                \centering
+                    \includegraphics[width=0.95\textwidth]{images/test_faces.png}
+                    \caption{Test Images.}
+                \end{figure}
+            \end{column}
+
+            \begin{column}{0.5\textwidth}
+                \begin{figure}
+                \centering
+                    \includegraphics[width=0.95\textwidth]{images/eigenfaces.png}
+                    \caption{Eigenfaces.}
+                \end{figure}
+            \end{column}
+        \end{columns}
+
+        \vspace{-20px}
+        \begin{align*}
+            \mathsf{Image} &\approx \lambda_1 \times \mathsf{Eigenface}_1 + \dots + \lambda_N \times \mathsf{Eigenface}_N \\
+            \mathsf{Features} &= (\lambda_1,\dots,\lambda_N)
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Класичні методи: Facial Feature Points}
+        \begin{figure}
+        \centering
+            \includegraphics[width=\textwidth]{images/feature_points.png}
+            \caption{Facial Feature Points. Taken from ``Facial Feature Point Detection: A Comprehensive Survey'' by Nannan Wang et al. 2014.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Друга ідея: Embedding Neural Network}
+        Будуємо $\mathcal{F}: \mathsf{Image} \to S^{m-1}$. Вперше запропоновано в Florian Schroff et al. ``FaceNet: A Unified Embedding for Face Recognition and Clustering''. 2015. 
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.4\textwidth]{images/hypersphere.png}
+            \caption{Вихід функції (вектор фіч або ``embedding vector'') буде давати ``характеристику'' людини.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Embedding Neural Network: інтуїція}
+        Приклад вектору фіч -- це набір відстаней між ключовими точками.
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.75\textwidth]{images/keypoints.jpg}
+            \caption{Ключові точки на обличчі.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Ілюстрація роботи Embedding нейронної мережі}
+        \begin{exampleblock}{Приклад}
+            Нехай на вхід ми отримали зображення $X,Y,Z$ і для $m=3$ ми отримали наступні вектори фіч:
+            \begin{gather*}
+                \boldsymbol{x} = \langle 0.568, 0.568, 0.596\rangle \\
+                \boldsymbol{y} = \langle 0.613, 0.529, 0.585\rangle \\
+                \boldsymbol{z} = \langle -0.408, -0.816, 0.408\rangle
+            \end{gather*}
+            Які два зображення з набору $X,Y,Z$ належать одній людині, а яка одна до іншої?
+        \end{exampleblock}
+        Добре видно, що $X,Y$ належать одній людині. Але як ми це визначили? 
+    \end{frame}
+
+    \begin{frame}{Метрика схожості}
+
+    \begin{columns}
+        % Description
+        \begin{column}{0.5\textwidth}
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.6\textwidth]{images/hypersphere_dist.png}
+            \caption{Метрика різниці людей -- відстань між векторами фіч}
+        \end{figure}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            Введемо відстань між векторами фіч $d(\cdot,\star)$. Найбільш частий вибор -- Евклідова метрика. 
+        
+            \textbf{Умова на одну людину:}
+            \begin{equation*}
+                \boxed{d(\mathcal{F}(X),\mathcal{F}(Y)) \leq \tau},
+            \end{equation*}
+            де $\tau$ -- так званий ``поріг'' або threshold.
+        \end{column}
+    \end{columns}
+    \end{frame}
+
+    \begin{frame}{Як реалізувати? Псевдокод}
+        \textbf{Реєстрація:}
+
+        \begin{enumerate}
+            \item Прочитати зображення людини $X$ зі сканеру.
+            \item Додати до бази данних $\mathcal{F}(X)$.
+        \end{enumerate}
+
+        \textbf{Автентифікація:}
+        \begin{enumerate}
+            \item Прочитати зображення людини $Y$ зі сканеру.
+            \item Знайти вектор $y = \mathcal{F}(Y) = (y_1,\dots,y_{128})$.
+            \item Для кожного вектору $z=(z_1,\dots,z_{128})$ з бази даних зробити наступну дію:
+            \begin{enumerate}
+                \item Якщо $\sum_{i=1}^{128}(y_i-z_i)^2 < \tau$ -- впустити людину.
+                \item Якщо ні, то продовжити.
+            \end{enumerate}
+        \end{enumerate}
+
+        \begin{block}{Резюме}
+            Всі ми -- просто набір $128$ дійсних чисел на гіперсфері :(
+        \end{block}
+    \end{frame}
+
+    \subsection{Тріплет мережа}
+    \begin{frame}{Як навчати? Головна ідея}
+        Візьмемо три фотографії:
+        \begin{itemize}
+            \item $A$ (anchor) -- зображення людини 1.
+            \item $P$ (positive) -- інше зображення людини 1.
+            \item $N$ (negative) -- зображення людини 2.
+        \end{itemize}
+        Головне, що ми хочемо:
+        \begin{equation*}
+            d(A,P) < d(A,N)
+        \end{equation*}
+        Або, більш строга умова умова:
+        \begin{equation*}
+            d(A,P) < d(A,N) - \gamma
+        \end{equation*}
+        
+
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.8\textwidth]{images/triplet_dist.png}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Як навчати? Робимо метрику!}
+        Як з цієї ідеї зробити конкретну метрику (втрату)? 
+        
+        Використовується наступна функція:
+        \begin{equation*}
+            \ell(A,P,N) = \max\left\{d(A,P)-d(A,N)+\gamma,0\right\}
+        \end{equation*}
+
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.8\textwidth]{images/triplet_dist.png}
+            \caption{Після застосування градієнту, ми хочемо віддалити $(A,N)$ і наблизити $(A,P)$.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Як навчати? Triplet Network}
+        Як побудувати нейронну мережу? Triplet Network!
+        
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.6\textwidth]{images/triplet_network.png}
+            \caption{Triplet Network архітектура.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Вектори фіч поза біометрією}
+        Поняття вектору характеристик використовується усюди, бо це, по суті,
+        стискання інформації в одному векторі. Зокрема:
+        \begin{enumerate}
+            \item Геолокація
+            \item Текстові дані
+            \item Рекомендаційні системи
+            \item Голос людини
+            \item \dots
+        \end{enumerate}
+    \end{frame}
+
+    \section{Додаткові розділи біометрії}
+
+    \subsection{Безпека векторів фіч}
+    \begin{frame}{Безпека векторів фіч}
+        \begin{itemize}
+            \item Зберігати зображення в базі данних небезпечно.
+            \item Чи безпечно зберігати вектори фіч? Ні.
+            \item Чи можна створити криптографічний примітив? Дуже активна робота саме в цьому напрямку!
+        \end{itemize}
+
+        \begin{figure}
+        \centering
+            \includegraphics[width=\textwidth]{images/inverting_facenet.png}
+            \caption{Знаходження обличчя з векторів фіч. Взято з Edward Vendrow et al. 2018. Inverting Facial Embeddings with GANs}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Безпека векторів фіч}
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.8\textwidth]{images/invert_emb.png}
+            \caption{Обернення FaceNet, використовуючи базове зображення. Andrey Zhmoginov et al. ``Inverting face embeddings with convolutional neural networks''}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Формулювання}
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.6\textwidth]{images/statement.png}
+            \caption{Постановка задачі. Спираючись на зображення $X \in \mathcal{I}$, видати ймовірність того, що перед нами нереальна людина.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Архітектура}
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.8\textwidth]{images/attacknet.png}
+            \caption{Архітектура \textit{AttackNet v2.2}.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Набори данних}
+        \begin{figure}
+        \centering
+            \includegraphics[width=0.6\textwidth]{images/anti_datasets.png}
+            \caption{Набори данних, на яких проводилось тренування.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Attention Maps}
+        \begin{figure}
+        \centering
+            \includegraphics[width=\textwidth]{images/maps.png}
+            \caption{Які зони облич нейронна мережа вважає важливими?}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Найбільш актуальні напрямки досліджень}
+        \begin{itemize}
+            \item Мультибіометрія.
+            \item Формальне поняття безпеки біометрії в контексті криптографії.
+            \item Гомоморфні нейронні мережі.
+            \item Zero-Knowledge Machine Learning.
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}[plain, standout]
+        \centering
+        \LARGE
+        \textbf{Дякую за Вашу Увагу!} \\
+        
+        \vspace{0.2cm} \Huge \ding{170} \large \\
+    \end{frame}
+
+\end{document}

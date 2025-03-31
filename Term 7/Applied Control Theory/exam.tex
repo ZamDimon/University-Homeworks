@@ -1,0 +1,298 @@
+\documentclass{hw_template}
+
+\title{\huge\bfseries Іспит з предмету ``Прикладні задачі теорії керування''}
+\author{\Large Захаров Дмитро}
+\date{2 грудня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+\begin{center}
+    \textbf{Варіант 5}
+\end{center}
+
+\begin{problems}
+    Розглянути задачу синтезу для канонічної системи:
+    \begin{equation*}
+        \begin{cases}
+            \dot{x}_1 = x_2, \\
+            \dot{x}_2 = u
+        \end{cases}, \quad |u| \leq 1.
+    \end{equation*}
+
+    \begin{enumerate}[(A)]
+        \item Сформулювати постановку задачі синтезу. \textbf{(3 бали)}.
+        \item Для канонічної системи за допомогою заданого характеристичного поліному
+        $\chi(\lambda) = (\lambda+6)^2$ матриці $\boldsymbol{A}_1$ та заданої
+        матриці $\boldsymbol{W}=3\boldsymbol{E}_{2 \times 2}$ побудувати розв'язок
+        задачі синтезу. Знайти матрицю $\boldsymbol{F}$ --- розв'язок рівняння
+        Ляпунова \textbf{(6 балів)}.
+        \item Сформулювати критерій Сільвестра. Перевірити за цим критерієм, що матриця
+        $\boldsymbol{F}$ є додатно визначеною. \textbf{(6 балів)}.
+        \item Знайти обмеження на параметр $\alpha$, щоб матриця $\boldsymbol{F}^{\alpha}$ була 
+        додатно визначеною. \textbf{(6 балів)}.
+        \item Виписати рівняння на функцію керованості. Знайти обмеження на коефіцієнт $a_0$ в цьому рівнянні. Виписати 
+        формулу керування. \textbf{(6 балів)}.
+        \item Знайти похідну від функції керованості (за визначенням, без програми). \textbf{(7 балів)}.
+        \item Знайти обмеження на час руху з довільної початкової точки в початок
+        координат. Для цього порахувати власні значення відповідної матриці \textbf{(6
+        балів)}.
+    \end{enumerate}
+\end{problems}
+
+\textbf{Розв'язання.} \scriptsize(\textcolor{blue}{\textbf{Синім кольором}} виділені відповіді на питання.)\normalsize
+
+\textbf{Пункт (А). Постановка задачі синтезу.} Розглядається система:
+\begin{equation*}
+    \dot{\mathbf{x}} = f(t, \mathbf{x}, \mathbf{u}), \quad \mathbf{x} \in \mathbb{R}^n, \quad \mathbf{u} \in \Omega \subset \mathbb{R}^r, \quad \mathbf{0} \in \text{int}(\Omega), \quad r \leq n, 
+\end{equation*}
+
+де $\Omega$ --- обмеження на керування (наприклад, $\|\mathbf{u}\|_2 \leq 1$).
+\textcolor{blue}{\textbf{Задача синтезу} полягає у побудові керування $\mathbf{u} =
+\mathbf{u}(t,\mathbf{x}) \in \Omega$, що переведе систему з довільної початкової
+точки $\mathbf{x}_0$ в точку $\mathbf{0}$ за скінченний час
+$T(\mathbf{x}_0)$}\footnote{В загальному випадку, можна вимагати, щоб кінцева
+точка була $\mathbf{x}_T \neq \mathbf{0}$, проте в такому випадку проста заміна
+$\mathbf{z} := \mathbf{x} - \mathbf{x}_T$ зводить задачу до еквівалентної:
+$\dot{\mathbf{z}} =
+f(\mathbf{z}+\mathbf{x}_T,\mathbf{u})=\widetilde{f}(\mathbf{z},\mathbf{u})$, де
+$\mathbf{z}(0) = \mathbf{x}_0-\mathbf{x}_T =: \mathbf{z}_0$, $\mathbf{z}(T) =
+\mathbf{0}$.}. Відповідна задача Коші має вигляд:
+\begin{equation*}
+    \begin{cases}
+        \dot{\mathbf{x}} = f(t, \mathbf{x}, \mathbf{u}(t,\mathbf{x})), \\
+        \mathbf{x}(0) = \mathbf{x}_0
+    \end{cases} \quad \text{та} \quad \mathbf{x}(T) = \mathbf{0}, \quad T = T(\mathbf{x}_0)
+\end{equation*}
+
+Часто додатково вимагається, щоб цей час був мінімальним (себто, за час
+$\widetilde{T} = \min_{u \in \mathcal{U}}T(\mathbf{x}_0, u)$). Тоді така 
+задача називається \textit{задачею швидкодії}.
+
+\textbf{Пункт (Б). Знаходження матриці $F$.} Зокрема, ми розглядаємо випадок
+$n=2$, $r=1$, $\Omega = \{x \in \mathbb{R}: |x| \leq 1\}$ і функція $f$ має вигляд:
+\begin{equation*}
+    f(\mathbf{x}, u) = \boldsymbol{A}_0\mathbf{x} + \boldsymbol{\beta}u, \quad \boldsymbol{A}_0 = \begin{bmatrix}
+        0 & 1 \\
+        0 & 0
+    \end{bmatrix}, \quad \boldsymbol{\beta} = \begin{bmatrix}
+        0 \\ 1
+    \end{bmatrix}
+\end{equation*}
+
+Така система називається канонічною. Далі, для побудови розв'язку знайдемо матрицю 
+$\boldsymbol{A}_1$. Вона має вигляд:
+\begin{equation*}
+    \boldsymbol{A}_1 = \begin{bmatrix}
+        0 & 1 \\
+        a_1 & a_2
+    \end{bmatrix}, \quad \det(\boldsymbol{A}_1-\lambda \boldsymbol{E}_{2 \times 2}) = \chi(\lambda)
+\end{equation*}
+
+Тому, візьмемо $a_1=-36$, $a_2=-12$. Матриця $\boldsymbol{W}$ дана. Ляпуновим
+доведено, що існує єдина додатно визначена $\boldsymbol{F}$, що задовільняє
+рівняння Ляпунова:
+\begin{equation*}
+    \boldsymbol{F}\boldsymbol{A}_1 + \boldsymbol{A}_1^{\top}\boldsymbol{F} = -\boldsymbol{W}.
+\end{equation*}
+
+Дійсно, нехай $\boldsymbol{F} = \begin{bmatrix}
+    f_{11} & f_{12} \\
+    f_{21} & f_{22}
+\end{bmatrix}$ і підставимо це у рівняння:
+\begin{equation*}
+    \begin{bmatrix}
+        f_{11} & f_{12} \\
+        f_{21} & f_{22}
+    \end{bmatrix}\begin{bmatrix}
+        0 & 1 \\
+        -36 & -12
+    \end{bmatrix} + \begin{bmatrix}
+        0 & -36 \\
+        1 & -12
+    \end{bmatrix}\begin{bmatrix}
+        f_{11} & f_{12} \\
+        f_{21} & f_{22}
+    \end{bmatrix} = -3\begin{bmatrix}
+        1 & 0 \\
+        0 & 1
+    \end{bmatrix}.
+\end{equation*}
+
+Прирівняємо поелементно обидві частини; отримаємо систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        -36f_{12} - 36f_{21} = -3 \\
+        f_{11}-12f_{12}-36f_{22} = 0 \\
+        -36f_{22} + f_{11} - 12f_{21} = 0 \\
+        f_{21} - 12f_{22} + f_{12} - 12f_{22} = -3
+    \end{cases}
+\end{equation*}
+
+Звідси маємо наступний розв'язок:
+\begin{equation*}
+    f_{11} = \frac{41}{8}, \quad f_{12} = \frac{1}{24}, \quad 
+    f_{21} = \frac{1}{24}, \quad f_{22} = \frac{37}{288}
+\end{equation*}
+
+Отже, матриця має вигляд:
+\begin{equation*}
+    \textcolor{blue}{\boldsymbol{F} = \begin{bmatrix}
+        \frac{41}{8} & \frac{1}{24} \\
+        \frac{1}{24} & \frac{37}{288}
+    \end{bmatrix}}
+\end{equation*}
+
+\textbf{Пункт (В). Критерій Сільвестра.} Критерій Сільвестра сформулюємо
+наступним чином. Нехай задана матриця $\boldsymbol{A} \in \mathbb{R}^{n \times
+n}$. Через $\boldsymbol{A}_{:k}$ позначимо верхній лівий $k \times k$ блок
+матриці $\boldsymbol{A}$. Матриця $\boldsymbol{A}$ є додатно визначеною (себто
+$\mathbf{x}^{\top}\boldsymbol{A}\mathbf{x} = \langle \boldsymbol{A}\mathbf{x}, \mathbf{x}\rangle > 0$ для всіх $\mathbf{x} \in
+\mathbb{R}^n \setminus \{\mathbf{0}\}$) тоді і тільки тоді, коли $\det(\boldsymbol{A}_{:k}) > 0$ для всіх
+$k=1,\ldots,n$. Перевіримо це для матриці $\boldsymbol{F}$.
+\begin{equation*}
+    \textcolor{blue}{\boldsymbol{F}_1 = \frac{41}{8} > 0, \quad \det(\boldsymbol{F}_2) = \det \boldsymbol{F} = \frac{41}{8} \cdot \frac{37}{288} - \frac{1}{24^2} = \frac{1513}{2304} > 0.}
+\end{equation*}
+
+Отже, матриця $\boldsymbol{F}$ є додатно визначеною.
+
+\textbf{Пункт (Г). Обмеження на параметр $\alpha$.} Згідно теорії, маємо $\alpha \geq \max\{\alpha_0,1\}$, де параметр $\alpha_0$ знаходиться як:
+\begin{equation*}
+    \alpha_0 = \max\left\{\nu \in \mathbb{R}: \det \left\{f_{ij}(\nu+m+n-i-j+1)\right\}_{1 \leq i,j \leq n} = 0\right\}.
+\end{equation*}
+
+В нашому випадку $n=m=2$, тому:
+\begin{equation*}
+    \alpha_0 = \max\left\{\nu \in \mathbb{R}: \det \left\{f_{ij}(\nu+5-i-j)\right\}_{1 \leq i,j \leq n} = 0\right\}.
+\end{equation*}
+
+Стало трошечки легше. Тепер, знаходимо детермінант матриці:
+\begin{equation*}
+    \det \left\{f_{ij}(\nu+5-i-j)\right\}_{1 \leq i,j \leq n} = \det\begin{bmatrix}
+        \frac{41}{8}(\nu+3) & \frac{1}{24}(\nu+2) \\
+        \frac{1}{24}(\nu+2) & \frac{37}{288}(\nu+1)
+    \end{bmatrix} = \frac{1513}{2304}\nu^2 + \frac{6052}{2304}\nu + \frac{4535}{2304}.
+\end{equation*}
+
+Порахуємо корені чисельно. Маємо $\nu_1 \approx -3.001$, $\nu_2 \approx -0.99$. Таким чином, 
+обидва корені є від'ємними, тому $\textcolor{blue}{\alpha \geq 1}$. Таким чином, подалі покладемо $\textcolor{blue}{\alpha:=1}$.
+
+\textbf{Пункт (Д).} Згідно лекції, рівняння на керування
+\begin{equation*}
+    \textcolor{blue}{2a_0\Theta^{1+\frac{m+n-1}{\alpha}} - \sum_{i,j=1}^n f_{ij}\Theta^{\frac{i+j-2}{\alpha}}x_ix_j = 0.}
+\end{equation*}
+
+В цьому рівнянні треба знайти обмеження на $a_0$. В загальному випадку, воно має
+вигляд 
+\begin{equation*}
+    \textcolor{blue}{0 < a_0 \leq \frac{d^2}{2\langle\boldsymbol{F}^{-1}\mathbf{a},\mathbf{a}\rangle}}
+\end{equation*}
+де обмеження на керування виглядає як $|u| \leq d$. Конкретно нас цікавить $d=1$ і вектор
+$\mathbf{a} = (-36, -12)$. Знайдемо вираз в знаменнику:
+\begin{equation*}
+    \langle\boldsymbol{F}^{-1}\mathbf{a},\mathbf{a}\rangle \approx \begin{bmatrix}
+        -36 & -12
+    \end{bmatrix}\begin{bmatrix}
+        0.195 & -0.063 \\
+        -0.063 & 7.804
+    \end{bmatrix}\begin{bmatrix}
+        -36 \\ -12
+    \end{bmatrix} \approx 1322.5
+\end{equation*}
+
+Отже, $\textcolor{blue}{0 < a_0 \lessapprox 0.00037}$. Тому візьмемо
+$\textcolor{blue}{a_0 := 0.0003=\frac{3}{10000}}$. Випишемо в такому випадку 
+формулу керування. Спочатку відставимо отриманий $a_0$ та $n=m=2$ з $\alpha=1$.
+\begin{equation*}
+    \frac{3}{5000}\Theta^4 - \sum_{i,j=1}^2 f_{ij}\Theta^{i+j-2}x_ix_j = \frac{3}{5000}\Theta^4 - (f_{11}x_1^2 + 2f_{12}x_1x_2\Theta + f_{22}x_2^2\Theta^2) = 0.
+\end{equation*}
+
+Тепер підставимо відомі значення $f_{ij}$:
+\begin{equation*}
+    \textcolor{blue}{\frac{3}{5000}\Theta^4 = \frac{41}{8}x_1^2 + \frac{1}{12}x_1x_2\Theta + \frac{37}{288}x_2^2\Theta^2}
+\end{equation*}
+
+Отже, керування підставлятимемо у вигляді $u(\mathbf{x}) := \sum_{i=1}^n a_ix_i/\Theta^{\frac{n-i+1}{\alpha}}(\mathbf{x})$. В нашому випадку, 
+маємо:
+\begin{equation*}
+    \textcolor{blue}{u(x_1,x_2) = -\frac{36x_1}{\Theta^2(x_1,x_2)} - \frac{12x_2}{\Theta(x_1,x_2)}}
+\end{equation*}
+
+\textbf{Пункт (Е).} Знайдемо похідну від функції керованості ручками. Проте, числа 
+одразу підставляти не будемо. Маємо:
+\begin{equation*}
+    \frac{d}{dt}\left(2a_0\Theta^4\right) = \frac{d}{dt}\left(f_{11}x_1^2 + 2f_{12}x_1x_2\Theta + f_{22}x_2^2\Theta^2\right)
+\end{equation*}
+
+Далі починаємо диференціювати:
+\begin{equation*}
+    6a_0\Theta^3\dot{\Theta} = 2f_{11}x_1x_2 + 2f_{12}(x_2^2\Theta + x_1x_2\dot{\Theta} + u(x_1,x_2)x_1\Theta) + 2f_{22}(x_2u(x_1,x_2)\Theta^2+x_2^2\Theta\dot{\Theta})
+\end{equation*}
+
+Тут ми скористались тим, що система канонічна:
+\begin{equation*}
+    \begin{cases}
+        \dot{x}_1 = x_2, \\
+        \dot{x}_2 = u(x_1,x_2)
+    \end{cases}
+\end{equation*}
+
+Підставимо числа та функцію керування $u(x_1,x_2) = -\frac{36x_1}{\Theta^2(x_1,x_2)} - \frac{12x_2}{\Theta(x_1,x_2)}$:
+\begin{equation*}
+   \dot{\Theta} = \frac{270000(x_1^2 + \Theta^2 x_2^2)}{-7500x_1x_2\Theta - 23125x_2^2\Theta^2 + 216\Theta^4}
+\end{equation*}
+
+Якщо підставити $\Theta^4 = \frac{1}{2a_0}(f_{11}x_1^2 + 2f_{12}x_1x_2\Theta + f_{22}x_2^2\Theta^2)$, то отримаємо:
+\begin{equation*}
+    \textcolor{blue}{\dot{\Theta} = -\frac{432(x_1^2+x_2^2\Theta^2)}{2952x_1^2 + 36x_1x_2\Theta + 37x_2^2\Theta^2}}
+\end{equation*}
+
+\textbf{Пункт (Ж).} Спочатку складемо матрицю $F^{\alpha}$:
+\begin{equation*}
+    F^{\alpha} = \left\{\left(1+\frac{n+m+1-i-j}{\alpha}\right)f_{ij}\right\}_{1 \leq i,j \leq n} = \begin{bmatrix}
+        4f_{11} & 3f_{12} \\
+        3f_{21} & 2f_{22}
+    \end{bmatrix}
+\end{equation*}
+
+Підставимо визначені значення $f_{ij}$:
+\begin{equation*}
+    F^{\alpha} = \begin{bmatrix}
+        \frac{164}{8} & \frac{3}{8} \\
+        \frac{3}{8} & \frac{37}{144}
+    \end{bmatrix}
+\end{equation*}
+
+Тепер розв'язуємо рівняння $\det(\boldsymbol{W}-\nu \boldsymbol{F}^{\alpha}) = 0$:
+\begin{equation*}
+    \det\begin{bmatrix}
+        3 - \frac{164}{8}\nu & -\frac{3}{8}\nu \\
+        -\frac{3}{8}\nu & 3 - \frac{37}{144}\nu
+    \end{bmatrix} = \frac{3025\nu^2}{576} - \frac{2989\nu}{48} + 9 = 0
+\end{equation*}
+
+Оскільки корені цього рівняння не дуже привабливі, то випишемо їх чисельно:
+\begin{equation*}
+    \nu_{\min} \approx 0.15, \quad \nu_{\max} \approx 11.71
+\end{equation*}
+
+Таким чином, похідна функції $\Theta$ задовільняє нерівності:
+\begin{equation*}
+    -\nu_{\max} \leq \dot{\Theta} \leq -\nu_{\min} \iff -11.71 \leq \dot{\Theta} \leq -0.15
+\end{equation*}
+
+Нехай початкова точка має вигляд $\mathbf{x}_0 = (x_1^0, x_2^0)$. В такому разі обмеження
+на час $T(\mathbf{x}_0)$ потрапляння довільної точки в початок координат задовільняє
+нерівності:
+\begin{equation*}
+    \frac{1}{\nu_{\max}}\Theta(x_1^0, x_2^0) \leq T(x_1^0, x_2^0) \leq \frac{1}{\nu_{\min}}\Theta(x_1^0, x_2^0).
+\end{equation*}
+
+Або, якщо підставити чисельні значення:
+\begin{equation*}
+    \textcolor{blue}{0.085\Theta(x_1^0, x_2^0) \leq T(x_1^0, x_2^0) \leq 6.834\Theta(x_1^0, x_2^0)}
+\end{equation*}
+
+\end{document}

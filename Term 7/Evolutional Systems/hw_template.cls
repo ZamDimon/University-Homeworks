@@ -14,7 +14,6 @@
 \RequirePackage{graphicx}
 \RequirePackage{framed}
 \RequirePackage{dsfont}
-\RequirePackage{cmbright}
 \RequirePackage{extarrows}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{indentfirst}
@@ -100,7 +99,7 @@
 
 % --- Footers ---
 \RequirePackage{fancyhdr}
-\lhead{Домашня робота}
+\lhead{Іспит}
 \rhead{Еволюційні Системи}
 \cfoot{Сторінка \thepage}
 \renewcommand{\headrulewidth}{1.25pt}
@@ -260,6 +259,7 @@
 \theoremstyle{mystyle}{\newtheorem{theorem}[definition]{Theorem}}
 \theoremstyle{mystyle}{\newtheorem{lemma}[definition]{Lemma}}
 \theoremstyle{mystyle}{\newtheorem{problem}[definition]{Умова Задачі}}
+\theoremstyle{mystyle}{\newtheorem*{problems}{Умова}}
 \theoremstyle{mystyle}{\newtheorem{corollary}[definition]{Corollary}}
 \theoremstyle{mystyle}{\newtheorem*{remark}{Remark}}
 \theoremstyle{mystyle}{\newtheorem*{remarks}{Remarks}}
@@ -280,11 +280,12 @@
 % --- Box styles ---
 \tcolorboxenvironment{definition}{boxrule=0pt,boxsep=0pt,colback={blue!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{blue},sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{proposition}{boxrule=0pt,boxsep=0pt,colback={Orange!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Orange},sharp corners,before skip=10pt,after skip=10pt}
-\tcolorboxenvironment{theorem}{boxrule=0pt,boxsep=0pt,colback={blue!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{blue},sharp corners,before skip=10pt,after skip=10pt}
+\tcolorboxenvironment{theorem}{boxrule=0pt,boxsep=0pt,colback={Orange!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Orange},sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{lemma}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{corollary}{boxrule=0pt,boxsep=0pt,colback={violet!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{violet},sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{proof}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{CadetBlue!80!white},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{problem}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt}
+\tcolorboxenvironment{problems}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{remark}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{remarks}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{example}{boxrule=0pt,boxsep=0pt,colback={Gray!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Gray},sharp corners,before skip=10pt,after skip=10pt}

@@ -1,0 +1,134 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#5}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 23 листопада, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Номер 11.5.}
+
+\begin{problem}
+    Розв'язати задачу $-\Delta u = 0$, $r<3$ за $u\Big|_{r=3}=1+\cos\varphi$.
+\end{problem}
+
+\textbf{Розв'язання.} Шукаємо розв'язок у вигляді:
+\begin{equation*}
+    u(r,\varphi) = C + \sum_{n=1}^{\infty}r^n(A_n\cos n\varphi + B_n \sin n\varphi).
+\end{equation*}
+
+Маємо, що $u(3,\varphi) = 1+\cos\varphi$. Таким чином,
+\begin{equation*}
+    u(3,\varphi) = C+\sum_{n=1}^{\infty}3^n(A_n\cos n\varphi + B_n \sin n\varphi) = 1+\cos\varphi.
+\end{equation*}
+
+Звідси видно, що $B_n \equiv 0$, $C=1$, а $3A_1=1$ ($A_n=0$ для $n>1$). Тому:
+\begin{equation*}
+    u(r,\varphi) = 1 + \frac{r}{3}\cos\varphi.
+\end{equation*}
+
+\textbf{Відповідь.} $u(r,\varphi) = 1 + \frac{r}{3}\cos\varphi$.
+
+\newpage
+
+\subsection{Номер 11.9.}
+
+\begin{problem}
+    Розв'язати задачу $-\Delta u = 1+\frac{1}{r}$, $2<r<3$ за $u\Big|_{r=2}=u\Big|_{r=3}=0$.
+\end{problem}
+
+\textbf{Розв'язання.} Шукаємо розв'язок у вигляді:
+\begin{equation*}
+    u(r,\varphi) = \sum_{n=0}^{\infty}(A_n(r)\cos n\varphi + B_n(r)\sin n\varphi).
+\end{equation*}
+
+Знайдемо Лапласіан:
+\begin{equation*}
+    -\Delta u(r,\varphi) = \sum_{n=0}^{\infty}(F_n(r)\cos n\varphi + G_n(r)\sin n\varphi),
+\end{equation*}
+
+де 
+\begin{equation*}
+    F_n(r) = -A_n''(r)-\frac{1}{r}A_n'(r)+\frac{n^2}{r^2}A_n(r), \quad G_n(r) = -B_n''(r)-\frac{1}{r}B_n'(r)+\frac{n^2}{r^2}B_n(r).
+\end{equation*}
+
+За умовою, отриманий вираз дорівнює $1+\frac{1}{r}$. В такому разі, легко бачити, що $F_n(r)=G_n(r)=0$ для всіх $n \geq 1$. Таким чином, маємо:
+\begin{equation*}
+    -A_0''(r)-\frac{1}{r}A_0'(r) = 1 + \frac{1}{r}, \quad -B_0''(r) - \frac{1}{r}B_0'(r) = 0.
+\end{equation*} 
+
+Додатково, маємо наступні граничні умови:
+\begin{align*}
+    u(2,\varphi) &= \sum_{n=0}^{\infty}(A_n(2)\cos n\varphi + B_n(2)\sin n\varphi) = 0, \\
+    u(3,\varphi) &= \sum_{n=0}^{\infty}(A_n(3)\cos n\varphi + B_n(3)\sin n\varphi) = 0.
+\end{align*}
+
+Звідси видно, що $A_n(2) = A_n(3) = B_n(2) = B_n(3) = 0$ для всіх $n \geq 0$. Таким чином, маємо:
+\begin{align*}
+    &-A_0''(r)-\frac{1}{r}A_0'(r) = 1 + \frac{1}{r}, && A_0(2) = A_0(3) = 0, \\
+    &-A_n''(r) - \frac{1}{r}A_n'(r)+\frac{n^2}{r^2}A_n(r) = 0, && A_n(2) = A_n(3) = 0, \quad n \geq 1, \\
+    &-B_n''(r) - \frac{1}{r}B_n'(r)+\frac{n^2}{r^2}B_n(r) = 0, && B_n(2) = B_n(3) = 0, \quad n \geq 0 \\
+\end{align*}
+
+Друге та третє рівняння дають розв'язок $A_n \equiv 0$ та $B_n \equiv 0$ для
+всіх $n \geq 0$ (окрім $n=0$ для другого рівняння). Отже, нас цікавить лише 
+перше рівняння. Маємо рівняння:
+\begin{equation*}
+    -A_0''(r)-\frac{1}{r}A_0'(r) = 1 + \frac{1}{r}
+\end{equation*}
+
+Позначимо $q(r) := -A_0'(r)$, тоді $q'(r)=-A_0''(r)$ і рівняння зведеться 
+до звичайного диференціального рівняння першого порядку:
+\begin{equation*}
+    q'(r) + \frac{1}{r}q(r) = 1 + \frac{1}{r} 
+\end{equation*}
+
+Маємо неоднорідне лінійне диференціальне рівняння першого порядку. Розв'язуємо однорідну частину:
+\begin{equation*}
+    \widetilde{q}'(r) + \frac{1}{r}\widetilde{q}(r) = 0 \Rightarrow \frac{d\widetilde{q}}{dr} = -\frac{\widetilde{q}}{r} \Rightarrow \widetilde{q}(r) = \frac{\alpha}{r}, \; \alpha \in \mathbb{R}
+\end{equation*}
+
+Отже, загальний розв'язок шукаємо у вигляді $q(r) = \alpha(r)/r$. Підставляємо в неоднорідне рівняння:
+\begin{equation*}
+    -\frac{1}{r^2}\alpha(r) + \frac{1}{r}\frac{d\alpha}{dr} + \frac{1}{r^2}\alpha(r) = 1 + \frac{1}{r} \Rightarrow \frac{1}{r}\frac{d\alpha}{dr} = 1+\frac{1}{r}
+\end{equation*}
+
+Отримане рівняння розв'язати вже зовсім легко: $\alpha'(r) = r+1$, а отже $\alpha(r) = \gamma+r+\frac{1}{2}r^2$ для $\gamma \in \mathbb{R}$. Таким чином, загальний розв'язок:
+\begin{equation*}
+    q(r) = \frac{\gamma+r+\frac{1}{2}r^2}{r} = 1 + \frac{\gamma}{r} + \frac{r}{2}
+\end{equation*}
+
+Далі, можемо знайти $A_0(r)$ зі співвідношення $q(r) = -A_0'(r)$:
+\begin{equation*}
+    \frac{dA_0}{dr} = -1 - \frac{\gamma}{r} - \frac{r}{2} \Rightarrow A_0(r) = -r - \frac{r^2}{4} + \delta + \gamma\log r, \quad \gamma, \delta \in \mathbb{R}
+\end{equation*}
+
+Користаємось початковою умовою, що $A_0(2) = A_0(3) = 0$:
+\begin{equation*}
+    \begin{cases}
+        -2 - 1 + \delta + \gamma \log 2 = 0, \\
+        -3 - \frac{9}{4} + \delta + \gamma \log 3 = 0.
+    \end{cases} \iff \quad \begin{cases}
+        \delta + \gamma \log 2 = 3, \\
+        \delta + \gamma \log 3 = \frac{21}{4}.
+    \end{cases}
+\end{equation*}
+
+Віднявши друге рівняння від першого, маємо $\gamma \log \frac{3}{2} =
+\frac{9}{4}$, звідки $\gamma = \frac{9}{4\log \frac{3}{2}}$. Тоді, скажімо, з
+першого рівняння, маємо $\delta = 3 - \frac{9 \log 2}{4\log \frac{3}{2}}$. Отже,
+\begin{equation*}
+    u(r,\varphi) = u(r) = -r - \frac{r^2}{4} + \frac{9}{4\log \frac{3}{2}}\log r + 3 - \frac{9 \log 2}{4\log \frac{3}{2}}.
+\end{equation*}
+
+\end{document}

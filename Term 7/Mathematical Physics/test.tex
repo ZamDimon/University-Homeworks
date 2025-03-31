@@ -1,0 +1,200 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Контрольна Робота з Рівнянь Математичної Фізики}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 26 листопада, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\begin{center}
+    \textbf{Варіант 5}
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Контрольна Робота}
+
+\subsection{Номер 1.}
+
+\begin{problem}
+    Розв'язати задачу методом Фур'є: $-\Delta u = 0$, $r>4$ за $u\Big|_{r=4}=\sin \frac{5\varphi}{2}$.
+\end{problem}
+
+\textbf{Розв'язання.} Оскільки маємо зовнішній круг $r>4$, то розв'язок шукаємо у вигляді:
+\begin{equation*}
+    u(r,\varphi) = C + \sum_{n \in \mathbb{N}} \left[r^{-n}(F_n \cos n\varphi + G_n \sin n\varphi)\right]
+\end{equation*}
+
+Маємо умову на те, що $u(4,\varphi) = \sin \frac{5\varphi}{2}$. Проте, щоб співставити 
+коефіцієнти $\{F_n,G_n\}_{n \in \mathbb{N}}$ із правою частиною, розкладемо $g(\varphi) = \sin \frac{5\varphi}{2}$ 
+в ряд Фур'є:
+\begin{equation*}
+    g(\varphi) = a_0 + \sum_{n \in \mathbb{N}}(a_n \cos n\varphi + b_n \sin n\varphi),
+\end{equation*}
+
+де:
+\begin{equation*}
+    a_0 = \frac{1}{2\pi}\int_{0}^{2\pi}g(\varphi)d\varphi, \quad a_n = \frac{1}{\pi}\int_{0}^{2\pi}g(\varphi)\cos n\varphi d\varphi, \quad b_n = \frac{1}{\pi}\int_{0}^{2\pi}g(\varphi)\sin n\varphi d\varphi.
+\end{equation*}
+
+Отже, починаємо рахувати:
+\begin{equation*}
+    a_0 = \frac{1}{2\pi}\int_{0}^{2\pi}\sin \frac{5\varphi}{2}d\varphi = -\frac{1}{2\pi} \cdot \frac{2}{5}\cos \frac{5\varphi}{2}\Big|_{0}^{2\pi} = \frac{1}{2\pi} \cdot \frac{4}{5} = \frac{2}{5\pi}
+\end{equation*}
+
+Тепер рахуємо $a_n$:
+\begin{align*}
+    a_n &= \frac{1}{\pi}\int_{0}^{2\pi}\sin\frac{5\varphi}{2}\cos n\varphi d\varphi = \frac{1}{2\pi}\int_0^{2\pi}\left[\sin\left(\frac{5\varphi}{2}+n\varphi\right)+\sin\left(\frac{5\varphi}{2} - n\varphi\right)\right]d\varphi \\
+    &= \frac{1}{2\pi}\left(\int_0^{2\pi}\sin\left(\left(\frac{5}{2}+n\right)\varphi\right)d\varphi + \int_0^{2\pi}\sin\left(\left(\frac{5}{2}-n\right)\varphi\right) d\varphi\right) \\
+    &= -\frac{1}{2\pi}\frac{1}{\frac{5}{2}+n}\cos\left(\left(\frac{5}{2}+n\right)\varphi\right)\Big|_{0}^{2\pi} - \frac{1}{2\pi}\frac{1}{\frac{5}{2}-n}\cos \left(\left(\frac{5}{2}-n\right)\varphi\right)\Big|_{0}^{2\pi} \\
+    &= -\frac{-1-1}{5\pi+2n\pi} - \frac{-1-1}{5\pi - 2\pi n} = \frac{2}{\pi(5+2n)} + \frac{2}{\pi(5-2n)} = \boxed{\frac{20}{\pi(25-4n^2)}}
+\end{align*}
+
+Аналогічно, можемо порахувати $b_n$:
+\begin{align*}
+    b_n = \frac{1}{\pi}\int_{0}^{2\pi}\sin\frac{5\varphi}{2}\sin n\varphi d\varphi
+\end{align*}
+
+Цей інтеграл нульовий. Щоб це показати, зробимо заміну $\varphi \mapsto \varphi - \pi$:
+\begin{align*}
+    b_n = \frac{1}{\pi}\int_{-\pi}^{\pi}\sin\frac{5(\varphi-\pi)}{2}\sin n(\varphi-\pi) d\varphi = (-1)^{n+1}\frac{1}{\pi}\int_{-\pi}^{\pi}\cos\frac{5\varphi}{2}\sin n\varphi d\varphi
+\end{align*}
+
+Оскільки підінтегральна функція $\cos\frac{5\varphi}{2}\sin n\varphi$ непарна, а межі інтегралу симетричні, то інтеграл нульовий. Отже, $b_n = 0$ для всіх $n \in \mathbb{N}$. Таким чином:
+\begin{equation*}
+    g(\varphi) = \frac{2}{5\pi} + \sum_{n \in \mathbb{N}}\frac{20}{\pi(25-4n^2)} \cdot \cos n\varphi
+\end{equation*}
+
+Таким чином, маємо:
+\begin{equation*}
+    C + \sum_{n \in \mathbb{N}} \left[4^{-n}(F_n \cos n\varphi + G_n \sin n\varphi)\right] = \frac{2}{5\pi} + \sum_{n \in \mathbb{N}}\frac{20}{\pi(25-4n^2)} \cdot \cos n\varphi
+\end{equation*}
+
+Звідси одразу $C=\frac{2}{5\pi}$ та $G_n \equiv 0$. Для коефіцієнтів $F_n$ маємо:
+\begin{equation*}
+    4^{-n}F_n = \frac{20}{\pi(25-4n^2)} \implies F_n = \frac{5 \cdot 4^{n+1}}{\pi (25-4n^2)}
+\end{equation*}
+
+Отже остаточно:
+\begin{equation*}
+    u(r,\varphi) = \frac{2}{5\pi} + \frac{5}{\pi}\sum_{n \in \mathbb{N}}\frac{4^{n+1}}{25-4n^2}r^{-n}\cos n\varphi
+\end{equation*}
+
+\textbf{Відповідь.} $u(r,\varphi) = \frac{2}{5\pi} + \frac{5}{\pi}\sum_{n \in \mathbb{N}}\frac{4^{n+1}}{25-4n^2}r^{-n}\cos n\varphi$.
+
+\newpage
+
+\subsection{Номер 2.}
+
+\begin{problem}
+    Розв'язати задачу методом Фур'є: $-\Delta u = r^2\cos\varphi$, $r<4$ за умови $\frac{\partial u}{\partial r}\Big|_{r=4}=4\cos 2\varphi$.
+\end{problem}
+
+\textbf{Розв'язання.} Шукаємо розв'язок у вигляді:
+\begin{equation*}
+    u(r,\varphi) = \sum_{n=0}^{\infty}(A_n(r)\cos n\varphi + B_n(r)\sin n\varphi).
+\end{equation*}
+
+Запишемо функцію $f(r)=r^2\cos\varphi$ у вигляді $\sum_{n=0}^{\infty}(c_n(r)\cos
+n\varphi + d_n(r)\sin n\varphi)$. Маємо $d_n \equiv 0$, а для коефіцієнтів з
+косинусами $c_1(r)=r^2$, $c_n(r)=0$ для $n \neq 1$. Далі, знаходимо градієнт
+функції $u$:
+\begin{equation*}
+    -\Delta u = \sum_{n=0}^{\infty}\left[\left(-A_n''(r)-\frac{1}{r}A_n'(r)+\frac{n^2}{r^2}A_n(r)\right)\cos n\varphi + \left(-B_n''(r)-\frac{1}{r}B_n'(r)+\frac{n^2}{r^2}B_n(r)\right)\sin n\varphi\right]
+\end{equation*}
+
+Бачимо, що $-A_1''(r)-\frac{1}{r}A_1'(r)+\frac{1}{r^2}A_1(r)=r^2$ (інші рівняння
+для $n \neq 1$ набувають стандартного вигляду
+$-A_n''(r)-\frac{1}{r}A_n'(r)+\frac{n^2}{r^2}A_n(r)=0$). Знайдемо початкові умови. 
+Для цього використовуємо умову $\frac{\partial u}{\partial r}\Big|_{r=4}=4\cos 2\varphi$. Маємо:
+\begin{equation*}
+    \frac{\partial u}{\partial r} = \frac{\partial}{\partial r}\sum_{n=0}^{\infty}(A_n(r)\cos n\varphi + B_n(r)\sin n\varphi) = \sum_{n=0}^{\infty}(A_n'(r)\cos n\varphi + B_n'(r)\sin n\varphi)
+\end{equation*}
+
+Маємо, що $A_2'(4) = 4$. Для всіх інших коефіцієнтів, $B_n'(4)=0$ та $A_n'(4)=0$ (для $n \neq 2$).
+
+Таким чином, маємо наступні (нетривіальні) рівняння:
+\begin{itemize}
+    \item $-A_1''(r)-\frac{1}{r}A_1'(r)+\frac{1}{r^2}A_1(r)=r^2, A_1'(4)=0$.
+    \item $-A_2''(r)-\frac{1}{r}A_2'(r)+\frac{4}{r^2}A_2(r)=0, A_2'(4)=4$.
+\end{itemize}
+
+\textbf{Рівняння 1.} Розв'язуємо перше рівняння. Маємо розв'язок:
+\begin{equation*}
+    A_1(r) = \frac{256}{15}r - \frac{1}{15}r^4 + \frac{\gamma}{x} + \frac{\gamma x}{16}
+\end{equation*}
+
+Оскільки $r<4$, то $\gamma=0$ і тому $A_1(r) = \frac{256}{15}r - \frac{1}{15}r^4$.
+
+\textbf{Рівняння 2.} Розв'язуємо друге рівняння. Маємо розв'язок:
+\begin{equation*}
+    A_2(r) = \frac{r^2}{2} + \frac{\gamma}{r} + \frac{\gamma r^2}{256}
+\end{equation*}
+
+По аналогічним причинам, $\gamma=0$ і тому $A_2(r) = \frac{r^2}{2}$.
+
+Отже, остаточна відповідь:
+\begin{equation*}
+    \boxed{u(r,\varphi) = \left(\frac{256}{15}r - \frac{1}{15}r^4\right)\cos\varphi + \frac{r^2}{2}\cos 2\varphi}
+\end{equation*}
+
+\textbf{Відповідь.} $u(r,\varphi) = \left(\frac{256}{15}r - \frac{1}{15}r^4\right)\cos\varphi + \frac{r^2}{2}\cos 2\varphi$.
+
+\section{Додаток}
+
+В задачі два ми пропустили розв'язок рівнянь. Тут ми наведемо їх розв'язання.
+Почнемо з другого рівняння.
+
+\textbf{Рівняння 2.} Маємо:
+\begin{equation*}
+    -A_2''(r)-\frac{1}{r}A_2'(r)+\frac{4}{r^2}A_2(r)=0, \quad A_2'(4)=4
+\end{equation*}
+
+Як відомо з лекцій та практик, розв'язок такого рівняння $A_n(r) = \beta r^n + \gamma r^{-n}$, де в нашому випадку $n=2$. Оскільки ми знаходимось всередині круга, то $\gamma=0$. Отже, оскільки
+$A_2(r) = \beta r^2$, то $A_2'(r)=2\beta r$ і тому $8\beta = 4$, звідки $\beta=\frac{1}{2}$. Звідси і розв'язок $A_2(r)=\frac{1}{2}r^2$.
+
+\textbf{Рівняння 1.} Маємо:
+\begin{equation*}
+    -A_1''(r)-\frac{1}{r}A_1'(r)+\frac{1}{r^2}A_1(r)=r^2, \quad A_1'(4)=0 \quad \quad (h(r)=r^2)
+\end{equation*}
+
+Спочатку розв'язуємо однорідну частину $-A_1''(r)-\frac{1}{r}A_1'(r)+\frac{1}{r^2}A_1(r)=0$, звідки 
+$A_1(r) = \beta r + \frac{\gamma}{r}$. Отже, нехай $\phi_1(r) := r, \phi_2(r) := 1/r$. Складаємо функцію Коші:
+\begin{equation*}
+    K(r,\rho) = \frac{\det \begin{bmatrix}
+        \rho & 1/\rho \\
+        r & 1/r
+    \end{bmatrix}}{\det \begin{bmatrix}
+        \rho & 1/\rho \\
+        1 & -1/\rho^2
+    \end{bmatrix}} = \frac{\frac{\rho}{r} - \frac{r}{\rho}}{-\frac{1}{\rho} - \frac{1}{\rho}} = -\frac{1}{2}\left(\frac{\rho^2}{r} -r\right) = \frac{r}{2}\left(1 - \frac{\rho^2}{r^2}\right)
+\end{equation*}
+
+Далі частковий розв'язок $\psi(r)$:
+\begin{align*}
+    \psi(r) &= \int_0^r K(r,\rho)h(\rho)d\rho = -\int_0^r \frac{r}{2}\left(1 - \frac{\rho^2}{r^2}\right)\rho^2 d\rho \\
+    &= -\frac{r}{2}\int_0^r \rho^2 d\rho + \frac{1}{2r}\int_0^r \rho^4 d\rho = -\frac{r^4}{6} + \frac{r^4}{10} = -\frac{1}{15}r^4
+\end{align*}
+
+Таким чином, загальний розв'язок:
+\begin{equation*}
+    A_1(r) = -\frac{1}{15}r^4 + \beta r + \frac{\gamma}{r}
+\end{equation*}
+
+Застосуємо умову $A_1'(4)=0$. Оскільки $A_1'(r) = -\frac{4}{15}r^3 + \beta - \frac{\gamma}{r^2}$, то:
+\begin{equation*}
+    -\frac{4^4}{15} + \beta - \frac{\gamma}{16} = 0 \implies \beta = \frac{\gamma}{16} + \frac{256}{15}
+\end{equation*}
+
+Таким чином, остаточно:
+\begin{equation*}
+    A_1(r) = -\frac{1}{15}r^4 + \frac{\gamma r}{16} + \frac{256 r}{15} + \frac{\gamma}{r}
+\end{equation*}
+
+\end{document}

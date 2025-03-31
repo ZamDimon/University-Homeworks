@@ -1,0 +1,294 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Залікова Робота з Рівнянь Математичної Фізики}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 30 листопада, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\begin{center}
+    \textbf{Варіант 6}
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Залікова Робота}
+
+\subsection{Номер 1.}
+
+\begin{problem}
+    Визначити тип рівняння, привести до канонічного вигляду.
+    \begin{equation*}
+        4u_{xx} + 4u_{xy} + u_{yy} - 2u_y = 0
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Для цього прикладу, маємо $A=4$, $B=2$ та $C=1$. Знаходимо 
+дискримінант $\Delta = AC - B^2 = 4 - 4 = 0$. Таким чином, тип рівняння 
+\textbf{параболічний}. 
+
+Зведемо рівняння до канонічного вигляду. Для цього знайдемо підстановку.
+Маємо $dy/dx = B/A = 1/2$, звідки $y = x/2 + C$, $C=\mathsf{const}$. Таким 
+чином, перша змінна $\xi=y-x/2$ --- перший інтеграл нашого диференціального 
+рівняння. У якості лінійно незалежної від цієї змінної другої змінної
+беремо $\eta:=x$. Таким чином, виражаємо спочатку перші похідні:
+\begin{align*}
+    u_x &= u_{\xi}\xi_x + u_{\eta}\eta_x = -\frac{1}{2}u_{\xi} + u_{\eta}, \\
+    u_y &= u_{\xi}\xi_y + u_{\eta}\eta_y = u_{\xi}. 
+\end{align*}
+
+За допомогою цих виразів знаходимо другі похідні:
+\begin{align*}
+    u_{xx} &= \frac{\partial}{\partial x}\left(-\frac{1}{2}u_{\xi} + u_{\eta}\right)
+    = -\frac{1}{2}\left(u_{\xi\xi}\xi_x + u_{\xi\eta}\eta_x\right) + u_{\eta\xi}\xi_x + u_{\eta\eta}\eta_x \\
+    &= -\frac{1}{2}\left(-\frac{1}{2}u_{\xi\xi} + u_{\xi\eta}\right) -\frac{1}{2}u_{\eta\xi} + u_{\eta\eta} = 
+    \frac{1}{4}u_{\xi\xi} - \frac{1}{2}u_{\xi\eta} - \frac{1}{2}u_{\eta\xi} + u_{\eta\eta} \\
+    &= \frac{1}{4}u_{\xi\xi} - u_{\xi\eta} + u_{\eta\eta}. \\
+    u_{yy} &= \frac{\partial}{\partial y}u_{\xi} = u_{\xi\xi}\xi_y + u_{\xi\eta}\eta_y = u_{\xi\xi}. \\
+    u_{xy} &= \frac{\partial}{\partial x}u_{\xi} = u_{\xi\xi}\xi_x + u_{\xi\eta}\eta_x = -\frac{1}{2}u_{\xi\xi} + u_{\xi\eta}.
+\end{align*}
+
+Підставимо ці вирази у вихідне рівняння:
+\begin{align*}
+    &4\left(\frac{1}{4}u_{\xi\xi} - u_{\xi\eta} + u_{\eta\eta}\right) + 4\left(-\frac{1}{2}u_{\xi\xi} + u_{\xi\eta}\right) + u_{\xi\xi} - 2u_{\xi} = 0, \\
+    &u_{\xi\xi} - 4u_{\xi\eta} + 4u_{\eta\eta} - 2u_{\xi\xi} + 4u_{\xi\eta} + u_{\xi\xi} - 2u_{\xi} = 0, \\
+    &4u_{\eta\eta} - 2u_{\xi} = 0 \implies \boxed{u_{\eta\eta} - \frac{1}{2}u_{\xi} = 0}
+\end{align*}
+
+
+\textbf{Відповідь.} Маємо параболічний тип рівняння, що зводиться підстановкою $\xi=y-x/2$ та $\eta=x$ до канонічного вигляду $u_{\eta\eta} - \frac{1}{2}u_{\xi} = 0$.
+
+\newpage
+
+\subsection{Номер 2.}
+
+\begin{problem}
+    Розв'язати за допомогою методу функції Гріна та електростатичних відображень в $\mathbb{R}^3$.
+    \begin{equation*}
+        -\Delta u = 0, \quad x_2 > 0, \quad u\Big|_{x_2=0} = \sin 4x_1 \cos x_3.
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Запишемо функцію Гріна:
+\begin{equation*}
+    G(\mathbf{x}, \boldsymbol{\xi}) = \frac{1}{4\pi\|\mathbf{x}-\boldsymbol{\xi}\|} - \frac{1}{4\pi\|\mathbf{x}'-\boldsymbol{\xi}\|},
+\end{equation*}
+
+де $\mathbf{x}=(x_1,x_2,x_3)$, а $\mathbf{x}'=(x_1,-x_2,x_3)$. Таким чином, явно маємо вираз:
+\begin{equation*}
+    G(\mathbf{x}, \boldsymbol{\xi}) = \frac{1}{4\pi\sqrt{(x_1-\xi_1)^2+(x_2-\xi_2)^2+(x_3-\xi_3)^2}} - \frac{1}{4\pi\sqrt{(x_1-\xi_1)^2+(x_2+\xi_2)^2+(x_3-\xi_3)^2}}.
+\end{equation*}
+
+Тепер згадаємо, що розв'язок ми можемо знайти за допомогою наступної формули:
+\begin{equation*}
+    u(\mathbf{x}) = \int_{\Omega}G(\mathbf{x},\boldsymbol{\xi})f(\boldsymbol{\xi})d\boldsymbol{\xi} - \int_{\partial\Omega} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial\boldsymbol{\nu}}\phi(\boldsymbol{\xi})d_{\xi}S,
+\end{equation*}
+
+де в нашому випадку, на щастя, $f(\boldsymbol{\xi}) \equiv 0$, а не на щастя
+$\phi(\boldsymbol{\xi}) = \sin 4\xi_1 \cos \xi_3$. Отже, залишається порахувати
+лише другий інтеграл. Для нього потрібно знайти похідну функції Гріна за
+нормаллю, причому за умови $\xi_2=0$ (оскільки проходитись будемо саме по цій
+площині). Нормаль має вигляд $\boldsymbol{\nu} = (0,-1,0)$. Таким чином, маємо:
+\begin{align*}
+    \frac{\partial G}{\partial\boldsymbol{\nu}} = -\frac{\partial G}{\partial \xi_2} &= -\frac{x_2-\xi_2}{4\pi((x_1-\xi_1)^2+(x_2-\xi_2)^2+(x_3-\xi_3)^2)^{3/2}}\\
+    &-\frac{x_2+\xi_2}{4\pi((x_1-\xi_1)^2+(x_2+\xi_2)^2+(x_3-\xi_3)^2)^{3/2}}
+\end{align*}
+
+При $\xi_2=0$, зокрема, маємо:
+\begin{align*}
+    \frac{\partial G}{\partial\boldsymbol{\nu}}\Big|_{\xi_2=0} &= -\frac{x_2}{4\pi((x_1-\xi_1)^2+x_2^2+(x_3-\xi_3)^2)^{3/2}} - \frac{x_2}{4\pi((x_1-\xi_1)^2+x_2^2+(x_3-\xi_3)^2)^{3/2}} \\
+    &= -\frac{x_2}{2\pi}\cdot \frac{1}{((x_1-\xi_1)^2+x_2^2+(x_3-\xi_3)^2)^{3/2}}
+\end{align*}
+
+Таким чином, підставимо цей вираз у вираз для розв'язку:
+\begin{equation*}
+    u(\mathbf{x}) = \frac{x_2}{2\pi}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} \frac{1}{((x_1-\xi_1)^2+x_2^2+(x_3-\xi_3)^2)^{3/2}} \cdot \sin 4\xi_1 \cos \xi_3d\xi_1d\xi_3,
+\end{equation*}
+
+Тепер, нам треба певним чином перетворити цей вираз. Для цього пропонується зробити 
+підстановку $\eta_1 := x_1-\xi_1$, $\eta_3 := x_3-\xi_3$:
+\begin{equation*}
+    u(\mathbf{x}) = \frac{x_2}{2\pi}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} \frac{1}{(\eta_1^2+x_2^2+\eta_3^2)^{3/2}} \cdot \sin 4(x_1-\eta_1) \cos (x_3-\eta_3)d\eta_1d\eta_3.
+\end{equation*}
+
+Далі, розпишемо косинус та синус як $\sin (4x_1-4\eta_1) = \sin 4x_1 \cos 4\eta_1 - \cos 4x_1\sin 4\eta_1$ та $\cos (x_3-\eta_3) = \cos x_3 \cos \eta_3 + \sin x_3 \sin \eta_3$. Таким чином, маємо:
+\begin{equation*}
+    u(\mathbf{x}) = \frac{x_2}{2\pi}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} \frac{(\sin 4x_1 \cos 4\eta_1 - \cos 4x_1\sin 4\eta_1)(\cos x_3 \cos \eta_3 + \sin x_3 \sin \eta_3)}{(\eta_1^2+x_2^2+\eta_3^2)^{3/2}}d\eta_1d\eta_3.
+\end{equation*}
+
+Помітимо, що коли ми розкриємо дужки, то усі добутки з $\cos 4\eta_1 \sin
+\eta_3$, $\sin 4\eta_1\cos\eta_3$ та $\sin 4\eta_1 \sin \eta_3$ зникнуть через
+непарність підінтегральної функції та симетричному інтегруванні по всьому
+простору. Таким чином, маємо:
+
+\begin{align*}
+    u(\mathbf{x}) = \frac{\sin 4x_1 \cos x_3}{2\pi}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} \frac{x_2\cos 4\eta_1 \cos \eta_3}{(\eta_1^2+x_2^2+\eta_3^2)^{3/2}}d\eta_1d\eta_3.
+\end{align*}
+
+На цьому етапі, звичайно, можна почати шукати повністю цей інтеграл. Проте,
+можна також помітити, що цей інтеграл --- це певна функція від $x_2$ (хоч і
+потенційно дуже складна). Тому, нехай $\varphi(x_2) :=
+\frac{1}{2\pi}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} \frac{x_2\cos 4\eta_1 \cos
+\eta_3}{(\eta_1^2+x_2^2+\eta_3^2)^{3/2}}d\eta_1d\eta_3$. Тоді, $u(\mathbf{x}) = \sin 4x_1 \cos x_3 \varphi(x_2)$.
+
+Згадуємо, що у нас $\Delta u = 0$, тому можемо знайти похідну:
+\begin{align*}
+    \Delta u &= \sum_{i=1}^3 \frac{\partial^2 u}{\partial x_i^2} = -16\sin 4x_1\cos x_3\varphi(x_2) + \sin 4x_1 \cos x_3 \frac{d^2\varphi}{dx_2^2} - \sin 4x_1 \cos x_3 \varphi(x_2) \\
+    &= -17\sin 4x_1 \cos x_3 \varphi(x_2) + \sin 4x_1 \cos x_3 \frac{d^2\varphi}{dx_2^2} = 0.
+\end{align*}
+
+Гарні новини --- можемо скоротити на $\sin 4x_1 \cos x_3$, що зведе рівняння до
+\begin{equation*}
+    \frac{d^2\varphi}{dx_2^2} - 17\varphi(x_2) = 0.
+\end{equation*}
+
+Це рівняння вже розв'язується досить просто. Знаходимо характеристичний поліном
+$\lambda^2-17=0$ і помічаємо, що корені $\lambda_1=\sqrt{17}$,
+$\lambda_2=-\sqrt{17}$, тому загальний розв'язок має вигляд $\varphi(x_2) =
+C_1e^{\sqrt{17}x_2} + C_2e^{-\sqrt{17}x_2}$. Проте, залишилось знайти константи
+$C_1$ та $C_2$. По-перше, помічаємо, що $\varphi(x_2)$ має бути обмеженою при
+$x_2>0$. Тому, $C_1=0$. Більш того, оскільки $u\Big|_{x_2=0}=\sin 4x_1 \cos x_3$,
+то також $\varphi(0)=1$, що дає $C_2=1$. Таким чином, остаточно:
+\begin{equation*}
+    \boxed{u(x_1,x_2,x_3) = \sin 4x_1 \cos x_3 e^{-\sqrt{17}x_2}}.
+\end{equation*}
+
+\textbf{Відповідь.} Розв'язком є $u(x_1,x_2,x_3) = \sin 4x_1 \cos x_3 e^{-\sqrt{17}x_2}$.
+
+\newpage
+
+\subsection{Номер 3.}
+
+\begin{problem}
+    Розв'язати за допомогою методу функції Гріна та конформних відображень в $\mathbb{R}^2$.
+    \begin{equation*}
+        -\Delta u = 0, \quad x_1 > 0, x_2 < 0, \quad u\Big|_{x_1=0} = 1, \quad u\Big|_{x_2=0} = 1.
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Згадаємо, що метод конформних відображень полягає у (а) побудові
+конформного відображення $w: \mathbb{C} \to \mathbb{C}$, що переводить задану 
+область в одиничний круг та (б) знаходженні функції Гріна у вигляді\footnote{Під записом $\log$ маємо на увазі логарифмування за базою $e$.}:
+\begin{equation*}
+    G(\mathbf{x}, \boldsymbol{\xi}) = \frac{1}{2\pi}\log \left|\frac{1-w(z)\overline{w(\zeta)}}{w(z)-w(\zeta)}\right|, \quad z=x_1+ix_2, \quad \zeta=\xi_1+i\xi_2.
+\end{equation*}
+
+Отже, нам потрібно перевести область $x_1>0$, $x_2<0$ у одиничний круг. Для
+цього спочатку переведемо область у верхню півплощину за допомогою
+відображення\footnote{Таким чином, границя області (промінь) $it$ ($t<0$)
+перейде у $-t^2$ --- промінь від $0$ до $-\infty$ вздовж $Ox$. В свою чергу,
+границя $x_2=0,x_1>0$, що відповідає променю $t$, $t>0$, перейде у саму себе.}
+$w_1: z \mapsto z^2$. Далі, за перетворенням Келі $w_2: z \mapsto
+\frac{z-i}{z+i}$ переведемо верхню півплощину у одиничний круг. Наше
+відображення $w = w_2 \circ w_1$, тобто
+\begin{equation*}
+    w(z) = \frac{z^2-i}{z^2+i}.
+\end{equation*}
+
+Підставимо цей вираз у функцію Гріна:
+\begin{equation*}
+    G(\mathbf{x}, \boldsymbol{\xi}) = \frac{1}{2\pi}\log \left|\frac{1-\frac{z^2-i}{z^2+i}\left(\frac{\overline{\zeta}^2+i}{\overline{\zeta}^2-i}\right)}{\frac{z^2-i}{z^2+i}-\frac{\zeta^2-i}{\zeta^2+i}}\right| = 
+    \frac{1}{2\pi}\log\left|\frac{(z-\overline{\zeta})(z+\overline{\zeta})}{(z-\zeta)(z+\zeta)}\right|
+\end{equation*}
+
+Розпишемо цей вираз явно як функцію від $x_1,x_2,\xi_1,\xi_2$:
+\begin{align*}
+    G(\mathbf{x},\boldsymbol{\xi}) &= \frac{1}{4\pi}\log((x_1-\xi_1)^2+(x_1+\xi_2)^2) + \frac{1}{4\pi}\log((x_1+\xi_1)^2+(x_1-\xi_2)^2) \\
+    &= -\frac{1}{4\pi}\log((x_1-\xi_1)^2+(x_1-\xi_2)^2) - \frac{1}{4\pi}\log((x_1+\xi_1)^2+(x_1+\xi_2)^2)
+\end{align*}
+
+Нарешті, за формулою розв'язку через функцію Гріна, маємо:
+\begin{equation*}
+    u(x_1,x_2) = \int_{\Omega}G(\mathbf{x},\boldsymbol{\xi})f(\boldsymbol{\xi})d\boldsymbol{\xi} - \int_{\partial\Omega}\frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial\boldsymbol{\nu}}\phi(\boldsymbol{\xi})dS_{\xi}
+\end{equation*}
+
+В нашому випадку $f(\boldsymbol{\xi}) \equiv 0$, тому вже легше: 
+\begin{equation*}
+    u(x_1,x_2) = -\int_{\partial\Omega}\frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial\boldsymbol{\nu}}\phi(\boldsymbol{\xi})dS_{\xi}
+\end{equation*}
+
+Знаходимо часткову похідну $\partial G/\partial \xi_1$ для вертикальної границі:
+\begin{align*}
+    \frac{\partial G}{\partial \xi_1} &= \frac{1}{2\pi}\cdot \frac{\xi_1-x_1}{(\xi_1-x_1)^2+(\xi_2+x_2)^2} + \frac{1}{2\pi} \cdot \frac{\xi_1+x_1}{(\xi_1+x_1)^2+(\xi_2-x_2)^2} \\
+    & -\frac{1}{2\pi}\cdot\frac{\xi_1-x_1}{(\xi_1-x_1)^2+(\xi_2-x_2)^2} - \frac{1}{2\pi}\cdot\frac{\xi_1+x_1}{(\xi_1+x_1)^2+(\xi_2+x_2)^2}
+\end{align*}
+
+Також, одразу порахуємо $\partial G/\partial \xi_2$, котра знадобиться для 
+горизонтальної границі:
+\begin{align*}
+    \frac{\partial G}{\partial \xi_2} &= \frac{1}{2\pi}\cdot \frac{\xi_2+x_2}{(\xi_1-x_1)^2+(\xi_2+x_2)^2} + \frac{1}{2\pi} \cdot \frac{\xi_2-x_2}{(\xi_1+x_1)^2+(\xi_2-x_2)^2} \\
+    & -\frac{1}{2\pi}\cdot\frac{\xi_2-x_2}{(\xi_1-x_1)^2+(\xi_2-x_2)^2} - \frac{1}{2\pi}\cdot\frac{\xi_2+x_2}{(\xi_1+x_1)^2+(\xi_2+x_2)^2}
+\end{align*}
+
+Сама похідна за нормаллю по границі $x_2<0,x_1=0$ ($\boldsymbol{\nu}_1=(-1,0)$), у свою чергу, 
+\begin{equation*}
+    \frac{\partial G}{\partial \boldsymbol{\nu}_1} = -\frac{\partial G}{\partial \xi_1}\Big|_{\xi_1=0} = \frac{1}{\pi}\cdot\frac{x_1}{x_1^2+(\xi_2+x_2)^2} - \frac{1}{\pi}\cdot\frac{x_1}{x_1^2+(\xi_2-x_2)^2}
+\end{equation*}
+
+Для горизонтальної границі $x_1>0,x_2=0$ ($\boldsymbol{\nu}_2=(0,1)$), маємо:
+\begin{equation*}
+    \frac{\partial G}{\partial \boldsymbol{\nu}_2} = \frac{\partial G}{\partial \xi_2}\Big|_{\xi_2=0} = \frac{1}{\pi}\cdot\frac{x_2}{x_2^2+(\xi_1-x_1)^2} - \frac{1}{\pi}\cdot\frac{x_2}{x_2^2+(\xi_1+x_1)^2}
+\end{equation*}
+
+Таким чином, все звелось до обчислення двох інтегралів:
+\begin{align*}
+    u_1(x_1,x_2) &= \int_{-\infty}^{0}\frac{\partial G}{\partial \boldsymbol{\nu}_1}\Big|_{\xi_1=0}\phi(\xi_2)d\xi_2 = \frac{x_1}{\pi}\int_{-\infty}^{0}\left(\frac{1}{x_1^2+(\xi_2+x_2)^2} - \frac{1}{x_1^2+(\xi_2-x_2)^2}\right)d\xi_2, \\
+    u_2(x_1,x_2) &= \int_0^{+\infty}\frac{\partial G}{\partial \boldsymbol{\nu}_2}\Big|_{\xi_2=0}\phi(\xi_1)d\xi_1 = \frac{x_2}{\pi}\int_{0}^{+\infty}\left(\frac{1}{x_2^2+(\xi_1-x_1)^2} - \frac{1}{x_2^2+(\xi_1+x_1)^2}\right)d\xi_1.
+\end{align*}
+
+Почнемо з першого інтегралу. Оскільки межі інтегралу виглядають не дуже привабливо, зробимо просте перетворення $\xi_2 \mapsto -\xi_2$, отримавши:
+\begin{equation*}
+    u_1(x_1,x_2) = \frac{x_1}{\pi}\int_{0}^{+\infty}\left(\frac{1}{x_1^2+(\xi_2-x_2)^2} - \frac{1}{x_1^2+(\xi_2+x_2)^2}\right)d\xi_2
+\end{equation*}
+
+Далі розглядаємо інтеграл наступного вигляду:
+\begin{equation*}
+    \mathcal{I}(\alpha) := \int_0^{+\infty} \frac{d\xi_2}{x_1^2+(\xi_2-\alpha)^2}
+\end{equation*}
+
+Він достатньо легко знаходиться. Для цього, зробимо такі перетворення:
+\begin{equation*}
+    \mathcal{I}(\alpha) =\frac{1}{x_1}\int_0^{+\infty} \frac{d\left(\frac{\xi_2-\alpha}{x_1}\right)}{1+\left(\frac{\xi_2-\alpha}{x_1}\right)^2} = \frac{1}{x_1}\arctan \left(\frac{\xi_2-\alpha}{x_1}\right)\Big|_0^{+\infty} = \frac{\pi}{2x_1} + \frac{\arctan \frac{\alpha}{x_1}}{x_1}
+\end{equation*}
+
+Тоді, наш перший інтеграл має вигляд:
+\begin{equation*}
+    u_1(x_1,x_2) = \frac{x_1(\mathcal{I}(x_2) - \mathcal{I}(-x_2))}{\pi} = \frac{2}{\pi}\arctan \frac{x_2}{x_1}
+\end{equation*}
+
+Тепер розглянемо другий ($u_2(x_1,x_2)$). Для нього розглянемо інтеграл такого вигляду:
+\begin{equation*}
+    \mathcal{J}(\beta) := \int_0^{+\infty}\frac{d\xi_1}{x_2^2+(\xi_1-\beta)^2} = \frac{1}{x_2}\arctan \frac{\xi_1-\beta}{x_2}\Big|_{0}^{+\infty} = \frac{\pi}{2x_2} + \frac{\arctan \frac{\beta}{x_2}}{x_2}
+\end{equation*}
+
+Таким чином, наш другий інтеграл має вигляд:
+\begin{equation*}
+    u_2(x_1,x_2) = \frac{x_2(\mathcal{J}(x_1) - \mathcal{J}(-x_1))}{\pi} = \frac{2}{\pi}\arctan \frac{x_1}{x_2}
+\end{equation*}
+
+Отже, остаточний вигляд розв'язку задачі:
+\begin{equation*}
+    u(x_1,x_2) = -u_1(x_1,x_2)-u_2(x_1,x_2) = -\frac{2}{\pi}\arctan \frac{x_2}{x_1} - \frac{2}{\pi}\arctan \frac{x_1}{x_2} = \boxed{-\frac{2}{\pi}\left(\arctan \frac{x_2}{x_1} + \arctan \frac{x_1}{x_2}\right)}
+\end{equation*} 
+
+Проте, цей розв'язок можна сильно спростити, якщо скористатися тим фактом, що 
+\begin{equation*}
+    \arctan(z) + \arctan\left(\frac{1}{z}\right) = \begin{cases}
+        \pi/2, & z > 0 \\
+        -\pi/2, & z < 0
+    \end{cases}
+\end{equation*}
+
+Зокрема, на всій нашій облатсі $x_2/x_1 < 0$, тому $u(x_1,x_2) \equiv 1$.
+
+\textbf{Відповідь.} $u \equiv 1$.
+
+\newpage
+
+\end{document}

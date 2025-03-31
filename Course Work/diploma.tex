@@ -1,0 +1,177 @@
+\documentclass[12pt,a4paper,oneside]{book}
+
+% --- Setting up a language ---
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,main=ukrainian]{babel}
+
+% --- Detault Packages ---
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage[toc,page]{appendix}
+\usepackage{amsthm,amsfonts,mathtools,amscd,amssymb,mathrsfs}
+\usepackage{latexsym}
+\usepackage{euscript}
+\usepackage{multicol}
+\usepackage{bbm}
+\usepackage{pgffor}   % For loops in TikZ
+\usepackage{dsfont}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage[shortlabels]{enumitem}
+
+% 
+\usepackage[unicode]{hyperref}
+\hypersetup{colorlinks=true}
+\tolerance=9000 
+\textwidth=165mm
+\textheight=250mm 
+\oddsidemargin=4.6mm
+\voffset=-20mm
+\binoppenalty=1 \relpenalty=1 
+\allowdisplaybreaks
+\everymath{\displaystyle}
+\renewcommand{\baselinestretch}{1.44}
+
+\usepackage{dipl}
+\pagestyle{headings}
+\graphicspath{ {figures/} }
+
+% --- Theorem Styles ---
+\theoremstyle{dplplain}
+\newtheorem{theorem}{Теорема}[chapter]
+\newtheorem{corollary}[theorem]{Наслідок}%[chapter]
+\newtheorem{statement}[theorem]{Твердження}%[chapter]
+\newtheorem{lemma}[theorem]{Лема}%[chapter]
+\theoremstyle{dpldefinition}
+\newtheorem{definition}[theorem]{Означення}%[chapter]
+\theoremstyle{dplremark}
+\newtheorem{problem}[theorem]{Задача}%[chapter]
+\newtheorem{remark}[theorem]{Зауваження}%[chapter]
+\newtheorem{example}[theorem]{Приклад}%[chapter]
+
+% --- Math shortings ---
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator*{\essinf}{ess\,inf}
+\DeclareMathOperator*{\bigtimes}{\mbox{\raisebox{-0.5ex}{\huge$\times$}}}
+\DeclareMathOperator*{\smalltimes}{\mbox{\raisebox{-0.3ex}{\large$\times$}}}
+\DeclareMathOperator*{\ootimes}{\overline{\otimes}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% --- Listings ---
+% --- Default settings ---
+% \lstset{language=Python}
+% \lstset{frame=lines}
+% \lstset{basicstyle=\normalsize}
+% \lstset{prebreak=\raisebox{-2ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}}
+% \lstset{breaklines=true}
+% \captionsetup[lstlisting]{font=large}
+
+% --- My own settings ---
+\definecolor{dkgreen}{rgb}{0,0.5,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+    numbers=left,  
+    frame=tb,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=fixed,
+    framerule=1pt,
+    rulecolor=\color{gray!35},
+    backgroundcolor=\color{gray!5},
+    basicstyle={\ttfamily\small},
+    numberstyle=\footnotesize\color{gray},
+    keywordstyle=\bfseries\color{MidnightBlue!95!black},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    extendedchars=false,
+    postbreak=\mbox{\hspace{-1.4em}\textcolor{purple}{$\hookrightarrow$}\space}
+}
+
+\newcommand{\remind}[1]{\textcolor{red}{\textbf{#1}}} % To remind me of unfinished work to fix later
+\newcommand{\hide}[1]{} % To hide large blocks of code without using % symbols
+
+
+% --- Bibliography ---
+\usepackage[
+    backend=biber,
+    style=alphabetic
+]{biblatex}
+\addbibresource{main.bib}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% вибір титульної сторінки %%%%%%
+%
+% Для правильного оформлення роботи 
+% треба вибрати титульну сторінку. 
+%
+% Для студентів 4 курсу треба 
+% прибрати знак відсотку (%)
+% перед командою \input{titlepage-BACHELOR} 
+% при цьому перед іншими двома командами 
+% мають стояти знаки відсотку (%).
+% 
+% Для студентів 6 курсу ОПП треба 
+% прибрати знак відсотку (%)
+% перед командою \input{titlepage-OPP} 
+% при цьому перед іншими двома командами 
+% мають стояти знаки відсотку (%).
+% 
+% Для студентів 6 курсу ОНП треба 
+% прибрати знак відсотку (%)
+% перед командою \input{titlepage-ONP} 
+% при цьому перед іншими двома командами 
+% мають стояти знаки відсотку (%).
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{titlepage-BACHELOR}
+
+%\input{titlepage-OPP}
+
+%\input{titlepage-ONP}
+
+%%%% кінець вибору титульної сторінки %%%%%%
+
+\refstepcounter{page}
+
+\input{abstracts}
+
+\tableofcontents
+
+\input{intro}
+
+\input{chapter-1}
+
+\input{chapter-2}
+
+% TODO: Write Chapter 3
+% \input{chapter-3}
+
+\input{conclusions}
+
+\printbibliography
+
+\input{appendix}
+
+\end{document}
+
+
+
+

@@ -1,0 +1,338 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Контрольна Робота з Еволюційних Систем \#2}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 15 листопада, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\begin{center}
+    \textbf{Варіант 5}
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Завдання}
+
+\begin{problem}
+    Дано диференціально-алгебраїчне рівняння
+    \begin{equation*}
+        \boldsymbol{A}\frac{d\mathbf{x}}{dt} + \boldsymbol{B}\mathbf{x}(t) = \boldsymbol{f}(t), \quad t \geq 0, \quad \mathbf{x} \in \mathbb{C}^3
+    \end{equation*}
+    де $\boldsymbol{f}(t) = e^t \cdot \mathbf{1}_3$. Потрібно:
+    \begin{enumerate}[(A)]
+        \item Показати, що характеристичний жмуток матриць $\lambda\boldsymbol{A}+\boldsymbol{B}$ є регулярним і знайти його індекс.
+        \item Обчислити спектральні проектори
+        $\boldsymbol{P}_1,\boldsymbol{P}_2,\boldsymbol{Q}_1,\boldsymbol{Q}_2$
+        жмутка матриць $\lambda\boldsymbol{A}+\boldsymbol{B}$ та побудувати
+        характеристичну матрицю $\boldsymbol{G}$, знайти матриці $\boldsymbol{F}
+        = \boldsymbol{G}^{-1}\boldsymbol{Q}_2\boldsymbol{A}$, $\boldsymbol{S} =
+        -\boldsymbol{G}^{-1}\boldsymbol{Q}_1\boldsymbol{B}$ та матрицю $e^{\boldsymbol{S}t}$.
+        \item Описати множину припустимих початкових даних $\mathbf{x}_0$, за
+        яких початкова задача $\mathbf{x}(0) = \mathbf{x}_0$ для
+        диференцiально-алгебраїчного рiвняння має єдиний розв’язок. Навести
+        конкретний приклад такого $\mathbf{x}_0$.
+    \end{enumerate}
+
+    Матриці $\boldsymbol{A}$ та $\boldsymbol{B}$ наступні:
+    \begin{equation*}
+        \boldsymbol{A} = \begin{bmatrix}
+            2 & 1 & 0 \\
+            1 & 0 & 1 \\
+            1 & 1 & -1
+        \end{bmatrix}, \quad 
+        \boldsymbol{B} = \begin{bmatrix}
+            -2 & -2 & -1 \\
+            1 & -1 & 0 \\
+            0 & -1 & 2
+        \end{bmatrix}
+    \end{equation*}
+\end{problem}
+
+\subsection{Пункт (А)}
+Для перевірки регулярності, обчислимо $\det(\boldsymbol{A} + \mu\boldsymbol{B})$. Маємо:
+\begin{equation*}
+    \det(\boldsymbol{A} + \mu\boldsymbol{B}) = \begin{bmatrix}
+        2-2\mu & 1-2\mu & -\mu \\
+        1+\mu & -\mu & 1 \\
+        1 & 1-\mu & -1+2\mu
+    \end{bmatrix} = 9\mu^2(-1+\mu)
+\end{equation*}
+
+Отже, жмуток є регулярним та має єдине власне значення $\lambda_0=1$. Далі знаходимо
+\begin{equation*}
+    \boldsymbol{R}_0(\mu) = (\boldsymbol{A}+\mu\boldsymbol{B})^{-1} = \frac{1}{9\mu^2(\mu-1)}\begin{bmatrix}
+        -1+2\mu-2\mu^2 & 1-5\mu+5\mu^2 & 1 - 2\mu - \mu^2 \\
+        2-\mu-2\mu^2 & -2+7\mu-4\mu^2 & -2+\mu-\mu^2 \\
+        1 + \mu - \mu^2 & -1+2\mu-2\mu^2 & -1-\mu+4\mu^2
+    \end{bmatrix}
+\end{equation*}
+
+Індекс $\text{ind}(\boldsymbol{A},\boldsymbol{B})$ жмутка матриць
+$\lambda\boldsymbol{A}+\boldsymbol{B}$ це порядок полюса за $\mu=0$ матричної
+функції $\boldsymbol{R}_0(\mu)$. Отже, потрібно подивитися на кожен елемент
+$\boldsymbol{R}_0(\mu)$ та знайти його індекс. Бачимо, що для знаменника
+$\mu=0$ є коренем другого порядка, а отже максимальний можливий індекс --- це 2.
+Отже, достатньо знайти будь-який елемент матриці $\boldsymbol{R}_0(\mu)$, де 
+відповідний чисельник не дорівнює нулю. Наприклад, перший елемент підходить:
+\begin{equation*}
+    \text{ind}\left(\frac{-1+2\mu-2\mu^2}{9\mu^2(\mu-1)}\right) = 2
+\end{equation*}
+
+Таким чином, жмуток є регулярним і має індекс 2.
+
+\subsection{Пункт (Б)}
+Спектральні проектори
+$\boldsymbol{P}_1,\boldsymbol{P}_2,\boldsymbol{Q}_1,\boldsymbol{Q}_2$ та
+характеристична матриця $\boldsymbol{G}$ жмутка матриць
+$\lambda\boldsymbol{A}+\boldsymbol{B}$ обчислюються як:
+\begin{align*}
+    \boldsymbol{P}_2 &= \text{Res}_{\mu=0}\boldsymbol{R}_0(\mu)\boldsymbol{B} \\
+    \boldsymbol{P}_1 &= \boldsymbol{E}_{3 \times 3} - \boldsymbol{P}_2 \\
+    \boldsymbol{Q}_2 &= \text{Res}_{\mu=0}\boldsymbol{BR}_0(\mu) \\
+    \boldsymbol{Q}_1 &= \boldsymbol{E}_{3 \times 3} - \boldsymbol{Q}_2 \\
+    \boldsymbol{G} &= \boldsymbol{AP}_1 + \boldsymbol{BP}_2
+\end{align*}
+
+Отже, починаємо обраховувати поступово:
+\begin{equation*}
+    \boldsymbol{R}_0(\mu)\boldsymbol{B} = \begin{bmatrix}
+        \frac{1-3\mu+3\mu^2}{3\mu^2(\mu-1)} & \frac{1}{3\mu(\mu-1)} & \frac{1-2\mu}{3\mu^2(\mu-1)} \\
+        \frac{-2+3\mu}{3\mu^2(\mu-1)} & \frac{2-3\mu}{3\mu(1-\mu)} & \frac{-2+\mu}{3\mu^2(\mu-1)} \\
+        \frac{1}{3\mu^2(1-\mu)} & \frac{1}{3\mu(1-\mu)} & \frac{1+\mu-3\mu^2}{3\mu^2(1-\mu)}
+    \end{bmatrix}
+\end{equation*}
+
+Тепер обраховуємо лишки:
+\begin{equation*}
+    \boldsymbol{P}_2 = \text{Res}_{\mu=0}\boldsymbol{R}_0(\mu)\boldsymbol{B} = \begin{bmatrix}
+        \frac{2}{3} & -\frac{1}{3} & \frac{1}{3} \\
+        -\frac{1}{3} & \frac{2}{3} & \frac{1}{3} \\
+        \frac{1}{3} & \frac{1}{3} & \frac{2}{3}
+    \end{bmatrix}
+\end{equation*}
+
+Не будемо детально розписувати, як обраховується лишок у кожного елемента, але 
+покажемо це на прикладі елемента на позиції $(1,1)$. Отже, маємо обрахувати
+\begin{equation*}
+    \text{Res}_{\mu=0}\frac{1-3\mu+3\mu^2}{3\mu^2(\mu-1)} 
+    = \lim_{\mu \to 0} \frac{d}{d\mu}\left(\mu^2 \cdot \frac{1-3\mu+3\mu^2}{3\mu^2(\mu-1)}\right)
+    = \lim_{\mu \to 0} \frac{2-6\mu+3\mu^2}{3(\mu-1)^2} = \frac{2}{3}
+\end{equation*}
+
+Далі, рахуємо матрицю $\boldsymbol{P}_1$:
+\begin{equation*}
+    \boldsymbol{P}_1 = \boldsymbol{E}_{3 \times 3} - \boldsymbol{P}_2 = 
+    \frac{1}{3}\begin{bmatrix}
+        1 & 1 & -1 \\
+        1 & 1 & -1 \\
+        -1 & -1 & 1
+    \end{bmatrix}
+\end{equation*}
+
+Наступним кроком рахуємо $\boldsymbol{BR}_0(\mu)$:
+\begin{equation*}
+    \boldsymbol{BR}_0(\mu) = \begin{bmatrix}
+        \frac{1+\mu-3\mu^2}{3\mu^2(1-\mu)} & \frac{1-2\mu}{3\mu^2(\mu-1)} & \frac{1+\mu}{3\mu^2(\mu-1)} \\
+        \frac{1}{3\mu^2} & \frac{-1+3\mu}{3\mu^2} & -\frac{1}{3\mu^2} \\
+        \frac{1}{3\mu(\mu-1)} & \frac{1}{3\mu(1-\mu)} & \frac{1-3\mu}{3\mu(1-\mu)}
+    \end{bmatrix}
+\end{equation*}
+
+Тепер обраховуємо лишки і матриці $\boldsymbol{Q}_1$, $\boldsymbol{Q}_2$:
+\begin{equation*}
+    \boldsymbol{Q}_2 = \text{Res}_{\mu=0}\boldsymbol{BR}_0(\mu) = 
+    \begin{bmatrix}
+        \frac{2}{3} & \frac{1}{3} & -\frac{2}{3} \\
+        0 & 1 & 0 \\
+        -\frac{1}{3} & \frac{1}{3} & \frac{1}{3}
+    \end{bmatrix}, \quad \boldsymbol{Q}_1 = \boldsymbol{E}_{3 \times 3} - 
+    \boldsymbol{Q}_2 = \begin{bmatrix}
+        \frac{1}{3} & -\frac{1}{3} & \frac{2}{3} \\
+        0 & 0 & 0 \\
+        \frac{1}{3} & -\frac{1}{3} & \frac{2}{3}
+    \end{bmatrix}
+\end{equation*}
+
+Нарешті, характеристична матриця:
+\begin{equation*}
+    \boldsymbol{G} = \boldsymbol{AP}_1 + \boldsymbol{BP}_2 = \begin{bmatrix}
+        0 & 0 & -3 \\
+        1 & -1 & 0 \\
+        2 & 1 & 0
+    \end{bmatrix}, \quad \boldsymbol{G}^{-1} = \begin{bmatrix}
+        0 & \frac{1}{3} & \frac{1}{3} \\
+        0 & -\frac{2}{3} & \frac{1}{3} \\
+        -\frac{1}{3} & 0 & 0
+    \end{bmatrix}
+\end{equation*}
+
+Згідно умові, знайдемо матриці $\boldsymbol{F} =
+\boldsymbol{G}^{-1}\boldsymbol{Q}_2\boldsymbol{A}$, $\boldsymbol{S} =
+-\boldsymbol{G}^{-1}\boldsymbol{Q}_1\boldsymbol{B}$:
+\begin{align*}
+    \boldsymbol{F} &= \begin{bmatrix}
+        \frac{1}{3} & 0 & \frac{1}{3} \\
+        -\frac{2}{3} & 0 & -\frac{2}{3} \\
+        -\frac{1}{3} & 0 & -\frac{1}{3}
+    \end{bmatrix} \\
+    \boldsymbol{S} &= \begin{bmatrix}
+        \frac{1}{3} & \frac{1}{3} & -\frac{1}{3} \\
+        \frac{1}{3} & \frac{1}{3} & -\frac{1}{3} \\
+        -\frac{1}{3} & -\frac{1}{3} & \frac{1}{3}
+    \end{bmatrix}
+\end{align*}
+
+Нарешті, залишається лише знайти $e^{\boldsymbol{S}t}$. Для цього знайдемо власні числа
+матриці $\boldsymbol{S}$, знайшовши харастеристичний поліном:
+\begin{equation*}
+    \chi_S(\lambda) = \det(\boldsymbol{S} - \lambda\boldsymbol{E}_{3 \times 3}) =
+    \lambda^2 - \lambda^3 = \lambda^2(1-\lambda)
+\end{equation*}
+
+Отже, маємо власне число $\lambda_{1,2}=0$ кратності $2$ та $\lambda_3=1$
+кратності $1$. Отже, далі знаходимо відповідні власні вектори з рівняння
+$\boldsymbol{S}\mathbf{v} = \mathbf{0}$ маємо $v_1+v_2-v_3=0$. Це відповідає 
+множині векторів:
+\begin{equation*}
+    \mathbf{v} = \begin{bmatrix}
+        \alpha \\
+        \beta \\ 
+        \alpha+\beta
+    \end{bmatrix} = \begin{bmatrix}
+        1 \\ 0 \\ 1
+    \end{bmatrix}\alpha + \begin{bmatrix}
+        0 \\ 1 \\ 1
+    \end{bmatrix}\beta
+\end{equation*}
+
+Тому, оберемо наступні власні вектори:
+\begin{equation*}
+    \mathbf{v}_1 = \begin{bmatrix}
+        1 \\ 0 \\ 1
+    \end{bmatrix}, \quad \mathbf{v}_2 = \begin{bmatrix}
+        0 \\ 1 \\ 1
+    \end{bmatrix}
+\end{equation*}
+
+Тепер те саме, але для власного значення $\lambda_3=1$:
+\begin{equation*}
+    (\boldsymbol{S} - \boldsymbol{E}_{3 \times 3})\mathbf{v} = \mathbf{0}
+\end{equation*}
+
+Відповідна система рівнянь:
+\begin{equation*}
+    \begin{cases}
+        -2v_1 + v_2 - v_3 = 0 \\
+        v_1 - 2v_2 - v_3 = 0 \\
+        v_1 + v_2 + 2v_3 = 0
+    \end{cases}
+\end{equation*}
+
+Якщо вибрати $v_1 := \gamma$, то отримаємо $v_2=\gamma$, $v_3=-\gamma$. Тому,
+в якості третього власного вектора обираємо:
+\begin{equation*}
+    \mathbf{v}_3 = \begin{bmatrix}
+        1 \\ 1 \\ -1
+    \end{bmatrix}
+\end{equation*}
+
+Таким чином, матриця $\boldsymbol{S}$ є діагоналізованою, а саме:
+\begin{equation*}
+    \boldsymbol{S} = \boldsymbol{U}\boldsymbol{\Lambda}\boldsymbol{U}^{-1}, \quad 
+    \boldsymbol{U} = \begin{bmatrix}
+        1 & 0 & 1 \\
+        0 & 1 & 1 \\
+        1 & 1 & -1
+    \end{bmatrix}, \quad \Lambda = \text{diag}\{0,0,1\}.
+\end{equation*}
+
+Таким чином, експоненту можна знайти наступним чином:
+\begin{equation*}
+    e^{\boldsymbol{S}t} = \sum_{k=0}^{\infty} \frac{\boldsymbol{S}^kt}{k!} = \boldsymbol{U}\left(\sum_{k=0}^{\infty} \frac{\boldsymbol{\Lambda}^kt^k}{k!}\right)\boldsymbol{U}^{-1} = \boldsymbol{U}\begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & e^{t}
+    \end{bmatrix}\boldsymbol{U}^{-1} = \begin{bmatrix}
+        \frac{1}{3}(2+e^t) & \frac{1}{3}(-1+e^t) & \frac{1}{3}(1-e^t) \\
+        \frac{1}{3}(-1+e^t) & \frac{1}{3}(2+e^t) & \frac{1}{3}(1-e^t) \\
+        \frac{1}{3}(1-e^t) & \frac{1}{3}(1-e^t) & \frac{1}{3}(2+e^t)
+    \end{bmatrix}
+\end{equation*}
+
+\subsection{Пункт (В)}
+
+Бачимо, що $\boldsymbol{F}^2=\boldsymbol{O}_{3 \times 3}$, а тому її індекс 
+нільпотентності дорівнює $r=2$. Згідно теоремі з лекції, умова узгодження 
+на початковий вектор $\mathbf{x}_0$ має вигляд:
+\begin{equation*}
+    \boldsymbol{P}_2\mathbf{x}_0 = \sum_{j=0}^{r-1}(-1)^j \frac{d^j}{dt^j}(\boldsymbol{F}^j \boldsymbol{G}^{-1}\boldsymbol{Q}_2f(t))\Big|_{t = 0}
+\end{equation*}
+
+В нашому конкретному випадку, вона запишеться як:
+\begin{equation*}
+    \boldsymbol{P}_2\mathbf{x}_0 = \boldsymbol{G}^{-1}\boldsymbol{Q}_2f(0) - \frac{d}{dt}(\boldsymbol{F}\boldsymbol{G}^{-1}\boldsymbol{Q}_2f(t))\Big|_{t = 0}
+\end{equation*}
+
+Тому обчислюємо усі вирази:
+\begin{align*}
+    \boldsymbol{G}^{-1}\boldsymbol{Q}_2f(0) &= \begin{bmatrix}
+        4/9 \\ -5/9 \\ -1/9
+    \end{bmatrix} \\
+    \frac{d}{dt}(\boldsymbol{F}\boldsymbol{G}^{-1}\boldsymbol{Q}_2f(t))\Big|_{t = 0} &= \begin{bmatrix}
+        1/9 \\ -2/9 \\ -1/9
+    \end{bmatrix}
+\end{align*}
+
+Таким чином,
+\begin{equation*}
+    \boldsymbol{P}_2\mathbf{x}_0 = \begin{bmatrix}
+        1/3 \\ -1/3 \\ 0
+    \end{bmatrix}
+\end{equation*}
+
+Нехай $\mathbf{x}_0 = (v,u,w)$. Тоді, умова на $\mathbf{x}_0$ має вигляд:
+\begin{equation*}
+    \begin{bmatrix}
+        \frac{2}{3} & -\frac{1}{3} & \frac{1}{3} \\
+        -\frac{1}{3} & \frac{2}{3} & \frac{1}{3} \\
+        \frac{1}{3} & \frac{1}{3} & \frac{2}{3}
+    \end{bmatrix}\begin{bmatrix}
+        v \\ u \\ w
+    \end{bmatrix} = \begin{bmatrix}
+        1/3 \\ -1/3 \\ 0
+    \end{bmatrix} \iff \begin{cases}
+        2v-u+w = 1 \\
+        -v+2u+w = -1 \\
+        v + u + 2w = 0
+    \end{cases}
+\end{equation*}
+
+Звідси отримуємо: $u=-\frac{2}{3}+v, w=\frac{1}{3}-v$. Отже, якщо 
+ввести параметр $\alpha$, то множину $\mathbf{x}_0$ можна описати як:
+\begin{equation*}
+    \mathbf{x}_0 = \begin{bmatrix}
+        0 \\
+        -\frac{2}{3} \\
+        \frac{1}{3}
+    \end{bmatrix} + \begin{bmatrix}
+        1 \\
+        1 \\
+        -1
+    \end{bmatrix}\alpha
+\end{equation*}
+
+Прикладом може слугувати вектор $\mathbf{x}_0 = (0,-2/3,1/3)$. Більш конкретно, 
+розв'язком задачі буде:
+\begin{equation*}
+    x(t)=\frac{1}{9}e^t(2t+9\alpha), \quad y(t) = \frac{1}{9}e^t(-6+2t+9\alpha), \quad 
+    z(t) = -\frac{1}{9}e^t(-3+2t+9\alpha).
+\end{equation*}
+
+\end{document}

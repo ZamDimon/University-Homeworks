@@ -100,7 +100,7 @@
 
 % --- Footers ---
 \RequirePackage{fancyhdr}
-\lhead{Домашня робота}
+\lhead{Залікова робота}
 \rhead{Рівняння математичної фізики}
 \cfoot{Сторінка \thepage}
 \renewcommand{\headrulewidth}{1.25pt}

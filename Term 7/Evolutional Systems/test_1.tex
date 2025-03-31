@@ -1,0 +1,294 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Контрольна Робота з Еволюційних Систем \#1}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 3 листопада, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\begin{center}
+    \textbf{Варіант 5}
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Завдання 1}
+
+\begin{problem}
+    Знайти загальний розв'язок різницевого рівняння:
+    \begin{equation*}
+        x_{k+1} = \left(\frac{k+2}{k+1}\right)^3x_k - 3 \cdot \frac{(k+2)^2}{k+3}
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Маємо лінійне неоднорідне скалярне різницеве рівняння першого порядку
+$x_{k+1} = \alpha_k x_k + f_k$, де в нашому випадку:
+\begin{equation*}
+    \alpha_k = \left(\frac{k+2}{k+1}\right)^3, \quad f_k = -3 \cdot \frac{(k+2)^2}{k+3}.
+\end{equation*}
+
+Спочатку розв'яжемо однорідне рівняння:
+\begin{equation*}
+    x_{k+1} = \left(\frac{k+2}{k+1}\right)^3x_k.
+\end{equation*}
+
+Нехай $x_0$ задане. Тоді, розв'язок однорідного рівняння має вигляд:
+\begin{equation*}
+    x_k = x_0 \cdot \prod_{j=0}^{k-1} \left(\frac{j+2}{j+1}\right)^3 = x_0\left(\frac{2^3}{1^3} \cdot \frac{3^3}{2^3} \cdot \dots \cdot \frac{(k+1)^3}{k^3}\right) = (k+1)^3x_0.
+\end{equation*}
+
+Скористаємося методом варіації сталих. Нехай $x_k = c_k\prod_{j=0}^{k-1}\alpha_j = (k+1)^3c_k$. Підставимо це у наше початкове рівняння:
+\begin{equation*}
+    (k+2)^3c_{k+1} = \left(\frac{k+2}{k+1}\right)^3 \cdot (k+1)^3c_k - 3 \cdot \frac{(k+2)^2}{k+3}.
+\end{equation*}
+
+Звідси маємо:
+\begin{equation*}
+    (k+2)^3c_{k+1} = (k+2)^3c_k - 3 \cdot \frac{(k+2)^2}{k+3} \Rightarrow c_{k+1} = c_k - \frac{3}{(k+3)(k+2)}. 
+\end{equation*}
+
+Отже, якщо $c_0$ задане, то розв'язок має вигляд:
+\begin{equation*}
+    c_k = c_0 - 3\sum_{j=0}^{k-1}\frac{1}{(j+3)(j+2)} = c_0 - 3\sum_{j=0}^{k-1}\left(\frac{1}{j+2} - \frac{1}{j+3}\right) = c_0-3\left(\frac{1}{2}-\frac{1}{k+2}\right) = c_0 - \frac{3k}{4+2k}
+\end{equation*}
+
+Отже, загальний розв'язок початкового рівняння:
+\begin{equation*}
+    \boxed{x_k = (k+1)^3\left(c_0 - \frac{3k}{4+2k}\right)}
+\end{equation*}
+
+\pagebreak
+
+\section{Завдання 2}
+
+\begin{problem}
+    Знайти загальний розв'язок різницевого рівняння:
+    \begin{equation*}
+        x_{k+2} - x_{k+1} - 6x_k = (10k-3)3^k
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Маємо лінійне неоднорідне стаціонарне різницеве рівняння
+другого порядку. Розглянемо однорідну частину:
+\begin{equation*}
+    x_{k+2} - x_{k+1} - 6x_k = 0.
+\end{equation*}
+
+Маємо характеристичне рівняння:
+\begin{equation*}
+    \lambda^2 - \lambda - 6 = 0 \Rightarrow \lambda_1 = 3, \lambda_2 = -2.
+\end{equation*}
+
+Отже, загальний розв'язок однорідного рівняння має вигляд:
+\begin{equation*}
+    x_k = c_1 \cdot (-2)^k + c_2 \cdot 3^k.
+\end{equation*}
+
+Тепер нам потрібно знайти частковий розв'язок. Оскільки права частина має вигляд $f_k = (10k-3)3^k$ та $\lambda=3$ є коренем характеристичного рівняння першого порядку, то частковий розв'язок має вигляд:
+\begin{equation*}
+    \widetilde{x}_k = k \cdot 3^k \cdot (\alpha k+\beta).
+\end{equation*}
+
+Підставляємо в рівняння:
+\begin{equation*}
+    (k+2) \cdot 3^{k+2} \cdot (\alpha(k+2)+\beta) - (k+1) \cdot 3^{k+1} \cdot (\alpha(k+1)+\beta) - 6k \cdot 3^k \cdot (\alpha k+\beta) = (10k-3)3^k \\
+\end{equation*}
+Після спрощень маємо:
+\begin{align*}    
+    &3^k \cdot 3\alpha(11+10k) + 15 \cdot 3^k \beta = 10k \cdot 3^k - 3 \cdot 3^k \\
+    & 33\alpha \cdot 3^k + 30\alpha k 3^k + 15 \cdot 3^k \beta = 10k \cdot 3^k - 3 \cdot 3^k \\
+    & \textcolor{red}{(33\alpha + 15\beta)}3^k + \textcolor{blue}{30\alpha} \cdot k \cdot 3^k = \textcolor{red}{-3} \cdot 3^k + \textcolor{blue}{10} \cdot k \cdot 3^k
+\end{align*}
+Звідси маємо $30\alpha = 10 \implies \alpha = \frac{1}{3}$ і $33 \cdot \frac{1}{3} + 15\beta = -3$, звідки $\beta = -\frac{14}{15}$. Отже:
+\begin{equation*}
+    \widetilde{x}_k = k \cdot 3^k \cdot \left(\frac{1}{3} k - \frac{14}{15}\right)
+\end{equation*}
+
+Таким чином, загальний розв'язок рівняння має вигляд:
+\begin{equation*}
+    \boxed{x_k = c_1 \cdot (-2)^k + c_2 \cdot 3^k + k \cdot 3^k \cdot \left(\frac{1}{3} k - \frac{14}{15}\right)}
+\end{equation*}
+
+\pagebreak
+
+\section{Завдання 3}
+
+\begin{problem}
+    Знайти загальний розв'язок системи різницевих рівнянь:
+    \begin{equation*}
+        \begin{cases}
+            x_{k+1} = -8x_k + 2y_k + 2k + 29 \\
+            y_{k+1} = -15x_k + 3y_k + 10 \cdot 3^k
+        \end{cases}
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Маємо стаціонарну нормальну систему двох лінійних
+різницевих рівнянь. Нам потрібно звести її до лінійного стаціонарного рівняння
+відносно $x_k$. Для цього зробимо наступні перетворення:
+\begin{align*}
+    x_{k+2} &= -8x_{k+1} + 2\textcolor{blue}{y_{k+1}} + 2k + 31 \\
+    &= -8x_{k+1} - 30x_k + 6\textcolor{blue}{y_k} + 20 \cdot 3^k + 2k + 31 \\
+    &= -8x_{k+1} - 30x_k + 3(x_{k+1}+8x_k - 2k - 29) + 20 \cdot 3^k + 2k + 31 \\
+    &= -5x_{k+1} - 6x_k - 4k - 56 + 20 \cdot 3^k
+\end{align*}
+
+Отже, остаточно маємо рівняння:
+\begin{equation*}
+    x_{k+2} + 5x_{k+1} + 6x_k = -4k - 56 + 20 \cdot 3^k
+\end{equation*}
+
+Розв'яжемо це рівняння. Маємо характеристичне рівняння:
+\begin{equation*}
+    \lambda^2 + 5\lambda + 6 = 0 \Rightarrow \lambda_1 = -2, \lambda_2 = -3.
+\end{equation*}
+
+Отже загальний розв'язок однорідного рівняння має вигляд:
+\begin{equation*}
+    x_k = c_1 \cdot (-2)^k + c_2 \cdot (-3)^k.
+\end{equation*}
+
+Тепер знайдемо частковий розв'язок. Права частина має вигляд $f_k = -4k - 56 + 20 \cdot 3^k$. Нехай права частина це лише $20 \cdot 3^k$, тоді частковий розв'язок шукатимемо у вигляді $\alpha \cdot 3^k$ і тому:
+\begin{equation*}
+    9\alpha \cdot 3^k + 5 \cdot 3\alpha \cdot 3^k + 6\alpha \cdot 3^k = 20 \cdot 3^k \Rightarrow \alpha = \frac{2}{3}
+\end{equation*}
+
+Якщо ж права частина лише $-4k-56$, то розв'язок шукаємо у вигляді $\beta k + \gamma$ і тому:
+\begin{equation*}
+    (7+12k)\beta + 12\gamma = -4k - 56 \Rightarrow \textcolor{red}{12\beta}k + \textcolor{blue}{7\beta + 12\gamma} = -4k-56
+\end{equation*}
+
+Звідси $\beta=-\frac{1}{3}$ та $\gamma = -\frac{161}{36}$. Отже, частковий розв'язок має вигляд:
+\begin{equation*}
+    \widetilde{x}_k = \frac{2}{3} \cdot 3^k - \frac{1}{3}k - \frac{161}{36}
+\end{equation*}
+
+Отже, загальний розв'язок системи має вигляд:   
+\begin{equation*}
+    \boxed{x_k = c_1 \cdot (-2)^k + c_2 \cdot (-3)^k + \frac{2}{3} \cdot 3^k - \frac{1}{3}k - \frac{161}{36}}
+\end{equation*}
+
+Тепер підставляємо це у перше рівняння системи та знаходимо $y_k$:
+\begin{align*}
+    y_k &= \frac{1}{2}\left(x_{k+1}+8x_k-2k-29\right) \\
+    &= \boxed{3(-2)^k c_1 + \frac{5}{2}(-3)^k c_2 - \frac{835}{24} + \frac{11}{3} \cdot 3^k - \frac{5}{2}k}
+\end{align*}
+
+\pagebreak
+
+\section{Завдання 4}
+
+\begin{problem}
+    Знайти загальний розв'язок системи різницевих рівнянь:
+    \begin{equation*}
+        \begin{cases}
+            x_{k+1} = 3x_k + 2y_k + 2z_k \\
+            y_{k+1} = 2x_k + 3y_k + 2z_k \\
+            z_{k+1} = 2x_k + 2y_k + 3z_k
+        \end{cases}
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Маємо лінійну однорідну стаціонарну еволюційну систему
+різницевих рівнянь:
+\begin{equation*}
+    \boldsymbol{s}_{k+1} = \boldsymbol{A}\boldsymbol{s}_k, \quad \boldsymbol{s}_k = \begin{bmatrix} x_k \\ y_k \\ z_k \end{bmatrix}, \quad \boldsymbol{A} = \begin{pmatrix} 3 & 2 & 2 \\ 2 & 3 & 2 \\ 2 & 2 & 3 \end{pmatrix}
+\end{equation*}
+
+Знайдемо власні числа матриці $\boldsymbol{A}$. Маємо характеристичне рівняння:
+\begin{equation*}
+    \det \begin{bmatrix}
+        3-\lambda & 2 & 2 \\
+        2 & 3-\lambda & 2 \\
+        2 & 2 & 3-\lambda
+    \end{bmatrix} = (7-\lambda)(\lambda-1)^2 = 0 \Rightarrow \lambda_1 = 7, \lambda_2 = 1,
+\end{equation*}
+
+де $\lambda_1$ має кратність 1, а $\lambda_2$ має кратність 2. Знайдемо власні вектори:
+\begin{equation*}
+    (\boldsymbol{A}-7\boldsymbol{E}_{3 \times 3})\boldsymbol{v} = 0 \Rightarrow \begin{cases}
+        -4v_1 + 2v_2 + 2v_3 = 0 \\
+        2v_1 - 4v_2 + 2v_3 = 0 \\
+        2v_1 + 2v_2 - 4v_3 = 0
+    \end{cases} \Rightarrow \begin{cases}
+        2v_1 = v_2 + v_3 \\
+        v_1 = 2v_2 - v_3 \\
+        v_1 + v_2 = 2v_3
+    \end{cases}
+\end{equation*}
+
+Розв'язок цього рівняння $v_1=v_2=v_3$, а отже відповідний власний вектор $(1,1,1)$. Далі, для $\lambda_2=1$ маємо:
+\begin{equation*}
+    (\boldsymbol{A}-\boldsymbol{E}_{3 \times 3})\boldsymbol{v} = 0 \Rightarrow \begin{cases}
+        2v_1 + 2v_2 + 2v_3 = 0 \\
+        2v_1 + 2v_2 + 2v_3 = 0 \\
+        2v_1 + 2v_2 + 2v_3 = 0
+    \end{cases} \Rightarrow v_1 + v_2 + v_3 = 0 \Rightarrow v_1 = -u-w, v_2 = u, v_3 = w
+\end{equation*} 
+
+Отже, маємо:
+\begin{equation*}
+    \begin{bmatrix}
+        v_1 \\ v_2 \\ v_3
+    \end{bmatrix} = u \begin{bmatrix}
+        -1 \\ 1 \\ 0
+    \end{bmatrix} + w \begin{bmatrix}
+        -1 \\ 0 \\ 1
+    \end{bmatrix}
+\end{equation*}
+
+Отже, ми отримали три власних вектори:
+\begin{equation*}
+    \begin{bmatrix}
+        1 \\ 1 \\ 1
+    \end{bmatrix}, \begin{bmatrix}
+        -1 \\ 1 \\ 0
+    \end{bmatrix}, \begin{bmatrix}
+        -1 \\ 0 \\ 1
+    \end{bmatrix}
+\end{equation*}
+
+Таким чином, матриця $\boldsymbol{A}$ діагоналізується наступний чином:
+\begin{equation*}
+    \boldsymbol{A} = \boldsymbol{S}\boldsymbol{J}\boldsymbol{S}^{-1}, \quad \boldsymbol{S} = \begin{bmatrix}
+        -1 & -1 & 1 \\
+        0 & 1 & 1 \\
+        1 & 0 & 1
+    \end{bmatrix}, \quad \boldsymbol{J} = \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 7
+    \end{bmatrix}, \quad \boldsymbol{S}^{-1} = \begin{bmatrix}
+        -\frac{1}{3} & -\frac{1}{3} & \frac{2}{3} \\
+        -\frac{1}{3} & \frac{2}{3} & -\frac{1}{3} \\
+        \frac{1}{3} & \frac{1}{3} & \frac{1}{3}
+    \end{bmatrix}
+\end{equation*}
+
+Отже, розв'язок можемо записати у вигляді:
+\begin{equation*}
+    \boldsymbol{s}_n = \boldsymbol{A}^n\boldsymbol{s}_0 = \boldsymbol{S}\boldsymbol{J}^n\boldsymbol{S}^{-1}\begin{bmatrix}
+        x_0 \\ y_0 \\ z_0
+    \end{bmatrix} = \begin{bmatrix}
+        (7^n+2)x_0 + (7^n-1)(y_0+z_0) \\
+        (7^n-1)x_0 + (7^n+2)y_0 + (7^n-1)z_0 \\
+        (7^n-1)x_0 + (7^n-1)y_0 + (7^n+2)z_0
+    \end{bmatrix}
+\end{equation*}
+
+Або, остаточно:
+\begin{equation*}
+    \begin{cases}
+        x_n = (7^n+2)c_1 + (7^n-1)(c_2+c_3) \\
+        y_n = (7^n-1)c_1 + (7^n+2)c_2 + (7^n-1)c_3 \\
+        z_n = (7^n-1)c_1 + (7^n-1)c_2 + (7^n+2)c_3
+    \end{cases}
+\end{equation*}
+
+\end{document}

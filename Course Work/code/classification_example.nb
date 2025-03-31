@@ -1,0 +1,155 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5240,        147]
+NotebookOptionsPosition[      4766,        130]
+NotebookOutlinePosition[      5159,        146]
+CellTagsIndexPosition[      5116,        143]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"img", "=", 
+   RowBox[{"Show", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"RegionPlot", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            FractionBox["1", "2"], 
+            SuperscriptBox[
+             RowBox[{"(", 
+              RowBox[{"y", "-", 
+               FractionBox["1", "2"]}], ")"}], "2"]}], "-", 
+           RowBox[{
+            FractionBox["2", "5"], 
+            SuperscriptBox[
+             RowBox[{"(", 
+              RowBox[{"x", "-", 
+               FractionBox["1", "2"]}], ")"}], "2"]}]}], "<", 
+          FractionBox["1", "50"]}], ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            FractionBox["1", "2"], 
+            SuperscriptBox[
+             RowBox[{"(", 
+              RowBox[{"y", "-", 
+               FractionBox["1", "2"]}], ")"}], "2"]}], "-", 
+           RowBox[{
+            FractionBox["2", "5"], 
+            SuperscriptBox[
+             RowBox[{"(", 
+              RowBox[{"x", "-", 
+               FractionBox["1", "2"]}], ")"}], "2"]}]}], ">=", 
+          FractionBox["1", "50"]}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", 
+         RowBox[{"-", "0.1"}], ",", "1.1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", 
+         RowBox[{"-", "0.1"}], ",", "1.1"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotStyle", "->", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Directive", "[", 
+           RowBox[{"Green", ",", 
+            RowBox[{"Opacity", "[", "0.3", "]"}]}], "]"}], ",", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Purple", ",", 
+            RowBox[{"Opacity", "[", "0.3", "]"}]}], "]"}]}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"BoundaryStyle", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"Dashed", ",", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Dashed", ",", "Purple", ",", 
+            RowBox[{"Thickness", "[", "0.007", "]"}]}], "]"}]}], "}"}]}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"PlotLegends", "->", 
+        RowBox[{"{", 
+         RowBox[{
+         "\"\<\!\(\*SubscriptBox[\(P\), \(1\)]\)\>\"", ",", 
+          "\"\<\!\(\*SubscriptBox[\(P\), \(0\)]\)\>\""}], "}"}]}]}], "]"}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{"PlotRange", "->", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"0", ",", " ", "1"}], "}"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", " ", "1"}], "}"}]}], "}"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"GridLines", "->", "Automatic"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"PlotLabel", "->", "\"\<Classification Test Dataset\>\""}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"LabelStyle", "->", 
+      RowBox[{"Directive", "[", 
+       RowBox[{
+        RowBox[{"FontSize", "->", "15"}], ",", 
+        RowBox[{"FontFamily", "->", "\"\<Times New Roman\>\""}], ",", 
+        "Bold"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{
+  "\"\</Users/alice/Projects/university/University-Homeworks/Course \
+Work/figures/classification_example.pdf\>\"", ",", "img"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.94043576365204*^9, 3.940436021538507*^9}, {
+  3.94043614944971*^9, 3.940436225346912*^9}, {3.940436255573752*^9, 
+  3.9404363993057127`*^9}, {3.940436529158671*^9, 3.940436593996455*^9}, {
+  3.9404366281117496`*^9, 3.94043663111185*^9}},
+ CellLabel->
+  "In[110]:=",ExpressionUUID->"6b57d3d0-c7ef-493c-aac7-630a6482368b"],
+
+Cell[BoxData["\<\"/Users/alice/Projects/university/University-Homeworks/\
+Course Work/figures/classification_example.pdf\"\>"], "Output",
+ CellChangeTimes->{{3.940435795372499*^9, 3.940436027703351*^9}, {
+   3.9404361530964117`*^9, 3.940436225709711*^9}, {3.9404362593082848`*^9, 
+   3.9404363040089912`*^9}, {3.94043633705066*^9, 3.940436399668612*^9}, {
+   3.940436569775846*^9, 3.940436587066484*^9}, 3.940436632151503*^9},
+ CellLabel->
+  "Out[111]=",ExpressionUUID->"731d96f6-995d-4b0b-a967-245a6a901989"]
+}, Open  ]]
+},
+WindowSize->{808, 728},
+WindowMargins->{{12, Automatic}, {Automatic, 24}},
+FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"971f66ba-b463-4846-b42e-b43fdf310ffb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 3658, 96, 472, "Input",ExpressionUUID->"6b57d3d0-c7ef-493c-aac7-630a6482368b"],
+Cell[4241, 120, 509, 7, 104, "Output",ExpressionUUID->"731d96f6-995d-4b0b-a967-245a6a901989"]
+}, Open  ]]
+}
+]
+*)
+

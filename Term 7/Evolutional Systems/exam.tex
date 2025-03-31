@@ -1,0 +1,433 @@
+\documentclass{hw_template}
+
+\title{\huge\bfseries Іспит \\з предмету ``Еволюційні Системи''}
+\author{\Large Захаров Дмитро Олегович}
+\date{\sffamily 6 грудня, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\begin{center}
+    \textbf{Варіант 5}
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Іспит}
+
+\subsection{Питання 1.}
+\begin{problems}
+    Фундаментальна система розв’язків еволюційної системи різницевих рівнянь.
+Приклад. \textit{(10 балів)}
+\end{problems}
+
+\textbf{Розв'язання.} Розглядаємо еволюційну систему різницевих рівнянь (або 
+лінійне різницеве рівняння першого порядку над $\mathbb{C}^n$) відносно 
+невідомих векторів $\{\mathbf{x}_k\}_{k \in \mathbb{Z}_{\geq 0}}$:
+\begin{equation*}
+    \mathbf{x}_{k+1} = \boldsymbol{A}_k\mathbf{x}_k + \boldsymbol{f}_k, \quad k \in \mathbb{Z}_{\geq 0}
+\end{equation*}
+
+Також, нехай задана початкова умова $\mathbf{x}_0 = \mathbf{a}_0 \in \mathbb{C}^n$. Як і 
+з будь-яким неоднорідним рівнянням, розглядаємо його однорідну частину:
+\begin{equation*}
+    \mathbf{x}_{k+1} = \boldsymbol{A}_k\mathbf{x}_k
+\end{equation*}
+
+Тепер, ми готові дати визначення фундаментальної системи розв'язків.
+
+\begin{definition}
+    Будь-який набір
+    \begin{equation*}
+        \boldsymbol{v}_{k}^{(1)} = \begin{pmatrix}
+            v_{1,k}^{(1)} \\
+            v_{2,k}^{(1)} \\
+            \vdots \\
+            v_{n,k}^{(1)}
+        \end{pmatrix}, \dots \boldsymbol{v}_{k}^{(n)} = \begin{pmatrix}
+            v_{1,k}^{(n)} \\
+            v_{2,k}^{(n)} \\
+            \vdots \\
+            v_{n,k}^{(n)}
+        \end{pmatrix}, \quad k \in \mathbb{Z}_{\geq 0}
+    \end{equation*}
+
+    з $n$ лінійно незалежних розв'язків системи $\mathbf{x}_{k+1} = \boldsymbol{A}_k\mathbf{x}_k$ (де кожна 
+    компонента вектору $v_{i}^{(j)}: \mathbb{N} \to \mathbb{C}$ є послідовністю) називається
+    \textbf{фундаментальною системою розв'язків} цієї системи. При цьому, матрицю $\boldsymbol{\Phi}_k = \begin{pmatrix}
+        \boldsymbol{v}_1 & \boldsymbol{v}_2 & \cdots & \boldsymbol{v}_n
+    \end{pmatrix}$ називають \textbf{фундаментальною матрицею} розв'язків системи.
+\end{definition}
+
+Додамо властивості фундаментальної системи розв'язків. Одна з ключових теорем,
+що використовується на практиці, наступна
+
+\begin{theorem}
+    Загальний розв'язок однорідного лінійного різницевого рівняння $\mathbf{x}_{k+1} = \boldsymbol{A}_k\mathbf{x}_k$
+    має вигляд $\mathbf{x}_k = \boldsymbol{\Phi}_k\boldsymbol{c}$, де $\boldsymbol{c} \in \mathbb{C}^n$ --- довільний вектор.
+\end{theorem}
+
+\textbf{Доведення.} Для доведення цього факту згадаємо, що якщо
+$\{\boldsymbol{v}_k\}_{k \in \mathbb{Z}_{\geq 0}}$ та $\{\boldsymbol{w}_k\}_{k
+\in \mathbb{Z}_{\geq 0}}$ --- розв'язки однорідного рівняння, то і
+$\alpha\boldsymbol{v}_k + \beta\boldsymbol{w}_k$ ($\alpha,\beta \in \mathbb{C}$)
+є розв'язком цього рівняння. Таким чином, якщо $\boldsymbol{\Phi}_k$ ---
+фундаментальна матриця, то $\boldsymbol{\Phi}_k\boldsymbol{c}$ є лінійною 
+комбінацією розв'язків фундаментальної системи, а отже є розв'язком самої
+системи. $\blacksquare$
+
+Окрім цього, наведемо наступні дві теореми
+
+\begin{theorem}
+    Фундаментальна матриця $\boldsymbol{\Phi}_k$ задовільняє матричне різницеве рівняння:
+    \begin{equation*}
+        \boldsymbol{\Phi}_{k+1} = \boldsymbol{A}_k\boldsymbol{\Phi}_k
+    \end{equation*}
+    Як наслідок, за фундаментальною матрицею однозначно відновлюється однорідна еволюційна 
+    система, причому $\boldsymbol{A}_k = \boldsymbol{\Phi}_{k+1}\boldsymbol{\Phi}_k^{-1}$.
+\end{theorem}
+
+\begin{theorem}
+    Загальний розв'язок неоднорідної системи $\mathbf{x}_{k+1} = \boldsymbol{A}_k\mathbf{x}_k + \boldsymbol{f}_k$ можна подати у вигляді
+    \begin{equation*}
+        \mathbf{x}_k = \boldsymbol{\Phi}_k\boldsymbol{c} + \boldsymbol{\psi}_k, \quad k \in \mathbb{Z}_{\geq 0},
+    \end{equation*}
+    де $\boldsymbol{c} \in \mathbb{C}^n$ --- довільний вектор, а $\boldsymbol{\psi}_k$ --- частинний розв'язок неоднорідної системи.
+\end{theorem}
+
+\textbf{Доведення.} Нехай $\{\mathbf{x}_k\}_{k \in \mathbb{Z}_{\geq 0}}$ та $\{\boldsymbol{\psi}_k\}_{k \in \mathbb{Z}_{\geq 0}}$ --- розв'язки 
+неоднорідної системи. Тоді, $\boldsymbol{\delta}_k := \mathbf{x}_k - \boldsymbol{\psi}_k$ є розв'язком однорідної системи. Отже,
+за доведеною теоремою, $\boldsymbol{\delta}_k = \boldsymbol{\Phi}_k\boldsymbol{c}$ і в такому разі, $\mathbf{x}_k = \boldsymbol{\Phi}_k\boldsymbol{c} + \boldsymbol{\psi}_k$. $\blacksquare$
+
+Нарешті, наведемо приклад.
+
+\begin{example}
+    Нехай задана еволюційна система:
+    \begin{equation*}
+        \begin{cases}
+            x_{k+1} = y_k + 2^k, \\
+            y_{k+1} = 2x_k + y_k
+        \end{cases}
+    \end{equation*}
+
+    Її можна пересати у матричному вигляді:
+    \begin{equation*}
+        \begin{pmatrix}
+            x_{k+1} \\ y_{k+1}
+        \end{pmatrix} = \begin{pmatrix}
+            0 & 1 \\ 2 & 1
+        \end{pmatrix}\begin{pmatrix}
+            x_k \\ y_k
+        \end{pmatrix} + \begin{pmatrix}
+            2^k \\ 0
+        \end{pmatrix}, \quad k \in \mathbb{Z}_{\geq 0}
+    \end{equation*}
+
+    Або $\mathbf{z}_{k+1} = \boldsymbol{A}\mathbf{z}_k + \mathbf{b}_k$, де $\boldsymbol{A} = \begin{pmatrix}
+        0 & 1 \\ 2 & 1
+    \end{pmatrix}$, $\mathbf{b}_k = \begin{pmatrix}
+        2^k \\ 0
+    \end{pmatrix}$. Насправді, систему можна розв'язати (робиться це доволі складно) і отримати наступний розв'язок:
+    \begin{equation*}
+        \begin{cases}
+        x_k = c_0 \cdot 2^k - c_1 \cdot (-1)^k + \frac{1}{18}\left(4(-1)^{k+1}+4 \cdot 2^k + 3k\cdot 2^k\right), \\
+        y_k = 2c_0 \cdot 2^k + c_1(-1)^k + \frac{1}{9}\left(2((-1)^k - 2^k)+ 3k \cdot 2^k\right)
+        \end{cases}
+    \end{equation*}
+
+    Серед цього всього, можна виділити фундаментальну систему розв'язків:
+    \begin{equation*}
+        \begin{pmatrix}
+            2^k \\ 2^{k+1}
+        \end{pmatrix}, \begin{pmatrix}
+            (-1)^{k+1} \\ (-1)^k
+        \end{pmatrix}
+    \end{equation*}
+
+    Відповідна фундаментальна матриця має вигляд:
+    \begin{equation*}
+        \boldsymbol{\Phi}_k = \begin{pmatrix}
+            2^k & (-1)^{k+1} \\
+            2^{k+1} & (-1)^k
+        \end{pmatrix}
+    \end{equation*}
+
+    Частковий розв'язок, у свою чергу, має вигляд $\boldsymbol{\psi}_k = \begin{pmatrix}
+        \frac{1}{18}\left(4(-1)^{k+1}+4 \cdot 2^k + 3k\cdot 2^k\right) \\
+        \frac{1}{9}\left(2((-1)^k - 2^k)+ 3k \cdot 2^k\right)
+    \end{pmatrix}$
+\end{example}
+
+\newpage
+
+\subsection{Питання 2.}
+\begin{problems}
+    Знайти загальний розв'язок лінійного різницевого рівняння:
+    \begin{equation*}
+        x_{k+2} - 3x_{k+1} + 2x_k = f_k, \quad k \in \mathbb{Z}_{\geq 0}.
+    \end{equation*}
+\end{problems}
+
+\textbf{Розв'язання.} Маємо лінійне стаціонарне різницеве рівняння порядку $2$. Тому, спочатку 
+знайдемо загальний розв'язок однорідного рівняння $\widetilde{x}_{k+2} - 3\widetilde{x}_{k+1} + 2\widetilde{x}_k = 0$. Його характеристичне
+рівняння має вигляд $\chi(\lambda) = \lambda^2 - 3\lambda + 2 = 0$, звідки $\lambda_1 = 1, \lambda_2 = 2$. Таким чином,
+фундаментальна система розв'язків має вигляд $v^{(1)}_k \equiv 1$, $v^{(2)}_k \equiv 2^k$. Отже, 
+загальний розв'язок однорідного рівняння має вигляд $\widetilde{x}_k = c_1 + c_2\cdot 2^k$.
+
+Далі, в загальному випадку, розв'язати рівняння складно. Пропонується два варіанти.
+
+\textbf{Спосіб 1.} В разі, якщо $f_k$ є квазіполіномом, то алгоритм доволі
+простий. Дійсно, нехай $f_k = \mu^kP_s(k)$, де $P_s(k) = \sum_{j=0}^s p_jx^j$,
+$\mu \neq 0$. Далі розбираємо випадки:
+\begin{itemize}
+    \item Якщо $\mu = 1$ (себто права частина --- поліном), то оскільки $\mu$ є коренем 
+    характеристичного поліному $\chi(\lambda)$ першого порядку, то шукаємо частковий розв'язок 
+    у вигляді $x_k = kQ_s(k)=\widetilde{Q}_{s+1}(k)=\sum_{j=0}^{s+1}q_jk^j$ --- поліном степеня на один більше. 
+    \item Якщо $\mu \neq 1$, то розв'язок шукаємо у вигляді $x_k = \mu^kQ_s(k)=\mu^k\sum_{j=0}^s q_jk^j$. 
+\end{itemize}
+
+Так чи інакше, отримуємо коефіцієнти поліному $\{q_{j}\}_j$ і підставляємо у загальний розв'язок.
+
+\textbf{Спосіб 2.} Є метод, як знайти явно розв'язок для довільної $f_k$. Для цього,
+введемо вектор $\boldsymbol{z}_k = (x_{k+1}, x_k)^{\top}$. В такому разі, рівняння можна переписати у вигляді:
+\begin{equation*}
+    \begin{pmatrix}
+        x_{k+2} \\ x_{k+1}
+    \end{pmatrix} = \begin{pmatrix}
+        3 & -2 \\ 1 & 0
+    \end{pmatrix}\begin{pmatrix}
+        x_{k+1} \\ x_k
+    \end{pmatrix} + \begin{pmatrix}
+        f_k \\ 0
+    \end{pmatrix} \iff \boldsymbol{z}_{k+1} = \boldsymbol{A}\boldsymbol{z}_k + \boldsymbol{b}_k,
+\end{equation*}
+
+де $\boldsymbol{A} = \begin{pmatrix}
+    3 & -2 \\ 1 & 0
+\end{pmatrix}$, $\boldsymbol{b}_k = (f_k, 0)^{\top}$. Таке рівняння має явний розв'язок:
+\begin{equation*}
+    \boldsymbol{z}_k = \boldsymbol{A}^k\boldsymbol{z}_0 + \sum_{j=0}^{k-1}\boldsymbol{A}^j\boldsymbol{b}_{k-j-1}, \quad \boldsymbol{z}_0 = \begin{pmatrix}
+        c_0 \\ c_1
+    \end{pmatrix}
+\end{equation*}
+
+Знайдемо $\boldsymbol{A}^k$. Можна переконатись, що ця матриця має власні числа
+$\lambda_1=2$, $\lambda_2=1$ та відповідні власні вектори $\mathbf{v}_1=(2,1)^{\top}$, 
+$\mathbf{v}_2 = (1,1)^{\top}$, тому діагоналізація має вигляд:
+\begin{equation*}
+    \boldsymbol{A} = \begin{pmatrix}
+        2 & 1 \\ 1 & 1
+    \end{pmatrix}\begin{pmatrix}
+        2 & 0 \\ 0 & 1
+    \end{pmatrix}\begin{pmatrix}
+        1 & -1 \\ -1 & 2
+    \end{pmatrix} = \boldsymbol{V}\diag\{\lambda_1,\lambda_2\}\boldsymbol{V}^{-1}
+\end{equation*}
+
+Тому, $\boldsymbol{A}^k = \boldsymbol{V}\diag\{\lambda_1^k,\lambda_2^k\}\boldsymbol{V}^{-1}$ і тому явний вигляд степеня:
+\begin{equation*}
+    \boldsymbol{A}^k = \begin{pmatrix}
+        2^{k+1} - 1 & 2 - 2^{k+1} \\
+        2^k - 1 & 2-2^k
+    \end{pmatrix}
+\end{equation*}
+
+Також, домноживши на $\boldsymbol{b}_{k-j-1}$, отримаємо:
+\begin{equation*}
+    \boldsymbol{A}^j\boldsymbol{b}_{k-j-1} = \begin{pmatrix}
+        (2^{j+1}-1)f_{k-j-1} \\
+        (2^j-1)f_{k-j-1}
+    \end{pmatrix}
+\end{equation*}
+
+Таким чином, з векторної різності, прирівняємо нижні компоненти:
+\begin{equation*}
+    x_k = c_0(2^k-1) + c_1(2^{k+1}-1) + \sum_{j=0}^{k-1}(2^j-1)f_{k-j-1}
+\end{equation*}
+
+Якщо ввести інші константи: $\gamma_0 := -c_0-c_1$ та $\gamma_1 := c_0+2c_1$. Таким чином,
+отримаємо загальний розв'язок:
+\begin{equation*}
+    \textcolor{blue!70!black}{x_k = \gamma_0 + \gamma_1\cdot 2^k + \sum_{j=1}^{k-1}(2^j-1)f_{k-j-1}}
+\end{equation*}
+
+\textbf{Відповідь.} $\textcolor{blue!70!black}{x_k = \gamma_0 + \gamma_1\cdot 2^k + \sum_{j=1}^{k-1}(2^j-1)f_{k-j-1}}$.
+
+\vspace{20pt}
+
+\textbf{Зауваження.} Отже, частковий розв'язок має вигляд
+$y_k = \sum_{j=1}^{k-1}(2^j-1)f_{k-j-1}$. Переконаємося в цьому:
+\begin{align*}
+    &y_{k+2} - 3y_{k+1} + 2y_k \\
+    &=\sum_{j=1}^{k+1}(2^j-1)f_{k+1-j} - 3\sum_{j=1}^{k}(2^j-1)f_{k-j} + 2\sum_{j=1}^{k-1}(2^j-1)f_{k-j-1} \\
+    &= ((2^{k+1}-1)f_0 + \dots + f_k) - 3((2^k-1)f_0 + \dots f_{k-1}) + 2((2^{k-1}-1)f_0 + \dots + f_{k-2}) \\
+    &= \sum_{j=0}^k \alpha_j f_j
+\end{align*}
+
+Порівнюючи коефіцієнти в лівій і правій частині, бачимо, що перед $f_j$, де $j \leq k-2$, стоїть 
+$\alpha_j = (2^{k-j+1}-1) - 3 \cdot (2^{k-j}-1) + 2 \cdot (2^{k-j-1}-1)$. Спростимо цей вираз:
+\begin{equation*}
+    (2^{k-j+1}-1) - 3 \cdot (2^{k-j}-1) + 2 \cdot (2^{k-j-1}-1) = 2 \cdot 2^{k-j} - 1 - 3 \cdot 2^{k-j} + 3 + 2^{k-j} - 2 = 0
+\end{equation*}
+
+Отримали $\alpha_j = 0$, $j \leq k-2$. Більш того, для $j=k-1$, теж маємо $\alpha_{k-1} = 3f_{k-1} - 3 \cdot f_{k-1} = 0$. Очевидно, $f_k$ вже 
+міститься з коефіцієнтом $1$. Таким чином, $y_k$ є частковим розв'язком.
+
+\newpage
+
+\subsection{Питання 3.}
+\begin{problems}
+    Розв'язати початкову задачу для лінійної системи різницевих рівнянь:
+    \begin{equation*}
+        \begin{cases}
+            x_{k+1} = 5x_k + 4y_k + 2(-1)^k, \\
+            y_{k+1} = -9x_k - 7y_k + 2(-1)^{k+1}, \\
+            x_0 = 0, y_0 = -1
+        \end{cases}
+    \end{equation*}
+\end{problems}
+
+\textbf{Розв'язання.} Маємо лінійну систему різницевих рівнянь порядку $2$:
+\begin{equation*}
+    \boldsymbol{v}_{k+1} = \boldsymbol{Av}_k + \boldsymbol{f}_k, \quad \boldsymbol{v}_k = \begin{pmatrix}
+        x_k \\ y_k
+    \end{pmatrix}, \quad \boldsymbol{A} = \begin{pmatrix}
+        5 & 4 \\ -9 & -7
+    \end{pmatrix}, \quad \boldsymbol{f}_k = 2(-1)^k\begin{pmatrix}
+        1 \\ -1        
+    \end{pmatrix}
+\end{equation*}
+
+Розв'язується воно наступним чином: зведемо все до розв'язку лінійного різницевого рівняння
+другого порядку. Зсунемо індекс першого рівняння на один, отримавши:
+\begin{equation*}
+    x_{k+2} = 5x_{k+1} + 4y_{k+1} + 2(-1)^{k+1}
+\end{equation*}
+
+Далі почнемо перетворювати це рівняння, користуючись другим рівнянням, а потім знову першим: 
+\begin{align*}
+    x_{k+2} &= 5x_{k+1} + 4(-9x_k - 7y_k + 2(-1)^{k+1}) + 2(-1)^{k+1} && \textcolor{blue!70!white}{\textit{Підставили рівняння 2}} \\
+    x_{k+2} &= 5x_{k+1} - 36x_k - 28y_k - 10(-1)^k && \textcolor{blue!70!white}{\textit{Розкрили дужки}} \\
+    x_{k+2} &= 5x_{k+1} - 36x_k - 7(x_{k+1}-5x_k-2(-1)^k) - 10(-1)^k && \textcolor{blue!70!white}{\textit{Підставили $4y_k$ з рівняння 1}} \\
+    x_{k+2} &= -2x_{k+1} - x_k + 4(-1)^k && \textcolor{blue!70!white}{\textit{Розкрили дужки}}
+\end{align*}
+
+Таким чином, треба розв'язати рівняння $x_{k+2} + 2x_{k+1} + x_k = 4(-1)^k$.
+Характеристичне рівняння лінійної частини має вигляд $\lambda^2 + 2\lambda + 1 =
+0$, звідки $\lambda = -1$. Отже, загальний розв'язок однорідного рівняння має
+вигляд $\widetilde{x}_k = c_1(-1)^k + c_2 k(-1)^k$. Тепер, оскільки права 
+частина має вигляд $P_0(k)\mu^k$, де $\mu = -1$, $P_0(k) \equiv 4$, то шукаємо 
+частинний розв'язок у вигляді $\psi_k = \gamma k^2(-1)^k$. Підставимо це у рівняння:
+\begin{equation*}
+    \gamma (-1)^k\left((k+2)^2 - 2(k+1)^2 + k^2\right) = 4(-1)^k \implies 2\gamma(-1)^k = 4(-1)^k
+\end{equation*}
+
+Звідси $\gamma = 2$. Таким чином, частковий розв'язок має вигляд $\psi_k = 2k^2(-1)^k$. Отже,
+\begin{equation*}
+    x_k = \left(c_1 + c_2 k + 2k^2\right)(-1)^k
+\end{equation*}
+
+Оскільки за умовою $x_0=0$, то маємо $c_1=0$, тому $x_k = c_2k(1+2k)(-1)^k$. Також 
+відмітимо, що $y_k = \frac{1}{4}(x_{k+1}-5x_k-2(-1)^k)$ з першого рівняння, тому одразу отримаємо вираз для $y_k$:
+\begin{equation*}
+    y_k = \frac{c_2(-1)^{k+1}}{4}\left(1+6k\right) + (-1)^{k+1}(1+k+3k^2)
+\end{equation*}
+
+Оскільки $y_0=-1$, то і $c_2=0$. Отже, остаточно:
+\begin{equation*}
+    \textcolor{blue!70!black}{x_k = 2k^2(-1)^k, \quad y_k = (-1)^{k+1}(1+k+3k^2)}
+\end{equation*}
+
+\textbf{Відповідь.} $\textcolor{blue!70!black}{x_k = 2k^2(-1)^k, \; y_k = (-1)^{k+1}(1+k+3k^2)}$.
+
+\newpage
+
+\subsection{Питання 4.}
+\begin{problems}
+    Довести, що жмуток матриць $\lambda\begin{pmatrix}
+        0 & 0 \\ 0 & 1
+    \end{pmatrix} + \begin{pmatrix}
+        1 & 1 \\ -1 & 1
+    \end{pmatrix}$ регулярний та знайти його спектральні проектори.
+\end{problems}
+
+\textbf{Розв'язання.} Позначимо матрицю $\boldsymbol{A} = \begin{pmatrix}
+    0 & 0 \\ 0 & 1
+\end{pmatrix}$ та $\boldsymbol{B} = \begin{pmatrix}
+    1 & 1 \\ -1 & 1
+\end{pmatrix}$. Тоді, для доведення регулярності $\lambda\boldsymbol{A} + \boldsymbol{B}$, покажемо, що
+поліном $\det(\boldsymbol{A}+\mu\boldsymbol{B})$ не тотожньо нульовий:
+\begin{equation*}
+    \det(\boldsymbol{A}+\mu\boldsymbol{B}) = \det \begin{pmatrix}
+        \mu & \mu \\ -\mu & \mu+1
+    \end{pmatrix} = \mu(1+2\mu)
+\end{equation*}
+
+Отже, $\lambda\boldsymbol{A} + \boldsymbol{B}$ регулярний і має ненульове власне
+значення $\lambda_0 = -\frac{1}{2}$. Знайдемо:
+\begin{equation*}
+    \boldsymbol{R}_0(\mu) = (A+\mu\boldsymbol{B})^{-1} = \begin{pmatrix}
+        \mu & \mu \\ -\mu & \mu+1
+    \end{pmatrix}^{-1} = \frac{1}{\mu(1+2\mu)}\begin{pmatrix}
+        1+\mu & -\mu \\
+        \mu & \mu
+    \end{pmatrix}
+\end{equation*}
+
+Знайдемо спектральні проектори $\boldsymbol{P}_1$, $\boldsymbol{P}_2$,
+$\boldsymbol{Q}_1$, $\boldsymbol{Q}_2$. Для цього послідовно рахуємо:
+\begin{equation*}
+    \boldsymbol{R}_0(\mu)\boldsymbol{B} = \begin{pmatrix}
+        1/\mu & 1/(\mu+2\mu^2) \\
+        0 & 2/(1+2\mu)
+    \end{pmatrix}, \quad \boldsymbol{P}_2 = \text{Res}_{\mu=0}\boldsymbol{R}_0(\mu)\boldsymbol{B}
+\end{equation*}
+
+Порахуємо лишки кожної компоненти. В нижньому рядку лишок нуль, оскільки $0$ не є 
+полюсом жодного виразу. З чисельником більш уважно:
+\begin{equation*}
+    \text{Res}_{\mu=0}\frac{1}{\mu} = 1, \quad \text{Res}_{\mu=0}\frac{1}{\mu(1+2\mu)} = 1
+\end{equation*}
+
+Таким чином, $\textcolor{blue!70!black}{\boldsymbol{P}_2 = \begin{pmatrix}
+    1 & 1 \\ 0 & 0
+\end{pmatrix}}$. Для матриці $\boldsymbol{Q}_2$ спочатку порахуємо $\boldsymbol{BR}_0(\mu)$:
+\begin{equation*}
+    \boldsymbol{BR}_0(\mu) = \begin{pmatrix}
+        1/\mu & 0 \\
+        -1/(\mu+2\mu^2) & 2/(1+2\mu)
+    \end{pmatrix}
+\end{equation*}
+
+Логіка з лишками тут аналогічна. Отримуємо $\textcolor{blue!70!black}{\boldsymbol{Q}_2 =}
+    \text{Res}_{\mu=0}\boldsymbol{BR}_0(\mu) = \textcolor{blue!70!black}{\begin{pmatrix} 1 & 0 \\ -1 & 0
+    \end{pmatrix}}$. Нарешті, можемо знайти $\boldsymbol{P}_1 = \boldsymbol{E}_{2
+    \times 2} - \boldsymbol{P}_2$ та $\boldsymbol{Q}_1 = \boldsymbol{E}_{2
+    \times 2} - \boldsymbol{Q}_2$:
+\begin{equation*}
+    \textcolor{blue!70!black}{\boldsymbol{P}_1 = \begin{pmatrix}
+        0 & -1 \\ 0 & 1
+    \end{pmatrix}}, \quad \textcolor{blue!70!black}{\boldsymbol{Q}_1 = \begin{pmatrix}
+        0 & 0 \\ 1 & 1
+    \end{pmatrix}}
+\end{equation*}
+
+\textbf{Відповідь.} Жмуток матриць $\lambda\boldsymbol{A} + \boldsymbol{B}$ регулярний, а його спектральні проектори мають вигляд:
+\begin{equation*}
+    \textcolor{blue!70!black}{\boldsymbol{P}_1 = \begin{pmatrix}
+        0 & -1 \\ 0 & 1
+    \end{pmatrix}}, \quad \textcolor{blue!70!black}{\boldsymbol{P}_2 = \begin{pmatrix}
+        1 & 1 \\ 0 & 0
+    \end{pmatrix}}, \quad \textcolor{blue!70!black}{\boldsymbol{Q}_1 = \begin{pmatrix}
+        0 & 0 \\ 1 & 1
+    \end{pmatrix}}, \quad \textcolor{blue!70!black}{\boldsymbol{Q}_2 = \begin{pmatrix}
+        1 & 0 \\ -1 & 0
+    \end{pmatrix}}
+\end{equation*}
+
+\end{document}

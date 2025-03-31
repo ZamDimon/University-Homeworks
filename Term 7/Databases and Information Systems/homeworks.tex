@@ -1,0 +1,1013 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашні Роботи з Бази даних та інформаційних систем}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 28 листопада, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота 1: Підготовка}
+
+\begin{problem}
+
+Потрібно:
+\begin{enumerate}
+    \item Встановити обладнання за моєю інструкцією з практики 1.
+    \item Ознайомитися з елементами інтерфейсу.
+\end{enumerate}
+
+\end{problem}
+
+\textbf{Відповідь.} Це завдання суто по установці, тому відповідь на неї не наводжу
+(проте, обладнання було встановлене!).
+
+\newpage
+
+\section{Домашня Робота 2: Вибірка з умовами, сортування, группування}
+
+\begin{problem}
+    Є таблиця \texttt{employee}
+    
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|c|}
+            \hline
+            \texttt{l\_name} & \texttt{f\_name} & \texttt{age} & \texttt{sex} & \texttt{status} & \texttt{dpt} & \texttt{position} & \texttt{salary} \\
+            \hline
+            Mashko & Oleg & 22 & m & single & IT & Admin & 20000 \\
+            Petrenko & Zoya & 24 & m & married & IT & Programmer & 10000 \\
+            Vovk & Zahar & 32 & m & single & Sales & Admin & 8000 \\
+            Kononov & Oleg & 26 & f & single & Sales & Sales & 8500 \\
+            Galenda & Anna & 26 & m & single & IT & Programmer & 25000 \\
+            Osokor & Galina & 18 & f & married & IT & QA & 18000 \\
+            \hline
+        \end{tabular}
+    \end{table}
+
+    \begin{enumerate}
+    \item Вибрати прізвища та посади всіх, у кого ім'я \texttt{Oleg}, впорядкувати за прізвищами за
+    алфавітом
+    \item Вибрати імена, прізвища, стать (\texttt{sex}) та вік усіх, хто не є програмістами,
+    впорядкувати за віком в порядку зменшення.
+    \item Підрахувати та вивести середню зарплату усіх співробітників, яким не 26 років.
+    \item Вибрати прізвища, відділи (\texttt{dpt}) та посади всіх співробітників із зарплатами понад
+    9000, впорядкувати за прізвищами.
+    \item Вибрати всіх, хто не має сім'ї (\texttt{single}) і не адмін.
+    \item Вибрати відділи (\texttt{dpt}), у якому працюють адміни.
+    \item Написати, що виведе наступний запит:
+    \texttt{SELECT f\_name, l\_name, age FROM employee WHERE status='single' ORDER BY 2
+    DESC}
+    \item Написати, що виведе наступний запит:
+    \texttt{SELECT l\_name, sex, status FROM employee ORDER BY status, sex}
+    \item Підрахувати та вивести максимальній вік адмінів.
+    \item Вивести список співробітників, що мають зарплату, вищу за середню
+    \end{enumerate}
+\end{problem}
+
+\textbf{Відповідь.} Перед виконанням усіх завдань, створимо задану таблицю:
+\begin{lstlisting}[language=SQL]
+-- Specifying the table schema
+CREATE TABLE employee (
+    l_name VARCHAR(50),
+    f_name VARCHAR(50),
+    age INT,
+    sex CHAR(1),
+    status VARCHAR(20),
+    dpt VARCHAR(20),
+    position VARCHAR(50),
+    salary INT
+);
+
+-- Inserting the data
+INSERT INTO employee (l_name, f_name, age, sex, status, dpt, position, salary)
+VALUES
+('Mashko', 'Oleg', 22, 'm', 'single', 'IT', 'Admin', 20000),
+('Petrenko', 'Zoya', 24, 'm', 'married', 'IT', 'Programmer', 10000),
+('Vovk', 'Zahar', 32, 'm', 'single', 'Sales', 'Admin', 8000),
+('Kononov', 'Oleg', 26, 'f', 'singe', 'Sales', 'Sales', 8500),
+('Galenda', 'Anna', 26, 'm', 'single', 'IT', 'Programmer', 25000),
+('Osokor', 'Galina', 18, 'f', 'married', 'IT', 'QA', 18000);
+\end{lstlisting}
+
+\textbf{Питання 1.} Використовуємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT l_name, position
+FROM employee
+WHERE f_name = 'Oleg'
+ORDER BY l_name;
+\end{lstlisting}
+
+Як і просить завдання, ми вибираємо значення колонок \texttt{l\_name} та \texttt{position} з таблиці \texttt{employee},
+де значення колонки \texttt{f\_name} дорівнює \texttt{Oleg}. Для сортування за прізвищами використовуємо \texttt{ORDER BY l\_name}.
+Результат виконання запиту:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \texttt{l\_name} & \texttt{position} \\
+        \hline
+        Kononov & Sales \\
+        Mashko & Admin \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 2.} Використовуємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT f_name, l_name, sex, age
+FROM employee
+WHERE position != 'Programmer'
+ORDER BY age DESC;
+\end{lstlisting}
+
+Як результат, отримуємо:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \texttt{f\_name} & \texttt{l\_name
+        } & 
+        \texttt{sex} & \texttt{age} \\
+        \hline
+        Zahar   & Vovk       & m   & 32 \\
+        Oleg     & Kononov    & f   & 26 \\
+        Oleg     & Mashko     & m   & 22 \\
+        Galina   & Osokor     & f   & 18 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 3.} Використовуємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT AVG(salary) AS average_salary
+FROM employee
+WHERE age != 26;
+\end{lstlisting}
+
+Зарплати співробітників, яким не 26 років: 20000, 10000, 8000, 18000, тому
+середня зарплата буде дорівнювати $14000$. 
+
+\textbf{Питання 4.} Використовуємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT l_name, dpt, position
+FROM employee
+WHERE salary > 9000
+ORDER BY l_name;
+\end{lstlisting}
+
+Результат виконання запиту:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{l\_name} & \texttt{dpt} & \texttt{position} \\
+        \hline
+        Galenda & IT & Programmer \\
+        Mashko  & IT & Admin \\
+        Osokor  & IT & QA \\
+        Petrenko & IT & Programmer \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 5.} Використовуємо наступний запит:
+\begin{lstlisting}{language=SQL}
+SELECT *
+FROM employee
+WHERE status = 'single' AND position != 'Admin';
+\end{lstlisting}
+
+Цей запис поверне усі колонки робітників Petrenko Zoya та Galenda Anna.
+
+\textbf{Питання 6.} Використовуємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT DISTINCT dpt
+FROM employee
+WHERE position = 'Admin';
+\end{lstlisting}
+
+Результатом буде одна колонка з рядками \texttt{IT} та \texttt{Sales}.
+
+\textbf{Питання 7.} \texttt{SELECT f\_name, l\_name, age FROM employee WHERE
+status='single' ORDER BY 2 DESC} вибере імена, прізвища та вік усіх
+співробітників, які не одружені, впорядковані за прізвищами (друга колонка) у
+зворотньому порядку. Виведе наступне:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{f\_name} & \texttt{l\_name} & \texttt{age} \\
+        \hline
+        Zahar    & Vovk       & 32 \\
+        Oleg     & Mashko     & 22 \\
+        Oleg     & Kononov    & 26 \\
+        Anna     & Galenda    & 26 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 8.} \texttt{SELECT l\_name, sex, status FROM employee ORDER BY
+status, sex} вибере прізвища, стать та статус усіх співробітників, впорядкованих
+спочатку за статусом, а потім за статтю. Результат:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{l\_name} & \texttt{sex} & \texttt{status} \\
+        \hline
+        Osokor & f &  married  \\
+        Petrenko &  m &  married  \\            
+        Kononov & f & single \\       
+        Galenda & m & single \\           
+        Vovk & m & single \\           
+        Mashko & m & single \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 9.} Використовуємо наступний запит:  
+\begin{lstlisting}[language=SQL]
+SELECT MAX(age) AS max_age
+FROM employee
+WHERE position = 'Admin';  
+\end{lstlisting}
+
+Максимальний вік адмінів дорівнює 32 роки (співробітник Zahar Vovk).
+
+\textbf{Питання 10.} Використовуємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT *
+FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee);
+\end{lstlisting}
+
+На вихід буде виведено усі колонки співробітників Mashko Oleg, Galenda Anna, 
+Osokor Galina.
+
+\newpage
+
+\section{Домашня Робота 3: Перетворення типів}
+
+\begin{problem}
+    Таблиця та сама, що і в попередньому завданні. Потрібно вивести результат
+    наступних запитів:
+    \begin{enumerate}
+        \item \texttt{SELECT l\_name, f\_name, sex FROM employee WHERE dpt=0}.
+        \item \texttt{SELECT l\_name, f\_name, sex FROM employee WHERE 'dpt'=0}.
+        \item \texttt{SELECT f\_name, sex, age FROM employee WHERE salary>'10000'}.
+        \item \texttt{SELECT CAST ('20160911' AS date)}.
+        \item \texttt{SELECT l\_name, position, dpt FROM employee WHERE salary>CONCAT(age, '7000')}.
+        \item \texttt{SELECT l\_name, f\_name, position FROM employee WHERE 'salary' >= 0}.
+        \item Написати запит, який виведе прізвища та імена кожного працівника (одним полем), а
+        також вік, стать, статус, посаду у порядку зростання віку.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Відповідь.}
+
+\textbf{Питання 1.} Оскільки ми задали \texttt{dpt} як \texttt{VARCHAR}, то в більшості 
+SQL-систем порівняння з нулем видасть помилку. Зокрема, мій компілятор видає наступну помилку:
+\begin{center}
+    \texttt{Conversion failed when converting the varchar value 'IT' to data type int.}
+\end{center}
+
+\textbf{Питання 2.} У цьому запиті, \texttt{dpt} не є посиланням на стовпець
+таблиці, а просто текстовим рядком зі значенням \texttt{'dpt'}. SQL-системи
+спробують порівняти текстовий рядок \texttt{'dpt'} із числом 0, що є несумісною
+операцією, тому, зокрема, мій компілятор видає наступну помилку:
+\begin{center}
+    \texttt{Conversion failed when converting the varchar value 'dpt' to data type int.}
+\end{center}
+
+\textbf{Питання 3.} У цьому запиті, помилки не буде, і SQL системи переведуть 
+текстовий рядок \texttt{'10000'} у число, щоб порівняти його з числом \texttt{salary}.
+Таким чином, результатом буде:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{f\_name} & \texttt{sex} & \texttt{age} \\
+        \hline
+        Oleg & m & 22 \\
+        Anna & m & 26 \\
+        Galina & f & 18 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 4.} Команда \texttt{CAST} переведе текстовий рядок \texttt{'20160911'} у
+тип \texttt{DATE}. Результатом буде дата \texttt{2016-09-11}, яка і виведеться на екран.
+
+\textbf{Питання 5.} Команда спробує конкатенувати значення \texttt{age} та \texttt{'7000'} (наприклад, для 
+співробітника Mashko Oleg, це буде \texttt{227000}), а потім порівняти результат з \texttt{salary}. В цьому 
+випадку, конкатенація дасть у вихід строку з числом, тому кастінг спрацює --- програма не видасть помилку. 
+Проте, через таку конкатенацію, число стає дуже великим і тому результатом буде пуста таблиця.
+
+\textbf{Питання 6.} Тут все залежить від SQL системи. В двох різних компіляторах
+(MYSQL), в моєму випадку, видається два різних результати:
+\begin{itemize}
+    \item \texttt{'salary'} інтерпретується як текстовий рядок, тому порівняння
+    з нулем дасть помилку: \texttt{Conversion failed when converting the varchar
+    value 'salary' to data type int.}
+    \item \texttt{'salary'} інтерпретується як назва стовпця, тому порівняння
+    з нулем буде виконано, але результатом буде уся таблиця.
+\end{itemize}
+
+Перший варіант виглядає більш логічно, а другий можливо спрацьовує через
+особливості реалізації SQL системи (котра, наприклад, прибирає цю помилку і 
+виводить warning).
+
+\textbf{Питання 7.} Маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT CONCAT(l_name, ' ', f_name) AS full_name, age, sex, status, position
+FROM employee
+ORDER BY age ASC;
+\end{lstlisting}
+
+\newpage
+
+\section{Домашня Робота 4: Предикати}
+
+\begin{problem}
+    Таблиця та сама, що і в попередніх завданнях. За допомогою відомих предикатів:
+    \begin{enumerate}
+        \item Написати запит, щоб знайти всі зарплати між середньою та максимальною
+        \item Написати запит, щоб знайти всі зарплати між мінімальною та середньою за
+        департаментами
+        \item Написати запит пошуку співробітника з ім'ям Oleg або Zahar
+        \item Написати запит, що виводить список співробітників віком від 22 до 26 років.
+        \item Порахувати кількість співробітників, які мають зарплату між 10000 і 20000
+        \item Порахувати кількість неодружених працівників від мінімального до середнього
+        віку
+        \item Підрахувати кількість одружених співробітників на прізвище Petrenko
+    \end{enumerate}
+\end{problem}
+
+\textbf{Відповідь.}
+
+\textbf{Питання 1.} Маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT salary
+FROM employee
+WHERE salary BETWEEN (SELECT AVG(salary) FROM employee) AND (SELECT MAX(salary) FROM employee);    
+\end{lstlisting}
+
+Тут, ми використали предикат \texttt{BETWEEN}, щоб вибрати всі зарплати, які
+знаходяться між середньою та максимальною зарплатою. Результатом будуть значення 
+\texttt{20000}, \texttt{25000}, \texttt{18000}. 
+
+\textbf{Питання 2.} Маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT dpt, salary
+FROM employee e
+WHERE salary BETWEEN 
+        (SELECT MIN(salary) FROM employee WHERE dpt = e.dpt) AND
+        (SELECT AVG(salary) FROM employee WHERE dpt = e.dpt);
+\end{lstlisting}
+
+Результатом буде наступна таблиця:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \texttt{dpt} & \texttt{salary} \\
+        \hline
+        IT & 10000 \\
+        IT & 20000 \\
+        Sales & 8000 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 3.} Маємо наступний запит:
+\begin{lstlisting}[language=Python]
+SELECT *
+FROM employee
+WHERE f_name = 'Oleg' OR f_name = 'Zahar';
+\end{lstlisting}
+
+\textbf{Питання 4.} Маємо запит:
+\begin{lstlisting}[language=SQL]
+SELECT *
+FROM employee
+WHERE age BETWEEN 22 AND 26;
+\end{lstlisting}
+
+\textbf{Питання 5.} Використовуємо запит:
+\begin{lstlisting}[language=SQL]
+SELECT COUNT(*) AS employee_count
+FROM employee
+WHERE salary BETWEEN 10000 AND 20000;
+\end{lstlisting}
+
+\textbf{Питання 6.} Тут команда дещо складніша:
+\begin{lstlisting}[language=SQL]
+SELECT COUNT(*) AS single_employee_count
+FROM employee
+WHERE status = 'single'
+    AND age BETWEEN 
+        (SELECT MIN(age) FROM employee) 
+        AND (SELECT AVG(age) FROM employee);
+\end{lstlisting}
+
+Результатом буде просто \texttt{1}. Якщо замінити \texttt{COUNT(*)} на \texttt{*}, то
+дізнаємось, що ця одна людина це Mashko Oleg.
+
+\textbf{Питання 7.} Тут команда дещо простіша:
+\begin{lstlisting}[language=SQL]
+SELECT COUNT(*) AS married_petrenko_count
+FROM employee
+WHERE l_name = 'Petrenko' AND status = 'married';
+\end{lstlisting}
+
+\newpage
+
+\section{Домашня Робота 5: Поєднання таблиць}
+
+\begin{problem}
+    Окрім таблиці \texttt{employee}, є ще таблиця \texttt{departments}:
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|}
+            \hline
+            \texttt{dpt} & \texttt{nmb} & \texttt{rum\_nmb} & \texttt{tel} \\
+            \hline
+            IT & 3 & 401 & 3444191 \\
+            QA & 2 & 402 & 3222311 \\
+            Sales & 2 & 403 & 3222233 \\
+            PM & 0 & 404 & 3224212 \\
+            Design & 0 & 405 & 3224444 \\
+            Accounting & 0 & 406 & 3221124 \\
+            \hline
+        \end{tabular}
+    \end{table}
+    Завдання --- написати запити (як з \texttt{JOIN}, так і без):
+    \begin{enumerate}
+        \item Вивести прізвища, імена та номери кімнат усіх співробітників.
+        \item Вивести списки працівників усіх непустих кімнат по номерам кімнат.
+        \item Вивести прізвища, імена, посади та номери кімнат всіх, хто працює у відділі Sales.
+        \item Вивести список кімнат (у тому числі і порожніх) з працюючими в них співробітниками, їх
+        посадами та телефонами
+        \item Вивести прізвища, імена, вік, стать та зарплати співробітників, яких можна знайти за
+        телефоном 3444191
+        \item Вивести найбільш повну інформацію про співробітників на ім'я Ivan.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Відповідь.} Спочатку створимо таблицю \texttt{departments}:
+\begin{lstlisting}[language=SQL]
+-- Create the departments table
+CREATE TABLE departments (
+    dpt VARCHAR(50),
+    nmb INT,
+    rum_nmb INT,
+    tel BIGINT
+);
+
+-- Insert data into the departments table
+INSERT INTO departments (dpt, nmb, rum_nmb, tel) VALUES
+('IT', 3, 401, 3444191),
+('QA', 2, 402, 3222311),
+('Sales', 2, 403, 3222233),
+('PM', 0, 404, 3224212),
+('Design', 0, 405, 3224444),
+('Accounting', 0, 406, 3221124);
+\end{lstlisting}
+
+\textbf{Питання 1.} Маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, d.rum_nmb
+FROM employee e
+JOIN departments d ON e.dpt = d.dpt;
+\end{lstlisting}
+
+Не використовуючи \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+    SELECT l_name, f_name, (SELECT rum_nmb FROM departments WHERE dpt = employee.dpt) AS rum_nmb
+    FROM employee;    
+\end{lstlisting}
+
+\textbf{Питання 2.} Перший варіант наводимо без команди \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, 
+(SELECT rum_nmb FROM departments WHERE dpt = e.dpt) AS rum_nmb
+FROM employee e
+WHERE (SELECT nmb FROM departments WHERE dpt = e.dpt) > 0
+ORDER BY rum_nmb;
+\end{lstlisting}
+
+Далі, використовуючи \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT d.rum_nmb, e.l_name, e.f_name
+FROM employee e
+JOIN departments d ON e.dpt = d.dpt
+WHERE d.nmb > 0
+ORDER BY d.rum_nmb;
+\end{lstlisting}
+
+\textbf{Питання 3.} Використовуємо \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, e.position, d.rum_nmb
+FROM employee e
+JOIN departments d ON e.dpt = d.dpt
+WHERE d.dpt = 'Sales';
+\end{lstlisting}
+
+Команда, де ми не використовуємо \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, e.position,
+(SELECT rum_nmb FROM departments WHERE dpt = e.dpt) AS rum_nmb
+FROM employee e
+WHERE e.dpt = 'Sales';
+\end{lstlisting}
+
+\textbf{Питання 4.} З командою \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT d.rum_nmb, e.position, e.tel
+FROM departments d
+LEFT JOIN employee e ON d.dpt = e.dpt
+ORDER BY d.rum_nmb;
+\end{lstlisting}
+
+Без команди \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT d.rum_nmb,
+    (SELECT position FROM employee WHERE d.dpt = employee.dpt LIMIT 1) AS position,
+    (SELECT tel FROM employee WHERE d.dpt = employee.dpt LIMIT 1) AS tel
+FROM departments d
+ORDER BY d.rum_nmb;
+\end{lstlisting}
+
+Зауваження: тут ми використовуємо \texttt{LIMIT 1}, щоб вибрати лише одного 
+співробітника з відділу, якщо їх кілька. 
+
+\textbf{Питання 5.} Якщо використовувати \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, e.age, e.sex, e.salary
+FROM employee e
+JOIN departments d ON e.dpt = d.dpt
+WHERE d.tel = 3444191;
+\end{lstlisting}
+
+Якщо не використовувати, то маємо
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, e.age, e.sex, e.salary
+FROM employee e
+WHERE (SELECT tel FROM departments WHERE dpt = e.dpt) = 3444191;
+\end{lstlisting}
+
+\textbf{Питання 6.} Використовуючи \texttt{JOIN}:
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, e.age, e.sex, e.status, e.position, e.salary, d.rum_nmb, d.tel
+FROM employee e
+JOIN departments d ON e.dpt = d.dpt
+WHERE e.f_name = 'Ivan';
+\end{lstlisting}
+
+Якщо не використовувати, то маємо
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, e.age, e.sex, e.status, e.position, e.salary,
+    (SELECT rum_nmb FROM departments WHERE dpt = e.dpt) AS rum_nmb,
+    (SELECT tel FROM departments WHERE dpt = e.dpt) AS tel
+FROM employee e
+WHERE e.f_name = 'Ivan';
+\end{lstlisting}
+
+\newpage
+
+\section{Домашня Робота 6: Підзапити. Псевдоніми}
+
+\begin{problem}
+    Маємо дві таблиці з попереднього завдання --- \texttt{employee} та \texttt{departments}.
+    За допомогою псевдонімів навести приклади для:
+    \begin{enumerate}
+        \item Використання псевдоніму для однієї таблиці.
+        \item Використання псевдоніму для однієї колонки таблиці.
+        \item Використання псевдоніму для результату агрегатної функції.
+        \item Використання псевдоніму для результату підзапиту.
+        \item Використання псевдонімів для таблиць та колонок при операції \texttt{JOIN} для 2х різних таблиць.
+        \item Використання псевдонімів для поєднання таблиці з самою собою
+    \end{enumerate}
+\end{problem}
+
+\textbf{Відповідь.}
+
+\textbf{Питання 1.} Наприклад, можна скоротити назву таблиці \texttt{employees} до \texttt{e}:
+\begin{lstlisting}[language=SQL]
+SELECT e.l_name, e.f_name, e.age
+FROM employee AS e
+WHERE e.age > 25;
+\end{lstlisting}
+
+Результатом буде таблиця
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{l\_name} & \texttt{f\_name} & \texttt{age} \\
+        \hline
+        Vovk & Zahar & 32 \\
+        Kononov & Oleg & 26 \\
+        Galenda	& Anna & 26 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 2.} Можна, наприклад, змінити назву колонок \texttt{l\_name}, \texttt{f\_name} та \texttt{salary}:
+\begin{lstlisting}[language=SQL]
+SELECT l_name AS LastName, f_name AS FirstName, salary AS MonthlySalary
+FROM employee
+WHERE salary > 15000;
+\end{lstlisting}
+
+Результатом буде таблиця
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{LastName} & \texttt{FirstName} & \texttt{MonthlySalary} \\
+        \hline
+        Mashko & Oleg & 20000 \\
+        Galenda & Anna & 25000 \\
+        Osokor & Galina & 18000 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 3.} Наприклад, можна вивести середню, максимальну та мінімальну зарплату:
+\begin{lstlisting}[language=SQL]
+SELECT AVG(salary) AS AverageSalary, MAX(salary) AS MaxSalary, MIN(salary) AS MinSalary
+FROM employee;
+\end{lstlisting}
+
+Результатом буде проста таблиця, де \texttt{AverageSalary=14916.66667}, \texttt{MaxSalary=25000}, \texttt{MinSalary=8000}.
+
+\textbf{Питання 4.} Обчислимо середню зарплатню і виведемо список співробіників із зарплатою вище середньої:
+\begin{lstlisting}[language=SQL]
+SELECT l_name AS LastName, f_name AS FirstName, salary AS Salary, 
+    (SELECT AVG(salary) FROM employee) AS AverageSalary
+FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee);
+\end{lstlisting}
+
+Результатом буде таблиця
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \texttt{LastName} & \texttt{FirstName} & \texttt{Salary} & \texttt{AverageSalary} \\
+        \hline
+        Mashko & Oleg & 20000 & 14916 \\
+        Galenda & Anna & 25000 & 14916 \\
+        Osokor & Galina & 18000 & 14916 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 5.} Виведемо прізвища, імена, зарплати співробітників, номер їх 
+кімнат та телефони, використовуючи псевдоніми для таблиць та колонок:
+\begin{lstlisting}[language=SQL]
+SELECT 
+    e.l_name AS LastName, 
+    e.f_name AS FirstName, 
+    e.salary AS Salary, 
+    d.rum_nmb AS RoomNumber, 
+    d.tel AS Phone
+FROM employee AS e
+JOIN departments AS d ON e.dpt = d.dpt;
+\end{lstlisting}
+
+Результатом буде таблиця
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \texttt{LastName} & \texttt{FirstName} & \texttt{Salary} & \texttt{RoomNumber} & \texttt{Phone} \\
+        \hline
+        Osokor & Galina & 18000 & 401 & 3444191 \\
+        Galenda & Anna & 25000 & 401 & 3444191 \\
+        Petrenko & Zoya & 10000 & 401 & 3444191 \\
+        Mashko & Oleg & 20000 & 401 & 3444191 \\
+        Kononov & Oleg & 8500 & 403 &3222233 \\
+        Vovk & Zahar & 8000 & 403 & 3222233 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 6.} Візьмемо такий приклад: знайти пари співробітників, де один
+заробляє більше іншого, і вивести лише їхні повні імена.
+\begin{lstlisting}[language=SQL]
+SELECT 
+    CONCAT(e1.f_name, ' ', e1.l_name) AS Employee1_FullName, 
+    CONCAT(e2.f_name, ' ', e2.l_name) AS Employee2_FullName
+FROM employee AS e1
+JOIN employee AS e2 ON e1.salary > e2.salary;
+\end{lstlisting}
+
+На виході маємо наступну таблицю:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \texttt{Employee1\_FullName} & \texttt{Employee2\_FullName} \\
+        \hline
+        Anna Galenda & Oleg Mashko \\
+        Galina Osokor & Zoya Petrenko \\
+        Anna Galenda & Zoya Petrenko \\
+        Oleg Mashko & Zoya Petrenko\\
+        Galina Osokor & Zahar Vovk\\
+        Anna Galenda & Zahar Vovk\\
+        Oleg Kononov & Zahar Vovk\\
+        Zoya Petrenko & Zahar Vovk\\
+        Oleg Mashko & Zahar Vovk\\
+        Galina Osokor & Oleg Kononov\\
+        Anna Galenda & Oleg Kononov\\
+        Zoya Petrenko & Oleg Kononov\\
+        Oleg Mashko & Oleg Kononov\\
+        Anna Galenda & Galina Osokor\\
+        Oleg Mashko & Galina Osokor\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\newpage
+
+\section{Домашня Робота 7: Регулярні вирази}
+
+\begin{problem}
+    Є таблиця \texttt{employee} з попередніх завдань. За допомогою регулярних виразів:
+    \begin{enumerate}
+        \item Вибрати прізвища та посади всіх, у кого у прізвищі, або в імені є nko.
+        \item Вибрати імена, прізвища, посади співробітників, які мають у віці цифру 4 або 6.
+        \item Вибрати прізвища та посади всіх співробітників із зарплатами рівно з трьома 0.
+        \item Вивести список усіх співробітників з ім'ям або прізвищем на літеру O
+        \item Вивести всі дані людини, у якої в даних статусу є літери g, e, але немає літери l
+        \item Що виведе наступний запит
+        \begin{lstlisting}[language=SQL]
+SELECT fname, lname, age FROM employee WHERE fname LIKE `%k%`
+        \end{lstlisting}
+        \item Написати регулярний вираз для пошуку подвоєних приголосних у будь-якій кількості
+        повторень (без прив'язки до таблиці)
+        \item Написати регулярний вираз для пошуку \% в полі position, \% - це звичайний символ
+        (використати escape конструкцію).
+    \end{enumerate}
+\end{problem}
+
+\textbf{Відповідь.}
+
+\textbf{Питання 1.} Маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT l_name AS LastName, position AS Position
+FROM employee
+WHERE l_name LIKE '%nko%' OR f_name LIKE '%nko%';
+\end{lstlisting}
+
+Виведе лише один рядок: \texttt{Petrenko, Programmer}.
+
+\textbf{Питання 2.} Маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT f_name AS FirstName, l_name AS LastName, position AS Position
+FROM employee
+WHERE CAST(age AS CHAR) LIKE '%4%' OR CAST(age AS CHAR) LIKE '%6%';
+\end{lstlisting}
+
+На виході отримаємо три рядки:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{FirstName} & \texttt{LastName} & \texttt{Position} \\
+        \hline
+        Zoya & Petrenko & Programmer \\
+        Anna & Galenda & Programmer \\
+        Oleg & Kononov & Sales \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 3.} Маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT l_name AS LastName, position AS Position
+FROM employee
+WHERE CAST(salary AS CHAR) LIKE '%000';
+\end{lstlisting}
+
+На виході отримаємо п'ять рядків:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \texttt{LastName} & \texttt{Position} \\
+        \hline
+        Mashko & Admin \\
+Petrenko & Programmer \\
+Vovk & Admin \\
+Galenda & Programmer \\
+Osokor & QA \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 4.} Маємо такий запит:
+\begin{lstlisting}[language=SQL]
+SELECT f_name AS FirstName, l_name AS LastName, position AS Position
+FROM employee
+WHERE f_name LIKE 'O%' OR l_name LIKE 'O%';
+\end{lstlisting}
+
+На виході отримаємо три рядки:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \texttt{FirstName} & \texttt{LastName} & \texttt{Position} \\
+        \hline
+        Oleg & Mashko & Admin \\
+        Oleg & Kononov & Sales \\
+        Galina & Osokor & QA \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Питання 5.} Для цього пункту маємо наступний запит:
+\begin{lstlisting}[language=SQL]
+SELECT *
+FROM employee
+WHERE status LIKE '%g%' 
+    AND status LIKE '%e%' 
+    AND status NOT LIKE '%l%';
+\end{lstlisting}
+
+\textbf{Питання 6.} Потрібно проаналізувати запит
+\begin{lstlisting}[language=SQL]
+SELECT fname, lname, age 
+FROM employee 
+WHERE fname LIKE `%k%`
+\end{lstlisting}
+
+Ця умова шукає всі записи, у яких ім'я (\texttt{f\_name}) містить літеру
+\texttt{k} у будь-якому місці (на початку, всередині або в кінці). Символи \%
+означають, що перед і після літери \texttt{k} можуть бути будь-які символи.
+На виході буде пуста таблиця, бо в таблиці немає жодного співробітника з ім'ям,
+яке містить літеру \texttt{k}.
+
+\textbf{Питання 7.} Маємо такий вираз: \texttt{([bcdfghjklmnpqrstvwxyz]\{2,\})+}. По порядку:
+\begin{itemize}
+    \item \texttt{[bcdfghjklmnpqrstvwxyz]} --- всі малі приголосні латинського алфавіту. Можна врахувати і великі, тоді буде \texttt{[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]}.
+    \item \texttt{\{2,\}}: Це вказує, що потрібно знайти дві або більше однакових приголосних, що йдуть підряд.
+    \item \texttt{+}: Квантифікатор \texttt{+} дозволяє знаходити повторення таких послідовностей приголосних. Тобто він шукає кілька таких подвоєних послідовностей приголосних.
+\end{itemize}
+
+\textbf{Питання 8.} В довільній таблиці можна використати вираз:
+\begin{lstlisting}[language=SQL]
+SELECT * 
+FROM your_table
+WHERE position REGEXP '\\%';
+\end{lstlisting}
+
+В SQL для правильного використання зворотного слешу в регулярному виразі
+потрібно подвоїти зворотний слеш, тому що один зворотний слеш буде
+екрануватися.
+
+\newpage
+
+\section{Домашня Робота 8: Створення, редагування, видалення}
+
+\begin{problem}
+    \begin{enumerate}
+        \item Створіть бази даних \texttt{test1} і \texttt{test2}.
+        \item Видаліть базу даних \texttt{test2}.
+        \item Створіть у базі даних \texttt{test1} таблицю \texttt{table\_1} (з
+        полями \texttt{id} --- \texttt{int}, \texttt{firstname} --- \texttt{varchar},
+        \texttt{lastname} --- \texttt{varchar}, \texttt{position} --- \texttt{varchar},
+        \texttt{department} --- \texttt{varchar}, \texttt{salary} --- \texttt{decimal},
+        \texttt{age} --- \texttt{int}, \texttt{birthdate} --- \texttt{date}) та
+        таблицю і \texttt{table\_2} (з полями
+        \texttt{department} --- \texttt{varchar},
+        \texttt{qtyemployees} --- \texttt{int}, \texttt{head} --- \texttt{varchar}).
+        \item Перейменуйте таблицю \texttt{table\_1} на \texttt{employees}.
+        \item Видаліть таблицю \texttt{table\_2}.
+        \item Додайте в таблицю \texttt{employees} поле \texttt{status} ---
+        \texttt{varchar(255)}.
+        \item Видаліть із таблиці \texttt{employees} поле \texttt{age}.
+        \item Перейменуйте в \texttt{employees} поле \texttt{firstname} на \texttt{name}.
+        \item Змініть тип поля \texttt{age} з \texttt{int} на \texttt{varchar(50)}.
+        \item Додайте кілька записів, а потім очистіть таблицю \texttt{employee}.
+        \item Очистіть усі таблиці бази даних \texttt{test\_1}, потім видаліть її.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Відповідь.}
+
+\textbf{Питання 1.} Створюємо бази данних
+\begin{lstlisting}[language=SQL]
+CREATE DATABASE test1;
+CREATE DATABASE test2;
+\end{lstlisting}
+
+\textbf{Питання 2.} Видаляємо базу даних \texttt{test2}
+\begin{lstlisting}[language=SQL]
+DROP DATABASE test2;
+\end{lstlisting}
+
+\textbf{Питання 3.} Створюємо таблиці \texttt{table\_1} та \texttt{table\_2} у 
+базі даних \texttt{test1}:
+\begin{lstlisting}[language=SQL]
+USE test1;
+
+-- Creating table_1
+CREATE TABLE table_1 (
+    id INT,
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
+    position VARCHAR(255),
+    department VARCHAR(255),
+    salary DECIMAL(10, 2),
+    age INT,
+    birthdate DATE
+);
+
+-- Creating table_2
+CREATE TABLE table_2 (
+    department VARCHAR(255),
+    qtyemployees INT,
+    head VARCHAR(255)
+);
+\end{lstlisting}
+
+\textbf{Питання 4.} Перейменовуємо таблицю \texttt{table\_1} на \texttt{employees}:
+\begin{lstlisting}[language=SQL]
+RENAME TABLE table_1 TO employees;
+\end{lstlisting}
+
+\textbf{Питання 5.} Видаляємо таблицю \texttt{table\_2}:
+\begin{lstlisting}[language=SQL]
+DROP TABLE table_2;
+\end{lstlisting}
+
+\textbf{Питання 6.} Додаємо поле \texttt{status} у таблицю \texttt{employees}:
+\begin{lstlisting}[language=SQL]
+ALTER TABLE employees
+ADD COLUMN status VARCHAR(255);
+\end{lstlisting}
+
+\textbf{Питання 7.} Видаляємо поле \texttt{age} з таблиці \texttt{employees}:
+\begin{lstlisting}[language=SQL]
+ALTER TABLE employees
+DROP COLUMN age;
+\end{lstlisting}
+
+\textbf{Питання 8.} Перейменовуємо поле \texttt{firstname} на \texttt{name}:
+\begin{lstlisting}[language=SQL]
+ALTER TABLE employees
+CHANGE COLUMN firstname name VARCHAR(255);
+\end{lstlisting}
+
+\textbf{Питання 9.} Оскільки поле \texttt{age} вже видалено, то наведемо приклад 
+для зміни типу поля \texttt{salary} з \texttt{int} на \texttt{VARCHAR(50)}:
+\begin{lstlisting}[language=SQL]
+ALTER TABLE employees
+MODIFY COLUMN salary VARCHAR(50);
+\end{lstlisting}
+
+\textbf{Питання 10.} Додаємо кілька записів у таблицю \texttt{employees}:
+\begin{lstlisting}[language=SQL]
+-- Додавання кількох записів
+INSERT INTO employees (id, name, lastname, position, department, salary, birthdate, status)
+VALUES 
+(1, 'Dmytro', 'Zakharov', 'Student', 'Sales', 5000.00, '1985-06-15', 'Active'),
+(2, 'Petya', 'Ugulkin', 'Developer', 'IT', 4500.00, '1990-02-20', 'Active'),
+(3, 'Vasya', 'Pestolkin', 'Designer', 'Design', 4000.00, '1988-11-10', 'Inactive');
+
+-- Clearing table employees
+TRUNCATE TABLE employees;
+\end{lstlisting}
+
+\textbf{Питання 11.} Очищення усіх таблиць бази даних \texttt{test1} та видалення її:
+\begin{lstlisting}[language=SQL]
+USE test1;
+
+-- Clearing all tables
+TRUNCATE TABLE employees;
+
+-- Dropping the database test1
+DROP DATABASE test1;
+\end{lstlisting}
+
+\end{document}

@@ -1,0 +1,181 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#1}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 27 лютого, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Вправа 12.3}
+
+\begin{problem}
+    Завдання складається з двох частин:
+    \begin{itemize}
+        \item \textbf{Частина 1.} Розв'язати рівняння $\Delta u_1(x,y) = xy$,
+            $(x,y) \in (0,\pi)^2$. Крайові умови: 
+            \begin{align*} 
+                &u_1(0,y) = 0, \quad u_1(\pi,y) = 0, \quad y \in [0,\pi], \\
+                &u_1(x,0) = \sin x, \quad u_1(x,\pi) = 0, \quad x \in [0,\pi]
+        \end{align*}
+        \item \textbf{Частина 2.} Розв'язати рівняння $\Delta u_2(x,y) = 0$,
+        $(x,y) \in (0,\pi)^2$. Крайові умови: 
+        \begin{align*} 
+            &u_2(0,y) = y(\pi-y), \quad u(\pi,y) = 0, \quad y \in [0,\pi], \\
+            &u_2(x,0) = 0, \quad u(x,\pi) = 0, \quad x \in [0,\pi]
+        \end{align*}
+    \end{itemize}
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textbf{Частина 1.} Нехай $u_1(x,y) = V(x)U(y)$. Тоді маємо $V''(x)U(y) + V(x)U''(y) = 0$ звідки
+\begin{equation*}
+    \frac{V''(x)}{V(x)} = -\frac{U''(y)}{U(y)} = -\lambda.
+\end{equation*}
+
+Отже, $V''(x) + \lambda V(x) = 0$. Також, справедливі наступні умови:
+\begin{align*}
+    V(0)U(y) = 0, \quad V(\pi)U(y) = 0, \quad y \in [0,\pi], \\
+    V(x)U(0) = \sin x, \quad V(x)U(\pi) = 0, \quad x \in [0,\pi].
+\end{align*}
+
+Отже, якщо $V(x)$, $U(y)$ нетривіальні, то $V(0)=0$, $V(\pi)=0$, $U(0)=1$, $U(\pi)=0$.
+Розглядаємо випадки для різних $\lambda$.
+
+\textbf{Випадок 1. $\lambda = 0$.} Тоді $V''(x) = 0$, звідки $V(x) = ax+b$ для $a,b \in \mathbb{R}$. 
+Оскільки $V(0)=0$, $V(\pi)=0$, то $V(x) \equiv 0$.
+
+\textbf{Випадок 2.} $\lambda < 0$. В такому разі розв'язком є $V(x) = C_1e^{\sqrt{-\lambda}x} + C_2e^{-\sqrt{-\lambda}x}$. 
+Підставимо умови на $V(x)$: $V(0)=C_1+C_2=0$ та $V(\pi)=C_1e^{-\sqrt{\lambda}\pi} + C_2e^{-\sqrt{\lambda}\pi}=0$. З другої 
+умови, оскільки експоненти невід'ємні, маємо $C_1=C_2=0$. Отже, розв'язком є $V(x) \equiv 0$.
+
+\textbf{Випадок 3.} $\lambda > 0$. В такому разі розв'язком є $V(x) = C_1\sin(\sqrt{\lambda}x) + C_2\cos(\sqrt{\lambda}x)$.
+Підставимо умови на $V(x)$: $V(0)=C_2=0$ та $V(\pi)=C_1\sin(\sqrt{\lambda}\pi)=0$. Отже, маємо розв'язки 
+вигляду $V_n(x) = \sin nx$ для $n \in \mathbb{N}$.
+
+Отже, шукаємо розв'язок $u_1(x,y)$ у наступному вигляді:
+\begin{equation*}
+    u_1(x,y) = \sum_{n \in \mathbb{N}}  f_n(y)\sin nx
+\end{equation*}
+
+Знайдемо оператор Лапласа для $u_1(x,y)$:
+\begin{equation*}
+    \Delta u_1(x,y) = \sum_{n \in \mathbb{N}} \left( f_n''(y) - n^2f_n(y) \right)\sin nx = xy
+\end{equation*}
+
+Відомо, що розкладання $g(x)=x$ у ряд Фур'є має вигляд:
+\begin{equation*}
+    g(x) = -2\sum_{n \in \mathbb{N}} \frac{(-1)^n}{n} \sin nx.
+\end{equation*}
+
+Таким чином, маємо:
+\begin{equation*}
+    \sum_{n \in \mathbb{N}} \textcolor{blue}{\left( f_n''(y) - n^2f_n(y) \right)}\sin nx = \sum_{n \in \mathbb{N}} \textcolor{blue}{-2 \cdot \frac{(-1)^n}{n} y}\sin nx.
+\end{equation*}
+
+Отже отримуємо диференціальне рівняння:
+\begin{equation*}
+    f_n''(y) - n^2f_n(y) = \frac{2(-1)^{n+1}}{n} y.
+\end{equation*}
+
+Однорідна частина має вигляд $f_n''(y)-n^2f_n(y) = 0$, звідки $f_n(y) = C_{n,1}e^{ny} + C_{n,2}e^{-ny}$. 
+Залишається знайти частковий розв'язок $\widetilde{f}_n(y)$, тоді загальний розв'язок має вигляд:
+\begin{equation*}
+    f_n(y) = C_{n,1}e^{ny} + C_{n,2}e^{-ny} + \widetilde{f}_n(y).
+\end{equation*}
+
+Оскільки праворуч стоїть лінійна функція, то можемо спробувати пошукати розв'язок у вигляді $\widetilde{f}_n(y) = a_ny$, 
+тоді матимемо:
+\begin{equation*}
+    -n^2a_ny = \frac{2(-1)^{n+1}}{n}y \implies a_n = \frac{2(-1)^{n}}{n^3}.
+\end{equation*}
+
+Отже, остаточно $f_n(y) = \frac{2y(-1)^n}{n^3} + C_{n,1}e^{ny} + C_{n,2}e^{-ny}$. Знайдемо невідомі коефіцієнти. 
+Маємо $u_1(x,0) = \sin x$, тому $\sum_{n \in \mathbb{N}}\sin nx f_n(0) = \sin x$. Звідки $f_1(0)=1$, проте $f_n(0)=0$ для 
+всіх $n>1$. З іншого боку, $u_1(x,\pi)=\sum_{n \in \mathbb{N}} \sin nx f_n(\pi) = 0$, звідки $f_n(\pi) \equiv 0$. 
+
+Розберемося спочатку з $f_1(y)$. Маємо $f_1(y) = C_{1,1}e^y + C_{1,2}e^{-y} - 2y$. Маємо $f_1(0)=C_1+C_2=1$. 
+З іншого боку $f_1(\pi) = C_1e^{\pi}+C_2e^{-\pi} - 2\pi = 0$. З цих двох рівнянь маємо:
+\begin{equation*}
+    f_1(y) = -2y + \frac{2\pi e^{\pi} - 1}{e^{2\pi}-1}e^{y} + \frac{e^{2\pi}-2\pi e^{\pi}}{e^{2\pi}-1}e^{-y}
+\end{equation*}
+
+Що стосується інших $f_n(y)$, то тут ситуація інша. Маємо $f_n(0)=0$, себто $C_{n,1}+C_{n,2}=0$, звідки:
+\begin{equation*}
+    f_n(y) = \gamma_n e^{ny} - \gamma_n e^{-ny} + \frac{2y(-1)^n}{n^3} = \gamma_n \sinh ny + \frac{2y(-1)^n}{n^3}.
+\end{equation*}
+
+Скористаємося тепер тим, що $f_n(\pi)=0$. Маємо $\gamma_n \sinh n\pi + \frac{2\pi (-1)^n}{n^3} = 0$, звідки:
+\begin{equation*}
+    \gamma_n = \frac{2\pi(-1)^{n+1}}{n^3 \sinh n\pi}
+\end{equation*}
+
+Отже, остаточно:
+\begin{equation*}
+    \textcolor{blue}{f_n = \begin{cases}
+        -2y + \frac{2\pi e^{\pi} - 1}{e^{2\pi}-1}e^{y} + \frac{e^{2\pi}-2\pi e^{\pi}}{e^{2\pi}-1}e^{-y}, & n=1, \\
+        \frac{2(-1)^n}{n^3}\left(y - \frac{\pi}{\sinh n\pi} \sinh ny\right), & n>1,
+    \end{cases}}
+\end{equation*}
+
+а розв'язок має вигляд $\boxed{u_1(x,y) = \sum_{n \in \mathbb{N}} \textcolor{blue}{f_n(y)} \sin nx}$. 
+
+\textbf{Частина 2.} Аналогічним чином до попередньої частини, отримуємо вираз
+$u_2(x,y) = \sum_{n \in \mathbb{N}} g_n(x)\sin ny$. Маємо:
+\begin{equation*}
+    \Delta u_2(x,y) = \sum_{n \in \mathbb{N}} \left( g_n''(x) - n^2g_n(x) \right)\sin ny = 0.
+\end{equation*}
+
+Звідки $g_n''(x) - n^2g_n(x) = 0$, а тому $g_n(x) = C_{n,1}e^{nx} + C_{n,2}e^{-nx}$. Оскільки
+$u_2(0,y) = y(\pi-y)$, то отримуємо:
+\begin{equation*}
+    \sum_{n \in \mathbb{N}} g_n(0)\sin ny = y(\pi - y). 
+\end{equation*}
+
+Розкладемо праву частину у ряд Фур'є. Тоді будемо мати\footnote{Пораховано автоматично за допомогою Wolfram Mathematica, проте ідейно для інтегрування потрібно 
+скористатися інтегруванням за частинами.}:
+\begin{equation*}
+    g_n(0) = \frac{2}{\pi}\int_0^{\pi} y(\pi-y)\sin ny dy = \frac{4}{\pi n^3}(1+(-1)^{n+1}) = \begin{cases}
+        0, & n=2k, \\
+        \frac{8}{\pi n^3}, & n=2k+1.
+    \end{cases}
+\end{equation*}
+
+У свою чергу з умови $u_2(\pi,y)=0$ отримуємо $g_n(\pi)\equiv 0$. Тепер, оскільки в нас фігурує $(-1)^{n+1}$, 
+то розглянемо два випадки: $n=2k$ та $n=2k+1$ для $k \in \mathbb{N}$.
+
+\textbf{Випадок 1. $n=2k+1$.} Маємо $g_n(x) = C_{n,1}e^{nx} + C_{n,2}e^{-nx}$ з умовами $g_n(\pi)=0$
+та $g_n(0) = \frac{8}{\pi n^3}$. Таким чином:
+\begin{equation*}
+    C_{n,1} + C_{n,2} = \frac{8}{\pi n^3}, \quad C_{n,1}e^{n\pi} + C_{n,2}e^{-n\pi} = 0
+\end{equation*}
+
+Підставимо перше у друге, врахувавши, що $C_{n,2} = \frac{8}{\pi n^3}-C_{n,1}$:
+\begin{equation*}
+    C_{n,1}(e^{n\pi}-e^{-n\pi}) + \frac{8e^{-n\pi}}{\pi n^3} = 0 \implies C_{n,1} = -\frac{4e^{-n\pi}}{\pi n^3 \sinh n\pi}
+\end{equation*}
+
+Отже, $C_{n,2} = \frac{8}{\pi n^3}-C_{n,1} = \frac{4e^{n\pi}}{\pi n^3 \sinh n\pi}$. Звідси:
+\begin{equation*}
+    g_n(x) = -\frac{4e^{n(x-\pi)}}{\pi n^3 \sinh n\pi} + \frac{4e^{-n(x-\pi)}}{\pi n^3 \sinh n\pi} = \frac{4}{\pi n^3 \sinh n\pi} \cdot (e^{n(\pi-x)} - e^{-n(\pi-x)}) = \frac{8\sinh n(\pi-x)}{\pi n^3 \sinh n\pi}
+\end{equation*}
+
+\textbf{Випадок 2. $n=2k$}. Маємо $g_n(x) = C_{n,1}e^{nx} + C_{n,2}e^{-nx}$ з умовами $g_n(\pi)=0$
+та $g_n(0) = 0$. Таким чином $g_n \equiv 0$.
+
+Отже, остаточна відповідь:
+\begin{equation*}
+    \boxed{u_2(x,y) = \frac{8}{\pi}\sum_{n=0}^{+\infty} \frac{\sinh ((2n+1)(\pi-x))}{(2n+1)^3 \sinh ((2n+1)\pi)} \sin ((2n+1)y).}
+\end{equation*}
+
+\end{document}

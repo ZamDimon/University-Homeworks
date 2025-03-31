@@ -1,0 +1,838 @@
+\chapter{Теорія Апроксимації}
+
+Приблизно на цьому етапі, більшість літератури з машинного та, зокрема,
+глибокого навчання починається з фрази:
+
+\begin{quote}
+    \begin{center}
+    ``\textit{Задамо багатошарову нейронну мережу з $\star$ шарами, де зв'язок
+    активацій $\mathbf{x}^{\langle j \rangle}$ та $\mathbf{x}^{\langle j+1
+    \rangle}$ задається рівнянням $\mathbf{x}^{\langle j+1 \rangle} =
+    \phi^{\langle j \rangle}(\boldsymbol{W}^{\langle j
+    \rangle}\mathbf{x}^{\langle j \rangle}+\boldsymbol{\beta}^{\langle j \rangle})$}''
+    \end{center}
+\end{quote}
+
+При цьому, зазвичай, не обгрунтовується (окрім як базової інтуїції) вибір
+саме такої формули для зв'язку між шарами. Ще рідше, чому така архітектура
+може апроксимувати широкий клас функцій. Саме тому в цьому підрозділі
+ми підійдемо до цього питання більш системно.
+
+\section{Апроксимація сігмоїдальними функціями: Теорема Цибенко}
+
+\subsection{Постановка задачі}
+Один з перших результатів, що дозволяє відповісти на питання про апроксимацію
+функцій, був отриманий Цибенко в 1989 році у роботі \cite{cybenko}. Результати
+саме цієї роботи лежать в основі побудови перших щільних шарів у багатошарових
+нейронних мережах (Dense Layers): в певному вигляді, ця робота містить одну з
+перших архітектур, що дозволяють побудувати модель класифікації. Тому, в
+багатьох джерелах, теорема Цибенка отримала назву універсальної апроксимаційної
+теореми (Universal Approximation Theorem). Спочатку, введемо основний клас
+функцій, що буде в серці нашої теореми: сігмоїдальні функції.
+
+\begin{definition}
+	\textbf{Сігмоїдальною функцією} $\sigma: \mathbb{R} \to \mathbb{R}$ називається
+	функція, що задовольняє двом умовам:
+	\begin{equation}
+		\lim_{x \to +\infty} \sigma(x) = 1, \quad \lim_{x \to -\infty}\sigma(x) = 0.
+	\end{equation}
+\end{definition}
+
+\begin{example}
+	Найбільш відомою сігмоїдальною функцією є функція Логістичної регресії:
+	\begin{equation}
+		\sigma(x|\alpha) = \frac{1}{1+e^{-\alpha x}}, \quad \alpha > 0.
+	\end{equation}
+
+	Її зручність полягає у неперервності, диференційовності та зручності
+	обчислення похідної, оскільки $\sigma' = \alpha\sigma(1-\sigma)$.
+	Графіки цієї функції для різних параметрів $\alpha$ наведені на
+	Рис.~\ref{fig:sigmoids}.
+\end{example}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        axis lines=middle,
+        xlabel={$x$},
+        ylabel={$y$},
+        ymin=0, ymax=1.2,
+        xmin=-3.9, xmax=3.9,
+        domain=-4:4,
+        samples=100,
+        grid=both,
+        width=14cm, % Adjusted for wider aspect ratio
+        height=8cm,
+        legend style={at={(1.05,1)}, anchor=north west}
+    ]
+    
+    % Plot different sigmoidal functions with bolder lines
+    \addplot[ultra thick, blue] {1 / (1 + exp(-1 * x))};
+    \addlegendentry{$\alpha=1$}
+    
+    \addplot[ultra thick, red] {1 / (1 + exp(-2 * x))};
+    \addlegendentry{$\alpha=2$}
+    
+    \addplot[ultra thick, green] {1 / (1 + exp(-3 * x))};
+    \addlegendentry{$\alpha=3$}
+    
+    \addplot[ultra thick, orange] {1 / (1 + exp(-4 * x))};
+    \addlegendentry{$\alpha=4$}
+
+    \end{axis}
+\end{tikzpicture}
+\caption{Графіки сігмоїдальних функцій $\sigma(x|\alpha)=1/(1+e^{-\alpha x})$ для різних параметрів $\alpha$.}
+\label{fig:sigmoids}
+\end{figure}
+
+Робота Цибенко присвячена на той час широкозастосованій апроксимації функції $f:
+\mathbb{R}^m \to \mathbb{R}$ за допомогою наступної суми (дивись
+\cite{old-nets}):
+\begin{equation}\label{eq:cybenko-g}
+	\hat{f}(\mathbf{x}) = \sum_{j=1}^n \alpha_j \sigma(\boldsymbol{w}_j^{\top}\mathbf{x} + \beta_j), \quad \boldsymbol{w}_j \in \mathbb{R}^m, \quad \alpha_j,\beta_j \in \mathbb{R}.
+\end{equation}
+
+Таким чином, ми маємо відносно просту параметризацію, що складається з
+$\mathcal{O}(mn)$ параметрів. 
+
+\subsection{Узгодження з сучасною термінологією}
+Більш того, цю архітектуру достатньо легко описати
+на сучасній термінології нейронних мереж: розглянемо модель з
+Рис.~\ref{cybenko-net}. Діаграму читаємо наступним чином: кожен нейрон (коло)
+відповідає певному дійсному значенню з $\mathbb{R}$. Вхідний шар має $m$
+нейронів, що відповідають вхідному вектору $\mathbf{x} \in \mathbb{R}^m$.
+Наступний крок --- це обрахунок $n$ виразів $\Sigma_j \gets
+\boldsymbol{w}_j^{\top}\mathbf{x}+\beta_j$ для $1 \leq j \leq n$. Ці вирази
+подаються на вхід сігмоїдальній функції $\sigma$, що називають
+\textit{активаційною функцією}, що видає значення \textit{скритого шару} $z_j =
+\sigma(\Sigma_j)$. Нарешті, вихідний шар це просто лінійна комбінація значень
+скритого шару з вагами $\alpha_j$\footnote{Зараз такий б перехід на вихідний шар
+би назвали звичайним шаром без активаційної функції}:
+\begin{equation*}
+	\hat{f}(\mathbf{x}) = \sum_{j=1}^n \alpha_j z_j = \sum_{j=1}^n \alpha_j \sigma(\boldsymbol{w}_j^{\top}\mathbf{x} + \beta_j).
+\end{equation*}
+
+Альтернативно, ``на сучасний лад'' зараз цю формулу більшість дослідників записали б в наступному вигляді:
+\begin{equation*}\label{eq:modern_cybenko}
+	\hat{f}(\mathbf{x}) = \boldsymbol{\alpha}^{\top}\sigma(\boldsymbol{W}\mathbf{x} + \boldsymbol{\beta}),
+\end{equation*}
+
+де $\boldsymbol{\alpha} \in \mathbb{R}^n$ --- вектор ваг скритого шару,
+$\boldsymbol{W} \in \mathbb{R}^{m \times n}$ --- матриця ваг, а
+$\boldsymbol{\beta} \in \mathbb{R}^n$ --- вектор зсувів (biases). 
+\begin{remark}
+    Тут і далі запис $\sigma(\mathbf{z})$ для вектору $\mathbf{z} \in
+    \mathbb{R}^n$ розуміємо як вектор $(\sigma(z_1),\dots,\sigma(z_n)) \in \mathbb{R}^n$.
+\end{remark}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		% Define layers and node style
+		\tikzset{input-neuron/.style={
+			circle, 
+			draw=green!80!black, 
+			line width=0.5mm,
+			fill=green!20!white,
+			minimum size=0.5cm
+		}}
+		\tikzset{hidden-neuron/.style={
+			circle, 
+			draw=blue!80!black, 
+			line width=0.5mm,
+			fill=blue!20!white,
+			minimum size=0.5cm
+		}}
+		\tikzset{output-neuron/.style={
+			circle, 
+			draw=orange!80!black, 
+			line width=0.5mm,
+			fill=orange!20!white,
+			minimum size=0.5cm
+		}}
+		
+		% Input layer
+		\foreach \i in {1, 2, 3} {
+			\node[input-neuron] (I\i) at (0, -1.25*\i) {$x_{\i}$};
+		}
+	
+		% Hidden layer
+		\foreach \j in {1, 2, 3, 4, 5} {
+			\node[hidden-neuron] (h\j) at (4, -1.25*\j + 1.25) {$\Sigma$};
+			\node[hidden-neuron] (H\j) at (6, -1.25*\j + 1.25) {$z_{\j}$};
+			\draw[very thick,-{Stealth[length=3.5mm]}] (h\j) to [edge label=$\sigma$] (H\j);
+		}
+	
+		% Output layer
+		\node[output-neuron] (O) at (10, -2.5) {$\hat{f}(\mathbf{x})$};
+	
+		% Draw connections from input to hidden layer
+		\foreach \i in {1, 2, 3} {
+			\foreach \j in {1, 2, 3, 4, 5} {
+				\draw[very thick,-{Stealth[length=3.5mm]}] (I\i) -- (h\j);
+			}
+		}
+	
+		% Draw connections from hidden to output layer
+		\foreach \j in {1, 2, 3, 4, 5} {
+			\draw[very thick,-{Stealth[length=3.5mm]}] (H\j) -- (O);
+		}
+	
+		% Labels
+		\node[above, align=center] at (0, 0.5) {\textcolor{green!80!black}{\textbf{Вхідний шар}}\\$m$ нейронів};
+		\node[above, align=center] at (5, 0.5) {\textcolor{blue!80!black}{\textbf{Скритий шар}}\\$n$ нейронів};
+		\node[above, align=center] at (10, 0.5) {\textcolor{orange!80!black}{\textbf{Вихідний шар}}\\1 нейрон};
+	
+	\end{tikzpicture}
+	\caption{Архітектура нейронної мережі з оригінальної роботи Цибенко \cite{cybenko} для випадку $m=3$, $n=5$. Стрілочки позначають передачу значення з відповідною вагою.}
+	\label{cybenko-net}
+\end{figure}
+
+\subsection{Теореми Цибенко}
+
+Нехай $\mathcal{Q}_m = [0,1]^m$ є $m$-вимірним одиничним гіперкубом. Простір
+неперервних функцій $f: \mathcal{Q}_m \to \mathbb{R}$ на $\mathcal{Q}_m$
+позначимо як $\mathcal{C}(\mathcal{Q}_m)$ і введемо норму функції $f \in
+\mathcal{C}(\mathcal{Q}_m)$ як:
+\begin{equation*}
+    \|f\|_{\mathcal{Q}_m} = \sup_{\mathbf{x} \in \mathcal{Q}_m} |f(\mathbf{x})|.
+\end{equation*}
+
+Один з головних результатів, отриманих Цибенко, наступний:
+\begin{theorem}\label{theorem:cybenko_1}
+    Нехай $\sigma$ будь-яка неперервна сігмоїдальна функція. Суми вигляду
+    $\hat{f}(\mathbf{x}) = \sum_{j=1}^n
+    \alpha_j\sigma(\boldsymbol{w}_j^{\top}\mathbf{x} + \beta_j)$ є щільними у
+    $\mathcal{C}(\mathcal{Q}_m)$ та $L^1(\mathcal{Q}_m)$. Інакшими словами, для
+    будь-якої функції $f \in \mathcal{C}(\mathcal{Q}_m)$ та $\varepsilon > 0$,
+    існує сума $\hat{f}(\mathbf{x})$ така, що:
+    \begin{enumerate}[(A)]
+        \item $|\hat{f}(\mathbf{x})-f(\mathbf{x})|<\varepsilon$ для всіх $\mathbf{x} \in
+        \mathcal{Q}_m$.
+        \item $\int_{\mathcal{Q}_m}|\hat{f}(\mathbf{x})-f(\mathbf{x})|d\mathbf{x} <
+        \varepsilon$.
+    \end{enumerate}
+\end{theorem}
+
+Дуже просто цю теорему можна пояснити наступним чином: для будь-якої неперервної
+на $\mathcal{Q}_m$ функції $f$ знайдеться параметризації нейронної мережі, що
+дозволить апроксимувати за допомогою $\hat{f}$ цю функцію з довільною точністю.
+Зауважимо, що це \textit{теорема про існування} і вона не є конструктивною: вона
+не дає алгоритму, який знаходить параметри
+$\{\alpha_j,\boldsymbol{w}_j,\beta_j\}_{1 \leq j \leq n}$ для довільної функції
+$f$ і навіть не показує, чи можна їх знайти за допомогою алгоритмів оптимізації.
+
+Окрім доведення теореми про апроксимацію, Цибенко також показав, що задана сума
+$\hat{f}$ може апроксимувати класифікатор на $\mathcal{Q}_m$ з довільною
+точністю. Більш конкретно, нехай $\mathcal{P}_0,\dots,\mathcal{P}_{C-1}$ ---
+розбиття $\mathcal{Q}_m$ на $C$ підмножин (що називають \textit{класами}). Нехай
+маємо функцію $f: \mathcal{Q}_m \to \{0,\dots,C-1\}$, що задана за наступним
+правилом:
+\begin{equation*}
+    f(\mathbf{x}) = j \iff \mathbf{x} \in \mathcal{P}_j.
+\end{equation*}
+
+Ця функція, вочевидь, не є неперервною на $\mathcal{Q}_m$, тому Теорему
+\ref{theorem:cybenko_1} застосувати не можна. Проте, можна показати, що і цю
+функцію ми можемо апроксимувати за допомогою суми $\hat{f}$ з довільною
+точністю. Це дозволяє використовувати нейронні мережі для класифікації даних.
+Розглянемо наступну теорему.
+\begin{theorem}\label{theorem:cybenko_2}
+    Нехай $\sigma$ будь-яка неперервна сігмоїдальна функція і функція
+    $f$ задана як вище. Тоді для будь-якої такої функції існує сума
+    \begin{equation*}
+        \hat{f}(\mathbf{x}) = \sum_{j=1}^n \alpha_j \sigma(\boldsymbol{w}_j^{\top}\mathbf{x} + \beta_j)
+    \end{equation*}
+    та множина $\mathcal{D} \subseteq \mathcal{Q}_m$ така, що міра
+    $\mu(\mathcal{D}) \geq 1-\varepsilon$ та $|\hat{f}(\mathbf{x}) -
+    f(\mathbf{x})| < \varepsilon$ для всіх $\mathbf{x} \in \mathcal{D}$.
+\end{theorem}
+
+На відміну від Теореми \ref{theorem:cybenko_1}, Теорема \ref{theorem:cybenko_2}
+не гарантує апроксимацію на усьому гіперкубі $\mathcal{Q}_m$. Проте, зі
+збільшенням точності (тобто, зменьшенням $\varepsilon$) ми можемо збільшувати
+міру тої області $\mathcal{D}$, на якій апроксимація ``гарна'' (себто в тій
+області, на якій відхилення $\hat{f}(\mathbf{x})$ від $f(\mathbf{x})$ меньше за
+$\varepsilon$).
+
+\subsection{Практичний Приклад}
+
+\begin{example}
+	Розглянемо більш конкретний приклад. Нехай нам потрібно побудувати 
+	класифікатор для двох класів на квадраті $\mathcal{Q}_2$ (класифікацію з двох 
+	класів називають \textit{бінарною}). Задамо дві області:
+	\begin{equation*}
+		\mathcal{P}_1 := \left\{(x_1,x_2) \in \mathcal{Q}_2: a^2\left(x_2-0.5\right)^2 - b^2\left(x_1-0.5\right)^2 < 1\right\}, \; \mathcal{P}_0 := \mathcal{Q}_2 \setminus \mathcal{P}_1,
+	\end{equation*}
+
+	де обрано $a:=5,b:=2\sqrt{5}$. Іншими словами, наша задача --- це апроксимувати індикатор функцію
+	$f(\mathbf{x}) = \mathds{1}[\mathbf{x} \in \mathcal{P}_1]$. Для наглядності,
+	обидві області зображені на Рис.~\ref{fig:classification_example}. В якості
+	сігмоїдальної функції оберемо функцію логістичної регресії: $\sigma(x) :=
+	1/(1+e^{-x})$ та візьмемо $n=6$ нейронів у скритому шарі. Таким чином,
+	функція $\hat{f}$ матиме вигляд:
+	\begin{equation*}
+		\hat{f}(\mathbf{x}) = \sum_{j=1}^6 \frac{\alpha_j}{1+e^{-\boldsymbol{w}_j^{\top}\mathbf{x} + \beta_j}}, \quad \boldsymbol{w}_j \in \mathbb{R}^2, \quad \alpha_j,\beta_j \in \mathbb{R}.
+	\end{equation*}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.75\textwidth]{code/classification-example.pdf}
+		\caption{Класи $\mathcal{P}_0$ та $\mathcal{P}_1$ на квадраті
+		$\mathcal{Q}_2$. Разом з класами, зображено набір данних
+		$\mathcal{D}=\{(\mathbf{x}_n,\mathds{1}(\mathbf{x}_n \in
+		\mathcal{P}_1))\}_{1 \leq n \leq N} \subset \mathcal{Q}_2 \times
+		\{0,1\}$.}
+		\label{fig:classification_example}
+	\end{figure}
+
+	Питання: якими мають бути параметри для того, щоб функція $\hat{f}$
+	апроксимувала функцію $f$ з гарною точністю? Виявляється, що достатньо
+	непоганий результат можна отримати використовуючи наступні параметри:
+	\begin{align*}
+		\boldsymbol{\alpha} &\approxeq (-8.18, 3.81, 3.91, -3.41, 5.07, 1.16), \\
+		\boldsymbol{\beta} &\approxeq (1.13, -2.20, 1.72, 12.47, 8.46, 5.02), \\
+		\boldsymbol{W} &\approxeq \begin{bmatrix}
+			0.06 & 4.85 & -4.39 & -11.81 & -7.59 & 14.19 \\
+			-6.44 & -7.67 & -6.76 & -15.67 & -10.26 & -19.17
+		\end{bmatrix}^{\top}.
+	\end{align*}
+	Помітимо, що ми трошки скоротили запис, сформувавши з параметрів вектори та
+	матриці, як це було зроблено у Формулі~\ref{eq:modern_cybenko}.
+\end{example}
+
+Зверніть, що на Рис.~\ref{fig:classification_example} ми також зображуємо набір
+даних $\mathcal{D}$, що складається з $N=1000$ точок з відповідним маркуванням
+(бітом), що відповідає класу, до якого належить точка. Головна причина цього ---
+мати спосіб знайти параметри моделі $\hat{f}$: ми можемо використати, наприклад,
+алгоритм градієнтного спуску для мінімізації функції втрат. 
+
+\begin{remark}[Про тренування моделі]
+	Забігаючи вперед, для підбору оптимальних параметрів ми використовували
+	середньоквадратичну функцію втрати:
+	\begin{equation*}
+		\mathcal{L}(\mathcal{D}|\boldsymbol{\theta}) = \frac{1}{N}\sum_{n=1}^N \left(\hat{f}(\mathbf{x}_n|\boldsymbol{\theta}) - y_n\right)^2,
+	\end{equation*}
+	і далі використовували алгоритм градієнтного спуску (Adam Optimizer \cite{adam}) для мінімізації цього виразу відносно параметрів $\boldsymbol{\theta}$. Більше деталей наведено у Додатку~\ref{appendix:cybenko-code}.
+\end{remark}
+
+Після тренування, результати зображені на
+Рис.~\ref{fig:classification_result}(а). Помітимо, що вихід
+$\hat{f}(\mathbf{x})$ не є бінарним, але можна ввести поріг $\tau \in
+\mathbb{R}$ такий, що передбачення $\hat{y} := \mathds{1}(\hat{f}(\mathbf{x}) >
+\tau)$ відповідає класу 1 за умови $\hat{f}(\mathbf{x}) > \tau$, а інакше ---
+класу 0. На Рис.~\ref{fig:classification_result}(б) зображено результати
+класифікації для $\tau=0.62$. Як бачимо, класифікатор працює досить добре.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.99\textwidth]{code/classification-cont-prediction.pdf}
+		\caption{Результат класифікації $\hat{f}(\mathbf{x})$ на квадраті $\mathcal{Q}_2$.}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.99\textwidth]{code/classification-discr-prediction.pdf}
+		\caption{Бінарний результат класифікації $\mathds{1}(\hat{f}(\mathbf{x})>\tau)$ з порогом $\tau \approxeq 0.62$.}
+	\end{subfigure}
+	\caption{Результати класифікації для класів $\mathcal{P}_0$ та $\mathcal{P}_1$ на квадраті $\mathcal{Q}_2$.}
+	\label{fig:classification_result}
+\end{figure}
+
+Також для цікавості, можна побудувати подібне зображення передбачень, але для 
+кожного нейрону. На Рис.~\ref{fig:classification_neuron} зображено результати
+передбачень для кожного нейрону у скритому шарі.
+
+\begin{figure}
+\begin{tikzpicture}[
+    node distance=1.5cm and 1.5cm,
+    every node/.style={inner sep=0pt, anchor=center},
+    ->, >=Stealth
+]
+    % Initial image node
+    \node (input) {
+        \includegraphics[trim={1cm 0.5cm 3.75cm 1cm},clip,width=6cm]{code/dataset.pdf}
+    };
+
+    % Hidden layer nodes arranged horizontally below the input
+    \foreach \i [count=\j from 1] in {1, 2, 3, 4, 5, 6} {
+        \node[below=2.25cm of input, xshift=(\j - 3.5) * 2.75cm] (hidden\i) {
+            \includegraphics[trim={1cm 0.5cm 3.75cm 1cm},clip,width=2.75cm]{code/layer-\i-prediction.pdf}
+        };
+        % Connect input to each hidden layer node
+        \draw[ultra thick,-{Stealth[length=3.5mm]}] (input.south) -- (hidden\i.north);
+    }
+
+    % Final prediction node centered below the hidden layer
+    \node[yshift=-12.5cm, xshift=-4.0cm] (output) {
+        \includegraphics[trim={1cm 0.5cm 3.75cm 1cm},clip,width=6cm]{code/classification-cont-prediction.pdf}
+    };
+
+	% Discrete prediction node right to the final prediction
+	\node[right=2.5cm of output] (discrete) {
+		\includegraphics[trim={1cm 0.5cm 3.75cm 1cm},clip,width=6cm]{code/classification-discr-prediction.pdf}
+	};
+
+    % Connect hidden layer nodes to final output
+    \foreach \i in {1, 2, 3, 4, 5, 6} {
+        \draw[ultra thick,-{Stealth[length=3.5mm]}] (hidden\i.south) -- (output.north);
+    }
+
+	% Draw a transparent green rectangle line on the level of the input layer and 
+	% make a transparent green background for the input layer
+	\scoped[on background layer]\draw[green!50!black, fill=green, line width=0.5mm,
+	fill opacity=0.2,dashed] ([xshift=-2.5cm,yshift=0.5cm]input.north west) rectangle ([xshift=2.5cm,yshift=-0.5cm]input.south east);
+
+	% Same for hidden layer with a blue color and orange for output
+	\scoped[on background layer]\draw[blue!50!black, fill=blue, line width=0.5mm,
+	fill opacity=0.2,dashed] ([xshift=-8.5cm,yshift=0.5cm]hidden3.north east) rectangle ([xshift=8.5cm,yshift=-0.5cm]hidden3.south east);
+	\scoped[on background layer]\draw[orange!50!black, fill=orange, line width=0.5mm,
+	fill opacity=0.2,dashed] ([xshift=-6.5cm,yshift=0.10cm]output.north east) rectangle ([xshift=9.0cm,yshift=-0.10cm]output.south east);
+
+	% Labels written verfically left to the boxes
+	\node[rotate=90] at ([xshift=-6.0cm]input) {\textcolor{green!80!black}{\textbf{Вхідний шар}}};
+	\node[rotate=90] at ([xshift=-7.50cm]hidden3) {\textcolor{blue!80!black}{\textbf{Скритий шар}}};
+	\node[rotate=90] at ([xshift=-4.0cm]output) {\textcolor{orange!80!black}{\textbf{Вихідний шар}}};
+
+	% Between input layer and hidden layer, write down x -> w^T x + b in a box with fill
+	\node[below=0.60cm of input, fill=blue!20!white, dashed, minimum size=1cm, text width=5cm, align=center, rounded corners=.55cm] {\normalsize$\mathbf{x} \xrightarrow{\boldsymbol{w}^{\top}_j\mathbf{x} + \beta_j} \Sigma_j \xrightarrow{\sigma} z_j$};
+
+	% Between hidden layer and output layer, write down sum of z_j * alpha_j
+	\node[above=0.40cm of output, fill=orange!20!white, dashed, minimum size=1cm, text width=5cm, align=center, rounded corners=.55cm] {\normalsize$\hat{f}(\mathbf{x}) \gets \langle \boldsymbol{\alpha}, \mathbf{z} \rangle$};
+
+	% And arrow as well with a text
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (output.east) -- (discrete.west) node[midway, above=0.25cm, align=center] {Поріг $\tau$};
+\end{tikzpicture}
+
+\caption{Результати передбачень для кожного нейрону у скритому шарі.}
+\label{fig:classification_neuron}
+
+\end{figure}
+
+\subsection{Подальший розвиток архітектури Цибенко}
+
+Звичайно, що науковці не зупинились на результатах Цибенко. В подальших 
+архітектурах, дослідники ставили багато питань, таких як:
+\begin{itemize}
+	\item Що, якщо зробити кілька скритих шарів у мережі?
+	\item Чи можна використовувати інші активаційні функції окрім сігмоїдів?
+	\item А чи можна поєднувати два скритих шара іншим способом?
+\end{itemize}
+
+Саме тому, була введена багатошарова модель персептронів (Multi-Layer
+Perceptrons --- MLP), яку ми сформулюємо нижче.
+\begin{definition}[Багатошарова модель персептронів]\label{def:mlp}
+	Нехай $\ell \in \mathbb{N}$ --- кількість шарів у мережі, а
+	$n_0,\dots,n_{\ell} \in \mathbb{N}$ --- кількість нейронів у кожному шарі,
+	де $\mathbf{x}^{\langle 0 \rangle} \in \mathbb{R}^{n_0}$ відповідає вхідному
+	шару. Тоді, для знаходження виходу $\mathbf{x}^{\langle \ell \rangle} \in
+	\mathbb{R}^{n_{\ell}}$, багатошарова модель персептронів використовує
+	наступне рекурентне правило:
+	\begin{equation*}
+		\mathbf{x}^{\langle j+1 \rangle} = \phi^{\langle j \rangle}(\mathbf{z}^{\langle j \rangle}), \quad \mathbf{z}^{\langle j \rangle} = \boldsymbol{W}^{\langle j \rangle}\mathbf{x}^{\langle j \rangle} + \boldsymbol{\beta}^{\langle j \rangle}, \quad j = 0,\dots,\ell-1,
+	\end{equation*}
+	де $\phi^{\langle j \rangle}$ --- активаційна функція у шарі $j$, а
+	$\boldsymbol{W}^{\langle j \rangle} \in \mathbb{R}^{n_{j+1} \times n_j}$ та
+	$\boldsymbol{\beta}^{\langle j \rangle} \in \mathbb{R}^{n_{j+1}}$ ---
+	матриця ваг та вектор зсуву у шарі $j$ відповідно. Таким чином,
+	параметризація моделі є $\boldsymbol{\theta} =
+	\left\{\boldsymbol{W}^{\langle j \rangle},\boldsymbol{\beta}^{\langle j
+	\rangle}\right\}_{0 \leq j \leq \ell-1}$.
+\end{definition}
+
+\subsubsection{Навіщо більше шарів?}
+
+Здавалося б, якщо ми можемо апроксимувати будь-яку функцію за допомогою одного
+скритого шару, то навіщо нам багатошарові моделі? Виявляється, що більше шарів
+дозволяють нам апроксимувати складніші функції за допомогою меншої кількості
+нейронів і чисельно знаходити їх стає простіше. Емпірично, набір правил, що
+описують ефективність моделі від кількості тренувальних параметрів, розміру
+набору даних та інших факторів, називають законами масштабування
+(\textit{Scaling Laws}). Зокрема, емпірично, середнє значення функції втрати $L$
+залежить від кількості параметрів $N$ як $L \propto N^{-\alpha}$ для певної
+константи $\alpha>0$. Більш детальне дослідження від інших параметрів таких як
+гіперпараметри архітектури, розміру набору даних можна подивитися у джерелі
+\cite{scaling}. Зокрема, джерело \cite{params-generalization} строго показує
+асимптотичну залежність між кількістю параметрів та загальнізацією моделі для
+задачі класифікації, а джерело \cite{params-generalization-2} доводить, що якщо
+розмір вибірки $D$ і вхід складається з $m$ нейронів, то при кількості
+параметрів $N=(D/(m\log D))^{1/2}$, то, асимтотично, $L_2$ норма різниці між
+апроксимацією та реальною функцією обмежена як $\mathcal{O}((m/D)\log D)^{1/2}$.
+
+\subsubsection{Навіщо інші активаційні функції?}
+Окрім того, на практиці, логістична функція виявляється дуже незручною. Зокрема,
+вона відноситься до класу функцій, що називаються \textit{ненасиченими} (або
+\textit{non-saturating activation function}). Основна проблема полягає у тому,
+що під час навчання моделі, ми використовуємо градієнтні методи, які полагаються
+на значення матриці Якобіана функції втрати відносно параметрів моделі.
+Спрощено, моделі змінюються на мале значення $\delta\boldsymbol{\theta}
+\approxeq \eta
+(\partial\mathcal{L}/\partial\boldsymbol{\theta})\Big|_{\boldsymbol{\theta}=\boldsymbol{\theta}_{\text{current}}}$.
+У ході обчислення цього градієнту, ми використовуємо правило ланцюга, що
+призводить до того, що кожен доданок у виразі містить вираз $\sigma'(z)$ у
+добутку. Для логістичної функції, похідна $\sigma'(z) = \sigma(z)(1-\sigma(z))$ і
+легко бачити, що як для малих, так і для великих значень $z$, ця похідна
+дуже стрімко наближається до нуля, що призводить до проблеми \textit{вицідження
+градієнту} (\textit{vanishing gradient problem}). Це означає, що градієнт
+функції втрати може бути дуже малим, що призводить до того, що модель не
+навчається. Зокрема, нижче ми наводимо популярні функції, що використовують 
+для розв'язку цієї проблеми:
+\begin{enumerate}
+	\item \textbf{ReLU} (Rectified Linear Unit): $\phi(z) = \max\{0,z\}$. Ця 
+	функція має похідну $\phi'(z) = \mathds{1}(z>0)$, тобто за додатніх
+	значень $z$ градієнт не виціджується. Проте, для від'ємних значень $z$,
+	градієнт нульовий, через що модель може ``тормозити''. Для виріження цієї 
+	проблеми, було запропоновано модифікації ReLU, такі як Leaky ReLU.
+	\item \textbf{Leaky ReLU}: $\phi(z) = \max\{\alpha z,z\}$ де $\alpha \in
+	[0,1)$ --- мале значення (на практиці, порядку $10^{-3}$). Ця функція має
+	похідну $\phi'(z)\Big|_{z<0} = \alpha$, що дозволяє градієнту не
+	виціджуватись для від'ємних значень $z$.
+	\item \textbf{ELU} (Exponential Linear Unit): $\phi(z) =
+	\max\{0,z\}+\min\{\alpha(e^z-1),0\}$, де $\alpha$ --- додатне значення. Ця
+	функція має похідну $\phi'(z)\Big|_{z<0} = \alpha e^z$. За великих від'ємних
+	значень $z$, ця функція збігається з ReLU, але має неперервну та нестрого
+	нульову похідну для від'ємних значень $z$.
+\end{enumerate}
+
+\subsubsection{Інша архітектура}
+
+Ще одним питанням, яке виникає, це як поєднувати шари у мережі. Поки що, логіка
+така: кожен нейрон $i$ у шарі $\ell$ з'єднаний з кожним нейроном $j$ у шарі
+$\ell+1$ з певною вагою $w_{i,j}^{\langle \ell \rangle}$ (що і утворюють матрицю
+ваг $\boldsymbol{W}^{\langle \ell \rangle}$). Проте, чи дійсно нам потрібно 
+стільки зв'язків? І чи дійсно така репрезентація здатна відобразити достатньо
+складні стосунки за малу кількість параметрів? Виявляється, що для певних задач
+можна використовувати інші архітектури. Нижче наведемо два приклади, що 
+показують проблематику зв'язків у мережі.
+
+\begin{example}
+	Уявіть, що вам потрібно побудувати бінарну класифікацію для кольорового
+	зображення відносно невеликого розміру --- скажімо, $200 \times 200$
+	пікселів. Якщо у якості входу взяти кожен окремий піксель як нейрон, то
+	кількість параметрів у першому шарі буде $200 \times 200 \times 3 = 120000$.
+	Уявімо, що у скритий шар ми поставимо буквально 10 нейронів (на практиці,
+	така кількість мала для досягнення хорошої точності). Таким чином, кількість
+	параметрів у моделі буде як мінімум $120000 \times 10 = 1.2$ млн. 
+\end{example}
+
+\begin{example}
+	Що робити, якщо розмір входу та виходу, взагалі кажучи, не фіксовані 
+	(наприклад, обробка тексту)? Звичайно, можна задати ``зазделегідь''
+	максимальний розмір входу та виходу, але окрім аномальної кількості
+	параметрів, точність такої моделі може бути дуже низькою.
+\end{example}
+
+У рамках цієї курсової роботи, ми не беремось за повний і строгий опис всіх
+сучасних архітектур, проте навели основний фундамент для подальшого вивчення
+глибокого навчання. Для більш детального огляду, рекомендуємо звернутися до
+джерел \cite{book-1,book-2}.
+
+\section{Теорема Колмогорова-Арнольда}
+
+\subsection{Історія та Мотивація}
+
+Ще один дуже цікавий спосіб підходу до апроксимації функцій --- це використання
+теореми Колмогорова-Арнольда. Історично, ця теорема походить з 13 задачі
+Гільберта, яка була запропонована на Паризькому конгресі математиків у 1900 році.
+Вона задає доволі провокативне питання: а чи існують справді неперервні 
+дійснозначні багатовимірні функції? Здавалося б, доволі дивне запитання,
+але воно по суті і описує 13 задачу і, відповідно, її розв'язок --- теорему
+Колмогорова-Арнольда. 
+
+Більш конкретно, питання полягає у тому, чи можна будь-яку, скажімо, неперервну
+функцію $f: \mathcal{Q}_m \to \mathbb{R}$ апроксимувати за допомогою суми та
+композицій певного набору одновимірних неперервних функцій
+$\phi_1,\dots,\phi_N$? Розглянемо декілька прикладів на основі
+\cite{ka-explained}, щоб показати суть цієї задачі.
+
+\begin{example}
+	Нехай $f: \mathcal{Q}_2 \to \mathbb{R}$ задана як $f(x,y) = 3x+5y$. Якщо
+	позначити $\phi_1(x)=3x$, $\phi_2=5y$, то $f(x,y) = \phi_1(x)+\phi_2(y)$.
+	Отже, маємо функцію двох змінних, проте вона може бути записана як сума двох
+	функцій однієї змінної.
+\end{example}
+
+\begin{example}
+	Попередній приклад здається зовсім тривіальним. А що, якщо $f(x,y)=xy$? Помітимо 
+	наступне\footnote{Тут і далі під записом $\log$ розуміємо натуральний логарифм}:
+	\begin{equation*}
+		f(x,y) = xy = e^{\log (x+1) + \log(y+1)} + \left(-x-0.5\right) + \left(-y-0.5\right).
+	\end{equation*}
+	Нехай $\phi_1(x) := e^x$, $\phi_2(x) := \log(x+1)$,
+	$\phi_3 := -x-0.5$. Тоді:
+	\begin{equation*}
+		f(x,y) = \phi_1(\phi_2(x)+\phi_2(y)) + \phi_3(x) + \phi_3(y).
+	\end{equation*}
+
+	Отже, функція $f(x,y)$ може бути записана як сума та композиція функцій
+	однієї змінної $\phi_1(x),\phi_2(x),\phi_3(x)$.
+\end{example}
+
+\begin{example}
+	Нехай $f(x,y) = \sin (10e^x + y^{100})$, а також $\phi_1(x) := 10e^x,
+	\phi_2(x) := y^{100}$ та $\phi_3(x) := \sin x$. Тоді $f(x,y) =
+	\phi_3(\phi_1(x)+\phi_2(y))$, тобто так само маємо $f(x,y)$ як композицію та
+	суму одновимірних функцій.
+\end{example}
+
+Отже, на основі цих прикладів можна зрозуміти суть 13 проблеми Гільберта.
+\begin{statement}[Основна гіпотеза 13 проблеми Гільберта]
+	Існує неперервна функція $f: \mathcal{Q}_3 \to \mathbb{R}$, що не може бути
+	виражена як композиція та сума неперервних функцій $\phi_1,\dots,\phi_N \in
+	\mathcal{C}(\mathbb{R}^2)$.
+\end{statement}
+
+Знадобилося більше 50 років для того, щоб довести, що це твердження
+\textit{хибне}. У 1956 році Колмогоров довів, що функція будь-якої кількості
+змінних (себто, $\mathcal{Q}_m$ може бути довільним гіперкубом) може бути
+записана як сума та композиція трьохвимірних функцій. У 1957, у 19 років,
+Арнольд показав, що три змінні можна замінити на дві, що власне і розв'язує в
+більш загальному вигляді 13 проблему Гільберта. Нарешті, згодом Колмогоров 
+показав, що дві змінні можна замінити на одну, що врешті-решт і дає 
+відому теорему Колмогорова-Арнольда.
+
+\begin{theorem}[Згідно джерелу \cite{ka-explained}]
+	Для будь-якого натурального $m \geq 2$, існують неперервні функції
+	$\phi_1,\dots,\phi_{2m+1} \in \mathcal{C}([0,1])$ та дійсні числа
+	$\lambda_1,\dots,\lambda_m \in \mathbb{R}$ з такою властивістю, що для
+	будь-якої функції $f \in \mathcal{C}(\mathcal{Q}_m)$ знайдеться неперервна
+	функція $\Phi: \mathbb{R} \to \mathbb{R}$ така, що для будь-якого
+	$\mathbf{x} = (x_1,\dots,x_m) \in \mathcal{Q}_m$ справедливо:
+	\begin{equation*}
+		f(\mathbf{x}) = \sum_{q=1}^{2m+1}\Phi\left(\sum_{p=1}^{m}\lambda_p\phi_q(x_p)\right)
+	\end{equation*}
+\end{theorem}
+
+\begin{remark}\label{remark:ka-remark}
+	В цій формулі дуже багато чого цікавого! По-перше, дивує сам факт не наближеної
+	апроксимації, а точної рівності. По-друге, важливо помітити, що функції
+	$\phi_1,\dots,\phi_{2m+1}$ не залежать від $f$, але залежать від $m$. Це
+	означає, що ми можемо знайти ці функції один раз, і вони будуть працювати для
+	будь-якої функції $f$! Після чого залишиться лише знайти $\Phi$.
+\end{remark}
+
+Здавалося б, враховуючи Зауваження~\ref{remark:ka-remark}, чому ми не можемо
+спочатку знайти ці функції, а потім використовувати їх у прикладних задачах?
+Річ у тому, що ніхто не гарантує, що ці функції взагалі мають бути диференційованими
+і тим паче неперервно диференційованими. Саме тому, подальший пошук функції $\Phi$
+автоматично стає майже неможливим завданням. Тому, як ми можемо використовувати
+теорему Колмогорова-Арнольда для побудови нейронних мереж?
+
+\subsection{Мережі Колмогорова-Арнольда}
+
+Довгий час ідею теореми Колмогорова-Арнольда не пробували застосовувати до
+глибокого навчання через ``поганість'' функцій $\Phi,\phi_1,\dots,\phi_{2m+1}$.
+Проте, буквально у цьому році найпоширенішою темою дискусії у суспільстві
+розробників глибокого навчання стала робота ``KAN: Kolmogorov-Arnold Networks''
+\cite{kan}. По суті, до моменту публікації, єдина парадигма апроксимації функцій
+полягала у побудові MLP мереж (та їх подальших варіацій у вигляді конволюційних,
+рекурентних мереж тощо), що грунтується на вище описаній універсальній теоремі
+апроксимації \ref{theorem:cybenko_1}. Однак, автори роботи \cite{kan} показали,
+що і на основі репрезентації Колмогорова-Арнольда можна побудувати нейронні мережі. 
+Яким чином?
+
+Робота \cite{kan} використовує оригінальну теорему Колмогорова-Арнольда \cite{kolmogorov-original}.
+\begin{definition}[Оригінальна теорема Колмогорова \cite{kolmogorov-original}]
+	Для будь-якого натурального $m \geq 2$, існують неперервні функції
+	$\phi_{p,q} \in \mathcal{C}([0,1])$ такі, що для будь-якої функції $f \in
+	\mathcal{C}(\mathcal{Q}_m)$ знайдуться неперервні функції
+	$\Phi_1,\dots,\Phi_{2m+1} \in \mathcal{C}(\mathbb{R})$ такі, що
+	\begin{equation*}
+		f(x_1,\dots,x_m) = \sum_{q=1}^{2m+1}\Phi_q\left(\sum_{p=1}^n \phi_{p,q}(x_p)\right)
+	\end{equation*}
+\end{definition}
+
+Проте, як і для Означення~\ref{def:mlp} MLP мереж, нам потрібно вміти узагальнювати
+означення для довільної кількості шарів та нейронів в кожному шарі. Робота 
+\cite{kan} стала першою, що запропонувала таку узагальнену модель. Спочатку,
+наведемо що є \textit{з'єднанням в KAN мережі}.
+
+\begin{definition}
+	\textbf{З'єднання KAN Мережі} між шаром з $n_{\text{in}} \in \mathbb{N}$
+	нейронами (активаціями) та шаром з $n_{\text{out}} \in \mathbb{N}$ нейронами
+	складається з матриці функцій $\boldsymbol{\Phi} = \{\phi_{q,p}\}_{1\leq
+	p\leq n_{\text{in}}, 1 \leq q \leq n_{\text{out}}}$, де кожна функція
+	$\phi_{q,p}: \mathbb{R} \to \mathbb{R}$ параметризується параметрами
+	$\boldsymbol{\theta}_{q,p}$. Значення нейронів (активацій)
+	$\mathbf{x}_{\text{out}} \in \mathbb{R}^{n_{\text{out}}}$ через попередні
+	нейрони $\mathbf{x}_{\text{in}} \in \mathbb{R}^{n_{\text{in}}}$ визначається
+	згідно рівнянню $\mathbf{x}_{\text{out}} = \boldsymbol{\Phi} \circ
+	\mathbf{x}_{\text{in}}$, де під виразом $\boldsymbol{\Phi} \circ
+	\mathbf{x}_{\text{in}} \in \mathbb{R}^{n_{\text{out}}}$, по аналогії з
+	матричним добутком, мається на увазі:
+	\begin{equation*}
+		(\boldsymbol{\Phi} \circ \mathbf{x}_{\text{in}})_j = \sum_{i=1}^{n_{\text{in}}}\phi_{j,i}(x_{\text{in},i}), \quad j \in \{1,\dots,n_{\text{out}}\}.
+	\end{equation*}
+\end{definition}
+
+Отже, ми можемо дати означення безпосередньо мережі.
+\begin{definition}[Архітектура KAN]
+	Нехай $\ell \in \mathbb{N}$ --- кількість шарів у мережі, а
+	$n_0,\dots,n_{\ell} \in \mathbb{N}$ --- кількість нейронів у кожному шарі,
+	де $\mathbf{x}^{\langle 0 \rangle} \in \mathbb{R}^{n_0}$ відповідає вхідному
+	шару. Тоді, для знаходження виходу $\mathbf{x}^{\langle \ell \rangle} \in
+	\mathbb{R}^{n_{\ell}}$, архітектура KAN використовує рекурентне правило
+	$\mathbf{x}^{\langle j+1 \rangle} = \boldsymbol{\Phi}^{\langle j \rangle}
+	\circ \mathbf{x}^{\langle j \rangle}$, $j \in \{0,\dots,\ell-1\}$, де
+	$\boldsymbol{\Phi}^{\langle j \rangle} =
+	\{\phi^{\langle j \rangle}_{q,p}\}_{1\leq p\leq n_j, 1 \leq q \leq
+	n_{j+1}}$ --- матриця функцій-ваг $j$. В розгорнутому вигляді, нейронна мережа $\hat{f}_{\text{KAN}}$ записується як:
+	\begin{equation*}
+		\hat{f}_{\text{KAN}}(\mathbf{x}) = \left(\bigcirc_{j=1}^{\ell}\boldsymbol{\Phi}^{\langle \ell - j \rangle}\right)\circ \mathbf{x}
+	\end{equation*}
+\end{definition}
+
+Таке визначення може здатися доволі заплутаним, тому давайте розглянемо приклад.
+
+\begin{example}[Теорема Арнольда як частковий випадок KAN]
+	Нагадаємо, що теорема Колмогорова-Арнольда стверджує, що будь-яка функція 
+	$f \in \mathcal{C}(\mathcal{Q}_m)$ може бути записана як
+	\begin{equation*}
+		f(x_1,\dots,x_m) = \sum_{q=1}^{2m+1}\Phi_q\left(\sum_{p=1}^m \phi_{p,q}(x_p)\right).
+	\end{equation*}
+
+	Тоді, якщо ми визначимо дві матриці-ваги $\boldsymbol{\Phi}^{\langle 0 \rangle} = \{\phi_{p,q}\}_{1 \leq p \leq m, 1 \leq q \leq 2m+1}$ та
+	$\boldsymbol{\Phi}^{\langle 1 \rangle} = \{\Phi_q\}_{1 \leq q \leq 2m+1}$ (матриця-рядок), то ми можемо записати
+	\begin{equation*}
+		f(x_1,\dots,x_m) = \hat{f}_{\text{KAN}}(x_1,\dots,x_m) = \boldsymbol{\Phi}^{\langle 1 \rangle} \circ \boldsymbol{\Phi}^{\langle 0 \rangle} \circ \mathbf{x}
+	\end{equation*}
+\end{example}
+
+Отже, залишається лише обрати параметризацію для кожної функції
+$\phi_{p,q}^{\langle j \rangle}$. Оригінальна робота \cite{kan} пропонує 
+використовувати лінійну комбінацію певної фіксованої базисної функції $\beta(x)$ та $B$-сплайн порядку $K$:
+\begin{equation*}
+	\phi_{p,q}^{\langle j \rangle}(x) = \omega_{\beta} \beta(x) + \omega_S\sum_{k=1}^{K} \theta_{p,q,k}^{\langle j \rangle} B_{k,K}(x),
+\end{equation*}
+де $B_{k,K}(x)$ --- $k$-тий $B$-сплайн порядку $K$, $\theta_{p,q,k}^{\langle j
+\rangle}$ --- параметри моделі і $\omega_{\beta},\omega_S$ --- фіксовані ваги
+для базисної функції та $B$-сплайнів відповідно (що є гіперпараметрами). В
+роботі пропонується обрати $\beta(x) := x\sigma(x)$. 
+
+Архітектура KAN для двох шарів зображена на Рис.~\ref{fig:kan-architecture}.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance=1.5cm, every node/.style={align=center}]
+    % Layer 0 (Input Layer)
+    \node[circle, draw, ultra thick, green!50!black, fill=green!20, minimum size=0.5cm] (x01) {$x_{1}^{\langle 0 \rangle}$};
+    \node[circle, draw, ultra thick, green!50!black, fill=green!20, minimum size=0.5cm, right=1cm of x01] (x02) {$x_{2}^{\langle 0 \rangle}$};
+
+    % Applying phi functions
+    \node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above left=1.5cm and 3.0cm of x01, rounded corners=.20cm] (phi11) {$\phi_{1,1}^{\langle 0 \rangle}$};
+    \node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above left=1.5cm and 1.5cm of x01, rounded corners=.20cm] (phi21) {$\phi_{2,1}^{\langle 0 \rangle}$};
+    \node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above left=1.5cm and 0.0cm of x01, rounded corners=.20cm] (phi31) {$\phi_{3,1}^{\langle 0 \rangle}$};
+    
+	\node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above right=1.5cm and 0.0cm of x02, rounded corners=.20cm] (phi12) {$\phi_{1,2}^{\langle 0 \rangle}$};
+    \node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above right=1.5cm and 1.5cm of x02, rounded corners=.20cm] (phi22) {$\phi_{2,2}^{\langle 0 \rangle}$};
+    \node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above right=1.5cm and 3.0cm of x02, rounded corners=.20cm] (phi32) {$\phi_{3,2}^{\langle 0 \rangle}$};
+    
+    % Finding new activations (Layer 1)
+    \node[circle, draw, ultra thick, gray!80!black, fill=gray!20, minimum size=1cm, above right=5.0cm and 0.5cm of x01] (x12) {$\boldsymbol{\Sigma}$};
+    \node[circle, draw, ultra thick, gray!80!black, fill=gray!20, minimum size=1cm, left=1.5cm of x12] (x11) {$\boldsymbol{\Sigma}$};
+    \node[circle, draw, ultra thick, gray!80!black, fill=gray!20, minimum size=1cm, right=1.5cm of x12] (x13) {$\boldsymbol{\Sigma}$};
+
+	% Draw labels left to each sum node
+	\node[left=-0.15cm of x11, font=\small, gray!80!black] {$x_1^{\langle 1 \rangle}$};
+	\node[left=-0.15cm of x12, font=\small, gray!80!black] {$x_2^{\langle 1 \rangle}$};
+	\node[left=-0.15cm of x13, font=\small, gray!80!black] {$x_3^{\langle 1 \rangle}$};
+
+	% Drawing phi functions above Layer 1
+	\node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above=1cm of x11, rounded corners=.20cm] (phi111) {$\phi_{1,1}^{\langle 1 \rangle}$};
+	\node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above=1cm of x12, rounded corners=.20cm] (phi121) {$\phi_{1,2}^{\langle 1 \rangle}$};
+	\node[rectangle, draw, ultra thick, blue!50!black, fill=blue!20, minimum width=1cm, minimum height=1cm, above=1cm of x13, rounded corners=.20cm] (phi131) {$\phi_{1,3}^{\langle 1 \rangle}$};
+
+	% Layer 3: Draw orange output above x12 at distance 1cm
+	\node[circle, draw, ultra thick, orange!80!black, fill=orange!20, minimum size=1cm, above=1.0cm of phi121] (x21) {$x_{1}^{\langle 2 \rangle}$};
+
+    % Connections between layers
+    \draw[ultra thick,-{Stealth[length=3.5mm]}] (x01) -- (phi11);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x01) -- (phi21);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x01) -- (phi31);
+
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x02) -- (phi12);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x02) -- (phi22);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x02) -- (phi32);
+	
+	% Connect the phi functions to the sum nodes
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi11) -- (x11);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi12) -- (x11);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi21) -- (x12);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi22) -- (x12);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi31) -- (x13);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi32) -- (x13);
+
+	% Connect the sum nodes to the phi functions in Layer 1
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x11) -- (phi111);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x12) -- (phi121);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (x13) -- (phi131);
+
+	% Connect the phi functions in Layer 1 to the output node
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi111) -- (x21);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi121) -- (x21);
+	\draw[ultra thick,-{Stealth[length=3.5mm]}] (phi131) -- (x21);
+
+    % Annotations
+    \node[right=0.5cm of x02, green!50!black] {\textbf{Input Layer}};
+    \node[right=0.5cm of x13, gray!80!black] {\textbf{Hidden Layer}};
+    \node[right=0.5cm of x21, orange!80!black] {\textbf{Output Layer}};
+\end{tikzpicture}
+\caption{Приклад KAN архітектури з трьома шарами з кількістю нейронів $n_0=2$, $n_1=3$, $n_2=1$.}
+\label{fig:kan-architecture}
+\end{figure}
+
+Єдине, що ми ще не врахували --- а чому така репрезентація взагалі дає універсальну 
+апроксимацію на компакті $\mathcal{Q}_m$? Дійсно, хоч теорема Колмогорова-Арнольда
+дає точну рівність, але ми поки ніяк не гарантуємо, що якщо замінити функції 
+$\{\phi_{p,q}\}$ на $B$-сплайни, то ми все одно можемо апроксимувати будь-яку
+функцію. Це питання досліджується в роботі \cite{kan}, де показана наступна теорема.
+
+\begin{theorem}[Теорема апроксимації KAN]
+	Нехай функція $f$ має вигляд $f = \boldsymbol{\Phi}^{\langle\ell\rangle}
+	\circ \dots \circ \boldsymbol{\Phi}^{\langle 0\rangle} \circ \mathbf{x}$, де
+	усі функції $\phi_{p,q}^{\langle j \rangle}$ є $k+1$ разів неперервно
+	диференційовані. Тоді, існує така константа $\gamma$, що залежить від $f$ і
+	функцій $\{\phi_{p,q}\}$, та існують матриці
+	$\widetilde{\boldsymbol{\Phi}}^{\langle\ell\rangle},\dots,\widetilde{\boldsymbol{\Phi}}^{\langle
+	0\rangle}$, що складаються з $B$-сплайнів порядку $k$ і розміром сітки $n_G$, що
+	для всіх $0 \leq r \leq k$ маємо
+	\begin{equation*}
+		\left\| f - \widetilde{\boldsymbol{\Phi}}^{\langle\ell\rangle}
+		\circ \dots \circ \widetilde{\boldsymbol{\Phi}}^{\langle 0\rangle} \circ \mathbf{x} \right\|_{C^r} \leq \gamma n_G^{r-(k+1)},
+	\end{equation*}
+	де $\|g\|_{C^r} = \sup_{|\beta|\leq r}\sup_{\mathbf{x} \in \mathcal{Q}_m}|g^{(\beta)}(\mathbf{x})|$.
+\end{theorem}
+
+\subsection{Порівняння з MLP архітектурою}
+
+Отже, що краще: MLP чи KAN? Наведемо деякі переваги та недоліки кожної з архітектур.
+
+\begin{enumerate}
+	\item \textbf{Кількість інструментів.} Оскільки останні 10 років було
+	присвячено розвитку MLP архітектур, то для них існує набагато більше
+	інструментів, бібліотек та фреймворків. Навіть якщо KAN має потенціал, то
+	простий налаштунок та тренування може стати викликом.
+	\item \textbf{Інтерпретованість.} Оскільки KAN використовує $B$-сплайни, то
+	вони є більш інтерпретованими, ніж MLP. Це може бути корисним для задач, де
+	важливо зрозуміти, як саме мережа приймає рішення.
+	\item \textbf{Швидкість тренування.} Згідно з роботою \cite{kan}, KAN мережі
+	поки приблизно в $10\times$ повільніші за MLP під час тренування. Проте,
+	на практиці, цей показник часто не є критичним: значно більш важливою є
+	точність та швидкість обчислення під час обрахунку передбачення.
+	\item \textbf{Швидкість передбачення.} Для простоти аналізу, нехай маємо дві
+	мережі, написані як на MLP, так і на KAN, у якої $\ell$ шарів, в кожному з
+	яких $n$ нейронів і активаційна функція має степінь $d$. Тоді, кількість
+	операцій для MLP мережі буде $\mathcal{O}(\ell n^3 d)$: на кожному переході
+	між шарами, маємо $n^2$ операцій для обрахунку добутку матриця-вектор, потім
+	$nd$ операцій для обрахунку активаційної функції над отриманим вектором. Для
+	KAN, кількість операцій буде $\mathcal{O}(\ell n^2 d)$: на кожному шарі,
+	маємо $n^2$ функцій-ваг, кожна з яких вимагає $d$ операцій для обрахунку. Отже,
+	для мереж з великою кількістю шарів та нейронів, KAN може бути швидшим за MLP.
+	\item \textbf{Кількість параметрів.} Асимтотично, KAN мережі мають більше
+	параметрів, ніж MLP. Дійсно, для MLP маємо $\mathcal{O}(n^2\ell)$ параметрів,
+	у той час як KAN ще мають зберігати параметри для кожного $B$-сплайну, тобто 
+	складність стає $\mathcal{O}(n^2\ell d)$. Проте, на практиці, можливо для KAN 
+	потрібно менше нейронів та шарів для досягнення аналогічної точності.
+\end{enumerate}

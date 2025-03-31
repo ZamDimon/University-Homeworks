@@ -1,0 +1,123 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#4}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 9 листопада, 2024}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Номер 3.3 (1).}
+
+\begin{problem}
+    Розв'язати задачу для рівняння $\Delta u = 0, x_1 > 0, x_2 > 0$ з граничними
+    умовами $u\Big|_{x_1=0} = a$, $u\Big|_{x_2 = 0} = b$.
+\end{problem}
+
+\textbf{Розв'язання.} Як було показано, функція Гріна для області $\Omega = \{(x_1,x_2) \in \mathbb{R}^2: x_1 > 0, x_2 > 0\}$ має вигляд:
+\begin{align*}
+    G(\mathbf{x},\boldsymbol{\xi}) &= \frac{1}{4\pi}\log ((x_1-\xi_1)^2+(x_2+\xi_2)^2) + \frac{1}{4\pi}\log((x_1+\xi_1)^2+(x_2-\xi_2)^2) \\
+    & -\frac{1}{4\pi}\log ((x_1-\xi_1)^2 + (x_2-\xi_2)^2) - \frac{1}{4\pi}\log((x_1+\xi_1)^2+(x_2+\xi_2)^2)
+\end{align*}
+
+Таким чином, розв'язок нашої задачі можна записати у вигляді
+\begin{equation*}
+    u(\mathbf{x}) = \int_{\Omega} G(\mathbf{x},\boldsymbol{\xi})f(\boldsymbol{\xi})d\boldsymbol{\xi} - \int_{\partial\Omega} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial \boldsymbol{\nu}}g(\boldsymbol{\xi})dS_{\boldsymbol{\xi}}
+\end{equation*}
+
+В нашому випадку, $f(\boldsymbol{\xi}) = 0$, а межа $\partial\Omega = \partial\Omega_1 \cup \partial\Omega_2$ може бути поділена на дві
+частини: $\partial \Omega_1 = \{ (x_1,x_2) \in \mathbb{R}^2: x_1 = 0, x_2 > 0\}$
+та $\partial \Omega_2 = \{ (x_1,x_2) \in \mathbb{R}^2: x_2 = 0, x_1 > 0\}$. Тоді
+розв'язок можна записати у вигляді:
+\begin{align*}
+    u(x_1,x_2) &= -\int_{\partial \Omega_1} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial \boldsymbol{\nu}}g(\boldsymbol{\xi})dS_{\boldsymbol{\xi}} -\int_{\partial \Omega_2} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial \boldsymbol{\nu}}g(\boldsymbol{\xi})dS_{\boldsymbol{\xi}} \\
+    &= -a\int_{\partial \Omega_1} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial \boldsymbol{\nu}}dS_{\boldsymbol{\xi}} - b\int_{\partial \Omega_2} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial \boldsymbol{\nu}}dS_{\boldsymbol{\xi}}
+\end{align*}
+
+Для границі $\partial \Omega_1$ маємо вектор нормалі $\boldsymbol{\nu}_1 = (-1,0)$, тому нас цікавить
+похідна функції Гріна за цим напрямком за умови $x_1 = 0$ (було виведено на лекції):
+\begin{align*}
+    \frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}_1}\Big|_{x_1=0} &= -\frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \xi_1}\Big|_{x_1=0} = \frac{1}{\pi}\left(\frac{x_1}{x_1^2+(x_2+\xi_2)^2} - \frac{x_1}{x_1^2+(x_2-\xi_2)^2}\right) \\
+    \frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}_2}\Big|_{x_2=0} &= -\frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \xi_2}\Big|_{x_2=0} = \frac{1}{\pi}\left(\frac{x_2}{(x_1+\xi_1)^2+x_2^2} - \frac{x_2}{(x_1-\xi_1)^2+x_2^2}\right)
+\end{align*}
+
+Тепер можемо підставити ці вирази у нашу формулу для розв'язку:
+\begin{align*}
+    u(x_1,x_2) &= -a\int_{\partial \Omega_1} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial \boldsymbol{\nu}}dS_{\boldsymbol{\xi}} - b\int_{\partial \Omega_2} \frac{\partial G(\mathbf{x},\boldsymbol{\xi})}{\partial \boldsymbol{\nu}}dS_{\boldsymbol{\xi}} \\
+    &= -a\int_{0}^{\infty} \frac{1}{\pi}\left(\frac{x_1}{x_1^2+(x_2+\xi_2)^2} - \frac{x_1}{x_1^2+(x_2-\xi_2)^2}\right)d\xi_2 \\
+    & -b\int_{0}^{\infty} \frac{1}{\pi}\left(\frac{x_2}{(x_1+\xi_1)^2+x_2^2} - \frac{x_2}{(x_1-\xi_1)^2+x_2^2}\right)d\xi_1
+\end{align*}
+
+Трошки перетосуємо інтеграли:
+\begin{align*}
+    u(x_1,x_2) &= -\frac{ax_1}{\pi}\int_{0}^{\infty}\left(\frac{1}{x_1^2+(x_2+\xi_2)^2} - \frac{1}{x_1^2+(x_2-\xi_2)^2}\right)d\xi_2 \\
+    &- \frac{bx_2}{\pi}\int_{0}^{\infty} \left(\frac{1}{(x_1+\xi_1)^2+x_2^2} - \frac{1}{(x_1-\xi_1)^2+x_2^2}\right)d\xi_1
+\end{align*}
+
+Далі достатньо знайти кожен інтеграл окремо. Проте, всі чотири є частковими випадками наступного інтегралу:
+\begin{align*}
+    \mathcal{J}(\alpha,\beta) = \int_0^{+\infty} \frac{d\zeta}{\alpha^2 + (\beta + \zeta)^2}
+\end{align*}
+
+Тоді, відповідь буде мати вигляд:
+\begin{align*}
+    u(x_1,x_2) &= -\frac{ax_1}{\pi}\left(\mathcal{J}(x_1,x_2) - \mathcal{J}(x_1,-x_2)\right) - \frac{bx_2}{\pi}\left(\mathcal{J}(x_2,x_1) - \mathcal{J}(x_2,-x_1)\right)
+\end{align*}
+
+Саму функцію $\mathcal{J}(\alpha,\beta)$ можна легко порахувати явно:
+\begin{align*}
+    \mathcal{J}(\alpha,\beta) &= \frac{1}{\alpha^2}\int_0^{+\infty} \frac{d\zeta}{1 + \left(\frac{\beta + \zeta}{\alpha}\right)^2} = \frac{1}{\alpha}\int_0^{+\infty} \frac{d\left(\frac{\beta + \zeta}{\alpha}\right)}{1 + \left(\frac{\beta + \zeta}{\alpha}\right)^2} \\
+    &= \frac{1}{\alpha}\arctan \frac{\beta+\zeta}{\alpha}\Big|_{\zeta \to 0}^{\zeta \to +\infty} = \frac{\pi}{2\alpha} - \frac{\arctan (\beta/\alpha)}{\alpha}
+\end{align*}
+
+Таким чином:
+\begin{align*}
+    u(x_1,x_2) &= -\frac{ax_1}{\pi}\left(\frac{\pi}{2x_1} - \frac{\arctan(x_2/x_1)}{x_1} - \frac{\pi}{2x_1} + \frac{\arctan(-x_2/x_1)}{x_1}\right) \\
+    &- \frac{bx_2}{\pi}\left(\frac{\pi}{2x_2} - \frac{\arctan(x_1/x_2)}{x_2} - \frac{\pi}{2x_2} + \frac{\arctan(-x_1/x_2)}{x_2}\right) \\
+    &= -\frac{ax_1}{\pi} \cdot \left(-\frac{2\arctan (x_2/x_1)}{x_1}\right) - \frac{bx_2}{\pi} \cdot \left(-\frac{2\arctan (x_1/x_2)}{x_2}\right) \\
+    &= \frac{2a}{\pi}\arctan \frac{x_2}{x_1} + \frac{2b}{\pi}\arctan \frac{x_1}{x_2}
+\end{align*}
+
+\textbf{Відповідь:} $u(x_1,x_2) = \frac{2a}{\pi}\arctan \frac{x_2}{x_1} + \frac{2b}{\pi}\arctan \frac{x_1}{x_2}$.
+
+\newpage
+
+\subsection{Номер 3.3 (3).}
+
+\begin{problem}
+    Розв'язати задачу для рівняння $\Delta u = 0, x_1 > 0, x_2 > 0$ з граничними
+    умовами $u\Big|_{x_1=0} = 0$, $u\Big|_{x_2 = 0} = \theta(x_1-1)$.
+\end{problem}
+
+\textbf{Розв'язання.} Згідно попередньому прикладу, все зводиться до обчислення інтегралу:
+\begin{align*}
+    u(\mathbf{x}) &= -\int_{\partial\Omega} \frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}}\phi(\boldsymbol{\xi})dS_{\xi} = -\int_{\partial\Omega_2} \frac{\partial G(\mathbf{x}, \boldsymbol{\xi})}{\partial \boldsymbol{\nu}_2}\theta(\xi_1-1)dS_{\xi} \\
+    &= -\frac{x_2}{\pi}\int_{0}^{\infty} \left(\frac{1}{(x_1+\xi_1)^2+x_2^2} - \frac{1}{(x_1-\xi_1)^2+x_2^2}\right)\theta(\xi_1-1)d\xi_1 \\
+    &= -\frac{x_2}{\pi}\int_{1}^{\infty} \left(\frac{1}{(x_1+\xi_1)^2+x_2^2} - \frac{1}{(x_1-\xi_1)^2+x_2^2}\right)d\xi_1 \\
+    &= -\frac{x_2}{\pi}\left(\int_1^{+\infty} \frac{d\xi_1}{(x_1+\xi_1)^2+x_2^2} - \int_1^{+\infty} \frac{d\xi_1}{(x_1-\xi_1)^2+x_2^2}\right)
+\end{align*}
+
+Як і в минулому прикладі, позначимо
+\begin{align*}
+    \mathcal{J}(\alpha,\beta) = \int_1^{+\infty} \frac{d\zeta}{\alpha^2 + (\beta + \zeta)^2} = \frac{1}{\alpha}\arctan \frac{\beta+\zeta}{\alpha}\Big|_{\zeta \to 1}^{\zeta \to +\infty} = \frac{\pi}{2\alpha} - \frac{1}{\alpha}\arctan \frac{\beta+1}{\alpha}
+\end{align*}
+
+Тоді, 
+\begin{align*}
+    u(x_1,x_2) &= -\frac{x_2}{\pi}\left(\mathcal{J}(x_2,x_1) - \mathcal{J}(x_2,-x_1)\right) \\
+    &= -\frac{x_2}{\pi}\left(-\frac{1}{x_2}\arctan \frac{x_1+1}{x_2} + \frac{1}{x_2}\arctan \frac{-x_1+1}{x_2} \right) \\
+    &= \frac{1}{\pi}\left(\arctan \frac{x_1-1}{x_2} + \arctan \frac{x_1+1}{x_2}\right)
+\end{align*}
+
+\textbf{Відповідь.} $u(x_1,x_2) = \frac{1}{\pi}\left(\arctan \frac{x_1-1}{x_2} + \arctan \frac{x_1+1}{x_2}\right)$.
+
+\end{document}

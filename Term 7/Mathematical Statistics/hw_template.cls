@@ -100,7 +100,7 @@
 
 % --- Footers ---
 \RequirePackage{fancyhdr}
-\lhead{Домашня робота}
+\lhead{Іспит}
 \rhead{Математична Статистика}
 \cfoot{Сторінка \thepage}
 \renewcommand{\headrulewidth}{1.25pt}
@@ -260,6 +260,7 @@
 \theoremstyle{mystyle}{\newtheorem{theorem}[definition]{Theorem}}
 \theoremstyle{mystyle}{\newtheorem{lemma}[definition]{Lemma}}
 \theoremstyle{mystyle}{\newtheorem{problem}[definition]{Умова Задачі}}
+\theoremstyle{mystyle}{\newtheorem*{problems}{Умова}}
 \theoremstyle{mystyle}{\newtheorem{corollary}[definition]{Corollary}}
 \theoremstyle{mystyle}{\newtheorem*{remark}{Remark}}
 \theoremstyle{mystyle}{\newtheorem*{remarks}{Remarks}}
@@ -285,6 +286,7 @@
 \tcolorboxenvironment{corollary}{boxrule=0pt,boxsep=0pt,colback={violet!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{violet},sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{proof}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{CadetBlue!80!white},left=8pt,right=8pt,sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{problem}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt}
+\tcolorboxenvironment{problems}{boxrule=0pt,boxsep=0pt,colback={Cyan!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Cyan},sharp corners,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{remark}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{remarks}{boxrule=0pt,boxsep=0pt,blanker,borderline west={2pt}{0pt}{Green},left=8pt,right=8pt,before skip=10pt,after skip=10pt}
 \tcolorboxenvironment{example}{boxrule=0pt,boxsep=0pt,colback={Gray!10},left=8pt,right=8pt,enhanced jigsaw, borderline west={2pt}{0pt}{Gray},sharp corners,before skip=10pt,after skip=10pt}
@@ -314,7 +316,7 @@
 \newenvironment{talign*}{\let\displaystyle\textstyle\csname align*\endcsname}{\endalign}
 
 \usepackage[explicit]{titlesec}
-\titleformat{\section}{\fontsize{20}{22}\sffamily\bfseries}{\thesection}{20pt}{#1}
+\titleformat{\section}{\fontsize{18}{20}\sffamily\bfseries}{\thesection}{16pt}{#1}
 \titleformat{\subsection}{\fontsize{16}{18}\sffamily\bfseries}{\thesubsection}{12pt}{#1}
 \titleformat{\subsubsection}{\fontsize{10}{12}\sffamily\large\bfseries}{\thesubsubsection}{8pt}{#1}
 
