@@ -1,0 +1,209 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#2}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 2 квітня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Вправа 14.5}
+
+\begin{problem}
+    Розв'язати рівняння:
+    \begin{equation*}
+        8\partial_t u = \Delta u + 1, \quad (x,y) \in \mathbb{R}^2, \quad t > 0.
+    \end{equation*}
+
+    Крайова умова $u(0,x,y)=e^{-(x-y)^2}$.
+\end{problem}
+
+\textbf{Розв'язання.} Скористаємось формулою Пуассона-Дюамеля. А саме, нехай
+рівняння має вигляд $\partial_t u = \alpha^2 \Delta u + f(\mathbf{x},t)$ для 
+$\mathbf{x} \in \mathbb{R}^n$, $t>0$ та крайовою умовою $u(0,\mathbf{x})=u_0(\mathbf{x})$. Тоді,
+\begin{equation*}
+    u(\mathbf{x},t) = \frac{1}{(2\alpha\sqrt{t\pi})^n}\int_{\mathbb{R}^n}e^{-\frac{\|\mathbf{x}-\boldsymbol{\xi}\|^2}{4\alpha^2 t}}u_0(\boldsymbol{\xi})d\boldsymbol{\xi} + \int_0^t \int_{\mathbb{R}^n}\frac{1}{(2\alpha\sqrt{\pi(t-\tau)})^n}e^{-\frac{\|\mathbf{x}-\boldsymbol{\xi}\|^2}{4\alpha^2(t-\tau)}}f(\boldsymbol{\xi},\tau)d\boldsymbol{\xi}d\tau.
+\end{equation*}
+
+Перед цим, спростимо собі життя заміною $u(t,\mathbf{x}) :=
+w(t,\mathbf{x})+\frac{1}{8}t$. Дійсно, тоді маємо:
+\begin{align*}
+    \textbf{Ліва частина:} &&& 8\partial_t u = 8\partial_t\left(w(t,\mathbf{x})+\frac{1}{8}t\right) = 8\partial_t w(t,\mathbf{x}) + 1, \\
+    \textbf{Права частина:} &&& \Delta u + 1 = \Delta(w(t,\mathbf{x})+t) + 1 = \Delta w(t,\mathbf{x}) + 1.
+\end{align*}
+
+Отже, маємо рівняння:
+\begin{equation*}
+    \partial_t w = \frac{1}{8}\Delta w, \quad w(0,x,y) = e^{-(x-y)^2}.
+\end{equation*}
+
+Згідно формули Пуассона-Дюамеля, маємо $\alpha = \frac{1}{2\sqrt{2}}$, $f \equiv 0$ та 
+$u_0(\mathbf{x}) = e^{-(x-y)^2}$. Таким чином, можемо підставляти:
+\begin{align*}
+    w(\mathbf{x}, t) &= \frac{1}{\left(2 \cdot \frac{1}{2\sqrt{2}}\sqrt{t\pi}\right)^2}\int_{\mathbb{R}^2}e^{-\frac{2}{t}\|(x,y)-(\xi_1,\xi_2)\|^2}e^{-(\xi_1-\xi_2)^2}d\xi_1 d\xi_2  \\
+    &= \frac{2}{\pi t}\int_{\mathbb{R}^2}g(\mathbf{x},\boldsymbol{\xi})d\xi_1 d\xi_2
+\end{align*}
+
+Розпишемо, як виглядає підінтегральна функція $g(\mathbf{x}, \boldsymbol{\xi})$:
+\begin{align*}
+    g(\mathbf{x}, \boldsymbol{\xi}) &= e^{-\frac{2}{t}((x-\xi_1)^2 + (y-\xi_2)^2)}e^{-(\xi_1-\xi_2)^2} = e^{-\frac{2}{t}(x^2 + y^2 - 2x\xi_1 - 2y\xi_2 + \xi_1^2 + \xi_2^2) - \xi_1^2 + 2\xi_1\xi_2 - \xi_2^2} \\
+    &= e^{-\frac{2}{t}(x^2 + y^2) + \frac{4x}{t}\xi_1 + \frac{4y}{t}\xi_2 - \left(1+\frac{2}{t}\right)\xi_1^2 - \left(1+\frac{2}{t}\right)\xi_2^2 + 2\xi_1\xi_2} \\
+    &= e^{-\frac{1}{2}\boldsymbol{\xi}^{\top}A(t)\boldsymbol{\xi} + \boldsymbol{\beta}(\mathbf{x},t)^{\top}\boldsymbol{\xi} + \gamma(\mathbf{x})}
+\end{align*}
+
+Таким чином, ми отримали квадратичну форму відносно $(\xi_1,\xi_2)$. Запишемо
+матриці та вектори конкретно:
+\begin{equation*}
+    A(t) = \begin{pmatrix}
+        2+\frac{4}{t} & -2 \\
+        -2 & 2+\frac{4}{t}
+    \end{pmatrix}, \quad \boldsymbol{\beta}(\mathbf{x},t) = \begin{pmatrix}
+        \frac{4}{t}x \\
+        \frac{4}{t}y
+    \end{pmatrix}, \quad \gamma(\mathbf{x}) = -\frac{2}{t}\|\mathbf{x}\|^2
+\end{equation*}
+
+Таким чином, маємо:
+\begin{align*}
+    w(\mathbf{x},t) &= \frac{2}{\pi t}\int_{\mathbb{R}^2}e^{-\frac{1}{2}\boldsymbol{\xi}^{\top}A(t)\boldsymbol{\xi} + \boldsymbol{\beta}(\mathbf{x},t)^{\top}\boldsymbol{\xi} + \gamma(\mathbf{x})}d\boldsymbol{\xi} \\
+    &= \frac{2e^{-\frac{2}{t}\|\mathbf{x}\|^2}}{\pi t}\int_{\mathbb{R}^2}e^{-\frac{1}{2}\boldsymbol{\xi}^{\top}A(t)\boldsymbol{\xi} + \boldsymbol{\beta}(\mathbf{x},t)^{\top}\boldsymbol{\xi}}d\boldsymbol{\xi}
+\end{align*}
+
+Як відомо, такий інтеграл можна обчислити за формулою:
+\begin{equation*}
+    \int_{\mathbb{R}^n}e^{-\frac{1}{2}\boldsymbol{\xi}^{\top}A(t)\boldsymbol{\xi} + \boldsymbol{\beta}(\mathbf{x},t)^{\top}\boldsymbol{\xi}}d\boldsymbol{\xi} = \frac{(2\pi)^{n/2}}{\sqrt{\det A}}\exp \left(\frac{1}{2}\boldsymbol{\beta}^{\top}A^{-1}\boldsymbol{\beta}\right)
+\end{equation*}
+
+Підставимо конкретні значення:
+\begin{equation*}
+    \det A = \left(2+\frac{4}{t}\right)^2 - 4 = \frac{4}{t}\left(4+\frac{4}{t}\right) = \frac{16}{t}\left(1+\frac{1}{t}\right)
+\end{equation*}
+\begin{equation*}
+    \frac{1}{2}\boldsymbol{\beta}^{\top}A^{-1}\boldsymbol{\beta} = \frac{(2+t)x^2+2txy+(2+t)y^2}{t(1+t)} = \frac{2(x^2+y^2)+t(x+y)^2}{t(1+t)}
+\end{equation*}
+
+Таким чином, остаточно:
+\begin{align*}
+    \int_{\mathbb{R}^n}e^{-\frac{1}{2}\boldsymbol{\xi}^{\top}A(t)\boldsymbol{\xi} + \boldsymbol{\beta}(\mathbf{x},t)^{\top}\boldsymbol{\xi}}d\boldsymbol{\xi} &= \frac{2\pi}{\frac{4}{\sqrt{t}}\sqrt{1+\frac{1}{t}}}\exp \left(\frac{2(x^2+y^2)+t(x+y)^2}{t(1+t)}\right) \\
+    &= \frac{\pi t}{2\sqrt{t+1}}\exp \left(\frac{2(x^2+y^2)+t(x+y)^2}{t(1+t)}\right)
+\end{align*}
+
+Таким чином, отримуємо:
+\begin{align*}
+    w(\mathbf{x},t) &= \frac{2e^{-\frac{2}{t}\|\mathbf{x}\|^2}}{\pi t}\cdot \frac{\pi t}{2\sqrt{t+1}}\exp \left(\frac{2(x^2+y^2)+t(x+y)^2}{t(1+t)}\right) \\
+    &= \frac{e^{-\frac{2}{t}\|\mathbf{x}\|^2}}{\sqrt{t+1}}\exp \left(\frac{2(x^2+y^2)+t(x+y)^2}{t(1+t)}\right) \\
+    &= \boxed{\frac{1}{\sqrt{t+1}}e^{-\frac{(x-y)^2}{1+t}}}
+\end{align*}
+
+\textbf{Відповідь.} $\frac{1}{\sqrt{t+1}}e^{-\frac{(x-y)^2}{1+t}} + \frac{t}{8}$.
+
+\newpage
+
+\subsection{Вправа 14.6}
+
+\begin{problem}
+    Розв'язати рівняння:
+    \begin{equation*}
+        \frac{\partial u}{\partial t} = 2\Delta u + t \cos x, \quad (x,y,z) \in \mathbb{R}^3, \quad t > 0.
+    \end{equation*}
+
+    Крайова умова $u(0,x,y,z)=\cos y \cos z$.
+\end{problem}
+
+\textbf{Розв'язання.} Згідно підказці, шукаємо заміну у вигляді
+$u(\mathbf{x},t) = w(\mathbf{x},t) + f(t)\cos x$.
+
+Маємо: $\partial_t w(\mathbf{x},t) + \dot{f}\cos x = 2\Delta w(\mathbf{x},t) - 2f(t)\cos x + t
+\cos x$. Отже, ми хочемо аби занулилося усе, окрім доданків з $w(\mathbf{x},t)$. Таким чином,
+\begin{equation*}
+    \dot{f} = -2f(t) + t.
+\end{equation*}
+
+Розв'язком цього рівняння є $f(t) = -\frac{1}{4}+\frac{t}{2} + ce^{-2t}$. Зручно 
+або $f(0)=0$, тому $f(0) = -\frac{1}{4}+c$, звідки $c=\frac{1}{4}$. Остаточно заміна 
+має вигляд:
+\begin{equation*}
+    u(\mathbf{x},t) = w(\mathbf{x},t) + \left(\frac{t}{2}+\frac{e^{-2t}-1}{4}\right)\cos x.
+\end{equation*}
+
+При такій заміні, задача перетворюється на:
+\begin{equation*}
+    \partial_t w = 2\Delta w, \quad w(0,x,y,z) = \cos y \cos z.
+\end{equation*}
+
+Скористаємось формулою Пуассона-Дюамеля. Маємо $\alpha=\sqrt{2}$, 
+$f(\mathbf{x},t) \equiv 0$ та $u_0(\mathbf{x})=\cos y \cos z$. Тоді, згідно формули Пуассона-Дюамеля,
+отримуємо:
+\begin{align*}
+    w(\mathbf{x},t) &= \frac{1}{(2\sqrt{2}\sqrt{t\pi})^3}\int_{\mathbb{R}^3}e^{-\frac{1}{8t}\|\mathbf{x}-\boldsymbol{\xi}\|^2}u_0(\boldsymbol{\xi})d\boldsymbol{\xi} \\
+    &= \frac{1}{8(\sqrt{2t\pi})^3}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}e^{-\frac{1}{8t}\left((x-\xi_1)^2+(y-\xi_2)^2+(z-\xi_3)^2\right)}\cos\xi_2 \cos\xi_3 d\xi_1 d\xi_2 d\xi_3
+\end{align*}
+
+Інтеграл по $\xi_1$ можна легко обчислити. Маємо:
+\begin{equation*}
+    w(\mathbf{x},t) = \frac{1}{8(\sqrt{2t\pi})^3}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}e^{-\frac{1}{8t}\left((y-\xi_2)^2+(z-\xi_3)^2\right)}\cos\xi_2 \cos\xi_3\left(\int_{-\infty}^{+\infty}e^{-\frac{1}{8t}(x-\xi_1)^2}d\xi_1\right) d\xi_2 d\xi_3
+\end{equation*}
+
+Легко бачити, що
+$\int_{-\infty}^{+\infty}e^{-\frac{1}{8t}(x-\xi_1)^2}d\xi_1=2\sqrt{\frac{2\pi}{t}}$. Тому, маємо:
+\begin{equation*}
+    w(\mathbf{x},t) = \frac{1}{4(\sqrt{2t\pi})^3} \cdot \sqrt{\frac{2\pi}{t}}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}e^{-\frac{1}{8t}\left((y-\xi_2)^2+(z-\xi_3)^2\right)}\cos\xi_2 \cos\xi_3 d\xi_2 d\xi_3
+\end{equation*}
+
+Робимо заміну $\eta_2 = \frac{\xi_2-y}{2\sqrt{2t}}$, $\eta_3 = \frac{\xi_3-z}{2\sqrt{2t}}$, тоді:
+\begin{equation*}
+    w(\mathbf{x},t) = \frac{1}{\pi}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}e^{-\left(\eta_2^2+\eta_3^2\right)}\cos(2\sqrt{2t}\eta_2 + y)\cos(2\sqrt{2t}\eta_3 + z)d\eta_2 d\eta_3
+\end{equation*}
+
+Розкриємо косинуси:
+\begin{align*}
+    &\cos (2\sqrt{2t}\eta_2 + y)\cos(2\sqrt{2t}\eta_3 + z) \\
+    &= (\cos 2\sqrt{2t}\eta_2 \cos y - \sin 2\sqrt{2t}\eta_2 \sin y)(\cos 2\sqrt{2t}\eta_3 \cos z - \sin 2\sqrt{2t}\eta_3 \sin z)
+\end{align*}
+
+Коли ми будемо рахувати інтеграл, то усі доданки з $\sin$ зникнуть, оскільки
+відповідні частини інтегралу будуть непарними функціями. Отже, маємо:
+\begin{equation*}
+    w(\mathbf{x},t) = \frac{1}{\pi}\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}e^{-\left(\eta_2^2+\eta_3^2\right)}\cos 2\sqrt{2t}\eta_2 \cos y\cos 2\sqrt{2t}\eta_3 \cos zd\eta_2 d\eta_3
+\end{equation*}
+
+Виділимо за інтеграл $\cos y$ та $\cos z$:
+\begin{align*}
+    w(\mathbf{x},t) &= \frac{\cos y \cos z}{\pi}\textcolor{blue}{\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}e^{-\left(\eta_2^2+\eta_3^2\right)}\cos 2\sqrt{2t}\eta_2 \cos 2\sqrt{2t}\eta_3 d\eta_2 d\eta_3}
+\end{align*}
+
+А тепер помітимо, що все, що виділено синім кольором, є певною функцією від
+часу. Тому нехай $w(\mathbf{x},t) = \frac{\cos y \cos z}{\pi}g(t)$.
+
+Підставимо цей факт у початкове рівняння:
+\begin{equation*}
+    \frac{\cos y \cos z}{\pi}\dot{g}(t) = -4 \cdot \frac{\cos y \cos z}{\pi}g(t) \implies g(t) = -4g(t)
+\end{equation*}
+
+Звідси $g(t) = \gamma e^{-4t}$. Залишилося знайти константу $\gamma$. Помітимо, що
+\begin{equation*}
+    g(0) = \int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty}e^{-\left(\eta_2^2+\eta_3^2\right)}d\eta_2 d\eta_3 = \pi
+\end{equation*}
+
+Тому $g(t) = \pi e^{-4t}$. Тому остаточно:
+\begin{equation*}
+    \boxed{w(t) = \cos y \cos z e^{-4t}}
+\end{equation*}
+
+Розв'язоку усієї задачі:
+\begin{equation*}
+    \boxed{u(\mathbf{x},t) = \cos y \cos z e^{-4t} + \left(\frac{t}{2}+\frac{e^{-2t}-1}{4}\right)\cos x}
+\end{equation*}
+
+\textbf{Відповідь.} $u(\mathbf{x},t) = \cos y \cos z e^{-4t} + \left(\frac{t}{2}+\frac{e^{-2t}-1}{4}\right)\cos x$.
+
+\end{document}

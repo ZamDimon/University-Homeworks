@@ -1,0 +1,148 @@
+\documentclass{hw_template}
+
+\usepackage{esint}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#4}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 26 квітня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Вправа 16.3}
+
+\begin{problem}
+    Розв'язати рівняння
+    \begin{equation*}
+        \frac{\partial^2 u}{\partial t^2} = 9 \frac{\partial^2 u}{\partial x^2} + \sin x, \quad t > 0
+    \end{equation*}
+
+    Крайові умови $u(x,0)=1$ та $\dot{u}(x,0)=1$.
+\end{problem}
+
+\textbf{Розв'язання.} Скористаємося наступним методом розв'язання: для рівняння
+\begin{equation*}
+    \frac{1}{a^2}\cdot \frac{\partial^2 u}{\partial t^2} = \frac{\partial^2 u}{\partial x^2} + f(x,t)
+\end{equation*}
+
+з крайовими умовами $u(x,0)=\phi(x)$ та $\dot{u}(x,0)=\psi(x)$, розв'язок має вигляд
+\begin{equation*}
+    u(x,t) = \frac{1}{2} \left( \phi(x+at) + \phi(x-at) \right) + \frac{1}{2a} \int_{x-at}^{x+at} \psi(\zeta) d\zeta + \frac{a}{2}\int_0^t d\tau \int_{x-a(t-\tau)}^{x+a(t-\tau)} d\zeta f(\zeta,\tau)
+\end{equation*}
+
+В нашому випадку, рівняння можна звести до вигляду:
+\begin{equation*}
+    \frac{1}{9} \cdot \frac{\partial^2 u}{\partial t^2} = \frac{\partial^2 u}{\partial x^2} + \frac{1}{9} \sin x
+\end{equation*}
+
+Таким чином, $a=3$, $\phi(x)=1$, $\psi(x)=1$ та $f(x,t)=\frac{1}{9}\sin x$. Тоді, розв'язок матиме вигляд:
+\begin{align*}
+    u(x,t) &= \frac{1}{2} \cdot 2 + \frac{1}{2 \cdot 3}\int_{x-3t}^{x+3t} d\zeta + \frac{3}{2}\int_0^t d\tau \int_{x-3(t-\tau)}^{x+3(t-\tau)}\frac{1}{9}\sin \zeta d\zeta \\
+    &= 1 + \frac{1}{6} \left( (x+3t) - (x-3t) \right) + \frac{1}{6}\int_0^t d\tau \int_{x-3(t-\tau)}^{x+3(t-\tau)}\sin \zeta d\zeta \\
+    &= 1 + t + \frac{1}{6}\int_0^t d\tau \left( -\cos(x+3(t-\tau)) + \cos(x-3(t-\tau)) \right) \\
+    &= 1 + t - \frac{1}{6}\int_0^t d\tau \cos(x+3(t-\tau)) + \frac{1}{6}\int_0^t d\tau \cos(x-3(t-\tau)) 
+\end{align*}
+
+Отже, залишилось акуратно обчислити ці два інтеграли з косинусами. В першому інтегралі зробимо заміну 
+$\theta := x+3t-3\tau$. В такому разі $d\tau = -\frac{1}{3}d\theta$. Маємо:
+\begin{equation*}
+    \frac{1}{6}\int_0^t d\tau \cos(x+3(t-\tau)) = \frac{1}{6}\int_{x+3t}^{x} \cos\theta \cdot \left(-\frac{1}{3}d\theta\right)  = \frac{1}{18}\int_x^{x+3t} \cos\theta d\theta = \frac{1}{18} \left( \sin(x+3t) - \sin x \right)
+\end{equation*}
+
+Візьмемо другий інтеграл. Знову ж таки, зробимо заміну $\theta := x-3t+3\tau$. Тоді $d\tau = \frac{1}{3}d\theta$. Маємо:
+\begin{equation*}
+    \frac{1}{6}\int_0^t d\tau \cos(x-3(t-\tau)) = \frac{1}{6}\int_{x-3t}^{x} \cos\theta \cdot \left(\frac{1}{3}d\theta\right)  = \frac{1}{18}\int_{x-3t}^{x} \cos\theta d\theta = \frac{1}{18} \left( \sin x - \sin(x-3t) \right)
+\end{equation*}
+
+Підставляючи обидва інтеграли в розв'язок, отримаємо:
+\begin{align*}
+    \textcolor{blue}{u(x,t)} &= 1 + t - \frac{1}{18} \left( \sin(x+3t) - \sin x \right) + \frac{1}{18} \left( \sin x - \sin(x-3t) \right) \\
+    &= \textcolor{blue}{1 + t + \frac{1}{9}\sin x - \frac{1}{18} \left( \sin(x+3t) + \sin(x-3t) \right)}
+\end{align*}
+
+\textbf{Відповідь.} $u(x,t) = 1 + t + \frac{1}{9}\sin x - \frac{1}{18} \left( \sin(x+3t) + \sin(x-3t) \right)$
+
+\subsection{Вправа 16.7}
+
+\begin{problem}
+    Розв'язати рівняння
+    \begin{equation*}
+        \frac{\partial^2 u}{\partial t^2} = 8\Delta u + t^2x, \quad t > 0
+    \end{equation*}
+
+    Крайові умови $u(x,y,z,0)=y$ та $\dot{u}(x,y,z,0)=z$.
+\end{problem}
+
+\textbf{Розв'язання.}
+
+\textbf{Спосіб 1.} Оскільки $f(x,y,z)=x$, $\varphi(x,y,z)=y$ та $\psi(x,y,z)=z$ є 
+гармонічними функціями, то розв'язок рівняння
+\begin{equation*}
+    u(x,y,z,t) = \varphi(x,y,z) + t\psi(x,y,z) + f(x,y,z)\int_0^t (t-\tau)g(\tau)d\tau, \quad g(t) = t^2
+\end{equation*}
+
+Підставимо усі значення:
+\begin{equation*}
+    \textcolor{blue}{u(x,y,z,t)} = y + tz + x\int_0^t (t-\tau)\tau^2 d\tau = y + tz + x\left(\frac{t^4}{3} - \frac{t^4}{4}\right) = \textcolor{blue}{y+tz+\frac{1}{12}xt^4}
+\end{equation*}
+
+Таким чином, $\boxed{u(x,y,z,t) = y+tz+\frac{1}{12}xt^4}$.
+
+\textbf{Спосіб 2.} Зведемо рівняння до однорідного вигляду. Для цього, зробимо
+наступну заміну: $u(x,y,z,t)=w(x,y,z,t)+\frac{1}{12}xt^4$. Видно, що $\Delta
+u=\Delta w$, проте $\ddot{u} = \ddot{w} + t^2x$. Підставляємо у початкове
+рівняння:
+\begin{equation*}
+    \frac{\partial^2 w}{\partial t^2} + t^2x = 8\Delta w + t^2x \implies \frac{\partial^2 w}{\partial t^2} = 8\Delta w
+\end{equation*}
+
+Крайові умови при цьому такі самі, себто $w(x,y,z,0)=y$ та $\dot{w}(x,y,z,0)=z$.
+Далі, як відомо, таке рівняння можемо розв'язати як:
+\begin{equation*}
+    w(x,y,z,t) = \frac{1}{4\pi a^2}\left(\frac{\partial}{\partial t}\left(\frac{1}{t}\oiint_{\|\mathbf{x}-\mathbf{y}\|=at} \phi(y)dS_{\mathbf{y}}\right) + \frac{1}{t}\oiint_{\|\mathbf{x}-\mathbf{y}\|=at}\psi(y)dS_{\mathbf{y}}\right)
+\end{equation*}
+
+Введемо позначення $\mathbf{x}=(x_1,x_2,x_3)$ та $\mathbf{y}=(y_1,y_2,y_3)$, тоді поверхня
+\begin{equation*}
+    \|\mathbf{x}-\mathbf{y}\|^2 = (x_1-y_1)^2 + (x_2-y_2)^2 + (x_3-y_3)^2 = 8t^2
+\end{equation*}
+
+Зробимо заміну $y_3=x_3 \pm \sqrt{8t^2 - (y_1-x_1)^2 - (y_2-x_2)^2}$. В такому разі:
+\begin{equation*}
+    \mathcal{I}_{\phi} = \oiint_{\|\mathbf{x}-\mathbf{y}\|=at} \phi(y)dS_{\mathbf{y}} = \iint_{(y_1-x_1)^2+(y_2-x_2)^2 \leq 8t^2} \frac{4\sqrt{2}y_2 t}{\sqrt{8t^2-(y_1-x_1)^2-(y_2-x_2)^2}} dy_1dy_2
+\end{equation*}
+
+Зробимо заміну $y_1-x_1=\rho\cos\theta$, $y_2-x_2=\rho\sin\theta$. Тоді:
+\begin{align*}
+    \mathcal{I}_{\phi} &= 4\sqrt{2}t \int_0^{2\pi}\int_0^{2\sqrt{2}t}\frac{(x_2+\rho\sin\theta)\rho}{\sqrt{8t^2-\rho^2}}d\rho d\theta = 4\sqrt{2}t x_2\int_0^{2\pi}\int_0^{2\sqrt{2}t} \frac{\rho d\rho}{\sqrt{8t^2-\rho^2}}d\theta \\ &= 8\sqrt{2}\pi tx_2 \int_0^{2\sqrt{2}t}\frac{\rho d\rho}{\sqrt{8t^2-\rho^2}}
+\end{align*}
+
+Зробимо заміну $\xi=8t^2-\rho^2$, тоді $d\xi = -2\rho d\rho$, тобто $\rho d\rho = -\frac{1}{2}d\xi$. Отже:
+\begin{equation*}
+    \mathcal{I}_{\phi} = 8\sqrt{2}\pi tx_2 \int_{8t^2}^{0} -\frac{1}{2}\cdot\frac{d\xi}{\sqrt{\xi}} = 4\sqrt{2}\pi tx_2 \int_0^{8t^2} \xi^{-1/2}d\xi = 8\sqrt{2}\pi tx_2 \cdot 2\sqrt{2}t = 32\pi t^2x_2
+\end{equation*}
+
+Аналогічним чином, можна отримати:
+\begin{equation*}
+    \mathcal{I}_{\psi} = \oiint_{\|\mathbf{x}-\mathbf{y}\|=at} \psi(y)dS_{\mathbf{y}} = 32\pi t^2x_3
+\end{equation*}
+
+Таким чином, маємо:
+\begin{equation*}
+    w(x,y,z,t) = \frac{1}{32\pi}\left(\frac{\partial}{\partial t}\left(\frac{1}{t}\mathcal{I}_{\phi}\right) + \frac{1}{t}\mathcal{I}_{\psi}\right) = y + tz
+\end{equation*}
+
+Таким чином, остаточно, $\textcolor{blue}{u(x,y,z,t) = y+tz+\frac{1}{12}xt^4}$.
+
+\textbf{Відповідь.} $u(x,y,z,t) = y+tz+\frac{1}{12}xt^4$.
+
+\end{document}

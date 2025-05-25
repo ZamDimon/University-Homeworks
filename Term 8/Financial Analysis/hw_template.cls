@@ -2,7 +2,7 @@
 \ProvidesClass{hw-template}[2024/08/10 HW Template]
 
 % --- Defining the basic article style ---
-\providecommand\mtfntsize{12pt}
+\providecommand\mtfntsize{14pt}
 \ProcessOptions\relax
 \LoadClass[a4paper,\mtfntsize]{extarticle}
 \usepackage{titlepic} % For the image on the title page
@@ -14,7 +14,7 @@
 \RequirePackage{graphicx}
 \RequirePackage{framed}
 \RequirePackage{dsfont}
-\RequirePackage{cmbright}
+\RequirePackage{libertinus}
 \RequirePackage{extarrows}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{indentfirst}

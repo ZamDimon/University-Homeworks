@@ -1,0 +1,390 @@
+\documentclass{test_template}
+
+\usepackage{arydshln}
+
+\title{\bfseries Контрольна робота \#2 \\з Фінансового Аналізу}
+\author{\bfseries Захаров Дмитро, Варіант 3}
+\date{15 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\section{Задача 1}
+
+\begin{problem}
+    Дано матрицю наслідків $Q$ та параметр $\alpha$:
+    \begin{equation*}
+        Q = \begin{bmatrix}
+            5 & 2 & 8 & 4 \\
+            2 & 3 & 4 & 12 \\ 
+            8 & 5 & 3 & 10 \\
+            1 & 4 & 2 & 8
+        \end{bmatrix}, \quad \alpha=0.7.
+    \end{equation*}
+
+    Побудувати матрицю ризиків, а також прийняти рішення по методу Вальда,
+    Севіджа та Гурвіца із параметром $\alpha$. 
+\end{problem}
+
+\textbf{Розв'язання.} Спочатку знайдемо максимальні доходи:
+\begin{equation*}
+    \hat{q}_1 = 8, \; \hat{q}_2 = 5, \; \hat{q}_3 = 8, \; \hat{q}_4 = 12.
+\end{equation*}
+
+Будуємо матрицю ризиків:
+\begin{equation*}
+    \textcolor{blue}{R = \begin{bmatrix}
+        3 & 3 & 0 & 8 \\
+        6 & 2 & 4 & 0 \\
+        0 & 0 & 5 & 2 \\
+        7 & 1 & 6 & 4
+    \end{bmatrix}}
+\end{equation*}
+
+\textcolor{blue}{\textbf{Правило Вальда.}} Вибираємо $a_{i_0} = \max_i\min_j q_{ij}$. Позначимо
+$a_i := \min_j q_{ij}$, тоді $a_1=a_2=2$, $a_3=3$, $a_4=1$. Видно, що максимум
+відповідає значенню $a_3=3$, тому обираємо рішення $\textcolor{blue}{i_0=3}$.
+
+\textcolor{green!60!black}{\textbf{Правило Севіджа.}} Знаходимо $c_i := \max_j r_{ij}$:
+\begin{equation*}
+    c_1 = 8, \quad c_2 = 6, \quad c_3 = 5, \quad c_4 = 7
+\end{equation*}
+
+Маємо знайти мінімум з цих значень: $c_{i_0} = 5$, тому обираємо рішення з
+індексом $\textcolor{green!60!black}{i_0=3}$.
+
+
+\textcolor{purple}{\textbf{Правило Гурвіца.}} Вибираємо
+\begin{equation*}
+    i_0 = \arg\max_i \left\{ \alpha \max_j q_{ij} + (1-\alpha)\min_j q_{ij} \right\}.
+\end{equation*}
+
+Мінімуми ми вже знайшли: $a_1=a_2=2$, $a_3=3$, $a_4=1$. Тепер знайдемо максимуми
+$b_i := \max_j q_{ij}$: маємо $b_1=8$, $b_2=12$, $b_3=10$, $b_4=8$. Позначимо
+$d_i(\alpha) := \alpha b_i + (1-\alpha)a_i$. Отримаємо:
+\begin{align*}
+    d_1 &= 0.7 \cdot 8 + 0.3 \cdot 2 = 6.2, \\
+    d_2 &= 0.7 \cdot 12 + 0.3 \cdot 2 = 9.0, \\
+    d_3 &= 0.7 \cdot 10 + 0.3 \cdot 3 = 7.9, \\
+    d_4 &= 0.7 \cdot 8 + 0.3 \cdot 1 = 5.9.
+\end{align*}
+
+Отже маємо $\max_i d_{i}(\alpha) = d_{2}$, тому обираємо рішення
+$\textcolor{purple}{i_0=2}$.
+
+\textbf{Відповідь.} Вибір рішення за методом Вальда: $i_0=3$; за методом Севіджа:
+$i_0=3$; за методом Гурвіца: $i_0=2$.
+
+\newpage
+
+\section{Задача 2}
+
+\begin{problem}
+   В рамках моделі Кокса-Роса-Рубінштейна знайти розподіл та справедливу
+вартість платіжного зобов’язання $f=(S_2-S_0)^+$, а також відповідні досконалі
+геджуючі стратегії. $B_0=1$, $N=2$, можливі значення дохідностей
+ризикового активу $a=-0.1$, $b=0.4$, безризикової відсоткової ставки $r=0.05$ та
+початкової вартості $S_0=100$ ризикового активу.
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textcolor{purple}{\textbf{Розподіл $f$.}} Оскільки $r \in (a,b)$, то ринок безарбітражний і повний.
+Знаходимо мартингальну ймовірність: $p = \text{Pr}[\rho_n=b] = \frac{r-a}{b-a} =
+0.3$, також позначимо $q := 1-p = 0.7$. Тоді маємо наступне дерево значень
+активу $S_t$:
+
+\begin{tikzpicture}[>=Stealth, level distance=2.5cm,
+  every node/.style={draw, rectangle, rounded corners, minimum size=8mm, ultra thick},
+  level 1/.style={sibling distance=9cm, align=center, very thick},
+  level 2/.style={sibling distance=5cm, align=center, very thick}
+  ]
+
+% Tree for asset prices and option payoffs
+\node (S0) {$S_0=100$}
+  child { node (Sd) {$E_{\textcolor{red}{a}}$\\$S_1=90$}
+    child { node (Sdd) {$E_{\textcolor{red}{aa}}$\\$S_2=81$\\$f=0$} }
+    child { node (Sdu) {$E_{\textcolor{red}{a}\textcolor{blue}{b}}$\\$S_2=126$\\$f=26$} }
+  }
+  child { node (Su) {$E_{\textcolor{blue}{b}}$\\$S_1=140$}
+    child { node (Sud) {$E_{\textcolor{blue}{b}\textcolor{red}{a}}$\\$S_2=126$\\$f=26$} }
+    child { node (Suu) {$E_{\textcolor{blue}{bb}}$ \\ $S_2=196$\\$f=96$} }
+  };
+
+% Add probabilities
+\node[draw=none] at ($(S0)!0.5!(Su)$) [above right=1pt and 5pt, blue] {\(p=0.3\)};
+\node[draw=none] at ($(S0)!0.5!(Sd)$) [above left=1pt and 5pt, red] {\(q=0.7\)};
+
+\node[draw=none] at ($(Su)!0.5!(Suu)$) [above right=1pt and 2pt, blue] {\(p=0.3\)};
+\node[draw=none] at ($(Su)!0.5!(Sud)$) [above left=1pt and 2pt, red] {\(q=0.7\)};
+
+\node[draw=none] at ($(Sd)!0.5!(Sdu)$) [above right=1pt and 2pt, blue] {\(p=0.3\)};
+\node[draw=none] at ($(Sd)!0.5!(Sdd)$) [above left=1pt and 2pt, red] {\(q=0.7\)};
+
+% Title
+\node[draw=none] at (0,1.0) {\textbf{Біноміальне дерево для \( S_t \) та \( f = (S_2 - 100)^+ \)}};
+
+\end{tikzpicture}
+
+\vspace{10px}
+
+Зазначимо, що відповідні ймовірності станів на кроці $t=1$ дорівнюють
+$\text{Pr}[E_a]=q=0.7$, $\text{Pr}[E_b]=p=0.3$. В свою чергу, для кроку $t=2$
+маємо:
+\begin{equation*}
+    \text{Pr}[E_{aa}] = q^2 = 0.49, \quad \text{Pr}[E_{ab}] = \text{Pr}[E_{ba}] = pq = 0.21, \quad \text{Pr}[E_{bb}] = p^2 = 0.09.
+\end{equation*}
+
+Таким чином, \textcolor{blue}{розподіл $f$} зображений в Таблиці
+\ref{tab:distribution}.
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{ccc}
+        \hline
+        \rowcolor{gray!20} \textbf{Стан} & \textbf{Ймовірність} & \textbf{Платіжне зобов'язання} \\ \hline
+        $E_{aa}$ & $0.49$ & $0$ \\ \hline
+        $E_{ab}\cup E_{ba}$ & $0.42$ & $26$ \\ \hline
+        $E_{bb}$ & $0.09$ & $96$ \\ \hline
+    \end{tabular}
+    \caption{Розподіл платіжного зобов'язання $f$}
+    \label{tab:distribution}
+\end{table}
+
+\textcolor{green!50!black}{\textbf{Геджуючі стратегії.}} Введемо наступні
+$\sigma$-алгебри:
+\begin{equation*}
+    \mathcal{F}_0 = \{\emptyset, \Omega\}, \quad \mathcal{F}_1 = \sigma[E_a,E_b], \quad \mathcal{F}_2 = \sigma[E_{aa}, E_{ab}, E_{ba}, E_{bb}] = \mathcal{F}.
+\end{equation*}
+
+Тоді капітали інвестора, які він повинен мати для побудови стратегії, має 
+вигляд $X_n^{\pi} = (1+r)^{n-N}\mathbb{E}_{\rho}[f_N|\mathcal{F}_n]$, себто:
+\begin{align*}
+    X_0^{\pi} &= \mathbb{E}_{\rho}\left[\frac{f_2}{(1+r)^2}\right] = \mathbb{E}_{\rho}\left[\frac{f_2}{1.05^2}\right] = \frac{1}{1.05^2}\left(26 \cdot 0.42 + 96 \cdot 0.09\right) \approx 17.7415 \\
+    X_1^{\pi}(\omega) &= \frac{1}{1+r} \cdot \mathbb{E}_{\rho}\left[f_2 | \mathcal{F}_n\right] = \begin{cases}
+        \frac{1}{1.05} \cdot \frac{0.21 \cdot 26}{0.7}, & \omega \in E_a \\
+        \frac{1}{1.05} \cdot \frac{0.21 \cdot 26 + 0.09 \cdot 96}{0.3}, & \omega \in E_b
+    \end{cases} = \begin{cases}
+        7.43, & \omega \in E_a \\
+        44.76, & \omega \in E_b
+    \end{cases} \\
+    X_2^{\pi}(\omega) &= \mathbb{E}_{\rho}[f_2|\mathcal{F}_2] = \mathbb{E}_{\rho}[f_2|\mathcal{F}] = f_2(\omega)
+\end{align*}
+
+Величиною \textcolor{blue}{справедливою вартістю опціону} є як раз значення $X_0^{\pi}$, 
+тобто \textcolor{blue}{наближено $17.74$}.
+
+Стратегія має вигляд $\pi = \{(\beta_n,\gamma_n)\}_{n \in \{1,\dots,N\}}$. Згідно 
+лекції, ``ризикові компоненти'' $\{\gamma_n\}_{n \in \{1,\dots,N\}}$ досконалої 
+стратегії інвестора обчислюється як:
+\begin{equation*}
+    \gamma_n = \frac{X_n^{\pi} - (1+r)X_{n-1}^{\pi}}{S_{n-1}(\rho_n-r)}.
+\end{equation*}
+
+Почнемо з $\gamma_1$. Маємо:
+\begin{equation*}
+    \gamma_1 = \frac{X_1^{\pi} - (1+r)X_0^{\pi}}{(\rho_1-r)S_0}
+\end{equation*}
+
+Оскільки $\gamma_1$ не залежить від $\rho_1$ і приймає стале значення, то
+\begin{equation*}
+    \gamma_1 = \frac{X_1^{\pi}\big|_{E_a} - (1+r)X_0^{\pi}}{\left(\rho_1\big|_{E_a}-r\right)S_0} \approx \frac{7.43 - 1.05 \cdot 17.74}{(-0.1-0.05) \cdot 100} \approx 0.765
+\end{equation*}
+
+Аналогічно, для $\gamma_2$ маємо:
+\begin{equation*}
+    \gamma_2 = \frac{X_2^{\pi} - (1+r)X_1^{\pi}}{(\rho_2-r)S_1}
+\end{equation*}
+
+Ця величина не залежить від $\rho_2$ і приймає сталі значення на $E_a,E_b$:
+\begin{align*}
+    \gamma_2\Big|_{E_a} &= \frac{X_2^{\pi}\big|_{E_{aa}} - (1+r)X_1^{\pi}\big|_{E_a}}{(a-r)S_1\big|_{E_a}} = \frac{0 - 1.05 \cdot 7.43}{(-0.1-0.05) \cdot 90} \approx 0.578 \\
+    \gamma_2\Big|_{E_b} &= \frac{X_2^{\pi}\big|_{E_{ba}} - (1+r)X_1^{\pi}\big|_{E_b}}{(a-r)S_1\big|_{E_b}} = \frac{26 - 1.05 \cdot 44.76}{(-0.1-0.05) \cdot 140} \approx 1
+\end{align*}
+
+Таким чином, остаточно, ризикові компоненти досконалої стратегії:
+\begin{equation*}
+    \textcolor{blue}{\gamma_1 \approx 0.765, \quad \gamma_2 \approx \begin{cases}
+        0.578, & \omega \in E_a \\
+        1, & \omega \in E_b
+    \end{cases}}
+\end{equation*}
+
+Нарешті, безризикові компоненти $\{\beta_n\}_{n \in \{1,\dots,N\}}$ досконалої стратегії
+\begin{align*}
+    \textcolor{blue}{\beta_1} &= \frac{X_0^{\pi} - \gamma_1S_0}{B_0} = \frac{17.74 - 0.765 \cdot 100}{1} = \textcolor{blue}{-58.76} \\
+    \textcolor{blue}{\beta_2(\omega)} &= \frac{X_1^{\pi} - \gamma_2S_1}{B_1} = \begin{cases}
+        \frac{7.43 - 0.578 \cdot 90}{1.05}, \; \omega \in E_a \\
+        \frac{44.76 - 1 \cdot 140}{1.05}, \; \omega \in E_b
+    \end{cases} \textcolor{blue}{\approx \begin{cases}
+        -42.47, \; \omega \in E_a \\
+        -90.70, \; \omega \in E_b
+    \end{cases}}
+\end{align*}
+
+\newpage
+
+\section{Задача 3}
+
+\begin{problem}
+    Фінансовий ринок функціонує у моменти часу $n=0,1,2$ та складено з двох
+активів: безризикового і ризикового ($N=2$, $d=1$, $B_0=1$). В таблиці 1 задано
+динаміку вартості ризикового активу, в таблиці 2 для кожного варіанту вказано
+значення параметрів ринку.
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+        \hline
+        $\omega_i$ & $S_1(\omega_i)$ & $S_2(\omega_i)$ \\ \hline
+        $\omega_1$ & $a$ & $a_1$ \\ \hline
+        $\omega_2$ & $a$ & $a_2$ \\ \hline
+        $\omega_3$ & $b$ & $b_1$ \\ \hline
+        $\omega_4$ & $b$ & $b_2$ \\ \hline
+        $\omega_5$ & $c$ & $c_1$ \\ \hline
+        $\omega_6$ & $c$ & $c_2$ \\ \hline
+        \end{tabular}
+    \end{center}
+        
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            $S_0$ & $r$ & $a$ & $b$ & $c$ & $a_1$ & $a_2$ & $b_1$ & $b_2$ & $c_1$ & $c_2$ \\ \hline
+            $10$ & $0.05$ & $10$ & $18$ & $5$ & $6$ & $13$ & $18$ & $24$ & $6$ & $5$ \\ \hline
+        \end{tabular}
+    \end{center}
+
+    Потрібно
+    \begin{enumerate}
+        \item Перевірити безарбітражність фінансового ринку, описати множину
+        мартингальних мір.
+        \item Описати платіжні зобов’язання Європейського типу та клас досяжних
+платіжних зобов’язань Європейського типу. Навести приклад ненульового досяжного
+платіжного зобов’язання
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textbf{Пункт 1.} Будь-яка міра задається вектором $\rho = (p_1,\dots,p_6)$
+таким чином, що $p_j=\text{Pr}[\omega_j] > 0$ для $j \in \{1,\dots,6\}$ та
+$\sum_{j=1}^6 p_j=1$. Безарібтражність означає існування такої міри $\rho$, що
+\begin{equation*}
+    \mathbb{E}_{\rho}\left[\frac{S_n}{B_n} \, \middle| \mathcal{F}_{n-1}\right] = \frac{S_{n-1}}{B_{n-1}}, \quad n \in \{1,2\}.
+\end{equation*}
+
+Як було показано на практиці, ця умова зводиться до наступної системи рівнянь:
+\begin{equation*}
+    \begin{cases}
+        p_1 + \dots + p_6 = 1, \\
+        \frac{a(p_1+p_2)+b(p_3+p_4)+c(p_5+p_6)}{B_1} = \frac{S_0}{B_0}, \\
+        \frac{p_1a_1 + p_2a_2}{B_2(p_1+p_2)} = \frac{a}{B_1}, \\
+        \frac{p_3b_1 + p_4b_2}{B_2(p_3+p_4)} = \frac{b}{B_1}, \\
+        \frac{p_5c_1 + p_6c_2}{B_2(p_5+p_6)} = \frac{c}{B_1}, \\
+    \end{cases}
+\end{equation*}
+
+з умовами $p_j \geq 0$ для всіх $j$. Підставляючи значення з таблиці 2, отримаємо
+систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        p_1 + p_2 + p_3 + p_4 + p_5 + p_6 = 1, \\
+        \frac{10(p_1+p_2)+18(p_3+p_4)+5(p_5+p_6)}{1+0.05} = 10, \\
+        \frac{p_1\cdot 6 + p_2\cdot 13}{(p_1+p_2)\cdot (1.00+0.05)} = 10, \\
+        \frac{p_3\cdot 18 + p_4\cdot 24}{(p_3+p_4)\cdot (1.00+0.05)} = 18, \\
+        \frac{p_5\cdot 6 + p_6\cdot 5}{(p_5+p_6)\cdot (1.00+0.05)} = 5, \\
+    \end{cases}
+\end{equation*}
+
+Або, якщо дещо спростити:
+\begin{equation*}
+    \small\begin{cases}
+        p_1 + p_2 + p_3 + p_4 + p_5 + p_6 = 1, \\
+        10(p_1+p_2)+18(p_3+p_4)+5(p_5+p_6) = 10.5, \\
+        6p_1 + 13p_2 - 10.5p_1 - 10.5p_2 = 0, \\
+        18p_3 + 24p_4 - 18.9p_3 - 18.9p_4 = 0, \\
+        6p_5 + 5p_6 - 5.25p_5 - 5.25p_6 = 0. \\
+    \end{cases} \Rightarrow \begin{cases}
+        p_1 + p_2 + p_3 + p_4 + p_5 + p_6 = 1, \\
+        10(p_1+p_2)+18(p_3+p_4)+5(p_5+p_6) = 10.5, \\
+        -4.5p_1 + 2.5p_2 = 0, \\
+        -0.9p_3 + 5.1p_4 = 0, \\
+        0.75p_5 - 0.25p_6 = 0.
+    \end{cases}
+\end{equation*}
+
+Звідси отримуємо наступний вигляд розв'язку:
+\begin{equation*}
+    \rho = \left( p, \frac{9}{5}p, \frac{187}{520}-\frac{119}{130}p, \frac{33}{520} - \frac{21}{130}p, \frac{15}{104}-\frac{28}{65}p, \frac{45}{104}-\frac{84}{65}p\right)
+\end{equation*}
+
+Таким чином, сукупність мартингальних мір задається як:
+\begin{equation*}
+    \mathcal{R} = \left\{ \rho^{*}=\begin{bmatrix}
+        p \\ 
+        \frac{9}{5}p \\ 
+        \frac{187}{520}-\frac{119}{130}p \\ 
+        \frac{33}{520} - \frac{21}{130}p \\ 
+        \frac{15}{104}-\frac{28}{65}p \\ 
+        \frac{45}{104}-\frac{84}{65}p
+    \end{bmatrix}: p \in X \right\},
+\end{equation*}
+де $X$ --- множина допустимих значень параметра $p$, за яких усі компоненти
+додатні. Очевидно, $p>0$. З іншої сторони, маємо:
+\begin{equation*}
+    \begin{cases}
+        \frac{187}{520}-\frac{119}{130}p > 0 \\
+        \frac{33}{520} - \frac{21}{130}p > 0 \\
+        \frac{15}{104}-\frac{28}{65}p > 0 \\
+        \frac{45}{104}-\frac{84}{65}p > 0
+    \end{cases} \Rightarrow \begin{cases}
+        p < \frac{11}{28} \\
+        p < \frac{11}{28} \\
+        p < \frac{75}{224} \\
+        p < \frac{75}{224}
+    \end{cases} \Rightarrow p < \frac{75}{224}
+\end{equation*}
+
+Таким чином, остаточно сукупність мартингальних мір:
+\begin{equation*}
+    \textcolor{blue}{\mathcal{R} = \left\{ \rho^{*}=\begin{bmatrix}
+        p \\ 
+        \frac{9}{5}p \\ 
+        \frac{187}{520}-\frac{119}{130}p \\ 
+        \frac{33}{520} - \frac{21}{130}p \\ 
+        \frac{15}{104}-\frac{28}{65}p \\ 
+        \frac{45}{104}-\frac{84}{65}p
+    \end{bmatrix}: 0 < p < \frac{75}{224} \right\}.}
+\end{equation*}
+
+Оскільки $\mathcal{R} \neq \emptyset$, то ринок безарбітражний.
+
+\textbf{Пункт 2.} Нехай $f=f(\omega)$ є платіжне зобов'язання Європейського
+типу, $f(\omega_j)=f_j \geq 0$ для всіх $j$. Таким чином,
+$f=(f_1,\dots,f_6)$. Математичне сподівання такого зобов'язання
+відносно міри $\rho \in \mathcal{R}$ обчислюється як:
+\begin{align*}
+    \small\mathbb{E}_{\rho}[f] &= pf_1 + \frac{9}{5}pf_2 + \left(\frac{187}{520}-\frac{119}{130}p\right)f_3 \\
+    &+ \left(\frac{33}{520} - \frac{21}{130}p\right)f_4 + \left(\frac{15}{104}-\frac{28}{65}p\right)f_5 + \left(\frac{45}{104}-\frac{84}{65}p\right)f_6
+\end{align*}
+
+Таке платіжне зобов'язання буде досяжним тоді і тільки тоді, коли це математичне
+сподівання не залежить від вибору міри $\rho$. Еквівалентно, оскільки
+математичне сподівання має вид $\small\mathbb{E}_{\rho}[f]=\alpha(f) \cdot
+p+\beta$, то $\alpha(f)=0$. Отже:
+\begin{equation*}
+    f_1 + \frac{9}{5}f_2 - \frac{119}{130}f_3 - \frac{21}{130}f_4 - \frac{28}{65}f_5 - \frac{84}{65}f_6 = 0.
+\end{equation*}
+
+Таким чином, клас досяжних зобов'язань має вигляд:
+\begin{equation*}
+    \textcolor{blue}{\mathcal{F} = \left\{ f=\{f_j\}_{j \in \{1,\dots,6\}} \in \mathbb{R}_{\geq 0}^6: f_1 + \frac{9}{5}f_2 - \frac{119}{130}f_3 - \frac{21}{130}f_4 - \frac{28}{65}f_5 - \frac{84}{65}f_6 = 0\right\}.}
+\end{equation*}
+
+Прикладом ненульового досяжного платіжного зобов'язання може бути
+\begin{equation*}
+    \textcolor{blue}{f = \left(\frac{28}{65}, 0, 0, 0, 1, 0\right).}
+\end{equation*}
+
+\end{document}

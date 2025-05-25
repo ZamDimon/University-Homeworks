@@ -1,0 +1,397 @@
+\documentclass{test_template}
+
+\usepackage{arydshln}
+
+\title{\bfseries Контрольна робота \#1 \\з Фінансового Аналізу}
+\author{\bfseries Захаров Дмитро, Варіант 3}
+\date{10 квітня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\section{Задача}
+
+\begin{problem}
+    \textbf{Дано}: Ковариаційна матриця дохідностей ризикового активу $V$,
+вектор $\mathbf{m}$ дохідностей ризикових активів, ефективність безризикового
+цінного паперу $m_0$.
+
+Скласти портфель Тобіна та обчислити ефективність та ризик складеного портфелю
+\begin{enumerate}
+    \item Мінімального ризику ефективності не нижче $\overline{m}+1$.
+    \item Максимальної ефективності, ризик якого дорівнює заданому числу $\nu_0$.
+    \item Максимальної ефективності, ризик якого не перевищує числа $\nu_0-1$.
+    \item Мінімального ризику заданої ефективності $\overline{m}-1$ при
+    умові заборони на короткий продаж 1-го цінного паперу.
+\end{enumerate}
+
+\begin{equation*}
+    V = \begin{pmatrix}
+        3 & -1 & 0 \\
+        -1 & 2 & -1 \\
+        0 & -1 & 3
+    \end{pmatrix}, \quad \mathbf{m} = \begin{pmatrix}
+        7 \\ 1 \\ 4
+    \end{pmatrix}, \quad \overline{m} = 6, m_0 = 3, \nu_0 = 3
+\end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textbf{Пункт 1.} Маємо наступну постановку задачі:
+\begin{equation*}
+    \begin{cases}
+        \mathbf{x}^{\top}V\mathbf{x} \to \min & \textcolor{gray}{\text{Мінімізація ризику}} \\
+        x_0 + \mathbf{1}_n^{\top}\mathbf{x} = 1 & \textcolor{gray}{\text{Умова нормування}} \\
+        m_0x_0 + \mathbf{m}^{\top}\mathbf{x} \geq \overline{m}+1 & \textcolor{gray}{\text{Ефективність не нижче за $\overline{m}+1$}}
+    \end{cases}
+\end{equation*}
+
+Для початку, потрібно позбутись $x_0$. Для цього введемо $\mathbf{M} :=
+\mathbf{m}-m_0 = (7-3,1-3,4-3)=(4,-2,1)$ та $\hat{m} := \overline{m} + 1 - m_0 =
+4$. Тоді задача записується дещо простіше:
+\begin{equation*}
+    \begin{cases}
+        \mathbf{x}^{\top}V\mathbf{x} \to \min \\
+        \hat{m} - \mathbf{M}^{\top}\mathbf{x} \leq 0
+    \end{cases}
+\end{equation*}
+
+\begin{theorem}
+    Якщо $\hat{m}>0$, $\mathbf{M} \neq 0$, то розв'язок початкової задачі має вигляд:
+    \begin{equation*}
+        \mathbf{x} = \frac{\hat{m}V^{-1}\mathbf{M}}{\mathbf{M}^{\top}V^{-1}\mathbf{M}}, \quad x_0 = 1 - \mathbf{1}_n^{\top}\mathbf{x}.
+    \end{equation*}
+\end{theorem}
+
+\textbf{Доведення.} Складаємо функцію Лагранжа
+$\mathcal{L}(\mathbf{x},\lambda)=\mathbf{x}^{\top}V\mathbf{x} + \lambda(\hat{m}
+- \mathbf{M}^{\top}\mathbf{x})$. Розв'язок задачі Тобіна в такому разі 
+знаходять з системи:
+\begin{equation*}
+    \begin{cases}
+        \partial \mathcal{L}(\mathbf{x},\lambda)/\partial\mathbf{x} = \mathbf{0}_n, \\
+        \lambda(\hat{m} - \mathbf{M}^{\top}\mathbf{x}) = 0, \; \lambda \geq 0 \\
+        \hat{m} - \mathbf{M}^{\top}\mathbf{x} \leq 0
+    \end{cases}
+\end{equation*}
+
+Оскільки $\partial\mathcal{L}/\partial\mathbf{x} = 2V\mathbf{x} -
+\lambda\mathbf{M}$, то ми образу знаходимо $\mathbf{x} = \frac{1}{2}\lambda
+V^{-1}\mathbf{M}$. З другого рівняння якщо $\lambda=0$, то $\mathbf{x} =
+\mathbf{0}$ та $x_0=1$ --- тобто вкладаємо все в безризиковий актив. Проте, цей
+випадок можливий лише за умови $\hat{m} \geq 0$, що за умовою не виконується.
+
+Отже, $\hat{m} = \mathbf{M}^{\top}\mathbf{x}$. Тому, якщо підставити вираз 
+для $\mathbf{x}$, отримуємо
+\begin{equation*}
+    \lambda = \frac{2\hat{m}}{\mathbf{M}^{\top}V^{-1}\mathbf{M}} \geq 0
+\end{equation*}
+
+Отже, підставляючи $\lambda$ у вираз для $\mathbf{x}$, отримаємо
+\begin{equation*}
+    \textcolor{blue}{\mathbf{x} = \frac{\hat{m}V^{-1}\mathbf{M}}{\mathbf{M}^{\top}V^{-1}\mathbf{M}}}
+\end{equation*}
+
+Вираз для $x_0$ знаходиться з умови нормування. \hfill $\blacksquare$
+
+\vspace{10px}
+
+\textcolor{purple}{\textbf{Чисельний розв'язок.}} Обернена матриця
+до $V$ має вигляд:
+\begin{equation*}
+    V^{-1} = \begin{pmatrix}
+        \frac{5}{12} & \frac{1}{4} & \frac{1}{12} \\
+        \frac{1}{4} & \frac{3}{4} & \frac{1}{4} \\
+        \frac{1}{12} & \frac{1}{4} & \frac{5}{12}
+    \end{pmatrix}
+\end{equation*}
+
+Таким чином, підставляючи:
+\begin{equation*}
+    \hat{m}V^{-1}\mathbf{M} = 4\begin{pmatrix}
+        \frac{5}{12} & \frac{1}{4} & \frac{1}{12} \\
+        \frac{1}{4} & \frac{3}{4} & \frac{1}{4} \\
+        \frac{1}{12} & \frac{1}{4} & \frac{5}{12}
+    \end{pmatrix}\begin{pmatrix}
+        4 \\ -2 \\ 1
+    \end{pmatrix} = \begin{pmatrix}
+        5 \\ -1 \\ 1
+    \end{pmatrix}, \quad \mathbf{M}^{\top}V^{-1}\mathbf{M} = \frac{23}{4}
+\end{equation*}
+
+Таким чином, остаточно:
+\begin{equation*}
+    \textcolor{blue}{\mathbf{x} = \begin{pmatrix}
+        \frac{20}{23} \\ -\frac{4}{23} \\ \frac{4}{23}
+    \end{pmatrix} \implies x_0 = 1-\frac{20}{23} = \frac{3}{23}}.
+\end{equation*}
+
+\textbf{Відповідь.} $x_0=\frac{3}{23}$, $x_1=\frac{20}{23}$,
+$x_2=-\frac{4}{23}$, $x_3=\frac{4}{23}$.
+
+\vspace{10px}
+
+\textbf{Пункт 2.} Постановка задачі виглядає наступним чином (після позбавлення від $x_0$):
+\begin{equation*}
+    \begin{cases}
+        \mathbf{M}^{\top}\mathbf{x} \to \max & \textcolor{gray}{\text{Максимізація ефективності}} \\
+        \mathbf{x}^{\top}V\mathbf{x} = \nu_0^2, & \textcolor{gray}{\text{Ризик дорівнює $\nu_0$}} \\
+    \end{cases}
+\end{equation*}
+
+Наведемо наступну теорему з лекції.
+\begin{theorem}
+    Якщо $\mathbf{M} \neq 0$, то розв'язок задачі має вигляд:
+    \begin{equation*}
+        \mathbf{x} = \frac{\nu_0V^{-1}\mathbf{M}}{\sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}}}, \quad x_0 = 1 - \mathbf{1}_n^{\top}\mathbf{x}
+    \end{equation*}
+\end{theorem}
+
+\textbf{Доведення.} Складаємо функцію Лагранжа:
+$\mathcal{L}(\mathbf{x},\lambda)=\mathbf{M}^{\top}\mathbf{x} +
+\lambda(\mathbf{x}^{\top}V\mathbf{x}-\nu_0^2)$. Розв'язок задачі Тобіна в такому разі
+знаходять з системи:
+\begin{equation*}
+    \begin{cases}
+        \partial\mathcal{L}(\mathbf{x},\lambda)/\partial\mathbf{x} = \mathbf{0}_n, \\
+        \partial\mathcal{L}(\mathbf{x},\lambda)/\partial\lambda = 0
+    \end{cases}
+\end{equation*}
+
+В нашому випадку це еквівалентно системі:
+\begin{equation*}
+    \begin{cases}
+        \mathbf{M} + 2\lambda V\mathbf{x} = 0, \\
+        \mathbf{x}^{\top}V\mathbf{x} = \nu_0^2
+    \end{cases}
+\end{equation*}
+
+З першого рівняння отримуємо $\mathbf{x} = -\frac{1}{2\lambda}V^{-1}\mathbf{M}$.
+В підставлені у друге рівняння, отримаємо
+\begin{equation*}
+    \lambda^2 = \frac{\mathbf{M}^{\top}V^{-1}\mathbf{M}}{4\nu_0^2} \implies 
+    \lambda = \pm \frac{\sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}}}{2\nu_0}
+\end{equation*}
+
+Оскільки ми хочемо отримати максимум, то $\partial^2\mathcal{L}/\partial\mathbf{x}^2 = 2 \lambda V < 0$, 
+тому потрібно обрати від'ємний корінь. Отже, $\lambda = -\frac{\sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}}}{2\nu_0}$ і тому
+\begin{equation*}
+    \textcolor{blue}{\mathbf{x} = \frac{\nu_0V^{-1}\mathbf{M}}{\sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}}}, \quad x_0 = 1 - \mathbf{1}_n^{\top}\mathbf{x}}. \quad\quad \blacksquare
+\end{equation*}
+
+\textcolor{purple}{\textbf{Чисельний розв'язок.}} Підставляємо числа (більшість
+ми вже обраховували вище):
+\begin{equation*}
+    \nu_0V^{-1}\mathbf{M} = 3\begin{pmatrix}
+        \frac{5}{12} & \frac{1}{4} & \frac{1}{12} \\
+        \frac{1}{4} & \frac{3}{4} & \frac{1}{4} \\
+        \frac{1}{12} & \frac{1}{4} & \frac{5}{12}
+    \end{pmatrix}\begin{pmatrix}
+        4 \\ -2 \\ 1
+    \end{pmatrix} = \begin{pmatrix}
+        \frac{15}{4} \\ -\frac{3}{4} \\ \frac{3}{4}
+    \end{pmatrix}, \quad \sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}} = \sqrt{\frac{23}{4}} = \frac{\sqrt{23}}{2}
+\end{equation*}
+
+Таким чином, остаточно:
+\begin{equation*}
+    \textcolor{blue}{\mathbf{x} = \begin{pmatrix}
+        \frac{15}{2\sqrt{23}} \\ -\frac{3}{2\sqrt{23}} \\ \frac{3}{2\sqrt{23}}
+    \end{pmatrix} \implies x_0 = 1 - \frac{15}{2\sqrt{23}}}
+\end{equation*}
+
+\textbf{Відповідь.} $x_0 = 1 - \frac{15}{2\sqrt{23}}$, $x_1 = \frac{15}{2\sqrt{23}}$,
+$x_2 = -\frac{3}{2\sqrt{23}}$, $x_3 = \frac{3}{2\sqrt{23}}$.
+
+\vspace{10px}
+
+\textbf{Пункт 3.} Формально маємо наступну постановку задачі:
+\begin{equation*}
+    \begin{cases}
+        \mathbf{M}^{\top}\mathbf{x} \to \max, & \textcolor{gray}{\text{Максимізація ефективності}} \\
+        \mathbf{x}^{\top}V\mathbf{x} \leq (\nu_0-1)^2. & \textcolor{gray}{\text{Ризик не перевищує $\nu_0-1$}} \\
+    \end{cases}
+\end{equation*}
+
+Наведемо наступну теорему з лекції.
+\begin{theorem}
+    Якщо $\mathbf{M} \neq 0$, то розв'язок задачі має вигляд (для $\widetilde{\nu}_0:=\nu_0-1$):
+    \begin{equation*}
+        \mathbf{x} = \frac{\widetilde{\nu}_0V^{-1}\mathbf{M}}{\sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}}}, \quad x_0 = 1 - \mathbf{1}_n^{\top}\mathbf{x}
+    \end{equation*}
+\end{theorem}
+
+\textbf{Доведення.} Введемо функцію Лагранжа $\mathcal{L}(\mathbf{x},\lambda) =
+-\mathbf{M}^{\top}\mathbf{x} +
+\lambda(\mathbf{x}^{\top}V\mathbf{x}-\widetilde{\nu}_0^2)$ (мінус в першому
+члені стоїть через те, що нам потрібно мінімізувати вираз
+$\mathbf{M}^{\top}\mathbf{x}$). Тоді згідно теореми Куна-Таккера:
+\begin{equation*}
+    \begin{cases}
+        \textcolor{gray}{\partial \mathcal{L}/\partial \mathbf{x}} = \mathbf{0}_n, \\
+        \lambda(\mathbf{x}^{\top}V\mathbf{x}-\widetilde{\nu}_0^2) = 0, \; \lambda \geq 0 \\
+        \mathbf{x}^{\top}V\mathbf{x} - \widetilde{\nu}_0^2 \leq 0, 
+    \end{cases} \iff \begin{cases}
+        \textcolor{gray}{2\lambda V\mathbf{x} - \mathbf{M}} = \mathbf{0}_n, \\
+        \lambda(\mathbf{x}^{\top}V\mathbf{x}-\widetilde{\nu}_0^2) = 0, \; \lambda \geq 0 \\
+        \mathbf{x}^{\top}V\mathbf{x} - \widetilde{\nu}_0^2 \leq 0, 
+    \end{cases}
+\end{equation*}
+
+Якщо $\lambda=0$, то $\mathbf{M}=\mathbf{0}_n$, що протирічить умові задачі.
+Тому $\lambda \neq 0$ і тому $\mathbf{x} = \frac{1}{2\lambda}V^{-1}\mathbf{M}$.
+Якщо підставити це у рівняння
+$\mathbf{x}^{\top}V\mathbf{x}=\widetilde{\nu}_0^2$, то отримуємо
+$\lambda^2=\mathbf{M}^{\top}V\mathbf{M}/4\widetilde{\nu}_0^2$. При взятті
+кореня, відкидаємо від'ємний корінь (оскільки $\lambda \geq 0$), тому
+$\lambda=\sqrt{\mathbf{M}^{\top}V\mathbf{M}}/2\widetilde{\nu}_0$ і остаточно:
+\begin{equation*}
+    \textcolor{blue}{\mathbf{x} = \frac{\widetilde{\nu}_0V^{-1}\mathbf{M}}{\sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}}}, \quad x_0 = 1 - \mathbf{1}_n^{\top}\mathbf{x}}. \quad \quad \blacksquare
+\end{equation*}
+
+\textcolor{purple}{\textbf{Чисельний розв'язок.}} Маємо $\widetilde{\nu}_0=2$, 
+тому:
+\begin{equation*}
+    \widetilde{\nu}_0V^{-1}\mathbf{M} = 2\begin{pmatrix}
+        \frac{5}{12} & \frac{1}{4} & \frac{1}{12} \\
+        \frac{1}{4} & \frac{3}{4} & \frac{1}{4} \\
+        \frac{1}{12} & \frac{1}{4} & \frac{5}{12}
+    \end{pmatrix}\begin{pmatrix}
+        4 \\ -2 \\ 1
+    \end{pmatrix} = \begin{pmatrix}
+        \frac{5}{2} \\ -\frac{1}{2} \\ \frac{1}{2}
+    \end{pmatrix}, \quad \sqrt{\mathbf{M}^{\top}V^{-1}\mathbf{M}} = \sqrt{\frac{23}{4}} = \frac{\sqrt{23}}{2}
+\end{equation*}
+
+Згідно формулі вище, отримуємо розв'язок задачі:
+\begin{equation*}
+    \textcolor{blue}{\mathbf{x} = \begin{pmatrix}
+        \frac{5}{\sqrt{23}} \\ -\frac{1}{\sqrt{23}} \\ \frac{1}{\sqrt{23}}
+    \end{pmatrix} \implies x_0 = 1-\frac{5}{\sqrt{23}}}.
+\end{equation*}
+
+\textbf{Відповідь.} $x_0 = 1 - \frac{5}{\sqrt{23}}$, $x_1 = \frac{5}{\sqrt{23}}$,
+$x_2 = -\frac{1}{\sqrt{23}}$, $x_3 = \frac{1}{\sqrt{23}}$.
+
+\vspace{10px}
+
+\textbf{Пункт 4.} Формальна постановка задачі наступна:
+\begin{equation*}
+    \begin{cases}
+        \mathbf{x}^{\top}V\mathbf{x} \to \min & \textcolor{gray}{\text{Мінімізація ризику}} \\
+        m_0x_0 + \mathbf{m}^{\top}\mathbf{x} = \overline{m} - 1 & \textcolor{gray}{\text{Ефективність дорівнює $\overline{m}-1$}} \\
+        x_0 + \mathbf{1}_n^{\top}\mathbf{x} = 1 & \textcolor{gray}{\text{Умова нормування}} \\
+        x_1 \geq 0 & \textcolor{gray}{\text{Заборона короткого продажу 1-го активу}} \\
+    \end{cases}
+\end{equation*}
+
+Виключимо $x_0$ з задачі, як і в класичній задачі Тобіна. Вводимо $\hat{m} = \overline{m}-1-m_0=2$, 
+вектор $\mathbf{M} = (4,-2,1)$ і тоді задача має вигляд:
+\begin{equation*}
+    \begin{cases}
+        \mathbf{x}^{\top}V\mathbf{x} \to \min \\
+        \mathbf{M}^{\top}\mathbf{x} = \hat{m} \\
+        x_1 \geq 0
+    \end{cases}
+\end{equation*}
+
+Застосуємо теорему Куна-Таккера. Введемо функцію Лагранжа (тут в позначеннях лекції 
+$h_1(x) = \hat{m}- \mathbf{M}^{\top}\mathbf{x}$ та $f_1(x) = -x_1$):
+\begin{equation*}
+    \mathcal{L}(\mathbf{x},\lambda,\mu) = \mathbf{x}^{\top}V\mathbf{x} + \lambda(\hat{m} - \mathbf{M}^{\top}\mathbf{x}) - \mu x_1
+\end{equation*}
+
+В такому разі, має виконуватись система рівнянь:
+\begin{equation*}
+    \begin{cases}
+        \textcolor{gray}{\partial \mathcal{L}(\mathbf{x},\lambda,\mu)/\partial\mathbf{x}} = \mathbf{0}_n, \\
+        \hat{m}- \mathbf{M}^{\top}\mathbf{x} = 0, \\
+        x_1 \geq 0, \\
+        \mu x_1 = 0, \; \mu \geq 0
+    \end{cases} \iff \begin{cases}
+        \textcolor{gray}{2V\mathbf{x} - \lambda\mathbf{M} - \mu\mathbf{e}_1 = 0}, \\
+        \hat{m}- \mathbf{M}^{\top}\mathbf{x} = 0, \\
+        x_1 \geq 0, \\
+        \mu x_1 = 0, \; \mu \geq 0
+    \end{cases}
+\end{equation*}
+
+Виразимо $\mathbf{x}$ з першого рівняння:
+\begin{equation*}
+    \mathbf{x} = \frac{1}{2}V^{-1}\left(\lambda \mathbf{M} + \mu \mathbf{e}_1\right)
+\end{equation*}
+
+Тепер розглянемо випадки. \textcolor{purple}{\textbf{Випадок 1.}} Нехай $\mu=0$. В такому разі, $\mathbf{x} = \frac{\lambda}{2}V^{-1}\mathbf{M}$
+і тоді розв'язок задачі збігається з пунктом 1:
+\begin{equation*}
+    \mathbf{x} = \frac{\hat{m}V^{-1}\mathbf{M}}{\mathbf{M}^{\top}V^{-1}\mathbf{M}}, \quad x_0 = 1 - \mathbf{1}_n^{\top}\mathbf{x}
+\end{equation*}
+
+Якщо підставити конкретні значення:
+\begin{equation*}
+    \textcolor{blue}{\mathbf{x} = \begin{pmatrix}
+        \frac{10}{23} \\ -\frac{2}{23} \\ \frac{2}{23}
+    \end{pmatrix} \implies x_0 = \frac{13}{23}}.
+\end{equation*}
+
+Оскільки $x_1 \geq 0$, то розв'язок підходить.
+
+\textcolor{purple}{\textbf{Випадок 2.}} Нехай $\mu>0$. В такому разі, $x_1=0$ і маємо 
+систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        2V\mathbf{x} - \lambda\mathbf{M} - \mu\mathbf{e}_1 = 0, \\
+        \hat{m}- \mathbf{M}^{\top}\mathbf{x} = 0, \\
+        x_1 = 0
+    \end{cases}
+\end{equation*}
+
+Маємо $n-1$ невідомих в $\mathbf{x}$ та дві невідомі $(\lambda,\mu)$, тобто в сумі $n+1$.
+Перша строчка містить $n$ рівнянь, друга --- $1$ рівняння, тобто рівнянь нам достатньо. 
+Рівняння лінійні і тому можемо їх спокійно розв'язати. Підставимо значення:
+\begin{equation*}
+    2V\mathbf{x} - \lambda\mathbf{M} - \mu\mathbf{e}_1 = 0 \implies
+    2\begin{pmatrix}
+        3 & -1 & 0 \\
+        -1 & 2 & -1 \\
+        0 & -1 & 3
+    \end{pmatrix}\begin{pmatrix}
+        0 \\ x_2 \\ x_3
+    \end{pmatrix} - \lambda\begin{pmatrix}
+        4 \\ -2 \\ 1
+    \end{pmatrix} - \mu\begin{pmatrix}
+        1 \\ 0 \\ 0
+    \end{pmatrix} = 0
+\end{equation*}
+
+Звідси система рівнянь:
+\begin{equation*}
+    \begin{cases}
+        -2x_2 - 4\lambda - \mu = 0 \\
+        4x_2 - x_3 + 2\lambda = 0 \\
+        -x_2 + 3x_3 - \lambda = 0 \\
+    \end{cases}
+\end{equation*}
+
+Додамо другу строчку: $\mathbf{M}^{\top}\mathbf{x} = -2x_2 + x_3 = 2$. Тому остаточно:
+\begin{equation*}
+    \begin{cases}
+        -2x_2 - 4\lambda - \mu = 0 \\
+        4x_2 - 2x_3 + 2\lambda = 0 \\
+        -2x_2 + 6x_3 - \lambda = 0 \\
+        -2x_2 + x_3 = 2
+    \end{cases}
+\end{equation*}
+
+Розв'язок цього рівняння: $x_2=-1$, $x_3=0$, $\lambda=2$, $\mu=-6$. Який би 
+розв'язок не був красивий, проте він не підходить: $\mu<0$, що суперечить 
+накладеній умові $\mu \geq 0$. 
+
+\textbf{Відповідь.} \textcolor{blue}{$x_1 = \frac{10}{23}$, $x_2 = -\frac{2}{23}$, $x_3 = \frac{2}{23}$,
+$x_0 = \frac{13}{23}$}.
+
+\end{document}

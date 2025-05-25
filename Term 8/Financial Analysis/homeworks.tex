@@ -1,0 +1,304 @@
+\documentclass{hw_template}
+
+\usepackage{arydshln}
+
+\title{\bfseries Домашня Робота \\з Фінансового Аналізу}
+\author{\bfseries Захаров Дмитро}
+\date{25 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Лекція 3. Вправа 1.}
+
+\begin{problem}
+    Покажіть, що зв'язок між математичним сподіванням $\alpha$, дисперсією
+    $\beta^2$ логнормального розподілу $\xi \sim \text{Lognormal}(\mu,\sigma^2)$
+    встановлюється за допомогою наступних формул:
+    \begin{equation*}
+        \alpha = e^{\mu + \sigma^2/2}, \quad \beta^2 = (e^{\sigma^2}-1)e^{2\mu+\sigma^2}.
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} 
+
+\textcolor{blue}{\textbf{Математичне сподівання.}} За означенням, $\eta := \log
+\xi \sim \mathcal{N}(\mu,\sigma^2)$. Відомо, що розподіл величини $\eta$ має
+вигляд $f_{\eta} = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$.
+Оскільки $\xi=e^{\eta}$, то математичне сподівання $\alpha$ можна обчислити як:
+\begin{equation*}
+    \alpha = \mathbb{E}[\xi] = \mathbb{E}[e^{\eta}] = \int_{-\infty}^{+\infty}e^x f_{\eta}(x)dx = \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty} e^{x-\frac{(x-\mu)^2}{2\sigma^2}}dx
+\end{equation*}
+
+У показнику стоїть квадратична функція, тому ми можемо її перетворити:
+\begin{equation*}
+    \footnotesize x-\frac{(x-\mu)^2}{2\sigma^2} = -\frac{1}{2\sigma^2}\cdot x^2 + \left(1+\frac{\mu}{\sigma^2}\right)x - \frac{\mu^2}{2\sigma^2} = -\left(\frac{x}{\sqrt{2}\sigma}-\frac{\sigma}{\sqrt{2}}\left(1+\frac{\mu}{\sigma^2}\right)\right)^2 + \frac{\sigma^2}{2} + \mu
+\end{equation*}
+
+Таким чином, маємо:
+\begin{equation*}
+    \alpha = \frac{1}{\sqrt{2\pi}\sigma}e^{\mu+\frac{\sigma^2}{2}}\int_{-\infty}^{+\infty}e^{-\left(\frac{x}{\sqrt{2}\sigma}-\frac{\sigma}{\sqrt{2}}\left(1+\frac{\mu}{\sigma^2}\right)\right)^2}dx
+\end{equation*}
+
+Зробимо заміну
+$v=\frac{x}{\sqrt{2}\sigma}-\frac{\sigma}{\sqrt{2}}\left(1+\frac{\mu}{\sigma^2}\right)$. Тоді, 
+$dx=\sqrt{2}\sigma dv$ і в такому разі:
+\begin{equation*}
+     \alpha = e^{\mu+\frac{\sigma^2}{2}} \cdot \frac{1}{\sqrt{\pi}}\int_{-\infty}^{+\infty}e^{-v^2}dv = e^{\mu+\frac{\sigma^2}{2}} \Rightarrow \textcolor{blue}{\alpha = e^{\mu+\sigma^2/2}}.
+\end{equation*}
+
+Тут ми скористалися відомим інтегралом $\int_{-\infty}^{+\infty}e^{-v^2}dv=\sqrt{\pi}$.
+
+\textcolor{green!50!black}{\textbf{Дисперсія.}} Нагадаємо, що дисперсія:
+\begin{equation*}
+    \beta^2 = \mathbb{E}[\xi^2] - \mathbb{E}[\xi]^2 = \mathbb{E}[e^{2\eta}] - e^{2\mu+\sigma^2} = \frac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{+\infty} e^{2x-\frac{(x-\mu)^2}{2\sigma^2}}dx - e^{2\mu+\sigma^2}.
+\end{equation*}
+
+Отже, залишилось знайти інтеграл $\mathcal{J} := \int_{-\infty}^{+\infty}
+e^{2x-\frac{(x-\mu)^2}{2\sigma^2}}dx$. Робимо такі самі перетворення, як і 
+в попередньому випадку:
+\begin{equation*}
+    \small 2x-\frac{(x-\mu)^2}{2\sigma^2} = -\frac{1}{2\sigma^2}\cdot x^2 + \left(2+\frac{\mu}{\sigma^2}\right)x - \frac{\mu^2}{2\sigma^2} = -\left(\frac{x}{\sqrt{2}\sigma}-\frac{\sigma}{\sqrt{2}}\left(2+\frac{\mu}{\sigma^2}\right)\right)^2 + 2\sigma^2 + 2\mu
+\end{equation*}
+
+Таким чином,
+\begin{equation*}
+    \mathcal{J} = \frac{1}{\sqrt{2\pi}\sigma}e^{2\sigma^2+2\mu}\int_{-\infty}^{+\infty}e^{-\left(\frac{x}{\sqrt{2}\sigma}-\frac{\sigma}{\sqrt{2}}\left(2+\frac{\mu}{\sigma^2}\right)\right)^2}dx.
+\end{equation*}
+
+Зробимо так само заміну $v =
+\frac{x}{\sqrt{2}\sigma}-\frac{\sigma}{\sqrt{2}}\left(2+\frac{\mu}{\sigma^2}\right)$.
+Тоді $dx=\sqrt{2}\sigma dv$ і тоді:
+\begin{equation*}
+    \mathcal{J} = \frac{1}{\sqrt{\pi}}e^{2\sigma^2+2\mu}\int_{-\infty}^{+\infty}e^{-v^2}dv = e^{2\sigma^2+2\mu}.
+\end{equation*}
+
+Звідси отримуємо результат для дисперсії:
+\begin{equation*}
+    \beta^2 = \mathcal{J} - e^{2\mu+\sigma^2} = (e^{\sigma^2}-1)e^{2\mu+\sigma^2} \Rightarrow \textcolor{blue}{\beta^2 = (e^{\sigma^2}-1)e^{2\mu+\sigma^2}}.
+\end{equation*}
+
+Вирази для $\mu$ та $\sigma^2$ через $\alpha$ та $\beta^2$ можна отримати так: з
+першого рівняння маємо $\mu=\log\alpha - \frac{\sigma^2}{2}$ і підставляючи у друге:
+\begin{equation*}
+    (e^{\sigma^2}-1)e^{2\mu+\sigma^2} = (e^{\sigma^2}-1)e^{2\log\alpha} = \alpha^2(e^{\sigma^2}-1) = \beta^2 \Rightarrow \textcolor{blue}{\sigma^2 = \log\left(1+\frac{\beta^2}{\alpha^2}\right)}.
+\end{equation*}
+
+Звідси одразу $\textcolor{blue}{\mu = \log\alpha -
+\frac{1}{2}\log\left(1+\frac{\beta^2}{\alpha^2}\right)}$.
+
+\newpage
+
+\section{Лекція 3. Вправа 2.}
+
+\begin{problem}
+    Під час розглядання диверсифікації портфелю цінних паперів, ми 
+    обирали частки $\{x_i\}_{i \in \{1,\dots,n\}}$ згідно рівнянню:
+    \begin{equation*}
+        \begin{cases}
+            \sum_{i=1}^n x_i = 1, \\
+            \sum_{i=1}^n x_i\sigma(\xi_i) = 0
+        \end{cases}
+    \end{equation*}
+
+    Коли наведене рівняння не має розв'язків?
+\end{problem}
+
+\textbf{Розв'язання.} Геометрично, маємо дві гіперплощини в $\mathbb{R}^n$:
+перша має вектор нормалі $\mathbf{1}_n$, а друга має вектор нормалі
+$\boldsymbol{\sigma} = (\sigma(\xi_1),\dots,\sigma(\xi_n))$. Якщо рівняння не
+має розв'язків, то ці дві гіперплощини не перетинаються. Зокрема, це означає
+наступне: (a) гіперплощини різні, (б) гіперплощини паралельні. Друга умова
+означає, що вектори нормалі паралельні, тобто $\boldsymbol{\sigma} =
+\gamma\mathbf{1}_n$ для деякої константи $\gamma \in \mathbb{R} \setminus
+\{0\}$, ну а перша умова ніколи не виконується, оскільки вільний член у двох
+рівнянь різний. Також, усі дисперсії не можуть бути нульовими, оскільки
+випадкова величина не можна мати нульову дисперсію.
+
+Отже, відповідь на наше питання наступне: \textcolor{blue}{всі дисперсії
+випадкових величин $\{\sigma(\xi_i)\}_{i \in \{1,\dots,n\}}$ мають бути
+однаковими}. 
+
+\newpage
+
+\section{Лекція 4. Вправа 1.}
+
+\begin{problem}
+    Під час розглядання векторно-матричної форми задачі Марковіца, під час 
+    лекції не було розглянуто випадок, коли ефективність паперів 
+    має вигляд $\mathbf{m} = a \cdot \mathbf{1}_n$. При $\overline{m}=a$ задача 
+    Марковіца має вигляд:
+    \begin{equation*}
+        \begin{cases}
+            \mathbf{x}^{\top}V\mathbf{x} \to \min, \\
+            \mathbf{x}^{\top}\mathbf{1}_n = 1.
+        \end{cases}
+    \end{equation*}
+
+    Розв'язати цю задачу.
+\end{problem}
+
+\textbf{Розв'язання.} Складемо функцію Лагранжа:
+\begin{equation*}
+    \mathcal{L}(\mathbf{x},\lambda) = \mathbf{x}^{\top}V\mathbf{x} + \lambda(\mathbf{x}^{\top}\mathbf{1}_n - 1).
+\end{equation*}
+
+Знайдемо градієнти:
+\begin{align*}
+    \nabla_{\mathbf{x}}\mathcal{L}(\mathbf{x},\lambda) = 2V\mathbf{x} + \lambda\mathbf{1}_n = 0, \\
+    \frac{\partial \mathcal{L}}{\partial \lambda} = -(\mathbf{x}^{\top}\mathbf{1}_n-1) = 0.
+\end{align*}
+
+Таким чином, отримали систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        2V\mathbf{x} = -\lambda\mathbf{1}_n, \\
+        \mathbf{x}^{\top}\mathbf{1}_n = 1.
+    \end{cases}
+\end{equation*}
+
+З першого рівняння маємо $\mathbf{x} = -\frac{\lambda}{2}V^{-1}\mathbf{1}_n$ (матриця $V$ обернена, 
+оскільки є матрицею ковариації), тому підставляючи у друге:
+\begin{equation*}
+    \left(-\frac{\lambda}{2}V^{-1}\mathbf{1}_n\right)^{\top}\mathbf{1}_n = 1.
+\end{equation*} 
+
+Оскільки $\left(-\frac{\lambda}{2}V^{-1}\mathbf{1}_n\right)^{\top}=-\frac{\lambda}{2}\mathbf{1}_n^{\top}V^{-1}$, то маємо:
+\begin{equation*}
+    -\frac{\lambda}{2}\mathbf{1}_n^{\top}V^{-1}\mathbf{1}_n = 1 \implies \textcolor{blue}{\lambda = -\frac{2}{\mathbf{1}_n^{\top}V^{-1}\mathbf{1}_n}}.
+\end{equation*}
+
+Звідси отримали $\textcolor{blue}{\mathbf{x}^* =
+\frac{V^{-1}\mathbf{1}_n}{\mathbf{1}_n^{\top}V^{-1}\mathbf{1}_n}}$. Перевіримо, що це мінімум:
+\begin{equation*}
+    \frac{\partial^2\mathcal{L}}{\partial \mathbf{x}^2} = 2V \succ 0.
+\end{equation*}
+
+Отже, шуканий розв'язок є мінімумом задачі Марковіца.
+
+\newpage
+
+\section{Лекція 7. Вправа 1.}
+
+\begin{problem}
+    Нехай $H_1,\dots,H_n$ --- повна група подій. Розглянемо $\sigma$-алгебру, 
+    яку породжено випадковими подіями $H_1,\dots,H_n$, тобто найменшу 
+    $\sigma$-алгебру, яка містить ці події:
+    \begin{equation*}
+        \mathcal{F}_0 := \sigma[H_1,\dots,H_n] = \left\{\bigcup_{i \in \mathcal{I}} H_i: \mathcal{I} \subseteq \{1,\dots,n\}\right\}.
+    \end{equation*}
+    Тоді, якщо $\xi$ є $\mathcal{F}_0$-вимірною, то $\xi(\omega) = \sum_{i=1}^n
+    c_i\mathbf{1}_{H_i}(\omega)$.
+\end{problem}
+
+\textbf{Розв'язання.} Нагадаємо, що величина $\xi$ є $\mathcal{F}_0$-вимірною
+тоді і тільки тоді, коли для будь-якої борелової множини $B \subseteq
+\mathbb{R}$ прообраз $\xi^{-1}(B) \subseteq \mathcal{F}_0$. В нашому випадку,
+$\xi^{-1}(B)$ має бути об'єднанням певних подій $\{H_i\}_{i \in \mathcal{I}(B)}$.
+
+Для доведення початкового твердження, міркуватимемо від супротивного: нехай на
+певній множині $H_m$ величина $\xi$ не є сталою, тобто знайдеться два
+$\omega_1,\omega_2 \in H_m$ такі, що $\xi(\omega_1) \neq \xi(\omega_2)$.
+
+Позначимо $c_1 := \xi(\omega_1)$. Розглянемо множину $A = \xi^{-1}(\{c_1\})$.
+Оскільки $\xi$ є $\mathcal{F}_0$-вимірною, то $A \in \mathcal{F}_0$, тобто
+$A=\bigcup_{i \in \mathcal{J}}H_i$ для деяких індексів $\mathcal{J}$. Оскільки
+$\omega_1$ належить як до $A$, так і до $H_m$, то $H_m \subseteq A$. Але це
+означає, що для всіх $\omega \in H_m$ має виконуватись $\omega \in A$, що
+означає $\xi(\omega) = c_1$. Проте, оскільки $\omega_2 \in H_m$, то і
+$\xi(\omega_2) = c_1$ --- протиріччя. Отже, ми довели, що $\xi$ може приймати
+лише константне значення на кожній з подій $H_i$, а тому $\xi(\omega) =
+\sum_{i=1}^n c_i\mathbf{1}_{H_i}(\omega)$.
+
+\newpage
+
+\section{Лекція 7. Вправа 2.}
+
+\begin{problem}
+    Розглядається модель Кокса-Роса-Рубінштейна ціноутворення фінансового активу
+    $S_n = S_0 \prod_{i=1}^n (1+\rho_i)$, де $\rho_i$ --- незалежні
+    однаково розподілені випадкові величини, розподілені за законом:
+    \begin{equation*}
+        \text{Pr}[\rho_i = b] = p, \quad \text{Pr}[\rho_i=a] = 1-p =: q.
+    \end{equation*}
+
+    На кожному кроці $n$ визначаємо $\sigma$-алгебру $\mathcal{F}_n$, що
+    породжена випадковими величинами $\{\rho_i\}_{i \in \{1,\dots,n\}}$.
+    Послідовність $\{\mathcal{F}_n\}_{n \in \mathbb{Z}_{\geq 0}}$ задає
+    фільтрацію $\sigma$-алгебр. На лекції розглядається математичне сподівання
+    $\eta = \mathbb{E}[S_2|\mathcal{F}_1]$ і було показано наступне:
+    \begin{equation*}
+        \eta(\omega) = c_1\mathbf{1}_{E_a}(\omega) + c_2\mathbf{1}_{E_b}(\omega), \quad c_1=S_0(1+a)^2q + S_0(1+a)(1+b)p
+    \end{equation*}
+
+    \begin{enumerate}
+        \item Знайти значення $c_2$. Через $E_a$, $E_b$ ми позначили події, що
+    відповідають випадкам, коли $\rho_1=a$ та $\rho_1=b$ відповідно.
+        \item Знайдіть $\mathbb{E}[S_3|\mathcal{F}_2]$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Розв'язання.} \textbf{Пункт 1.} Коефіцієнт $c_2$ дорівнює:
+\begin{equation*}
+    c_2 = \frac{\mathbb{E}[S_2\mathbf{1}_{E_b}]}{\text{Pr}[E_b]}
+\end{equation*}
+
+Ймовірність $\text{Pr}[E_b]=p$, а математичне сподівання:
+\begin{equation*}
+    \mathbb{E}[S_2\mathbf{1}_{E_b}] = S_2\Big|_{E_{bb}}\text{Pr}[E_{bb}] + S_2\Big|_{E_{ba}}\text{Pr}[E_{ba}] = S_0(1+b)^2p^2 + S_0(1+b)(1+a)pq.
+\end{equation*}
+
+Таким чином,
+\begin{equation*}
+    c_2 = \frac{S_0(1+b)^2p^2 + S_0(1+b)(1+a)pq}{p} = S_0(1+b)^2p + S_0(1+a)(1+b)q.
+\end{equation*}
+
+Отже, остаточно $\textcolor{blue}{c_2=S_0(1+b)^2p + S_0(1+a)(1+b)q}$.
+
+\textbf{Пункт 2.} Величина $\zeta = \mathbb{E}[S_2|\mathcal{F}_3]$ приймає 
+сталі значення на кожній з подій $E_{aa}$, $E_{ab}$, $E_{ba}$, $E_{bb}$. 
+Таким чином,
+\begin{equation*}
+    \zeta(\omega) = c_{aa}\mathbf{1}_{E_{aa}}(\omega) + c_{ab}\mathbf{1}_{E_{ab}}(\omega) + c_{ba}\mathbf{1}_{E_{ba}}(\omega) + c_{bb}\mathbf{1}_{E_{bb}}(\omega),
+\end{equation*}
+
+Почнемо з $c_{aa}$. Маємо:
+\begin{equation*}
+    c_{aa} = \frac{\mathbb{E}[S_3\mathbf{1}_{E_{aa}}]}{\text{Pr}[E_{aa}]}
+\end{equation*}
+
+Ймовірність $\text{Pr}[E_{aa}]=q^2$, а математичне сподівання:
+\begin{equation*}
+    \mathbb{E}[S_3\mathbf{1}_{E_{aa}}] = S_3\Big|_{E_{aaa}}\text{Pr}[E_{aaa}] + S_3\Big|_{E_{aab}}\text{Pr}[E_{aab}] = S_0(1+a)^3q^3 + S_0(1+a)^2(1+b)q^2p.
+\end{equation*}
+
+Таким чином, маємо:
+\begin{equation*}
+    c_{aa} = \frac{S_0(1+a)^3q^3 + S_0(1+a)^2(1+b)q^2p}{q^2} = S_0(1+a)^3q + S_0(1+a)^2(1+b)p.
+\end{equation*}
+
+Тепер подивимось на $c_{ab}$. Маємо:
+\begin{align*}
+    c_{ab} &= \frac{\mathbb{E}[S_3\mathbf{1}_{E_{ab}}]}{\text{Pr}[E_{ab}]} = \frac{S_3\Big|_{E_{aba}}\text{Pr}[E_{aba}] + S_3\Big|_{E_{abb}}\text{Pr}[E_{abb}]}{qp} \\
+    &= \frac{S_0(1+a)^2(1+b)p^2q + S_0(1+a)(1+b)^2pq^2}{qp} \\
+    &= S_0(1+a)^2(1+b)p + S_0(1+a)(1+b)^2q.
+\end{align*}
+
+Аналогічно можна знайти $c_{ba}$ та $c_{bb}$. Тоді маємо:
+\begin{equation*}
+    \textcolor{blue}{\zeta(\omega) = \begin{cases}
+        S_0(1+a)^3q + S_0(1+a)^2(1+b)p, & \text{якщо } \omega \in E_{aa}, \\
+        S_0(1+a)^2(1+b)p + S_0(1+a)(1+b)^2q, & \text{якщо } \omega \in E_{ab}, \\
+        S_0(1+b)(1+a)^2 q + S_0(1+b)^2(1+a) p, & \text{якщо } \omega \in E_{ba}, \\
+        S_0(1+b)^2(1+a) q + S_0(1+b)^3 p, & \text{якщо } \omega \in E_{bb}.
+    \end{cases}}
+\end{equation*}
+
+\end{document}

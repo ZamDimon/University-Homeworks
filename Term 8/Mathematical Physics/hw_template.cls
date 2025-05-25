@@ -14,7 +14,7 @@
 \RequirePackage{graphicx}
 \RequirePackage{framed}
 \RequirePackage{dsfont}
-\RequirePackage{cmbright}
+\RequirePackage{libertinus}
 \RequirePackage{extarrows}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{indentfirst}

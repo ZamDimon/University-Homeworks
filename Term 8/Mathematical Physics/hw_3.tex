@@ -1,0 +1,373 @@
+\documentclass{hw_template}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#3}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 19 квітня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Вправа 1 (Таблиця 1, Клітинка 8)}
+
+\begin{problem}
+    За власних функцій отримати ці функції і власні значення. Довести, що 
+    вони ортогональні, обчислити норми. Крайові умови $u'(\ell,t)=0$, 
+    $u'(0,t)-\gamma u(0,t)=0$.
+    \begin{gather*}
+        \lambda_n = \left(\frac{\mu_n}{\ell}\right)^2, \quad \mu_n \tan \mu_n = \gamma \ell, \quad n \in \mathbb{N} \\
+        e_n = \left(\mu_n \cos \frac{\mu_n x}{\ell} + \gamma \ell\sin\frac{\mu_n x}{\ell}\right)\sqrt{\frac{2}{\ell} \cdot \frac{1}{\mu_n^2 + (\gamma \ell)^2 + \gamma \ell}}
+    \end{gather*}
+\end{problem}
+
+\textbf{Розв'язання.} Маємо рівняння $Y_n'' + \lambda_n Y_n = 0$ з наступними
+початковими умовами, згідно умові: $Y_n'(\ell)=0$ та $Y_n'(0) - \gamma Y_n(0) = 0$. 
+
+\textcolor{blue}{\textbf{Випадок $\lambda_n=0$.}} В такому разі маємо $Y_n''=0$, звідки 
+$Y_n(x) = A_nx+B_n$. Підставлямо умови: $Y_n'(\ell) = A_n = 0$, а друга умова 
+має вигляд $A_n - \gamma B_n = 0$, звідки $B_n=0$ (оскільки вважаємо $\gamma \neq 0$). 
+Отже, таким чином $A_n=B_n=0$ і тому $Y_n(x) \equiv 0$.
+
+\textcolor{blue}{\textbf{Випадок $\lambda_n < 0$.}} В такому разі, розв'язки
+рівняння можна записати як: 
+\begin{equation*}
+    Y_n(x) = A_ne^{\sqrt{-\lambda_n}x} +
+B_ne^{-\sqrt{-\lambda_n}x}    
+\end{equation*}
+Отже, маємо наступну систему рівнянь для
+знаходження $A_n$, $B_n$:
+\begin{equation*}
+    \begin{cases}
+        A_n\sqrt{-\lambda_n}e^{\sqrt{-\lambda_n}\ell} - B_n\sqrt{-\lambda_n}e^{-\sqrt{-\lambda_n}\ell} = 0 \\
+        A_n\sqrt{-\lambda_n} - B_n\sqrt{-\lambda_n} - \gamma (A_n+B_n) = 0
+    \end{cases}
+\end{equation*}
+
+З першого рівняння $B_n=A_ne^{2\sqrt{-\lambda_n}\ell}$. Підставляючи у друге,
+маємо $A_n\sqrt{-\lambda_n}(1 - e^{2\sqrt{-\lambda_n}\ell}) - \gamma
+A_n(1+e^{2\sqrt{-\lambda_n}\ell})=0$ або $\left(\sqrt{-\lambda_n}(1 -
+e^{2\sqrt{-\lambda_n}\ell}) - \gamma (1+e^{2\sqrt{-\lambda_n}\ell})\right)A_n=0$.
+Зрозуміло, що звідси випливає $A_n=0$, а отже і $B_n=0$. Таким чином, $Y(x) \equiv
+0$.
+
+\textcolor{blue}{\textbf{Випадок $\lambda > 0$.}} Цей випадок найцікавіший. 
+Розв'язок рівняння:
+\begin{equation*}
+    Y_n(x) = A_n\cos(\sqrt{\lambda_n}x) + B_n\sin(\sqrt{\lambda_n}x).
+\end{equation*}
+
+Підставляючи крайові умови, маємо:
+\begin{align*}
+    -A_n\sqrt{\lambda_n}\sin(\sqrt{\lambda_n}\ell) + B_n\sqrt{\lambda_n}\cos(\sqrt{\lambda_n}\ell) &= 0 \\
+    B_n\sqrt{\lambda_n} - \gamma A_n &= 0
+\end{align*}
+
+Обидва рівняння за умови $\lambda_n \neq 0$ (інакше дивись випадок 1) можна записати як:
+\begin{equation*}
+    \frac{B_n}{A_n} = \tan(\sqrt{\lambda_n}\ell) = \frac{\gamma}{\sqrt{\lambda_n}}.
+\end{equation*}
+
+Позначимо $\lambda_n := (\mu_n/\ell)^2$. З другої рівності в такому разі маємо:
+\begin{equation*}
+    \tan \mu_n = \frac{\gamma \ell}{\mu_n} \implies \mu_n \tan \mu_n = \gamma\ell.
+\end{equation*}
+
+Таким чином, наш розв'язок має вигляд:
+\begin{equation*}
+    Y_n(x) = A_n\left(\cos \frac{\mu_n x}{\ell} + \frac{\gamma \ell}{\mu_n}\sin \frac{\mu_n x}{\ell}\right) = A_n\left(\cos \frac{\mu_n x}{\ell} + \tan \mu_n\sin \frac{\mu_n x}{\ell}\right).
+\end{equation*}
+
+Спростимо цей вираз, залишивши тільки косинус. Для цього помітимо, що:
+\begin{equation*}
+    \cos \frac{\mu_n x}{\ell} + \tan \mu_n\sin \frac{\mu_n x}{\ell} = \sqrt{1+\tan^2\mu_n}\left(\frac{1}{\sqrt{1+\tan^2\mu_n}}\cos \frac{\mu_n x}{\ell} + \frac{\tan\mu_n}{\sqrt{1+\tan^2\mu_n}}\sin \frac{\mu_n x}{\ell}\right).
+\end{equation*}
+
+Позначимо через $\cos\varphi = \frac{1}{\sqrt{1+\tan^2\mu_n}}$, $\sin\varphi = \frac{\tan\mu_n}{\sqrt{1+\tan^2\mu_n}}$, тоді:
+\begin{equation*}
+    \cos \frac{\mu_n x}{\ell} + \tan \mu_n\sin \frac{\mu_n x}{\ell} = \frac{1}{\sin\mu_n}\left(\cos\varphi\cos \frac{\mu_n x}{\ell} + \sin\varphi\sin \frac{\mu_n x}{\ell}\right) = \frac{1}{\sin\mu_n}\cos\left(\frac{\mu_n x}{\ell} - \varphi\right).
+\end{equation*}
+
+Тепер помітимо, що $\tan\varphi = \tan\mu_n$, тому $\varphi=\mu_n$, звідки
+\begin{equation*}
+    \textcolor{blue}{Y_n(x) = A_n\sqrt{1+\frac{\gamma^2\ell^2}{\mu_n^2}}\cos \left(\frac{\mu_n}{\ell}(x-\ell)\right)}
+\end{equation*}
+
+Щоб знайти $A_n$, потрібно скористатися умовою $\|Y_n\|^2=1$. Обраховуємо:
+\begin{equation*}
+    \|Y_n\|^2 = \langle Y_n, Y_n \rangle = \int_0^{\ell} Y_n^2(x)dx = A_n^2\left(1+\frac{\gamma^2\ell^2}{\mu_n^2}\right)\int_0^{\ell}\cos^2 \left(\frac{\mu_n}{\ell}(x-\ell)\right)dx
+\end{equation*}
+
+Знаходимо інтеграл $\mathcal{I}_n := \int_0^{\ell}\cos^2 \left(\frac{\mu_n}{\ell}(x-\ell)\right)dx$. Згадаємо, що 
+$\cos^2\theta = \frac{1}{2}(1+\cos 2\theta)$, тому:
+\begin{equation*}
+    \mathcal{I}_n = \frac{1}{2}\int_0^{\ell} \left(1+\cos\left(\frac{2\mu_n}{\ell}(x-\ell)\right)\right)dx = \frac{\ell}{2} + \frac{1}{2}\int_0^{\ell}\cos\left(\frac{2\mu_n}{\ell}(x-\ell)\right)dx
+\end{equation*}
+
+Зробимо заміну $\theta := \frac{2\mu_n}{\ell}(x-\ell)$. Тоді, оскільки $dx = \frac{\ell}{2\mu_n}d\theta$, маємо:
+\begin{equation*}
+    \int_0^{\ell}\cos\left(\frac{2\mu_n}{\ell}(x-\ell)\right)dx = \int_{-2\mu_n}^{0}\cos\theta \cdot \frac{\ell}{2\mu_n}d\theta = \frac{\ell}{2\mu_n}\sin\theta\Big|_{\theta=-2\mu_n}^{\theta=0} = \frac{\ell}{2}\cdot\frac{\sin 2\mu_n}{\mu_n}
+\end{equation*}
+
+Таким чином, $\mathcal{I}_n = \frac{\ell}{2} + \frac{\ell}{4} \cdot \frac{\sin 2\mu_n}{\mu_n} = \left(1+\frac{\sin 2\mu_n}{2\mu_n}\right)\frac{\ell}{2}$ і тоді:
+\begin{equation*}
+    \frac{1}{2}\ell A_n^2\left(1+\frac{\gamma^2\ell^2}{\mu_n^2}\right)\left(1 + \frac{\sin 2\mu_n}{2\mu_n}\right) = 1
+\end{equation*}
+
+Отже, всього-навсього залишилось виразити $\sin 2\mu_n$ через $\mu_n$:
+\begin{equation*}
+    \sin 2\mu_n = \frac{2 \tan \mu_n}{1+\tan^2\mu_n} = \frac{2\gamma \ell/\mu_n}{1+\frac{\gamma^2\ell^2}{\mu_n^2}}
+\end{equation*}
+
+Таким чином,
+\begin{equation*}
+    A_n^2 = \frac{2}{\ell} \cdot \frac{1}{\left(1+\frac{\gamma^2\ell^2}{\mu_n^2}\right)\left(1+\frac{\gamma \ell}{\mu_n^2+\gamma^2\ell^2}\right)} = \frac{2}{\ell} \cdot \frac{\mu_n^2}{\mu_n^2 + \gamma^2\ell^2 + \gamma \ell}
+\end{equation*}
+
+Таким чином, остаточно маємо:
+\begin{equation*}
+    \textcolor{blue}{A_n = \mu_n \sqrt{\frac{2}{\ell} \cdot \frac{1}{\mu_n^2 + \gamma^2\ell^2 + \gamma \ell}}} \implies \textcolor{blue}{e_n(x) = \left(\mu_n \cos \frac{\mu_n x}{\ell} + \gamma \ell\sin\frac{\mu_n x}{\ell}\right)\sqrt{\frac{2}{\ell} \cdot \frac{1}{\mu_n^2 + (\gamma \ell)^2 + \gamma \ell}}}
+\end{equation*}
+
+\textbf{Перевірка ортогональності.} Умову $\|e_n\|=1$ ми вже перевірили,
+знайшовши $A_n$. Перевіримо, що $\langle e_n, e_m \rangle = \delta_{nm}$. 
+Дійсно,
+\begin{equation*}
+    \lambda_n\langle Y_n, Y_m \rangle = \langle \lambda_nY_n, Y_m \rangle = \langle -Y_n'', Y_m \rangle = \int_0^{\ell} -Y_n''(x)Y_m(x)dx
+\end{equation*}
+
+Зробимо інтегрування по частинам:
+\begin{align*}
+    \int_0^{\ell} -Y_n''(x)Y_m(x)dx &= -Y_n'(x)Y_m(x)\Big|_0^{\ell} + \int_0^{\ell} Y_n'(x)Y_m'(x)dx \\
+    &= -\textcolor{red}{Y_n'(\ell)}Y_m(\ell) + Y_n'(0)Y_m(0) + \int_0^{\ell} Y_n'(x)Y_m'(x)dx \\
+    & = Y_n'(0)Y_m(0) + \int_0^{\ell} Y_n'(x)Y_m'(x)dx
+\end{align*}
+
+Зробимо інтегрування частинами ще раз:
+\begin{align*}
+    \int_0^{\ell} Y_n'(x)Y_m'(x)dx &= Y_n(x)Y_m'(x)\Big|_0^{\ell} - \int_0^{\ell} Y_n(x)Y_m''(x)dx \\
+    &= Y_n(\ell)\textcolor{red}{Y_m'(\ell)} - Y_n(0)Y_m'(0) - \int_0^{\ell} Y_n(x)Y_m''(x)dx \\
+    &= - Y_n(0)Y_m'(0) + \lambda_m\langle Y_n, Y_m \rangle
+\end{align*}
+
+Компануємо усі частини разом:
+\begin{align*}
+    \lambda_n\langle Y_n, Y_m \rangle &= \textcolor{green!50!black}{Y_n'(0)Y_m(0) - Y_n(0)Y_m'(0)} + \lambda_m\langle Y_n, Y_m \rangle \\
+    &= \textcolor{green!50!black}{\gamma Y_n(0)Y_m(0) - Y_n(0)\gamma Y_m(0)} + \lambda_m\langle Y_n, Y_m \rangle \\
+    &= \lambda_m\langle Y_n, Y_m \rangle
+\end{align*}
+
+Таким чином, оскільки $\lambda_n \neq \lambda_m$ ($n \neq m$), маємо $\langle Y_n, Y_m
+\rangle = 0$, звідки $\langle e_n, e_m \rangle = 0$.
+
+\subsection{Вправа 2 (Таблиця 2, Клітинка 7)}
+
+\begin{problem}
+    Для крайових умов $u'(0,t)-\gamma u(0,t)=\mu_1(t)$ та $u(\ell,t)=\mu_2(t)$, показати, 
+    що перехід до однорідних граничних умов має вигляд:
+    \begin{equation*}
+        v(x,t) = \frac{\gamma \mu_2(t) + \mu_1(t)}{1+\gamma \ell}x + \frac{\mu_2(t)-\ell \mu_1(t)}{1+\gamma \ell}
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Підставимо $v(x,t) := A(t)x+B(t)$, себто $v'(x,t) = A(t)$. Звідси маємо 
+$A(t) - \gamma B(t) = \mu_1(t)$ та $A(t)\ell + B(t) = \mu_2(t)$. Звідси:
+\begin{equation*}
+    \begin{pmatrix}
+        A(t) \\ B(t)
+    \end{pmatrix} = \begin{pmatrix}
+        1 & -\gamma \\
+        \ell & 1
+    \end{pmatrix}^{-1} \begin{pmatrix}
+        \mu_1(t) \\ \mu_2(t)
+    \end{pmatrix} = \frac{1}{1+\gamma \ell}\begin{pmatrix}
+        1 & \gamma \\
+        -\ell & 1
+    \end{pmatrix} \begin{pmatrix}
+        \mu_1(t) \\ \mu_2(t)
+    \end{pmatrix} = \frac{1}{1+\gamma \ell}\begin{pmatrix}
+        \mu_1(t) + \gamma \mu_2(t) \\ -\ell \mu_1(t) + \mu_2(t)
+    \end{pmatrix}
+\end{equation*}
+
+Підставивши $A(t)$ та $B(t)$ у формулу для $v(x,t)$, отримаємо відповідь:
+\begin{equation*}
+    v(x,t) = \frac{\gamma \mu_2(t) + \mu_1(t)}{1+\gamma \ell}x + \frac{\mu_2(t)-\ell \mu_1(t)}{1+\gamma \ell}
+\end{equation*}
+
+\subsection{Вправа 15.3}
+
+\begin{problem}
+    Розв'язати рівняння:
+    \begin{equation*}
+        \frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2} + u(x,y), \quad 0 < x < 1,\; t > 0
+    \end{equation*}
+
+    Крайові умови $u(0,x)=3$, $u(t,0)=u(t,1)=2$.
+\end{problem}
+
+\textbf{Розв'язання.} Для початку треба зробити граничні умови однорідними. 
+Маємо умову виду $u(0,t) = \mu_1(t)$, $u(\ell, t) = \mu_2(t)$, для якої 
+перехід до однорідних граничних умов має вигляд:
+\begin{equation*}
+    u(x,t) := v(x,t) + w(x,t), \quad v(x,t) := \frac{x}{\ell}(\mu_2(t)-\mu_1(t)) + \mu_1(t)
+\end{equation*}
+
+Оскільки в нашому випадку $\mu_1(t)=\mu_2(t) \equiv 2$, то достатньо лише зробити 
+здвиг $u(x,t) := 2 + w(x,t)$. Таким чином, отримаємо рівняння\footnote{Тут можна 
+і далі спростити заміною $q(x,t) := w(x,t)e^t$, щоб позбутися $w(x,t)$ в правій частині, але 
+в даному випадку це не є обов'язковим.}:
+\begin{equation*}
+    \frac{\partial w}{\partial t} = \frac{\partial^2 w}{\partial x^2} + w(x,t) + 2, \quad 0 < x < 1,\; t > 0
+\end{equation*}
+
+Крайові умови при цьому $w(x,0)=1$ та $w(0,t)=w(1,t)=0$. Шукатимемо розв'язок 
+у вигляді $w(x,t) = \sum_{n=1}^{\infty}w_n(t)\sin(n\pi x)$. Підставимо у диференціальне рівняння:
+\begin{equation*}
+    \sum_{n=1}^{\infty}\frac{\partial w_n}{\partial t}\sin(n\pi x) = \sum_{n=1}^{\infty}(1-\pi^2 n^2)w_n(t)\sin(n\pi x) + 2
+\end{equation*}
+
+Розкладемо $2$ у ряд Фур'є. Cкористаємося тим, що $1 = \frac{4}{\pi}\sum_{n=1,n \; \text{непарне}}^{\infty}\frac{\sin n \pi x}{n}$, тому:
+\begin{equation*}
+    \sum_{n=1}^{\infty}\frac{\partial w_n}{\partial t}\sin(n\pi x) = \sum_{n=1}^{\infty}(1-\pi^2 n^2)w_n(t)\sin(n\pi x) + \sum_{n=1, n \; \text{непарне}}^{\infty}\frac{8}{n\pi}\sin n\pi x
+\end{equation*} 
+
+Таким чином, маємо наступні диференціальні рівняння для визначення $w_n$:
+\begin{align*}
+    \dot{w}_n = (1-\pi^2 n^2)w_n + \frac{8}{n\pi}, & \quad n \; \text{непарне},\\
+    \dot{w}_n = (1-\pi^2 n^2)w_n, & \quad n \; \text{парне}
+\end{align*}
+
+При цьому, маємо умову Коші $w(x,0)=1$, що означає, що
+\begin{equation*}
+    w(x,0) = \sum_{n=1}^{\infty}w_n(0)\sin(n\pi x) = 1 \implies w_n(0) = \begin{cases}
+        0, & n \; \text{парне} \\
+        \frac{4}{\pi n}, & n \; \text{непарне}
+    \end{cases}
+\end{equation*}
+
+Отже, розглядаємо два випадки.
+
+\textcolor{blue}{\textbf{Випадок 1. $n$ парне.}} Маємо $w_n = A_n e^{(1-\pi^2n^2)t}$. Оскільки $w_n(0)=0$, то $A_n=0$.
+
+\textcolor{blue}{\textbf{Випадок 2. $n$ непарне.}} Маємо $w_n = A_n
+e^{(1-\pi^2n^2)t} + f_n(t)$, де $f_n(t)$ --- частковий розв'язок. Можна 
+показати, що наприклад $f_n(t) = \frac{8}{n\pi(1-\pi^2n^2)}(1-e^{(1-\pi^2n^2)t})$ підходить. Залишається підставити 
+$w_n(0) = \frac{4}{\pi n}$ аби знайти $A_n$. Маємо $A_n = \frac{4}{\pi n}$ і тому:
+\begin{equation*}
+    w_n(t) = \frac{4}{\pi n}e^{(1-\pi^2n^2)t} + \frac{8}{n\pi(1-\pi^2n^2)}(1-e^{(1-\pi^2n^2)t}) 
+\end{equation*}
+
+Отже, остаточно:
+\begin{equation*}
+    \textcolor{blue}{u(x,t) = 2+\sum_{n=1, n \; \text{непарне}}^{\infty}\left(\frac{4}{\pi n}e^{(1-\pi^2n^2)t} + \frac{8}{n\pi(1-\pi^2n^2)}(1-e^{(1-\pi^2n^2)t})\right)\sin(n\pi x)}
+\end{equation*}
+
+ 
+\subsection{Вправа 15.5}
+
+\begin{problem}
+    Розв'язати рівняння:
+    \begin{equation*}
+        \frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2} + u(x,t) - x + 2 \sin 2x \cos x, \quad 0 < x < \frac{\pi}{2},\; t > 0
+    \end{equation*}
+
+    Крайові умови $u(x,0)=x$, $u(0,t)=0$, $u'(\frac{\pi}{2},t) = 1$.
+\end{problem}
+
+\textbf{Розв'язання.} Зробимо граничні умови однорідними. Маємо умову виду 
+$u(0,t)=\mu_1(t)$ та $u'(\ell,t)=\mu_2(t)$. Підстановка має вигляд:
+\begin{equation*}
+    u(x,t) = v(x,t) + w(x,t), \quad v(x,t) = \mu_2(t)x + \mu_1(t).
+\end{equation*}
+
+Зважаючи на те, що $\mu_1(t)=0$, то достатньо зробити просту заміну 
+$u(x,t) = w(x,t) + x$. Таким чином, отримаємо:
+\begin{equation*}
+    \frac{\partial w}{\partial t} = \frac{\partial^2 w}{\partial x^2} + w(x,t) + 2 \sin 2x \cos x, \quad 0 < x < \frac{\pi}{2},\; t > 0,
+\end{equation*}
+
+з крайовими умовами $w(x,0)=0$, $w(0,t)=0$, $w'(\frac{\pi}{2},t) = 0$.
+
+Зробимо заміну $w(x,t) := q(x,t)e^{t}$, щоб позбавитися від $w(x,t)$ у правій частині. Тоді:
+\begin{equation*}
+    q(x,t)e^t + \frac{\partial q}{\partial t}e^t = \frac{\partial^2 q}{\partial x^2}e^t + q(x,t)e^t + 2 \sin 2x \cos x, \quad 0 < x < \frac{\pi}{2},\; t > 0,
+\end{equation*}
+
+Або, якщо спростити:
+\begin{equation*}
+    \frac{\partial q}{\partial t} = \frac{\partial^2 q}{\partial x^2} + 2 \sin 2x \cos x e^{-t}, \quad 0 < x < \frac{\pi}{2},\; t > 0,
+\end{equation*}
+
+з крайовими умовами $q(x,0)=0$, $q(0,t)=0$, $q'(\frac{\pi}{2},t) = 0$. В такому випадку, нам 
+потрібно обрати базис $e_n = \sqrt{\frac{2}{\ell}}\sin \frac{\pi (2n-1)x}{2\ell}$, де в нашому 
+випадку $\ell = \frac{\pi}{2}$. Тому, нехай:
+\begin{equation*}
+    q(x,t) = \sum_{n=1}^{\infty}q_n(t)\sin(2n-1)x
+\end{equation*}
+
+Підставимо умову $q(x,0)=0$. Маємо:
+\begin{equation*}
+    q(x,0) = \sum_{n=1}^{\infty}q_n(0)\sin(2n-1)x = 0 \implies q_n(0) = 0
+\end{equation*}
+
+Нарешті, підставимо у рівняння:
+\begin{equation*}
+    \sum_{n=1}^{\infty}\dot{q}_n(t)\sin(2n-1)x = -\sum_{n=1}^{\infty}(2n-1)^2q_n(t) \sin (2n-1)x + 2 \sin 2x \cos x e^{-t}
+\end{equation*}
+
+Отже, залишилося розкласти праву частину у ряд Фур'є. Для цього, помітимо 
+\begin{equation*}
+    2 \sin 2x \cos x = \sin(2x+x) + \sin(2x-x) = \sin 3x + \sin x
+\end{equation*}
+
+Таким чином, рівняння треба розглянути окремо для $n=1$, $n=2$ та $n>2$.
+
+\textcolor{blue}{\textbf{Випадок 1. $n=1$.}} Маємо:
+\begin{equation*}
+    \dot{q}_1 = -q_1 + e^{-t}, \quad q_1(0) = 0
+\end{equation*}
+
+Розв'язком цього рівняння є $q_1(t) = te^{-t}$.
+
+\textcolor{blue}{\textbf{Випадок 2. $n=2$.}} Маємо:
+\begin{equation*}
+    \dot{q}_2 = -9q_2 + e^{-t}, \quad q_2(0) = 0
+\end{equation*}
+
+Розв'язком цього рівняння є $q_2(t) = \frac{1}{8}e^{-9t}(-1+e^{8t})$.
+
+\textcolor{blue}{\textbf{Випадок 3. $n>2$.}} Маємо:
+\begin{equation*}
+    \dot{q}_n = -(2n-1)^2q_n, \quad q_n(0) = 0
+\end{equation*}
+
+Загальним розв'язком цього рівняння є $q_n(t) = A_n e^{-(2n-1)^2t}$.
+Проте, враховуючи початкову умову $q_n(0)=0$, маємо $A_n=0$.
+Отже, $q_n(t) = 0$.
+
+Остаточно, отримуємо:
+\begin{equation*}
+    \textcolor{blue}{q(x,t) = \sum_{n=1}^{\infty}q_n(t)\sin(2n-1)x = te^{-t}\sin x + \frac{1}{8}e^{-9t}(-1+e^{8t})\sin 3x}
+\end{equation*}
+
+Повернемось до $u(x,t)$. Маємо
+\begin{equation*}
+    w(x,t) = q(x,t)e^t = t\sin x + \frac{1}{8}(1-e^{-8t})\sin 3x
+\end{equation*}
+
+Остаточна відповідь у свою чергу:
+\begin{equation*}
+    \textcolor{blue}{u(x,t) = w(x,t) + x = t\sin x + \frac{1}{8}(1-e^{-8t})\sin 3x + x}
+\end{equation*}
+
+\textbf{Відповідь.} $u(x,t) = t\sin x + \frac{1}{8}(1-e^{-8t})\sin 3x + x$.
+
+\end{document}

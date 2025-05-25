@@ -1,0 +1,167 @@
+\documentclass[12pt,a4paper,oneside]{book}
+
+% --- Setting up a language ---
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,main=ukrainian]{babel}
+
+% --- Detault Packages ---
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage[toc,page]{appendix}
+\usepackage{amsthm,amsfonts,mathtools,amscd,amssymb,mathrsfs}
+\usepackage{latexsym}
+\usepackage{euscript}
+\usepackage{multicol}
+\usepackage{bbm}
+\usepackage{pgffor}   % For loops in TikZ
+\usepackage{dsfont}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage[shortlabels]{enumitem}
+
+% 
+\usepackage[unicode]{hyperref}
+\hypersetup{colorlinks=true}
+\tolerance=9000 
+\textwidth=165mm
+\textheight=250mm 
+\oddsidemargin=4.6mm
+\voffset=-20mm
+\binoppenalty=1 \relpenalty=1 
+\allowdisplaybreaks
+\everymath{\displaystyle}
+\renewcommand{\baselinestretch}{1.44}
+
+\usepackage{dipl}
+\pagestyle{headings}
+\graphicspath{ {figures/} }
+
+% --- Theorem Styles ---
+\theoremstyle{dplplain}
+\newtheorem{theorem}{Теорема}[chapter]
+\newtheorem{corollary}[theorem]{Наслідок}%[chapter]
+\newtheorem{statement}[theorem]{Твердження}%[chapter]
+\newtheorem{lemma}[theorem]{Лема}%[chapter]
+\theoremstyle{dpldefinition}
+\newtheorem{definition}[theorem]{Означення}%[chapter]
+\theoremstyle{dplremark}
+\newtheorem{problem}[theorem]{Задача}%[chapter]
+\newtheorem{remark}[theorem]{Зауваження}%[chapter]
+\newtheorem{example}[theorem]{Приклад}%[chapter]
+
+% --- Math shortings ---
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator*{\essinf}{ess\,inf}
+\DeclareMathOperator*{\bigtimes}{\mbox{\raisebox{-0.5ex}{\huge$\times$}}}
+\DeclareMathOperator*{\smalltimes}{\mbox{\raisebox{-0.3ex}{\large$\times$}}}
+\DeclareMathOperator*{\ootimes}{\overline{\otimes}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% --- Listings ---
+% --- Default settings ---
+% \lstset{language=Python}
+% \lstset{frame=lines}
+% \lstset{basicstyle=\normalsize}
+% \lstset{prebreak=\raisebox{-2ex}[0ex][0ex]{\ensuremath{\hookleftarrow}}}
+% \lstset{breaklines=true}
+% \captionsetup[lstlisting]{font=large}
+
+% --- My own settings ---
+\definecolor{dkgreen}{rgb}{0,0.5,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+    numbers=left,  
+    frame=tb,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=fixed,
+    framerule=1pt,
+    rulecolor=\color{gray!35},
+    backgroundcolor=\color{gray!5},
+    basicstyle={\ttfamily\small},
+    numberstyle=\footnotesize\color{gray},
+    keywordstyle=\bfseries\color{MidnightBlue!95!black},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    extendedchars=false,
+    postbreak=\mbox{\hspace{-1.4em}\textcolor{purple}{$\hookrightarrow$}\space}
+}
+
+\newcommand{\remind}[1]{\textcolor{red}{\textbf{#1}}} % To remind me of unfinished work to fix later
+\newcommand{\hide}[1]{} % To hide large blocks of code without using % symbols
+
+% --- Bibliography ---
+\usepackage[
+    backend=biber,
+    style=alphabetic
+]{biblatex}
+\addbibresource{main.bib}
+
+% --- Some tikz functions ---
+\newbox\dumbox
+\newcommand{\mymark}[2]{%
+  \setbox\dumbox=\hbox{#2}%
+  \hbox to \wd\dumbox{\hss%
+    \tikz[overlay,remember picture,baseline=(#1.base)]{ \node (#1) {\box\dumbox}; }%
+    \hss}%
+}
+
+%% -- Draw small coefficient
+\newcommand{\mysmall}[1]{%
+  \tikz[overlay,remember picture]{%
+    \node[blue,scale=.5, shift={(0,-.1)}] {$\times$#1};%
+  }%
+}
+
+\begin{document}
+
+    \input{titlepage-BACHELOR}
+
+    \refstepcounter{page}
+
+    \input{abstracts}
+
+    \tableofcontents
+
+    \input{intro}
+
+    % Вступ
+    \input{chapter-1}
+
+    % Опис MLP vs KAN
+    \input{chapter-2}
+
+    % Опис конволюційних нейронних мереж
+    \input{chapter-3}
+
+    % Експерименти
+    \input{chapter-4}
+
+    % Висновки
+    \input{conclusions}
+
+    \printbibliography
+
+    \input{appendix}
+
+\end{document}
+
+
+
+

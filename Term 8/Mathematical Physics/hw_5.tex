@@ -1,0 +1,203 @@
+\documentclass{hw_template}
+
+\usepackage{esint}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#5}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 7 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Вправа 17.2}
+
+\begin{problem}
+    Розв'язати рівняння
+    \begin{equation*}
+        \frac{\partial^2 u(x,t)}{\partial t^2} = \frac{\partial^2 u(x,t)}{\partial x^2} +  u(x,t), \quad t > 0, \quad 0 < x < 1,
+    \end{equation*}
+
+    з умовами $u(0,t)=0$, $u(1,t)=t$, $u(x,0)=0$, $\partial_t u(x,0)=x$.
+\end{problem}
+
+\textbf{Розв'язання.} Зробимо граничні умови однорідними. 
+Для цього замінимо $u(x,t) = w(x,t) + v(x,t)$, де 
+покладемо у якості $v(x,t)$ наступну функцію:
+\begin{equation*}
+    v(x,t) = \frac{x}{\ell}(\mu_2(t) - \mu_1(t)) + \mu_1(t).
+\end{equation*}
+
+В нашому випадку $\ell=1$, $\mu_2(t) = t$, $\mu_1=0$. Таким чином, функція
+$v(x,t) = xt$ і отже заміна $u(x,t) = w(x,t) + xt$. Підставляючи у початкове 
+рівняння, маємо:
+\begin{equation*}
+    \frac{\partial^2 w}{\partial t^2} = \frac{\partial^2 w}{\partial x^2} + w + 2xt, \quad t > 0, \quad 0 < x < 1,
+\end{equation*}
+з умовами $w(0,t)=0$, $w(1,t)=0$, $w(x,0)=0$ та $\partial_t w(x,0)=0$. 
+
+Тепер розкладемо функцію $w(x,t)$ у ряд Фур'є:
+\begin{equation*}
+    w(x,t) = \sum_{n=1}^{\infty} w_n(t) \sin(n\pi x).
+\end{equation*}
+
+Підставляючи у початкове рівняння, отримаємо:
+\begin{equation*}
+    \sum_{n=1}^{\infty} \ddot{w}_n(t) \sin(n\pi x) = \sum_{n=1}^{\infty} (1-\pi^2n^2)w_n(t) \sin(n\pi x) + 2xt.
+\end{equation*}
+
+Розкладемо $\varphi(x)=2x$ у ряд Фур'є, себто $\varphi(x) = \sum_{n=1}^{\infty}\varphi_n\sin n\pi x$. Для цього запишемо, що
+\begin{equation*}
+    \varphi_n = 2\int_0^1 2x \sin n\pi x dx = 4\int_0^1 x \sin n\pi xdx
+\end{equation*}
+
+Проінтегруємо частинами. Нехай $u=x$ та $dv=\sin n\pi xdx$, тоді $du=dx$ та
+$v=-\frac{1}{n\pi}\cos n\pi x$. В такому разі інтеграл спрощується до:
+\begin{equation*}
+    \varphi_n = 4\left(-x\frac{1}{n\pi}\cos n\pi x\Big|_{0}^{1} + \int_0^1 \frac{1}{n\pi}\cos n\pi xdx\right) = -\frac{4\cos n\pi}{n\pi}
+\end{equation*}
+
+Тут ми скористались тим, що правий інтеграл дорівнює нулю, оскільки інтеграл 
+пропорційний до $\sin n\pi x$, що зануляється на межах інтегрування. Таким чином, 
+остаточно:
+\begin{equation*}
+    \varphi(x) = \sum_{n=1}^{\infty} \frac{4(-1)^{n+1}}{n\pi}\sin n\pi x.
+\end{equation*}
+
+Отже, підставляючи у рівняння знову, отримаємо:
+\begin{equation*}
+    \sum_{n=1}^{\infty} \ddot{w}_n(t) \sin(n\pi x) = \sum_{n=1}^{\infty} (1-\pi^2n^2)w_n(t) \sin(n\pi x) + \sum_{n=1}^{\infty} \frac{4(-1)^n}{n\pi}t\sin n\pi x.
+\end{equation*}
+
+Отже, покоефіцієнтна рівність дає нам:
+\begin{equation*}
+    \ddot{w}_n(t) = (1-\pi^2n^2)w_n(t) + \frac{4(-1)^{n+1}}{n\pi}t.
+\end{equation*}
+
+Знайдемо початкові умови. Оскільки $w(x,0)=0$, то $w_n(0)=0$. Аналогічно,
+з умови $\partial_t w(x,0)=0$ маємо $\dot{w}_n(0)=0$.
+
+Отже, розв'яжемо рівняння. Помітимо, що $1-\pi^2n^2<0$, тому розв'язком
+однорідної частини є $w_{n,H}(t) = A_n\cos(\omega_n t) + B_n\sin(\omega_n t)$,
+де ми позначили $\omega_n^2 := \sqrt{\pi^2n^2-1}$ для зручності. Частковий
+розв'язок шукаємо у вигляді $w_{n,P}(t) = C_nt + D_n$. Підставляємо у рівняння:
+\begin{equation*}
+    -\omega_n^2(C_nt+D_n) + \frac{4(-1)^{n+1}}{n\pi}t = 0 \implies C_n = \frac{4(-1)^{n+1}}{n\pi\omega_n^2}, \; D_n = 0.
+\end{equation*}
+
+Отже, загальний розв'язок:
+\begin{equation*}
+    w_n(t) = A_n\cos \omega_n t + B_n\sin \omega_n t + \frac{4(-1)^{n+1}}{n\pi\omega_n^2}t.
+\end{equation*}
+
+З умови $w_n(0)=0$ знаходимо $A_n=0$. З умови $\dot{w}_n(0)=0$ знаходимо
+\begin{equation*}
+    \dot{w}_n(t) = \omega_n B_n \cos \omega_n t - \frac{4(-1)^n}{n\pi\omega_n^2} \implies \dot{w}_n(0) = \omega_n B_n - \frac{4(-1)^n}{n\pi\omega_n^2} = 0 \implies B_n = \frac{4(-1)^n}{n\pi\omega_n^3}.
+\end{equation*}
+
+Отже, остаточно:
+\begin{equation*}
+    w_n(t) = \frac{4(-1)^n}{n\pi\omega_n^3}\sin \omega_n t - \frac{4(-1)^n}{n\pi\omega_n^2}t = \frac{4(-1)^n}{n\pi\omega_n^2}\left(\frac{\sin \omega_n t}{\omega_n} - t\right).
+\end{equation*}
+
+Отже, маємо наступний розв'язок:
+\begin{equation*}
+    u(x,t) = \sum_{n=1}^{\infty} w_n(t)\sin n\pi x + xt = \sum_{n=1}^{\infty} \frac{4(-1)^n}{n\pi\omega_n^2}\left(\frac{\sin \omega_n t}{\omega_n} - t\right)\sin n\pi x + xt.
+\end{equation*}
+
+Або, якщо скористатися тим, що $\omega_n^2 = \sqrt{\pi^2n^2-1}$, то
+\begin{equation*}
+    \textcolor{blue}{u(x,t) = xt + \sum_{n=1}^{\infty} \frac{4(-1)^n}{n\pi(\pi^2n^2-1)}\left(\frac{\sin(\sqrt{\pi^2n^2-1}\cdot t)}{\sqrt{\pi^2n^2-1}} - t\right)\sin n\pi x.}
+\end{equation*}
+
+\textbf{Відповідь.} $u(x,t) = xt + \sum_{n=1}^{\infty} \frac{4(-1)^n}{n\pi\omega_n^2}\left(\frac{\sin(\omega_n t)}{\omega_n} - t\right)\sin n\pi x$ де $\omega_n^2 = \pi^2n^2-1$.
+
+\newpage
+
+\subsection{Вправа 17.4}
+
+\begin{problem}
+    Розв'язати рівняння
+    \begin{equation*}
+        \frac{\partial^2 u(x,t)}{\partial t^2} + 2\frac{\partial u(x,t)}{\partial t} = \frac{\partial^2 u(x,t)}{\partial x^2} + 4x + 8e^t\cos x, \quad 0 < x < \pi/2, t>0
+    \end{equation*}
+
+    з умовами $\partial_xu(0,t)=2t$, $u(\pi/2,t)=\pi t$, $u(x,0)=\cos x$, $\partial_t u(x,0)=2x$.
+\end{problem}
+
+\textbf{Розв'язання.} Маємо крайові умови $\partial_xu(0,t)=\mu_1(t)=2t$ та
+$u(\ell,t)=\mu_2(t)=\pi t$ для $\ell=\pi/2$. Зробимо граничні умови однорідними
+за допомогою заміни $u(x,t) = w(x,t) + v(x,t)$, де
+$v(x,t)=\mu_1(t)(x-\ell)+\mu_2(t)$. Отже,
+$v(x,t)=2t(x-\frac{\pi}{2})+\pi t=2tx$, тоді заміна має простий вигляд 
+$u(x,t) = w(x,t) + 2tx$. Підставимо у початкове рівняння:
+\begin{gather*}
+    \frac{\partial^2 w}{\partial t^2} + 2\frac{\partial w}{\partial t} + 4x = \frac{\partial^2 w}{\partial x^2} + 4x + 8e^t\cos x, \quad 0 < x < \pi/2, t>0 \\
+    \frac{\partial^2 w}{\partial t^2} + 2\frac{\partial w}{\partial t} = \frac{\partial^2 w}{\partial x^2} + 8e^t\cos x, \quad 0 < x < \pi/2, t>0
+\end{gather*}
+
+В такому разі крайові умови $\partial_x w(0,t) = 0$, $w(\pi/2,t)=0$ та початкові
+умови мають вигляд $w(x,0)=\cos x$, $\partial_t w(x,0)=0$. Враховуючи крайові
+умови, розкладемо функцію $w(x,t)$ у наступний ряд Фур'є:
+\begin{equation*}
+    w(x,t) = \sum_{n=1}^{\infty} w_n(t)\cos \frac{\pi (2n-1)x}{2\ell} = \sum_{n=1}^{\infty} w_n(t)\cos ((2n-1)x)
+\end{equation*}
+
+Підставляючи у рівняння, отримаємо:
+\begin{equation*}
+    \sum_{n=1}^{\infty} \left(\ddot{w}_n(t)+2\dot{w}_n(t) + (2n-1)^2w_n(t)\right)\cos((2n-1)x) = 8e^t\cos x
+\end{equation*}
+
+Запам'ятаємо це. Тепер, підставимо початкові умови. Умова $w(x,0) = \cos x$ дає
+нам те, що $w_1(0) = 1$, проте $w_n(0) = 0$ для $n>1$. Умова $\partial_t w(x,0)
+= 0$ дає нам те, що $\dot{w}_n(0) = 0$ для всіх $n$. Таким чином, маємо два
+випадки.
+
+\textbf{Випадок 1.} $n=1$. Тоді, підставляючи у рівняння, отримаємо:
+\begin{equation*}
+    \ddot{w}_1(t) + 2\dot{w}_1(t) + w_1(t) = 8e^t, \quad w_1(0)=1, \dot{w}_1(0)=0
+\end{equation*}
+
+Характеристичне рівняння для однорідної частини має вигляд
+$\lambda^2+2\lambda+1=0$, звідки $\lambda_0=-1$ --- корінь кратності 2. Отже,
+загальний розв'язок має вигляд $w_{1,H}(t) = (a+bt)e^{-t}$. Частковий розв'язок
+шукаємо у вигляді $w_{1,P}(t) = Ce^t$. Підставляючи у рівняння, отримаємо $4Ce^t
+= 8e^t$, звідки $C=2$. Отже, загальний розв'язок має вигляд:
+\begin{equation*}
+    w_1(t) =(a+bt)e^{-t} + 2e^t
+\end{equation*}
+
+Початкові умови задають коефіцієнти: $w_1(0) = a+2=1$, звідки $a=-1$. 
+Похідна має вигляд $\dot{w}_1 = (b-a-bt)e^{-t}+2e^t$, тому 
+$\dot{w}_1(0) = b-a+2=0$, звідки $b=-3$. Отже:
+\begin{equation*}
+    \textcolor{green!50!black}{w_1(t) = -(1+3t)e^{-t}+2e^t}
+\end{equation*}
+
+\textbf{Випадок 2.} $n>1$. Тоді, підставляючи у рівняння, отримаємо:
+\begin{equation*}
+    \ddot{w}_n(t) + 2\dot{w}_n(t) + (2n-1)^2w_n(t) = 0, \quad w_n(0)=0, \dot{w}_n(0)=0
+\end{equation*}
+
+Зрозуміло, що таке рівняння дає тривіальний розв'язок $w_n(t)=0$ для всіх 
+$n>1$. Отже, розв'язок $w(x,t)$:
+\begin{equation*}
+    \textcolor{green!50!black}{w(x,t) = (2e^t - (1+3t)e^{-t})\cos x}
+\end{equation*}
+
+Таким чином, остаточно:
+\begin{equation*}
+    \textcolor{blue}{u(x,t) =(2e^t - (1+3t)e^{-t})\cos x + 2tx}
+\end{equation*}
+
+\textbf{Відповідь.} $u(x,t) = (2e^t - (1+3t)e^{-t})\cos x + 2tx$.
+
+\end{document}

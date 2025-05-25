@@ -1,0 +1,264 @@
+\documentclass{hw_template}
+
+\usepackage{arydshln}
+
+\title{\bfseries Залікова контрольна робота \\ з Теорії Коливань}
+\author{\bfseries Захаров Дмитро}
+\date{23 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\vspace{20px}
+
+\section{Задача 1}
+
+\begin{problem}
+    Умови рівноваги голономної системи з ідеальними в'язями.
+\end{problem}
+
+\textbf{Відповідь.} Нехай маємо систему частинок $m_1,\dots,m_N$ з координатами
+$\mathbf{r}_1,\dots,\mathbf{r}_N$. Положенням рівноваги такої системи будемо
+називати таке положення, в якому система частинок має нульову швидкість протягом
+певного інтервалу часу, тобто $\dot{\mathbf{r}}_i=0$ для всіх $i=1,\dots,N$.
+Нехай усі в'язі, що ми позначаємо як $\mathbf{R}_1,\dots,\mathbf{R}_N$, є
+ідеальними. Що це означає? Розглянемо другий закон Ньютона для кожної частинки:
+$\mathbf{F}_i+\mathbf{R}_i=m_i\ddot{r}_i$, де $\mathbf{F}_i$ --- зовнішня сила. 
+Таким чином, маємо мати:
+\begin{equation*}
+    \sum_{i=1}^N (\mathbf{F}_i - m_i\ddot{\mathbf{r}}_i + \mathbf{R}_i) \delta \mathbf{r}_i = 0,
+\end{equation*}
+де $\delta \mathbf{r}_i$ --- віртуальне переміщення частинки $i$ в околі
+рівноваги. Ми вважаємо в'язі ідеальними, тому $\sum_{i=1}^N \mathbf{R}_i \delta
+\mathbf{r}_i = 0$, а тому рівняння динаміки має вигляд $\sum_{i=1}^N
+(\mathbf{F}_i - m_i\ddot{\mathbf{r}}_i)\delta \mathbf{r}_i = 0$. В стані
+рівноваги отримуємо \textbf{рівняння статики}:
+\begin{equation*}
+    \sum_{i=1}^N \mathbf{F}_i \delta \mathbf{r}_i = 0.
+\end{equation*}
+
+Нехай маємо узагальнені координати $\mathbf{q}=(q_1,\dots,q_n)$ з відповідними
+узагальненими силами $\mathbf{Q}_i=\sum_{j=1}^N \mathbf{F}_j \frac{\partial
+\mathbf{r}_j}{\partial q_i}$. Нагадаємо, що під \textbf{голономною системою}
+розуміють систему, що описується за допомогою системи рівнянь
+$f_i(q_1,\dots,q_n,t)=0$ для всіх $i=1,\dots,k$. Згадаємо, що для 
+таких систем:
+\begin{equation*}
+    \sum_{i=1}^N \mathbf{F}_i \delta \mathbf{r}_i = \sum_{j=1}^n \mathbf{Q}_j\delta \mathbf{q}_j
+\end{equation*}
+
+А отже з рівняння статики маємо $\sum_{j=1}^n \mathbf{Q}_j\delta \mathbf{q}_j =
+0$. Проте, оскільки усі переміщення $\delta \mathbf{q}_j$ є незалежними, то
+для того, щоб рівняння виконувалось, необхідно, щоб усі узагальнені сили
+дорівнювали нулю, тобто $\mathbf{Q}_j=0$ для всіх $j=1,\dots,n$. Отже, 
+умова рівноваги записується як
+\begin{equation*}
+    \boxed{\mathbf{Q}_j = 0, \quad j = 1,\dots,n.}
+\end{equation*}
+
+Зокрема, у випадку консервативної системи, маємо $\mathbf{Q}_j = -\frac{\partial
+V}{\partial \mathbf{q}_j}(\mathbf{q})$, тому у рівновазі $\frac{\partial
+V}{\partial \mathbf{q}_j}=0$. Таким чином, точка спокою консервативної 
+системи це стаціонарна точка потенціальної енергії як функції від 
+узагальнених координат. За теоремою Лагранжа-Діріхле, якщо в точці 
+спокою потенціальна енергія має мінімум, то система буде стійкою.
+
+\newpage 
+
+\section{Задача 2}
+
+\begin{problem}
+    Параметричні коливання. Теорема Флоке. Параметричний резонанс.
+\end{problem}
+
+\textbf{Відповідь.} Одразу наведемо означення параметричних коливань.
+
+\begin{definition}
+\textbf{Параметричними коливаннями} називають коливання,
+в яких параметри системи, що входять до рівняння руху, змінюються в часі. Такі 
+зміни, у свою чергу, можуть викликати резонансні явища, які називаються
+\textbf{параметричним резонансом}.
+\end{definition}
+
+Простий приклад наступний: нехай маємо математичний маятник, в якому 
+довжина нитки $\ell$ є функцією часу: $\ell = \ell(t)$:
+\begin{equation*}
+    \ddot{\varphi} + \frac{g}{\ell(t)}\sin\varphi = 0.
+\end{equation*}
+
+Доволі широкий клас задач з параметричними коливаннями можна звести 
+до \textbf{рівняння Хілла}:
+\begin{equation*}
+    \ddot{\varphi} + \Omega^2(t)\varphi = 0, 
+\end{equation*}
+
+де $\Omega(t)$ --- періодична функція. 
+
+\begin{example} Малі періодичні зміни довжини нитки $\ell(t)$ описуються
+рівнянням Хілла. Дійсно, можна записати $\ell(t) = \ell_0(1+\varepsilon \cos
+\omega t)$, а отже
+\begin{equation*}
+    \ddot{\varphi} + \frac{g}{\ell_0(1+\varepsilon \cos \omega t)}\sin\varphi = 0.
+\end{equation*}
+
+За малих $\varepsilon$, маємо $\frac{1}{1+\varepsilon \cos \omega t} \approx 1 -
+\varepsilon \cos \omega t$, тому рівняння зведеться до:
+\begin{equation*}
+    \ddot{\varphi} + \omega_0^2(1-\varepsilon \cos \omega t)\varphi = 0, \quad \omega_0^2 = \frac{g}{\ell_0},
+\end{equation*}
+
+що є рівнянням Хілла з $\Omega(t) = \omega_0\sqrt{1-\varepsilon \cos \omega t}$.
+\end{example}
+
+\textbf{Теорія Флоке.} Нехай маємо динамічну систему $\dot{\mathbf{x}} =
+\mathbf{A}(t)\mathbf{x}$, де матриця $\mathbf{A}(t) \in \mathbb{R}^{n \times n}$
+--- періодична матриця. Нехай її період дорівнює $T$, тобто маємо
+$\mathbf{A}(t+T) = \mathbf{A}(t)$. Нас цікавить вид розв'язку такої системи.
+
+\begin{remark} Насправді, таким рівняння можна описати доволі широкий клас
+задач, зокрема і рівняння Хілла, оскільки достатньо ввести зміни $\dot{x}_1=x_2$
+та $\dot{x}_2 = -\omega^2(t)x_1$, тоді для $\mathbf{x}(t) := (x_1(t),x_2(t))$
+будемо мати
+\begin{equation*}
+    \dot{x} = \begin{pmatrix}
+        \dot{x}_1 \\ \dot{x}_2
+    \end{pmatrix} = 
+    \begin{pmatrix}
+        0 & 1 \\ -\omega^2(t) & 0
+    \end{pmatrix}
+    \begin{pmatrix}
+        x_1 \\ x_2
+    \end{pmatrix} = \mathbf{A}(t)\mathbf{x}, \quad \mathbf{A}(t) = \begin{pmatrix}
+        0 & 1 \\ -\omega^2(t) & 0
+    \end{pmatrix}
+\end{equation*}
+\end{remark}
+
+Позначимо через $\boldsymbol{\Phi}(t,t_0)$ фундаментальну систему розв'язків
+системи $\dot{\mathbf{x}} = \mathbf{A}(t)\mathbf{x}$, яка задовольняє початкову
+умову $\boldsymbol{\Phi}(t_0,t_0) = \mathbf{E}_{n \times n}$, де $\mathbf{E}_{n
+\times n}$ --- одинична матриця. Таким чином, розв'язок системи має вигляд
+$\mathbf{x}(t) = \boldsymbol{\Phi}(t,t_0)\mathbf{x}(t_0)$. Нас цікавить 
+конкретний вигляд матриці $\boldsymbol{\Phi}(t,t_0)$.
+
+\begin{theorem}[Теорема Флоке]
+    Фундаментальну систему розв'язків $\boldsymbol{\Phi}(t,0)$ системи 
+    $\dot{\mathbf{x}} = \mathbf{A}(t)\mathbf{x}$ можна записати у вигляді:
+    \begin{equation*}
+        \boldsymbol{\Phi}(t,0) = \mathbf{P}(t)e^{\mathbf{R}t},
+    \end{equation*}
+    де $\mathbf{P}(t)$ --- періодична матриця $n \times n$, а $\mathbf{R} =
+    \ln(\boldsymbol{\Phi}(T))/T$ є константною матрицею $n \times n$.
+\end{theorem}
+
+Залишимо цю теорему без доведення. Проте, цікавим наслідком є наступе: 
+кожен момент часу $t$ ми можемо записати як $t=kT+\tau$, де $k \in \mathbb{Z}_{\geq 0}$
+та $\tau \in [0,T)$. Тоді, координату $\mathbf{x}(t)$ ми можемо знайти так:
+\begin{align*}
+    \mathbf{x}(t) = \boldsymbol{\Phi}(kT+\tau,kT)\prod_{j=0}^{k-1}\boldsymbol{\Phi}((j+1)T,jT)\mathbf{x}(0)
+\end{align*}
+
+Через періодичність системи маємо: $\textcolor{blue}{\mathbf{x}(t) =
+\boldsymbol{\Phi}(kT+\tau,kT)\boldsymbol{\Phi}(T,0)^k}$. Таким чином, стійкість
+системи визначається повністю поведінкою $\boldsymbol{\Phi}(T,0)^k$, що в свою 
+чергу в силу теореми Флоке визначається лише матрицею $\mathbf{R}$, а саме її 
+власними числами. 
+
+\textbf{Стійкість.} Природньо поговорити про стійкість системи. Нехай маємо
+певну динамічну систему $\dot{\mathbf{y}} = \mathbf{Y}(t,\mathbf{y})$. Нехай
+$\mathbf{y}(t)=\boldsymbol{f}(t)$ є частковим розв'язком --- незбурений рух.
+Тоді будь-який розв'язок системи $\mathbf{y}(t)$ називають збуреним рухом і
+природньо називати величину $\mathbf{x}(t) := \mathbf{y}(t)-\boldsymbol{f}(t)$
+збуренням, причому $\mathbf{x}(t)$ задовільняє системи звичайних диференціальних
+рівнянь, що ми називаємо рівнянням збуреного руху: $\dot{\mathbf{x}} =
+\mathbf{X}(t,\mathbf{x})$, де $\mathbf{X}(t,\mathbf{x}) =
+\mathbf{Y}(t,\mathbf{x}+\boldsymbol{f}(t)) - \mathbf{Y}(t,\boldsymbol{f}(t))$.
+Це рівняння вочевидь має тривіальний розв'язок $\mathbf{x}(t) \equiv
+\mathbf{0}$, який відповідає незбуреному руху. Ми називаємо незбурених рух
+\textbf{стаціонарним} або автономною, якщо $\mathbf{X}$ не залежить від часу. 
+
+\begin{definition}
+    Незбурений рух називають \textbf{стійким за Ляпуновим} якщо
+    \begin{equation*}
+        (\forall \varepsilon > 0) \, (\exists \delta > 0) \, \{\mathbf{x}(t_0) \in \mathcal{U}_{\delta}(\mathbf{0}) \implies \mathbf{x}(t) \in \mathcal{U}_{\varepsilon}(\mathbf{0}), \; t > t_0\}.
+    \end{equation*}
+\end{definition}
+
+Зупинимось на випадку автономної системи. Оскільки систему $\dot{\mathbf{x}} =
+\mathbf{X}(\mathbf{x})$ складно розглядати в загальному вигляді, то для 
+аналізу безпосередньо стійкості достатньо \textit{лінеаризувати} її 
+в околі $\mathbf{0}$:
+\begin{equation*}
+    \dot{\mathbf{x}} = \mathbf{A}\mathbf{x} + \mathcal{O}(\|\mathbf{x}\|^2), \quad \mathbf{x} \to \mathbf{0}
+\end{equation*}
+
+Тут матриця $\mathbf{A} = \frac{\partial \mathbf{X}(0)}{\partial \mathbf{x}} \in
+\mathbb{R}^{n \times n}$. Рівняння без малого (відносно $\mathbf{x} \to
+\mathbf{0}$) доданку $\mathcal{O}(\|\mathbf{x}\|^2)$ називають \textit{рівняння
+першого наближення}. Ляпунов показав, що стійкість незбуреного руху можна
+описати за допомогою спектру матриці $\mathbf{A}$, що позначаємо як
+$\sigma(\mathbf{A}) \subseteq \mathbb{C}$.
+
+\begin{theorem}[Теорема Ляпунова]
+    Якщо для всіх власних значень $\lambda_i \in \sigma(\mathbf{A})$ виконується 
+    $\text{Re}(\lambda_i) < 0$, то незбурених рух є асимптотично стійким за 
+    Ляпуновим. Якщо ж знайшовся хоча б один власний вектор $\lambda_i \in
+    \sigma(\mathbf{A})$ з $\text{Re}(\lambda_i) > 0$, то незбурених рух є
+    асимптотично нестійким за Ляпуновим. 
+\end{theorem}
+
+\newpage
+
+\section{Задача 3}
+
+\begin{problem}
+    Скласти рівняння руху (рівняння Лагранжа) та визначити період малих коливань
+однорідного диска маси $m$ і радіуса $r$, закріпленого двома пружинами
+жорсткості $k$, який може котитися без проковзування по горизонтальній поверхні.
+\textit{(20 балів)}
+\end{problem}
+
+\textbf{Розв'язання.} Нехай $x$ --- зміщення центра мас диска вздовж 
+горизонтальної осі, $\varphi$ --- кутова координата диска. Тоді умова 
+без проковзування має вигляд $x = r\varphi$, звідки $\dot{x} = r\dot{\varphi}$.
+
+При цьому, потенціальна енергія кожної з пружин дорівнює $\frac{1}{2}kx^2$, а
+отже сумарна потенціальна енергія системи дорівнює $\textcolor{blue}{V(x) =
+kx^2}$.
+
+Кінетична енергія системи дорівнює сумі обертальної кінетичної енергії диска
+$\frac{1}{2}I\omega^2$ та поступальної кінетичної енергії $\frac{1}{2}mv^2$. 
+Момент інерції диска відносно осі, що проходить через його центр мас дорівнює
+$I=\frac{1}{2}mr^2$ і як ми вже з'ясували, $\omega = \frac{\dot{x}}{r}$, тому
+\begin{equation*}
+    \textcolor{blue}{K(\dot{x})} = \frac{1}{2}I\omega^2 + \frac{1}{2}mv^2 = \frac{1}{2}\cdot\frac{1}{2}mr^2\cdot\left(\frac{\dot{x}}{r}\right)^2 + \frac{1}{2}m\dot{x}^2 = \textcolor{blue}{\frac{3}{4}m\dot{x}^2}.
+\end{equation*}
+
+Отже, рівняння Лагранжа має вигляд:
+\begin{equation*}
+    \textcolor{blue}{\mathcal{L}(x,\dot{x}) = K(\dot{x}) - V(x) = \frac{3}{4}m\dot{x}^2 - kx^2}.
+\end{equation*}
+
+Згадаємо, що рівняння Лагранжа має вигляд $\frac{d}{dt} \frac{\partial \mathcal{L}}{\partial \dot{x}} - \frac{\partial\mathcal{L}}{\partial x} = 0$, тому
+\begin{align*}
+    \frac{d}{dt} \frac{\partial \mathcal{L}}{\partial \dot{x}} &= \frac{d}{dt} \left(\frac{3}{2}m\dot{x}\right) = \frac{3}{2}m\ddot{x}, \\
+    \frac{\partial \mathcal{L}}{\partial x} &= -2kx.
+\end{align*}
+
+Таким чином, рівняння руху має вигляд:
+\begin{equation*}
+    \frac{3}{2}m\ddot{x} + 2kx = 0 \Rightarrow \boxed{\textcolor{blue}{\ddot{x} + \frac{4k}{3m}x = 0}}.
+\end{equation*}
+
+Таким чином, циклічна частота має вигляд $\omega = \sqrt{\frac{4k}{3m}} =
+2\sqrt{\frac{k}{3m}}$, а період малих коливань у свою чергу тоді:
+\begin{equation*}
+    \textcolor{blue}{T = \frac{2\pi}{\omega} = \boxed{\pi\sqrt{\frac{3m}{k}}}}.
+\end{equation*}
+
+\end{document}

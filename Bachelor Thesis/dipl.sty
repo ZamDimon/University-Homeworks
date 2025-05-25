@@ -1,0 +1,177 @@
+\definecolor{darkgreen}{HTML}{008000}
+\definecolor{darkblue}{HTML}{000080}
+\definecolor{darkred}{HTML}{800000}
+\definecolor{darkcyan}{HTML}{007090}
+\definecolor{bluegreen}{HTML}{17A589}% 
+\definecolor{khaki}{HTML}{7D6608}
+%%%%
+\hypersetup{linkcolor=darkblue, urlcolor=darkred, citecolor=darkgreen}
+%%%
+%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\def\ps@headings{%
+	\let\@oddfoot\@empty\let\@evenfoot\@empty
+	\def\@evenhead{\raisebox{0pt}[2ex][0pt]{\vbox{\hbox to\textwidth{\large\thepage\hfil\strut }}}}%
+	\def\@oddhead{\raisebox{0pt}[2ex][0pt]{\vbox{\hbox to\textwidth{\large{ }\strut\hfil\thepage}}}}%
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%
+
+\setlist[enumerate,1]{label={\upshape\arabic*.}, ref={\upshape\arabic*}, leftmargin=5ex, labelwidth=5ex, labelsep=0ex, topsep=1ex, listparindent=1.5ex, itemsep=0.1ex, parsep=0.1ex, align=left}%
+\setlist[enumerate,2]{label={\upshape(\roman*)}, ref={\upshape(\roman*)}, leftmargin=4ex, labelwidth=4ex, labelsep=0ex, topsep=1ex, listparindent=1.5ex, itemsep=0.1ex, parsep=0.1ex, align=left}
+
+\setlist[enumerate,3]{label={\upshape(\alph*)}, ref={\upshape(\alph*)}, leftmargin=5ex, labelwidth=5ex, labelsep=0ex, topsep=1ex, listparindent=1.5ex, itemsep=0.1ex, parsep=0.1ex, align=left}
+
+\numberwithin{section}{chapter}
+\numberwithin{equation}{chapter}
+
+\newtheoremstyle{dplplain}
+{\topsep}   % ABOVESPACE
+{\topsep}   % BELOWSPACE
+{\slshape}  % BODYFONT
+{\parindent}       % INDENT (empty value is the same as 0pt)
+{\bfseries} % HEADFONT
+{.}         % HEADPUNCT
+{5pt plus 1pt minus 1pt} % HEADSPACE
+{}          % CUSTOM-HEAD-SPEC
+
+\newtheoremstyle{dpldefinition}
+{\topsep}   % ABOVESPACE
+{\topsep}   % BELOWSPACE
+{\normalfont}  % BODYFONT
+{\parindent}       % INDENT (empty value is the same as 0pt)
+{\bfseries} % HEADFONT
+{.}         % HEADPUNCT
+{5pt plus 1pt minus 1pt} % HEADSPACE
+{}          % CUSTOM-HEAD-SPEC
+
+\newtheoremstyle{dplremark}
+{\topsep}   % ABOVESPACE
+{\topsep}   % BELOWSPACE
+{\normalfont}  % BODYFONT
+{\parindent}       % INDENT (empty value is the same as 0pt)
+{\slshape} % HEADFONT
+{.}         % HEADPUNCT
+{5pt plus 1pt minus 1pt} % HEADSPACE
+{}          % CUSTOM-HEAD-SPEC
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+	\pushQED{\qed}%
+	\normalfont \topsep6\p@\@plus6\p@\relax
+	\trivlist
+	\item\relax
+	{\hspace{\parindent}\slshape
+		#1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+	\popQED\endtrivlist\@endpefalse
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%% end theorems %%%%%%%%%%%%%
+%%%%%%%%%%
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\quad}
+\renewcommand\section{\@startsection {section}{1}{\parindent}%
+	{3.5ex \@plus 1ex \@minus .2ex}%
+	{2.3ex \@plus.2ex}%
+	{\normalfont\Large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\parindent}%
+	{3.25ex\@plus 1ex \@minus .2ex}%
+	{1.5ex \@plus .2ex}%
+	{\normalfont\large\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\parindent}%
+	{3.25ex\@plus 1ex \@minus .2ex}%
+	{-1.5ex \@plus .2ex}%
+	{\normalfont\normalsize\bfseries}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\parindent}%
+	{3.25ex \@plus1ex \@minus.2ex}%
+	{-1em}%
+	{\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+	{3.25ex \@plus1ex \@minus .2ex}%
+	{-1em}%
+	{\normalfont\normalsize\bfseries}}
+%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\myindent}
+\setlength{\myindent}{\parindent}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\chapter{%
+	\if@openright\clearpage\else\clearpage\fi
+	\thispagestyle{plain}%
+	\global\@topnum\z@
+	\@afterindenttrue
+	\secdef\@chapter\@schapter}
+\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+	\if@mainmatter
+	\refstepcounter{chapter}%
+	\typeout{\@chapapp\space\thechapter.}%
+	\addcontentsline{toc}{chapter}%
+	{\protect\numberline{\thechapter}#2}%
+	\else
+	\addcontentsline{toc}{chapter}{#1}%
+	\fi
+	\else
+	\addcontentsline{toc}{chapter}{#1}%
+	\fi
+	\chaptermark{#1}%%%%%%%%%
+	\addtocontents{lof}{\protect\addvspace{10\p@}}%
+	\addtocontents{lot}{\protect\addvspace{10\p@}}%
+	\if@twocolumn
+	\@topnewpage[\@makechapterhead{#2}]%
+	\else
+	\@makechapterhead{#2}%
+	\@afterheading
+	\fi}
+\def\@makechapterhead#1{%
+	\vspace*{15\p@}%
+	{\parindent\z@ \raggedright \normalfont
+		\ifnum \c@secnumdepth >\m@ne
+		\if@mainmatter%%%%%%%%%%%
+		\hspace*{\myindent}%
+		\huge\bfseries \@chapapp\space \thechapter
+		\par\nobreak
+		\vskip 10\p@
+		\fi
+		\fi
+		\interlinepenalty\@M%
+		\hspace*{18pt}%
+		\huge \bfseries \parbox{0.95\textwidth}{\raggedright
+			#1}\par\nobreak
+		\vskip 15\p@
+}}
+\def\@schapter#1{\if@twocolumn
+	\@topnewpage[\@makeschapterhead{#1}]%
+	\else
+	\@makeschapterhead{#1}%
+	\@afterheading
+	\fi}
+\def\@makeschapterhead#1{%
+	\vspace*{15\p@}%
+	{\parindent \z@ \raggedright
+		\normalfont
+		\interlinepenalty\@M%
+		\hspace{\myindent}%
+		\huge \bfseries  #1\par\nobreak
+		\vskip 15\p@
+}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END !!!!!!!!!
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\let \savenumberline \numberline
+\def \numberline#1{\savenumberline{#1.}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addto\captionsukrainian{\renewcommand{\bibname}{Список використаних джерел}}
+
+\renewcommand\normalsize\large
+\normalsize

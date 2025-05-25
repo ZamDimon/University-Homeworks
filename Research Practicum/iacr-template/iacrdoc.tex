@@ -789,14 +789,19 @@ It is not immediately clear why the Encoder-Decoder architecture is beneficial.
 Let us consider the concrete example.
 
 \begin{example}
-    Suppose $n=1000$, $m=10000$, and $h = 10$. Suppose the field bitsize is
-    $\ell=254$ (which is the case for the majority of zk-SNARKs protocols such
-    as Groth16). Then, the complexity of the forward pass in the neural network
-    with the single layer is $10000(1000+254) \approx 10^7$ multiplications and
-    additions. In turn, the complexity of the forward pass in the neural network
-    with the Encoder-Decoder layer is $10(1000+10000+254) \approx 10^5$
-    multiplications and additions. The reduction is $100$ times, which is
-    significant!
+    Припустимо, що $n = 1000$, $m = 10000$, а $h = 10$. Нехай розмірність поля
+дорівнює $b = 254$. Тоді складність прямого проходу через нейронну мережу з
+одним шаром становить: $10000(1000+254) \approx 107$.
+
+множень і додавань.
+
+Натомість складність прямого проходу через нейронну мережу з шаром Encoder-Decoder дорівнює:
+10(1000+10000+254)≈105
+10(1000+10000+254)≈105
+
+множень і додавань.
+
+Це дає зменшення в 100 разів, що є суттєвим!
 \end{example}
 
 \textbf{Intuition.} Without accounting for the activations, the boost in terms
