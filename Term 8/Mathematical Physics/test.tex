@@ -1,0 +1,183 @@
+\documentclass{test_template}
+
+\usepackage{esint}
+
+\title{\huge\sffamily\bfseries Контрольна Робота з Рівнянь Математичної Фізики}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 26 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Контрольна Робота}
+
+\subsection{Задача 1}
+
+\begin{problem}
+    Розв'язати рівняння $u_t = u_{xx} - \cos 2t$ для $x \in \mathbb{R}$ за
+    крайової умови $u(x,0)\equiv 1$.
+\end{problem}
+
+\textbf{Розв'язання.} Скористаємось формулою Пуассона-Дюамеля. А саме, нехай
+рівняння має вигляд $\partial_t u = \alpha^2 \Delta u + f(\mathbf{x},t)$ для 
+$\mathbf{x} \in \mathbb{R}^n$, $t>0$ та крайовою умовою $u(0,\mathbf{x})=u_0(\mathbf{x})$. Тоді,
+\begin{equation*}
+    u(\mathbf{x},t) = \frac{1}{(2\alpha\sqrt{t\pi})^n}\int_{\mathbb{R}^n}e^{-\frac{\|\mathbf{x}-\boldsymbol{\xi}\|^2}{4\alpha^2 t}}u_0(\boldsymbol{\xi})d\boldsymbol{\xi} + \int_0^t \int_{\mathbb{R}^n}\frac{1}{(2\alpha\sqrt{\pi(t-\tau)})^n}e^{-\frac{\|\mathbf{x}-\boldsymbol{\xi}\|^2}{4\alpha^2(t-\tau)}}f(\boldsymbol{\xi},\tau)d\boldsymbol{\xi}d\tau.
+\end{equation*}
+
+Правий інтеграл рахувати не дуже хочеться, тому приберемо неоднорідність. Для
+цього зробимо заміну $u(x,t) = w(x,t) - \frac{1}{2}\sin 2t$. Тоді, 
+підставляючи це у початкове рівняння, маємо:
+\begin{equation*}
+    w_t - \cos 2t = w_{xx} - \cos 2t \Rightarrow \boxed{w_t = w_{xx}}.
+\end{equation*}
+
+Крайова умова $w(x,0)=1$. В нашому конкретному випадку маємо одну змінну, тому
+рівняння дещо спрощується:
+\begin{equation*}
+    w(x,t) = \frac{1}{2\alpha \sqrt{t\pi}}\int_{-\infty}^{+\infty} e^{-\frac{(x-\xi)^2}{4\alpha^2 t}}w_0(\xi)d\xi 
+\end{equation*}
+
+Зокрема, маємо $\alpha=1$, $w_0 \equiv 1$, тому:
+\begin{equation*}
+    w(x,t) = \frac{1}{2 \sqrt{t\pi}}\int_{-\infty}^{+\infty} e^{-\frac{(x-\xi)^2}{4t}}d\xi 
+\end{equation*}
+
+Зробимо заміну $\eta := \frac{\xi-x}{2\sqrt{t}}$, тоді $d\xi = 2\sqrt{t}d\eta$ і тому
+\begin{equation*}
+    w(x,t) = \frac{1}{2\sqrt{t\pi}} \cdot 2\sqrt{t} \int_{-\infty}^{+\infty} e^{-\eta^2}d\eta
+    = \frac{1}{\sqrt{\pi}} \cdot \sqrt{\pi} = 1.
+\end{equation*}
+
+Таким чином, остаточно, початковий розв'язок: $\textcolor{blue}{u(x,t) = 1 -
+\frac{1}{2}\sin 2t}$.
+
+\textbf{Відповідь.} $u(x,t) = 1 - \frac{1}{2}\sin 2t$.
+
+\newpage
+
+\subsection{Задача 2}
+
+\begin{problem}
+    Розв'язати рівняння $u_t = u_{xx} + x^2 - 2t + \sin 2x$ для $x \in (0,\pi)$ за
+    умов $u_x(0,t) \equiv 1$, $u_x(\pi,t) = 2\pi t+1$, $u(x,0)=2x$.
+\end{problem}
+
+\textbf{Розв'язання.} Зробимо граничні умови однорідними. Зробимо заміну змінних
+$u(x,t) = w(x,t) + v(x,t)$, де покладемо у якості $v(x,t)$ функцію $v(x,t) =
+x+tx^2$. В такому разі маємо $u_x(x,t) = w_x(x,t) + 1 + 2xt$ і тому граничні
+умови перетворюються на $w_x(0,t) \equiv 0$, $w_x(\pi,t) \equiv 0$, а також
+$w(x,0) = u(x,0)-v(x,0) = x$. Підставимо це у рівняння:
+\begin{equation*}
+    w_t + x^2 = w_{xx} + 2t + x^2 - 2t + \sin 2x \Rightarrow \boxed{w_t = w_{xx} + \sin 2x}.
+\end{equation*}
+
+Розв'язок будемо шукати у вигляді розкладу Фур'є: нехай шукана функція $w(x,t) =
+\sum_{n=0}^{\infty}w_n(t) \cos nx$ (було б зручно взяти $\sin nx$, проте тоді не
+виконувалися б граничні умови). Тоді, підставляючи у рівняння, маємо:
+\begin{equation*}
+    \sum_{n=0}^{\infty} \dot{w}_n(t) \cos nx = \sum_{n=0}^{\infty} -n^2 w_n(t) \cos nx + \sum_{n=0}^{\infty}f_n \cos nx, \quad \sin 2x = \sum_{n=0}^{\infty} f_n
+\cos nx
+\end{equation*}
+
+Розкладемо $\sin 2x$ у ряд Фур'є: $\sin 2x = \sum_{n=0}^{\infty} f_n \cos nx$. В
+такому разі коефіцієнти $f_n = \frac{2}{\pi}\int_0^{\pi} \sin 2x \cos nx dx$.
+Користаємося тим, що $\sin 2x\cos nx = \frac{1}{2}\sin ((2+n)x) +
+\frac{1}{2}\sin ((2-n)x)$, тоді $f_n = \frac{1}{\pi}\int_0^{\pi} \sin((2+n)x) +
+\frac{1}{\pi}\int_0^{\pi} \sin((2-n)x)$. Проінтегрувавши ці вирази, маємо
+\begin{equation*}
+    f_n = \frac{1}{\pi}\left(-\frac{(-1)^n-1}{2+n} - \frac{(-1)^n - 1}{2-n}\right) = \frac{4(1-(-1)^n)}{\pi(4-n^2)}.
+\end{equation*}
+
+Таким чином, для кожного $w_n(t)$ маємо рівняння:
+\begin{gather*}
+    \dot{w}_n(t) + n^2 w_n(t) = \frac{4(1-(-1)^n)}{\pi(4-n^2)}.
+\end{gather*}
+
+Розберемося з початковою умовою $w(x,0)=x$. Розкладемо $\phi(x) = x$ у ряд
+Фур'є: $\phi(x) = \sum_{n=0}^{\infty}\phi_n \cos nx$. Тоді формула для коефіцієнтів:
+\begin{equation*}
+    \phi_n = \frac{2}{\pi}\int_0^{\pi} x \cos nx dx = \frac{2}{\pi}\left[\left(x \frac{\sin nx}{n}\right)\Big|_{0}^{\pi} - \int_0^{\pi} \frac{\sin nx}{n}dx\right] = \frac{2}{\pi n^2}((-1)^n-1),
+\end{equation*}
+
+а також $\phi_0 = \frac{\pi}{2}$. Таким чином, маємо
+\begin{align*}
+    w(x,0)=\sum_{n=0}^{\infty}w_n(0)\cos nx &= \frac{\pi}{2} + \sum_{n=1}^{\infty} \frac{1}{n^2}((-1)^n-1) \cos nx \\
+    &\Rightarrow w_0(0) = \frac{\pi}{2}, \; w_n(0) = \frac{2}{\pi n^2}((-1)^n-1).
+\end{align*}
+
+Отже, остаточно:
+\begin{equation*}
+    \dot{w}_n(t) + n^2 w_n(t) = \frac{4(1-(-1)^n)}{\pi(4-n^2)}, \quad w_n(0) = \frac{2((-1)^n-1)}{\pi n^2}, \; w_0 = \frac{\pi}{2}.
+\end{equation*}
+
+Розглянемо $n \neq 0$. Видно, що для парних в нас $f_{2k} = \phi_{2k} = 0$, тому 
+рівняння набуває вигляду $\dot{w}_{2k} + 4k^2 w_{2k} = 0$ з умовою $w_{2k}(0)=0$,
+а отже $w_{2k}(t) \equiv 0$. Для непарних $n=2k+1$ маємо:
+\begin{equation*}
+    \dot{w}_{n} + n^2w_{n} = \frac{8}{\pi(4-n^2)} =: f_n, \quad w_{2k+1}(0) = -\frac{4}{\pi n^2} =: \phi_n.
+\end{equation*}
+
+Розв'язок однорідної частини рівняння має вигляд $w_{n}(t) =
+A_{n}e^{-n^2t}$, а частковий однорідний розв'язок просто
+$\widetilde{w}_n(t) = \frac{1}{n^2}f_n$. Таким чином, розв'язок $w_n(t) =
+\frac{1}{n^2}f_n + A_ne^{-n^2t}$. Початкова умова $w_n(0) = \frac{1}{n^2}f_n +
+A_n = \phi_n$, в такому разі $A_n = \phi_n - \frac{1}{n^2}f_n$. Отже, остаточно
+маємо:
+\begin{align*}
+    w_n(t) &= \frac{1}{n^2}f_n + \left(\phi_n - \frac{1}{n^2}f_n\right)e^{-n^2t} \\
+    &= \frac{8}{\pi n^2(4-n^2)} + \left(-\frac{4}{\pi n^2} - \frac{8}{\pi n^2(4-n^2)}\right)e^{-n^2t} \\
+    &= \frac{8}{\pi n^2(4-n^2)} + \frac{4(n^2-6)}{\pi n^2(4-n^2)}e^{-n^2t}.
+\end{align*}
+
+Також очевидно $w_0(t) = \frac{\pi}{2}$. Отже, остаточний вигляд $w(x,t)$:
+\begin{equation*}
+    \textcolor{blue}{w(x,t) = \frac{\pi}{2} + \frac{4}{\pi}\sum_{n \; \text{непарне}} \left(\frac{2}{n^2(4-n^2)} + \frac{n^2-6}{n^2(4-n^2)}e^{-n^2t}\right)\cos nx}.
+\end{equation*}
+
+Остаточний розв'язок $u(x,t) = w(x,t) + x + tx^2$. 
+
+\textbf{Відповідь.} $u(x,t) = \frac{\pi}{2} + x + tx^2 + \frac{4}{\pi}\sum_{n \; \text{непарне}} \left(\frac{2}{n^2(4-n^2)} + \frac{n^2-6}{n^2(4-n^2)}e^{-n^2t}\right)\cos nx$.
+
+\newpage
+
+\subsection{Задача 3}
+
+\begin{problem}
+    Розв'язати рівняння $u_{tt} = 4u_{xx} + 1$ за $x \in \mathbb{R}$ з умовами
+    $u(x,0)=\sin x$, $u_t(x,0) \equiv 2$.
+\end{problem}
+
+\textbf{Розв'язання.} Позначимо $\varphi(x) = \sin x$ та $\psi(x) \equiv 2$.
+Тоді, розв'язок рівняння $\frac{1}{a^2}u_{tt} = u_{xx} + f(x,t)$ можна знайти у
+вигляді:
+\begin{equation*}
+    u(x,t) = \frac{1}{2}\left(\varphi(x+at) + \varphi(x-at)\right) + \frac{1}{2a}\int_{x-at}^{x+at}\psi(\zeta)d\zeta + \frac{a}{2}\int_0^t d\tau \int_{x-a(t-\tau)}^{x+a(t-\tau)} f(\zeta,\tau)d\zeta.
+\end{equation*}
+
+В нашому випадку $a=2$ та $f(x,t) \equiv \frac{1}{4}$. Знайдемо інтеграли.
+Маємо:
+\begin{equation*}
+    \frac{1}{2a}\int_{x-at}^{x+at}\psi(\zeta)d\zeta = \frac{1}{4}\int_{x-2t}^{x+2t} 2d\zeta = 2t
+\end{equation*}
+
+Другий інтеграл:
+\begin{equation*}
+    \frac{a}{2}\int_0^t d\tau \int_{x-a(t-\tau)}^{x+a(t-\tau)} f(\zeta,\tau)d\zeta = \frac{1}{4} \int_0^t d\tau \int_{x-2(t-\tau)}^{x+2(t-\tau)}d\zeta = \int_0^t d\tau (t-\tau) = \frac{t^2}{2}.
+\end{equation*}
+
+Таким чином, остаточно:
+\begin{equation*}
+    \textcolor{blue}{u(x,t) = \frac{1}{2}\left(\sin(x+2t) + \sin(x-2t)\right) + 2t + \frac{t^2}{2}}.
+\end{equation*}
+
+\textbf{Відповідь.} $u(x,t) = \frac{1}{2}\left(\sin(x+2t) + \sin(x-2t)\right) + 2t + \frac{t^2}{2}$.
+
+\end{document}

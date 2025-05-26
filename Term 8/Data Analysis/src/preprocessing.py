@@ -2,7 +2,7 @@
 File for preprocessing air quality data.
 """
 
-from pathlib import Path # Added for type hinting
+from pathlib import Path
 import pandas as pd
 
 DEFAULT_MAX_GAP_SIZE: int = 14 # Maximum size of gaps to fill with interpolation. Defaults to 2 weeks.
@@ -21,17 +21,19 @@ def load_and_preprocess_data(file_path: Path):
 
     # Convert 'Date' column to datetime objects
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-    df = df.dropna(subset=['Date']) # Remove rows where date conversion failed
+    # Remove rows where date conversion failed
+    df = df.dropna(subset=['Date'])
     
     if df.empty:
         print("Error: No valid dates found after parsing. DataFrame is empty.")
-        return None, None # Return two values
+        return None, None
+    
     df = df.set_index('Date')
 
-    # Identify pollutant columns (all columns except 'Date', which is now the index)
+    # Identify pollutant columns
     pollutant_columns = df.columns.tolist()
 
-    # Convert pollutant columns to numeric, coercing errors to NaN
+    # Convert pollutant columns to numeric
     for col in pollutant_columns:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
@@ -50,8 +52,8 @@ def fill_small_gaps(
     
     df_filled_small = df.copy()
     for col in pollutant_columns:
-        # Interpolate only for small gaps.
         df_filled_small[col] = df_filled_small[col].interpolate(method=method, limit=max_gap_size, limit_area='inside')
+    
     return df_filled_small
 
 

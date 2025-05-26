@@ -1,0 +1,313 @@
+\documentclass{test_template}
+
+\usepackage{arydshln}
+
+\title{\bfseries Залікова робота \\з Фінансового Аналізу}
+\author{\bfseries Захаров Дмитро, Варіант 3}
+\date{26 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Задача 1}
+
+\begin{problem}
+    Диверсифікація ризику.
+\end{problem}
+
+\textbf{Відповідь.} Нехай маємо $n$ ймовірнісних фінансових операцій
+$\xi_1,\dots,\xi_n$. Дуже часто, $\{\xi_i\}_{i \in \{1,\dots,n\}}$ є випадковими
+некорельованими доходами, тобто $r[\xi_i,\xi_j] = \delta_{ij}$. 
+
+Зокрема, розглянемо випадок, коли випадкові величини є однаковими незалежними і
+нехай математичне сподівання кожної з них дорівнює $\mu$ та дисперсія кожної з
+них дорівнює $\sigma^2$. Введемо величину $\xi := \frac{1}{n}\sum_{i=1}^n\xi_i$
+--- середній арифметичний дохід. В такому разі цікаво глянути на ефективність та
+ризик цієї операції в залежності від кількості активу $n$. Ефективність
+дорівнює:
+\begin{equation*}
+    \mathbb{E}[\xi] = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n\xi_i\right] = \frac{1}{n}\sum_{i=1}^n\mathbb{E}[\xi_i] = \frac{1}{n}\cdot n\mu = \mu.
+\end{equation*}
+
+Отже, при зміні кількості активів, ефективність не змінюється. Проте, цікава 
+ситуація з ризиком:
+\begin{equation*}
+    \sigma_{\xi}^2 = \frac{1}{n^2}\sum_{i=1}^n \sigma_i^2 = \frac{1}{n^2} \cdot n\sigma^2 = \frac{\sigma^2}{n} \Rightarrow \sigma_{\xi} = \frac{\sigma}{\sqrt{n}}.
+\end{equation*}
+
+Отже, при збільшенні кількості активів $n$, ризик зменшується за такої самої
+ефективності.
+
+Цей приклад демонструє суть диверсифікації ринку. Її сенс полягає в зниженні
+ризику фінансової операції шляхом вкладання в частки різних некорельованих
+активів з такою самою ефективністю та ризиком. Узагальнемо попередній приклад
+наступним чином: нехай ми вкаладаємось в $n$ незалежних фінансових операцій
+$\xi_1,\dots,\xi_n$ з різними вагами $w_1,\dots,w_n$ ($\sum_{i=1}^n w_i = 1$).
+Розглянемо дохідність $\xi = \sum_{i=1}^n w_i\xi_i$. Тоді її ефективність:
+\begin{equation*}
+    \mathbb{E}[\xi] = \sum_{i=1}^n w_i\mathbb{E}[\xi_i] = \mu\sum_{i=1}^n w_i = 1.
+\end{equation*}
+
+У свою чергу для ризику маємо:
+\begin{equation*}
+    \sigma_{\xi}^2 = \sum_{i=1}^n w_i^2\sigma_i^2 = \sigma^2 \sum_{i=1}^n w_i^2 < \sigma^2.
+\end{equation*}
+
+Отже, так само отримали зниження ризику при такій самій ефективності. Причому,
+мінімум ризику досягається при рівномірному розподілі ваг, тобто $w_i =
+\frac{1}{n}$ для всіх $i$. Дійсно, якщо розглянути функцію Лагранжа
+\begin{equation*}
+    \mathcal{L}(\mathbf{w},\lambda)=\mathbf{w}^{\top}\mathbf{w} + \lambda(\mathbf{1}_n^{\top}\mathbf{w}-1)    
+\end{equation*}
+
+То тоді з умови $\nabla_{\mathbf{w}}\mathcal{L}(\mathbf{w},\lambda) =
+2\mathbf{w} + \lambda\mathbf{1}_n = 0$ маємо $w_i=-\frac{\lambda}{2}$ ---
+однакові, а отже з умови на суму маємо $w_i=\frac{1}{n}$. Чому це мінімум можна
+побачити з матриці Гессе: $\frac{\partial^2\mathcal{L}}{\partial\mathbf{w}^2} =
+2E_{n \times n} \succ 0$, де $E_{n \times n}$ --- одинична матриця розміру $n$.
+
+
+\newpage
+
+\section{Задача 2}
+
+\begin{problem}
+    Дано таблиці розподілу двох незалежних ймовірністних фінансових операцій $\xi$, $\eta$.
+    \begin{gather*}
+        \text{Pr}[\xi=-1] = 0.2, \quad \text{Pr}[\xi=2] = 0.8, \\
+        \text{Pr}[\eta=-1] = 0.4, \quad \text{Pr}[\eta=1] = 0.6.
+    \end{gather*}
+    Визначити ефективність та ризик суми операцій $\xi + \eta$.
+\end{problem}
+
+\textbf{Розв'язання.} Маємо операцію $\zeta := \xi + \eta$. Ефективністю 
+операції називають її математичне сподівання, тобто $\mathbb{E}[\zeta]$. 
+В силу лінійності математичного сподівання, маємо:
+\begin{equation*}
+    \mathbb{E}[\zeta] = \mathbb{E}[\xi] + \mathbb{E}[\eta].
+\end{equation*}
+
+Знайдемо математичне сподівання кожної з операцій окремо:
+\begin{gather*}
+    \mathbb{E}[\xi] = \sum_{i} \text{Pr}[\xi=x_i]x_i = (-1) \cdot 0.2 + 2 \cdot 0.8 = 1.4, \\
+    \mathbb{E}[\eta] = \sum_i \text{Pr}[\eta=y_i]y_i = (-1) \cdot 0.4 + 1 \cdot 0.6 = 0.2.
+\end{gather*}
+
+Таким чином, \textcolor{blue}{ефективність суми операцій $\zeta$ дорівнює
+$\mathbb{E}[\zeta] = 1.6$}. Розглянемо ризик суми операцій $\zeta$. Ризиком
+операції називають корінь з дисперсії, тобто $\sigma_\zeta =
+\sqrt{\text{Var}[\zeta]}$. Знайдемо дисперсію:
+\begin{equation*}
+    \text{Var}[\zeta] = \text{Var}[\xi + \eta] = \text{Var}[\xi] + \text{Var}[\eta] + 2\text{cov}[\xi,\eta].
+\end{equation*}
+
+Оскільки операції $\xi$ та $\eta$ незалежні, то їхня коваріація дорівнює нулю і
+тому $\text{Var}[\zeta] = \text{Var}[\xi] + \text{Var}[\eta]$. Знайдемо квадрати 
+математичних сподівань:
+\begin{gather*}
+    \mathbb{E}[\xi^2] = \sum_i \text{Pr}[\xi=x_i]x_i^2 = (-1)^2 \cdot 0.2 + 2^2 \cdot 0.8 = 3.4, \\
+    \mathbb{E}[\eta^2] = \sum_i \text{Pr}[\eta=y_i]y_i^2 = (-1)^2 \cdot 0.4 + 1^2 \cdot 0.6 = 1.0
+\end{gather*}
+
+Отже, можемо знайти дисперсії:
+\begin{gather*}
+    \text{Var}[\xi] = \mathbb{E}[\xi^2] - \mathbb{E}[\xi]^2 = 3.4 - 1.4^2 = 1.44, \\
+    \text{Var}[\eta] = \mathbb{E}[\eta^2] - \mathbb{E}[\eta]^2 = 1.0 - 0.2^2 = 0.96.
+\end{gather*}
+
+Таким чином, \textcolor{blue}{ризик суми дорівнює $\sigma_{\zeta} =
+\sqrt{\text{Var}[\xi] + \text{Var}[\eta]} = \sqrt{2.4} \approx 1.55$}.
+
+\textbf{Відповідь.} Ефективність суми операцій $\zeta$ дорівнює $1.6$, ризик ---
+$1.55$.
+
+\newpage
+
+\section{Задача 3}
+
+\begin{problem}
+    Побудувати оптимальний портфель Марковіца максимальної ефективності та
+одиничного ризику ($\sigma_R:=1$) з двох цінних паперів з ефективностями та
+ризиками $\mu_1=4$, $\sigma_1=1$, $\mu_2=6$, $\sigma_2=2$. Коефіцієнт кореляції
+дохідностей цінних паперів дорівнює $\rho = 0.5$.
+\end{problem}
+
+\textbf{Розв'язання.} Маємо вектор ефективності $\boldsymbol{\mu} = \begin{bmatrix}
+    \mu_1 \\ 
+    \mu_2 \end{bmatrix} = \begin{bmatrix} 4 \\ 6 \end{bmatrix}$. Побудуємо
+коваріаційну матрицю $\Sigma$. За означенням, якщо цінні папери позначити 
+випадковими величинами $\xi_1$, $\xi_2$, то:
+\begin{equation*}
+    \Sigma \triangleq \begin{bmatrix}
+        \text{Var}[\xi_1] & \text{cov}[\xi_1,\xi_2] \\
+        \text{cov}[\xi_1,\xi_2] & \text{Var}[\xi_2]
+    \end{bmatrix}
+\end{equation*}
+
+Знаючи, що $\text{Var}[\xi_1] = \sigma_1^2$, $\text{Var}[\xi_2] = \sigma_2^2$ та
+$\text{cov}[\xi_1,\xi_2] = \rho \sigma_1 \sigma_2$, маємо:
+\begin{equation*}
+    \Sigma = \begin{bmatrix}
+        \sigma_1^2 & \rho\sigma_1\sigma_2 \\
+        \rho\sigma_1\sigma_2 & \sigma_2^2
+    \end{bmatrix} = \begin{bmatrix}
+        1^2 & 0.5 \cdot 1 \cdot 2 \\
+        0.5 \cdot 1 \cdot 2 & 2^2
+    \end{bmatrix} = \begin{bmatrix}
+        1 & 1 \\
+        1 & 4
+    \end{bmatrix}.
+\end{equation*}
+
+Нехай оптимальний портфель Марковіца є $\mathbf{x} = \begin{bmatrix} x_1 \\ x_2
+    \end{bmatrix}$. Тоді, задача оптимізації виглядає наступним чином:
+\begin{equation*}
+    \begin{cases}
+        \boldsymbol{\mu}^{\top}\mathbf{x} \to \max, \\
+        \mathbf{x}^{\top}\Sigma\mathbf{x} = \sigma_R^2, \\
+        \mathbf{1}_n^{\top}\mathbf{x} = 1, \\
+    \end{cases}
+\end{equation*}
+
+Перша умова вимагає максимальності ефективності
+$\boldsymbol{\mu}^{\top}\mathbf{x}$, друга --- те, що ризик
+$\mathbf{x}^{\top}\Sigma\mathbf{x}$ є одиничним ($\sigma_R=1$), а 
+третя умова те, що сума ваг портфеля дорівнює одиниці. Запишемо 
+задачу конкретно для нашого випадку (поки в загальному вигляді, не 
+підставляючи конкретні значення):
+\begin{equation*}
+    \begin{cases}
+        \mu_1x_1 + \mu_2x_2 \to \max, \\
+        \sigma_1^2x_1^2 + \sigma_2^2x_2^2 + 2\rho\sigma_1\sigma_2x_1x_2 = 1, \\
+        x_1 + x_2 = 1.
+    \end{cases}
+\end{equation*}
+
+Складемо функцію Лагранжа:
+\begin{align*}
+    \mathcal{L}(\mathbf{x},\lambda_1,\lambda_2) &= -\boldsymbol{\mu}^{\top}\mathbf{x} + \lambda_1(\mathbf{x}^{\top}\Sigma\mathbf{x} - \sigma_R^2) + \lambda_2(\mathbf{1}_n^{\top}\mathbf{x} - 1)\\
+    &= -\mu_1x_1 - \mu_2x_2 + \lambda_1(\sigma_1^2x_1^2 + \sigma_2^2x_2^2 + 2\rho\sigma_1\sigma_2x_1x_2 - \sigma_R^2) + \lambda_2(x_1 + x_2 - 1)
+\end{align*}
+
+Знайдемо часткові похідні та прирівняємо їх до нуля:
+\begin{align*}
+    \frac{\partial \mathcal{L}}{\partial x_1} &= -\mu_1 + 2\lambda_1 \sigma_1^2 x_1 + 2\rho\sigma_1\sigma_2\lambda_1 x_2 + \lambda_2 = 0 \\
+    \frac{\partial \mathcal{L}}{\partial x_2} &= -\mu_2 + 2\lambda_1 \sigma_2^2 x_2 + 2\rho\sigma_1\sigma_2\lambda_1 x_1 + \lambda_2 = 0 \\
+    \frac{\partial \mathcal{L}}{\partial \lambda_1} &= \sigma_1^2x_1^2 + \sigma_2^2x_2^2 + 2\rho\sigma_1\sigma_2x_1x_2 - \sigma_R^2 = 0 \\
+    \frac{\partial \mathcal{L}}{\partial \lambda_2} &= x_1 + x_2 - 1 = 0.
+\end{align*}
+
+Підставимо конкретні значення. Маємо наступну систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        2\lambda_1 x_1 + 2\lambda_1 x_2 + \lambda_2 = 4, \\
+        8\lambda_1 x_2 + 2\lambda_1 x_1 + \lambda_2 = 6, \\
+        x_1^2 + 4x_2^2 + 2x_1x_2 = 1, \\
+        x_1 + x_2 = 1.
+    \end{cases}
+\end{equation*}
+
+Спочатку розв'яжемо перші два рівняння і останнє відносно $(x_1,x_2,\lambda_2)$,
+а далі підставимо у третє. Отже, з перших рівнянь отримуємо:
+\begin{equation*}
+    x_1 = \frac{3\lambda_1 - 1}{3\lambda_1}, \quad x_2 = \frac{1}{3\lambda_1}, \quad \lambda_2 = 4-2\lambda_1.
+\end{equation*}
+
+Підставляємо у третє:
+\begin{equation*}
+    \frac{(3\lambda_1-1)^2}{9\lambda_1^2} + \frac{4}{9\lambda_1^2} + \frac{2(3\lambda_1-1)}{9\lambda_1^2} = 1 \Rightarrow \frac{1}{3\lambda_1^2} = 0.
+\end{equation*}
+
+Як бачимо, розв'язку рівняння не існує. В такому разі постає питання, який саме
+портфель Марковіца треба побудувати. Для цього помітимо наступне: для заданої
+задачі, існує єдиний портфель Марковіца з ризиком $\sigma_R=1$. Дійсно, 
+нехай $x_1=\omega$, тоді $x_2=1-\omega$. Підставимо це у умову ризику:
+\begin{equation*}
+    \omega^2 + 4(1-\omega)^2 + 2\omega(1-\omega) = 1
+\end{equation*}
+
+Це спрощується до $3\omega^2-6\omega+4=1$ або $\omega^2-2\omega+1=0$, 
+звідки $\omega=1$. Таким чином, єдиним можливим портфелем Марковіца з ризиком
+$\sigma_R=1$ є портфель з $x_1=1$, $x_2=0$.
+
+\textbf{Відповідь.} Оптимальний портфель Марковіца з ризиком $\sigma_R=1$ має
+ваги $x_1=1$, $x_2=0$ (весь капітал в першому цінному папері).
+
+\newpage
+
+\section{Задача 4}
+
+\begin{problem}
+    В моделі Кокса-Роса-Рубінштейна відповідні початкові вартості безризикового
+і ризикового активу наступні $B_0=1$, $S_0=200$, відсоткова ставка $r=0.1$.
+Розподіл дохідностей ризикового активу наступний:
+$\text{Pr}[\rho_n=-0.5]=\text{Pr}[\rho_n=0.5]=0.5$ (позначимо $a:=-0.5$,
+$b:=0.5$). Знайти справедливу вартість $\widehat{f}$ опціону $f=(S_0-S_2)^+$.
+\end{problem}
+
+\textbf{Розв'язання.} Модель Кокса-Роса-Рубінштейна складається з двох
+фінансових активів: $B_n=B_0(1+r)^n$ --- безризиковий актив та
+$S_n=S_0\prod_{i=1}^n (1+\rho_i)$ --- ризиковий актив, де $\rho_i$ ---
+дохідність ризикового активу на $i$-му кроці. В нашому конкретному випадку
+$n=2$. Як було показано в теорії, за умови $r \in (a,b)$, фінансовий ринок є
+безарбітражним. Знаходимо мартингальну ймовірність
+$\theta=p^*(\rho_n=b)=\frac{r-a}{b-a} = \frac{0.1+0.5}{0.5+0.5} = 0.6$,
+відповідно також позначимо $\overline{\theta} := 1-\theta = 0.4$. Побудуємо
+біноміальне дерево цін:
+
+\begin{tikzpicture}[>=Stealth, level distance=2.5cm,
+  every node/.style={draw, rectangle, rounded corners, minimum size=8mm, ultra thick},
+  level 1/.style={sibling distance=9cm, align=center, very thick},
+  level 2/.style={sibling distance=5cm, align=center, very thick}
+  ]
+
+% Tree for asset prices and option payoffs
+\node (S0) {$S_0=200$}
+  child { node (Sd) {$E_{\textcolor{red}{a}}$\\$S_1=100$}
+    child { node (Sdd) {$E_{\textcolor{red}{aa}}$\\$S_2=50$\\$f=150$} }
+    child { node (Sdu) {$E_{\textcolor{red}{a}\textcolor{blue}{b}}$\\$S_2=150$\\$f=50$} }
+  }
+  child { node (Su) {$E_{\textcolor{blue}{b}}$\\$S_1=300$}
+    child { node (Sud) {$E_{\textcolor{blue}{b}\textcolor{red}{a}}$\\$S_2=150$\\$f=50$} }
+    child { node (Suu) {$E_{\textcolor{blue}{bb}}$ \\ $S_2=450$\\$f=0$} }
+  };
+
+% Add probabilities
+\node[draw=none] at ($(S0)!0.5!(Su)$) [above right=1pt and 5pt, blue] {\(\theta=0.6\)};
+\node[draw=none] at ($(S0)!0.5!(Sd)$) [above left=1pt and 5pt, red] {\(\overline{\theta}=0.4\)};
+
+\node[draw=none] at ($(Su)!0.5!(Suu)$) [above right=1pt and 2pt, blue] {\(\theta=0.6\)};
+\node[draw=none] at ($(Su)!0.5!(Sud)$) [above left=1pt and 2pt, red] {\(\overline{\theta}=0.4\)};
+
+\node[draw=none] at ($(Sd)!0.5!(Sdu)$) [above right=1pt and 2pt, blue] {\(\theta=0.6\)};
+\node[draw=none] at ($(Sd)!0.5!(Sdd)$) [above left=1pt and 2pt, red] {\(\overline{\theta}=0.4\)};
+
+% Title
+\node[draw=none] at (0,1.0) {\textbf{Біноміальне дерево для \( S_t \) та \( f = (200 - S_2)^+ \)}};
+
+\end{tikzpicture}
+
+Згадаємо, що справедлива вартість опціону дорівнює очікуванню його
+виплати в момент часу $n=2$ зваженого за мартингальною ймовірністю:
+\begin{equation*}
+    \widehat{f} = \mathbb{E}_{p^*}\left[\frac{f}{(1+r)^2}\right] = \frac{1}{(1+r)^2}\mathbb{E}_{p^*}[f]
+\end{equation*}
+
+Знайдемо очікування виплати опціону $f$:
+\begin{align*}
+    \mathbb{E}_{p^*}[f] &= \theta^2 f(S_0(1+b)^2) + 2\theta\overline{\theta} f(S_0(1+a)(1+b)) + \overline{\theta}^2 f(S_0(1+a)^2) \\
+    &= 0.6^2 \cdot 0 + 2 \cdot 0.6 \cdot 0.4 \cdot 50 + 0.4^2 \cdot 150 = 24 + 24 = 48.
+\end{align*}
+
+Таким чином, справедлива вартість опціону дорівнює \textcolor{blue}{$\widehat{f} = \frac{48}{1.1^2} \approx 39.67$}.
+
+\textbf{Відповідь.} Справедлива вартість опціону дорівнює приблизно $39.67$.
+
+\end{document}
