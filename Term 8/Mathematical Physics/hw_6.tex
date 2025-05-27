@@ -1,0 +1,215 @@
+\documentclass{hw_template}
+
+\usepackage{esint}
+
+\title{\huge\sffamily\bfseries Домашня Робота з Рівнянь Математичної Фізики \#6}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 27 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Домашня Робота}
+
+\subsection{Вправа 17.9}
+
+\begin{problem}
+    Розв'язати рівняння
+    \begin{equation*}
+        u_{tt} - u_t = u_{xx} - 4u_x - 2t + 2 + e^{2x}\sin 4x, \quad x \in (0,\pi), t > 0
+    \end{equation*}
+
+    з умовами $u(0,t) = t^2$, $u(\pi, t) = 0$, $u(x,0) = 0$, $u_t(x,0) = 0$.
+\end{problem}
+
+\textbf{Розв'язання.} Спочатку зробимо граничні умови однорідними. Для заданих
+умов візьмемо $u(x,t) := w(x,t) + v(x,t)$, де $v(x,t) =
+t^2\left(1-\frac{x}{\pi}\right)$. В такому разі $w(0,t) = w(\pi, t) = 0$. 
+Підставимо це у початкове рівняння:
+\begin{gather*}
+    w_{tt} \textcolor{red}{+ 2} - \frac{2x}{\pi} - w_t \textcolor{red}{- 2t} + \frac{2xt}{\pi} = w_{xx} - 4w_x + 4\frac{t^2}{\pi} \textcolor{red}{- 2t + 2} + e^{2x}\sin 4x \\
+    w_{tt}  - \frac{2x}{\pi} - w_t + \frac{2xt}{\pi} = w_{xx} - 4w_x + 4\frac{t^2}{\pi} + e^{2x}\sin 4x \\
+    w_{tt} - w_t - w_{xx} + 4w_x = \frac{2x}{\pi}(1-t) + \frac{4t^2}{\pi} + e^{2x} \sin 4x.
+\end{gather*}
+
+Нові початкові умови $w(x,0) = 0$, $w_t(x,0) = 0$. Тепер, нам дуже заважає член
+$w_x$ у рівнянні, оскільки він унеможливлює розкладання у ряд Фур'є. В такому
+разі, зробимо додаткову заміну $w(x,t) = e^{2x}q(x,t)$. Підставимо це у рівняння:
+\begin{gather*}
+    e^{2x}q_{tt} - e^{2x}q_t - (4e^{2x}q \textcolor{red}{+ 4e^{2x}q_x} + e^{2x}q_{xx}) + 4(2e^{2x}q + \textcolor{red}{e^{2x}q_x}) = \frac{2x}{\pi}(1-t) + \frac{4t^2}{\pi} + e^{2x} \sin 4x \\
+    e^{2x}q_{tt} - e^{2x}q_t + 4e^{2x}q - e^{2x}q_{xx} = \frac{2x}{\pi}(1-t) + \frac{4t^2}{\pi} + e^{2x} \sin 4x \\
+    \textcolor{blue}{q_{tt} - q_t + 4q - q_{xx} = f(x,t), \quad f(x,t) = \frac{2x}{\pi}(1-t)e^{-2x} + \frac{4t^2}{\pi}e^{-2x} + \sin 4x}.
+\end{gather*}
+
+Причому, ця заміна не змінює граничних умов.
+
+Тепер, розкладемо $q(x,t)$ у ряд Фур'є: $q(x,t) = \sum_{n=1}^{\infty} q_n(t)
+\sin nx$. Маємо:
+\begin{equation*}
+    \sum_{n=1}^{\infty} (\ddot{q}_n(t) - \dot{q}_n(t) - 4q_n(t) + n^2q_n(t))\sin nx = f(x,t).
+\end{equation*}
+
+Розкладемо праву частину у ряд Фур'є: $f(x,t) = \sum_{n=1}^{\infty} f_n\sin nx$, де
+\begin{align*}
+    f_n &= \frac{2}{\pi}\int_0^{\pi} f(x,t)\sin nx dx \\
+    &= \frac{4(1-t)}{\pi^2} \textcolor{purple}{\underbrace{\int_0^{\pi}xe^{-2x}\sin nxdx}_{=\mathcal{I}_n}} + \frac{8t^2}{\pi^2} \textcolor{green!50!black}{\underbrace{\int_0^{\pi}e^{-2x}\sin nx dx}_{:=\mathcal{J}_n}} + \frac{2}{\pi}\int_0^{\pi}\sin 4x \sin nx dx
+\end{align*}
+
+Зрозуміло одразу, що $\frac{2}{\pi}\int_0^{\pi}\sin 4x \sin nx dx =
+\delta_{n,4}$, тому достатньо лише знайти перші два інтеграли. Почнемо 
+з другого: $\mathcal{J}_n = \int_0^{\pi}e^{-2x}\sin nx dx$. Знайдемо 
+його наступним чином:
+\begin{equation*}
+    \mathcal{J}_n = \text{Im}\left\{ \int_0^{\pi} e^{-2x}e^{inx}dx \right\}
+    = \text{Im}\left\{ \int_0^{\pi} e^{(in-2)x}dx \right\} = \text{Im}\left\{ \frac{e^{(in-2)x}}{in-2}\Big|_{x=0}^{x=\pi} \right\}
+\end{equation*}
+
+Тепер розпишемо акуратно вираз під знаком $\text{Im}$:
+\begin{equation*}
+    \frac{e^{(in-2)x}}{in-2}\Big|_{x=0}^{x=\pi} = \frac{e^{(in-2)\pi} - 1}{in-2}
+    = \frac{e^{-2\pi}e^{i\pi n} - 1}{in-2} = \frac{e^{-2\pi}(-1)^n - 1}{-2+in} = \frac{(e^{-2\pi}(-1)^n-1)(-2-in)}{4+n^2}
+\end{equation*}
+
+Отже, звідси:
+\begin{equation*}
+    \mathcal{J}_n = \frac{1}{4+n^2}\text{Im}\left\{ (e^{-2\pi}(-1)^n-1)(-2-in) \right\} = \frac{n}{4+n^2}(1 + (-1)^{n+1}e^{-2\pi})
+\end{equation*}
+
+Тепер схожим чином обраховуємо $\mathcal{I}_n$, проте вираз під $\text{Im}$ буде інтегруватися частинами:
+\begin{align*}
+    \mathcal{I}_n &= \text{Im}\left\{ \int_0^{\pi} xe^{-2x}e^{inx}dx \right\} \\
+    &= \text{Im}\left\{ \left[ x \frac{e^{(in-2)x}}{in-2}\right]_0^{\pi} - \int_0^{\pi} \frac{e^{(in-2)x}}{in-2}dx \right\} \\
+    &= \text{Im}\left\{ \frac{\pi e^{(in-2)\pi}}{in-2} - \frac{1}{in-2}\int_0^{\pi} e^{(in-2)x}dx \right\} \\
+    &= \text{Im}\left\{ \frac{\pi e^{(in-2)\pi}}{in-2} \right\} - \text{Im}\left\{\frac{1}{(in-2)^2}e^{(in-2)x}\Big|_0^{\pi} \right\} \\
+    &= \pi(-1)^ne^{-2\pi}\text{Im}\left\{ \frac{1}{in-2} \right\} - \text{Im}\left\{\frac{e^{-2\pi}(-1)^n - 1}{(in-2)^2} \right\} \\
+    &= -\frac{\pi (-1)^nn}{4+n^2}e^{-2\pi} - \text{Im}\left\{\frac{(e^{-2\pi}(-1)^n - 1)(in+2)^2}{(n^2+4)^2} \right\} \\
+    &= -\frac{\pi (-1)^nn}{4+n^2}e^{-2\pi} - \frac{e^{-2\pi}(-1)^n - 1}{(n^2+4)^2}\text{Im}\left\{ (in+2)^2 \right\} \\
+    &= -\frac{\pi (-1)^nn}{4+n^2}e^{-2\pi} - \frac{4n(e^{-2\pi}(-1)^n - 1)}{(n^2+4)^2}
+\end{align*}
+
+Таким чином, маємо:
+\begin{equation*}
+    \textcolor{blue}{f_n = \frac{4(1-t)}{\pi^2}\left(-\frac{\pi (-1)^nn}{n^2+4}e^{-2\pi} - \frac{4n(e^{-2\pi}(-1)^n - 1)}{(n^2+4)^2}\right) + \frac{8t^2}{\pi^2}\cdot \frac{n}{4+n^2}(1 + (-1)^{n+1}e^{-2\pi}) + \delta_{n,4}}
+\end{equation*}
+
+Проте, ми це запишемо в дещо іншому вигляді:
+\begin{equation*}
+    f_n(t) = \alpha_nt^2 + \beta_n(t-1) + \delta_{n,4},
+\end{equation*}
+
+де коефіцієнти $\alpha_n,\beta_n$ мають не найкращий вигляд:
+\begin{equation*}
+    \alpha_n = \frac{8n}{\pi^2(n^2+4)}(1 + (-1)^{n+1}e^{-2\pi}), \quad \beta_n = -\frac{4ne^{-2\pi}}{\pi^2(n^2+4)^2}((-1)^{n+1}(4+4\pi+n^2\pi) + 4e^{2\pi}).
+\end{equation*}
+
+Таким чином, маємо рівняння (для $n \neq 4$):
+\begin{equation*}
+    \ddot{q}_n(t) - \dot{q}_n(t) + (n^2- 4)q_n(t) = \alpha_nt^2 + \beta_n(t-1), \quad q_n(0) = 0, \; \dot{q}_n(0) = 0.
+\end{equation*}
+
+Спочатку розв'яжемо однорідну частину рівняння. Характеристичне рівняння $\lambda^2 - \lambda + (n^2-4) = 0$, звідси характеристичні значення:
+\begin{equation*}
+    \lambda_{1,2} = \frac{1 \pm \sqrt{17-4n^2}}{2}
+\end{equation*}
+
+Отже, в залежності від значення $n$ маємо різні випадки. Розглянемо більшість з них.
+
+\textbf{Випадок 1.} $n \geq 3$. В такому разі корені:
+\begin{equation*}
+    \lambda_{1,2} = \frac{1}{2} \pm \frac{\sqrt{4n^2-17}}{2}i
+\end{equation*}
+
+Таким чином, розв'язок однорідної частини рівняння має вигляд:
+\begin{equation*}
+    q_{n,H}(t) = e^{\frac{t}{2}}\left(A_n \cos\left(\omega_n t\right) + B_n \sin\left(\omega_n t\right)\right), \quad \omega_n = \frac{\sqrt{4n^2-17}}{2}.
+\end{equation*}
+
+Неоднородна частина розв'язку має вигляд:
+\begin{equation*}
+    q_{n,P}(t) = C_nt^2 + D_nt + E_n.
+\end{equation*}
+
+Тоді маємо:
+\begin{equation*}
+    2C_n - (2C_nt + D_n) + (n^2-4)(C_nt^2 + D_nt + E_n) = \alpha_nt^2 + \beta_n(t-1).
+\end{equation*}
+
+Звідси маємо наступну систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        (n^2-4)C_n = \alpha_n \\
+        (n^2-4)D_n - 2C_n = \beta_n \\
+        (n^2-4)E_n - D_n + 2C_n = -\beta_n
+    \end{cases}
+\end{equation*}
+
+З першого рівняння $C_n = \frac{\alpha_n}{n^2-4}$, з другого $D_n = \frac{\beta_n}{n^2-4} + \frac{2C_n}{n^2-4} = \frac{\beta_n}{n^2-4} + \frac{2\alpha_n}{(n^2-4)^2}$
+і нарешті з третього:
+\begin{equation*}
+    E_n = -\frac{\beta_n}{n^2-4} + \frac{D_n}{n^2-4} - \frac{2C_n}{n^2-4} = \frac{(5-n^2)(2\alpha_n-4\beta_n+n^2\beta_n)}{(n^2-4)^3}
+\end{equation*}
+
+Отже, зафіксували вирази для $C_n,D_n,E_n$ і будемо надалі вважати їх відомими.
+Тепер загальний розв'язок рівняння:
+\begin{equation*}
+    q_n(t) = e^{\frac{t}{2}}\left(A_n \cos\left(\omega_n t\right) + B_n \sin\left(\omega_n t\right)\right) + C_nt^2 + D_nt + E_n.
+\end{equation*}
+
+Підставимо умови на $q_n(0)=0$ та $\dot{q}_n(0)=0$. Перша умова означає $A_n + E_n = 0$, звідки $A_n=-E_n$. 
+Для другої умови знайдемо похідну:
+\begin{equation*}
+    \dot{q}_n(t) = \frac{1}{2}e^{\frac{t}{2}}\left(A_n \cos\left(\omega_n t\right) + B_n \sin\left(\omega_n t\right)\right) + e^{\frac{t}{2}}\left(-\omega_n A_n \sin \omega_n t + \omega_n B_n \cos \omega_n t\right) + 2C_nt + D_n
+\end{equation*}
+
+Отже $\dot{q}_n(0) = \frac{1}{2}A_n + \omega_nB_n + D_n = 0$, звідси $B_n =
+\frac{E_n}{2\omega_n} - \frac{D_n}{\omega_n}$. Таким чином, загальний розв'язок
+\begin{equation*}
+    q_n(t) = C_nt^2 + D_nt + \left(\frac{E_n}{2\omega_n} - \frac{D_n}{\omega_n}\right)e^{\frac{t}{2}}\sin\left(\omega_n t\right) + E_n(1-e^{\frac{t}{2}}\cos \omega_n t).
+\end{equation*}
+
+\textbf{Випадок 2.} $n=2$. Можна показати, що розв'язок:
+\begin{equation*}
+    q_2(t) = -\frac{\alpha_2}{3}t^3 - \frac{\beta_2}{2}t^2 - \alpha_2t^2 - 2\alpha_2t + 2\alpha_2e^t-2\alpha_2 \approx -0.067t^3 - 0.175t^2 - 0.4t + 0.4e^t - 0.4
+\end{equation*}
+
+\textbf{Випадок 3.} $n=1$. Можна показати, що розв'язок:
+\begin{equation*}
+    q_1(t) \approx 0.003e^{-1.30t}(5.523 - 6.523e^{1.30t} + e^{3.61t} + 4.892e^{1.30t} - 18.549e^{1.30}t^2)
+\end{equation*}
+
+\textbf{Випадок 4.} $n=4$. Треба розглянути випадок 1, але в якості правої
+частини взяти $\widetilde{f}_4(t) \equiv 1$. Маємо рівняння:
+\begin{equation*}
+    \ddot{q}_4 - \dot{q}_4 + 12q_4 = 1, \quad q_4(0) = 0, \; \dot{q}_4(0) = 0.
+\end{equation*}
+
+Розв'язок цього рівняння:
+\begin{align*}
+    \widetilde{q}_4(t) &= \frac{1}{564}\left(47 -47e^{\frac{t}{2}}\cos \frac{\sqrt{47}t}{2} + \sqrt{47}e^{\frac{t}{2}} \sin \frac{\sqrt{47}t}{2}\right) \\
+    &\approx 0.083 - 0.083e^{0.5t}\cos (3.43t) + 0.012e^{0.5t}\sin (3.43t)
+\end{align*}
+
+\textcolor{blue}{\textbf{Відповідь.}} $u(x,t) = e^{2x}q(x,t) + t^2\left(1-\frac{x}{\pi}\right)$, де
+\begin{align*}
+    q(x,t) &\approx 0.003e^{-1.30t}(5.523 - 6.523e^{1.30t} + e^{3.61t} + 4.892e^{1.30t} - 18.549e^{1.30}t^2) \\
+    & -0.067t^3 - 0.175t^2 - 0.4t + 0.4e^t - 0.4 \\
+    & +0.0375(-0.445 + 0.556t + t^2 + 0.445e^{0.5t}\cos(2.18t) - 0.357e^{0.5t}\sin(2.18t)) \\
+    & +0.0134(5.938 + 0.263t + t^2 - 5.938e^{0.5t}\cos(3.43t) - 0.789e^{0.5t}\sin(3.43t)) \\
+    & + \sum_{n=5}^{\infty} \left(C_nt^2 + D_nt + \left(\frac{E_n}{2\omega_n} - \frac{D_n}{\omega_n}\right)e^{\frac{t}{2}}\sin\left(\omega_n t\right) + E_n(1-e^{\frac{t}{2}}\cos \omega_n t)\right)\sin nx,
+\end{align*}
+
+де
+\begin{gather*}
+    C_n = \frac{\alpha_n}{n^2-4}, \quad D_n = \frac{\beta_n}{n^2-4} + \frac{2\alpha_n}{(n^2-4)^2}, \quad E_n = \frac{(5-n^2)(2\alpha_n-4\beta_n+n^2\beta_n)}{(n^2-4)^3}, \\
+    \omega_n = \frac{\sqrt{4n^2-17}}{2}, \quad \alpha_n = \frac{8n}{\pi^2(n^2+4)}(1 + (-1)^{n+1}e^{-2\pi}), \\
+    \beta_n = -\frac{4ne^{-2\pi}}{\pi^2(n^2+4)^2}((-1)^{n+1}(4+4\pi+n^2\pi) + 4e^{2\pi}).
+\end{gather*}
+
+\end{document}

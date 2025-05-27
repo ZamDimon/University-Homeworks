@@ -1,0 +1,357 @@
+\documentclass{test_template}
+
+\usepackage{arydshln}
+
+\title{\bfseries Залікова робота \\з Чисельних методів розв'язання \\ диференціальних та інтегральних рівнянь}
+\author{\bfseries Захаров Дмитро, Варіант 12}
+\date{27 травня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Задача 1. Метод прогонки.}
+
+\begin{problem}
+    Метод диференціальної прогонки розв'язання граничної задачі для звичайного 
+    диференціального рівняння.
+\end{problem}
+
+\textbf{Відповідь.} Розглянемо рівняння другого порядку
+\begin{equation*}
+    \begin{cases}
+        \mathcal{L}[y] = y'' + p(x)y' + q(x)y = f(x), \quad x \in (a,b), \\
+        e_0[y] := r_0y(a) + m_0y'(a) = \nu_0, \\
+        e_1[y] := r_1y(b) + m_1y'(b) = \nu_1,
+    \end{cases}
+\end{equation*}
+
+Метод прогонки полягає в по-перше дискретизації області $(a,b)$ на $n$ рівних
+частин таким чином, що $x_i = a + ih$, де $h = (b-a)/n$ та $i \in [0,n]$. Далі,
+дискретизувавши похідні в рівняннні та граничні умови, отримуємо систему 
+рівнянь відносно наближених значень $y_i = y(x_i)$, $i \in \{0,\dots,n\}$. 
+Проте для цього спочатку розглянемо, як саме дискретизувати похідні.
+
+\subsection{Дискретизація похідних}
+Із представлення $y_{j+1} = y_j + hy_j' + \mathcal{O}(h^2)$ маємо $y_j' =
+\frac{y_{j+1}-y_j}{h} + \mathcal{O}(h)$. Аналогічно $y_j' = \frac{y_j -
+y_{j-1}}{h} + \mathcal{O}(h)$. Таким чином, будемо позначати через
+\begin{gather*}
+    \Delta_{x_i^+}y \triangleq \frac{y_{i+1} - y_i}{h}, \quad i \in \{0,\dots,n-1\}, \\
+    \Delta_{x_i^-}y \triangleq \frac{y_i - y_{i-1}}{h}, \quad i \in \{1,\dots,n\}.
+\end{gather*}
+праву та ліву похідні відповідно. Проте, на практиці, якщо ми не знаходимось 
+на краю області, то можна використовувати центральну похідну, що дає 
+квадратичну помилку замість лінійної. Для цього запишемо розкладання:
+\begin{gather*}
+    y_{j+1} = y_j + hy_j' + \frac{h^2}{2}y_j'' + \mathcal{O}(h^3), \\
+    y_{j-1} = y_j - hy_j' + \frac{h^2}{2}y_j'' + \mathcal{O}(h^3).
+\end{gather*}
+
+Таким чином, відніявши від першого рівняння друге, отримаємо:
+\begin{equation*}
+    y_j' = \frac{y_{j+1}-y_{j-1}}{2h} + \mathcal{O}(h^2).
+\end{equation*}
+
+Таким чином, природньо ввести центральну похідну як
+\begin{equation*}
+    \Delta_{x_i}y \triangleq \frac{y_{i+1}-y_{i-1}}{2h}, \quad i \in \{1,\dots,n-1\}.
+\end{equation*}
+
+Нарешті, знайдемо вирази для других похідних. Запишемо розкладання, проте 
+для більшої кількості точок:
+\begin{gather*}
+    y_{j+1} = y_j + hy_j' + \frac{h^2}{2}y_{j}'' + \frac{h^3}{6}y_{j}''' + \mathcal{O}(h^4), \\
+    y_{j-1} = y_j - hy_j' + \frac{h^2}{2}y_{j}'' - \frac{h^3}{6}y_{j}''' + \mathcal{O}(h^4).
+\end{gather*}
+
+Якщо додати ці два рівняння, отримаємо:
+\begin{equation*}
+    y_{j}'' = \frac{y_{j+1} - 2y_j + y_{j-1}}{h^2} + \mathcal{O}(h^2).
+\end{equation*}
+
+Таким чином, вводимо дискретизацію другої похідної як
+\begin{equation*}
+    \Delta^2_{x_i}y \triangleq \frac{y_{i+1} - 2y_i + y_{i-1}}{h^2}, \quad i \in \{1,\dots,n-1\}.
+\end{equation*}
+
+Нарешті, нам потрібно дискретизувати граничні умови, тобто знайти умови 
+на $y'(a)$ та $y'(b)$:
+\begin{equation*}
+    \begin{cases}
+        y_1 = y_0 + hy_0' + \frac{h^2}{2}y_0'' + \mathcal{O}(h^3), \\
+        y_2 = y_0 + 2hy_0' + 2h^2y_0'' + \mathcal{O}(h^3).
+    \end{cases}
+\end{equation*}
+
+В такому разі,
+\begin{equation*}
+    y_0' = \frac{-3y_0 + 4y_1 - y_2}{2h} + \mathcal{O}(h^2), \quad 
+    \Delta_{x_0}y \triangleq \frac{-3y_0 + 4y_1 - y_2}{2h}.
+\end{equation*}
+
+Аналогічно для правої границі:
+\begin{equation*}
+    \Delta_{x_n}y \triangleq \frac{3y_n - 4y_{n-1}+y_{n-2}}{2h}
+\end{equation*}
+
+Таким чином, ми вивели наступні наближення:
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Похідна & Оператор & Дискретизація \\
+        \hline
+        $y'(x_i)$ & $\Delta_{x_i}y$ & $\frac{y_{i+1}-y_{i-1}}{2h}$, $i \neq 1,n$ \\
+        $y''(x_i)$ & $\Delta^2_{x_i}y$ & $\frac{y_{i+1}-2y_i+y_{i-1}}{h^2}$, $i \neq 1,n$ \\
+        $y'(a)$ & $\Delta_{x_0}y$ & $\frac{-3y_0 + 4y_1 - y_2}{2h}$ \\
+        $y'(b)$ & $\Delta_{x_n}y$ & $\frac{3y_n - 4y_{n-1}+y_{n-2}}{2h}$ \\
+        \hline
+    \end{tabular}
+    \caption{Дискретизація похідних}
+\end{table}
+
+\subsection{Метод прогонки}
+
+Отже, підставимо ці дискретизації в рівняння та граничні умови. Додатково
+позначимо $p_i := p(x_i)$, $q_i := q(x_i)$, $f_i=f(x_i)$. Тоді:
+\begin{equation*}
+    \begin{cases}
+        \frac{y_{i-1}-2y_i+y_{i+1}}{h^2} + p_i\frac{y_{i+1}-y_{i-1}}{2h} + q_iy_i = f_i, i \in \{1,\dots,n-1\},\\
+        r_0y_0 + m_0 \cdot \frac{-3y_0+4y_1-y_2}{2h} = \nu_0, \\
+        r_1y_n + m_1 \cdot \frac{3y_n-4y_{n-1}+y_{n-2}}{2h} = \nu_1. 
+    \end{cases}
+\end{equation*}
+
+Отже, ми отримали систему лінійних рівнянь відносно $y_i$, $i \in \{0,\dots,n\}$. 
+Тепер, нам залишилось лише звести цю систему до тридіагонального вигляду,
+щоб надалі скористатися чисельними методами лінійної алгебри. Для 
+цього нам потрібно ``полагодити'' граничні умови. Запишемо перші два рівняння системи:
+\begin{equation*}
+    \begin{cases}
+        \frac{y_0-2y_1+y_2}{h^2} + p_1\frac{y_2-y_0}{2h} + q_1y_1 = f_1, \\
+        \left(r_0 - \frac{3m_0}{2h}\right)y_0 + \frac{2m_0}{h}y_1 - \frac{m_0}{2h}y_2 = \nu_0, \\
+    \end{cases}
+\end{equation*}
+
+Складемо ці два рівняння, помноживши перше на $\frac{m_0}{2h}$, а 
+друге на $\frac{1}{h^2} + \frac{p_1}{2h}$:
+\begin{gather*}
+    \underbrace{\left[\frac{m_0}{2h}\left(\frac{1}{h^2} - \frac{p_1}{2h}\right) + \left(\frac{1}{h^2} + \frac{p_1}{2h}\right)\left(r_0 - \frac{3m_0}{2h}\right)\right]}_{:=\gamma_0}y_0  \\
+    + \underbrace{\left[\frac{m_0}{2h}\left(q_1-\frac{2}{h^2}\right) + \frac{2m_0}{h}\left(\frac{1}{h^2} + \frac{p_1}{2h}\right)\right]}_{:=\gamma_1}y_1 = \underbrace{\frac{m_0}{2h}f_1 + \nu_0\left(\frac{1}{h^2} + \frac{p_1}{2h}\right)}_{:=\widetilde{f}_0}
+\end{gather*}
+
+Таким чином, отримали: $\gamma_0y_0 + \gamma_1y_1 = \widetilde{f}_0$. Для правої
+границі аналогічно можна отримати $\eta_{n-1}y_{n-1}+\eta_ny_n =
+\widetilde{f}_n$, де
+\begin{gather*}
+    \eta_{n-1} = \frac{m_1}{2h}\left(q_{n-1}-\frac{2}{h^2}\right) + \frac{2m_1}{h}\left(\frac{1}{h^2} - \frac{p_{n-1}}{2h}\right) \\
+    \eta_n = \frac{m_1}{2h}\left(\frac{1}{h^2}+\frac{p_{n-1}}{2h}\right) - \left(r_1+\frac{3m_1}{2h}\right)\left(\frac{1}{h^2} - \frac{p_{n-1}}{2h}\right) \\
+    \widetilde{f}_n = \frac{m_1}{2h}f_{n-1} -
+\left(\frac{1}{h^2} - \frac{p_{n-1}}{2h}\right)\nu_1
+\end{gather*}
+
+Таким чином, отримали тридіагональну систему рівнянь:
+\begin{equation*}
+    \begin{cases}
+        \gamma_0y_0 + \gamma_1y_1 = \widetilde{f}_0 \\
+        \left(\frac{1}{h^2} - \frac{p_i}{2h}\right)y_{i-1} + \left(\frac{2}{h^2} + q_i\right)y_i + \left(\frac{1}{h^2} + \frac{p_i}{2h}\right)y_{i+1} = f_i, \quad i \in \{1,\dots,n-1\} \\
+        \eta_{n-1}y_{n-1} + \eta_ny_n = \widetilde{f}_n
+    \end{cases}
+\end{equation*}
+
+Або можна явно ввести вектор $\boldsymbol{f} = (\widetilde{f}_0,f_1,\dots,f_{n-1},\widetilde{f}_n) \in \mathbb{R}^{n+1}$ 
+і наступну матрицю системи $M \in \mathbb{R}^{(n+1)\times(n+1)}$:
+\begin{equation*}
+    M = \begin{pmatrix}
+        \gamma_0 & \gamma_1 & 0 & \dots & 0 \\
+        \frac{1}{h^2} - \frac{p_1}{2h} & \frac{2}{h^2} + q_1 & \frac{1}{h^2} + \frac{p_1}{2h} & 0 & \dots & 0 \\
+        0 & \frac{1}{h^2} - \frac{p_2}{2h} & \frac{2}{h^2} + q_2 & \frac{1}{h^2} + \frac{p_2}{2h} & 0 & \dots & 0 \\
+        \vdots & 0 & 0 & \ddots & 0 & 0 \\
+        0 & 0 & 0 & 0 & \eta_{n-1} & \eta_n
+    \end{pmatrix}
+\end{equation*} 
+
+Тоді система рівнянь має вигляд $M\mathbf{y} = \boldsymbol{f}$, де $\mathbf{y} =
+(y(x_0),\dots,y(x_n)) \in \mathbb{R}^{n+1}$ --- наближені значення в точках
+сітки.
+
+\subsection{Розв'язання системи рівнянь}
+
+Це рівняння можна розв'язати за допомогою методу прогонки (тому і метод 
+називається так само). Скоротимо позначення і розглянемо таку систему:
+\begin{equation*}
+    \begin{cases}
+        y_0 = k_0y_1 + b_0, \\
+        \alpha_iy_{i-1} + \beta_iy_i + \gamma_iy_{i+1} = b_i, \quad i \in \{1,\dots,n-1\}, \\
+        y_n = k_1y_{n-1} + b_n.
+    \end{cases}
+\end{equation*}
+
+Ідея прогонки --- шукати розв'язок у вигляді $y_i = \lambda_iy_{i+1} + \mu_i$, 
+де $\lambda_i,\mu_i$ --- прогоночні коефіцієнти. Щоб не розписувати 
+це питання на ще одну сторінку, наведемо рекурентні формули для
+обрахунку цих коефіцієнтів:
+\begin{equation*}
+    \lambda_i = -\frac{\gamma_i}{\alpha_i\lambda_{i-1} + \beta_i}, \quad 
+    \mu_i = \frac{b_i - \alpha_i\mu_{i-1}}{\textcolor{blue}{\beta_i}+\alpha_i\lambda_{i-1}}, \quad i \neq 1,n
+\end{equation*}
+
+Початкові умови $\lambda_0=k_0$ та $\mu_0 = b_0$. Знайшовши усі $\lambda_i$ та $\mu_i$,
+йдемо у зворотньому напрямку. Маємо
+\begin{equation*}
+    y_n = \frac{k_1\mu_{n-1} + b_{\textcolor{blue}{n}}}{1 - k_1\lambda_{n-1}}, \quad y_j = \lambda_jy_{j+1} + \mu_j, \quad j \in \{n-1,\dots,0\}.
+\end{equation*}
+
+Таким чином, отримали доволі простий спосіб за лінійну $\mathcal{O}(n)$ 
+складність розв'язати спеціальний вид лінійної системи рівнянь.
+
+\newpage
+
+\section{Задача 2. Метод сіток.}
+
+\begin{problem}
+    Метод сіток чисельного розв'язання рівнянь еліптичного типу.
+\end{problem}
+
+\textbf{Відповідь.} Нехай маємо рівняння для $(x,t) \in [0,\ell] \times [0,T]$:
+\begin{equation*}
+    \begin{cases}
+        \frac{\partial u}{\partial t} - a^2 \frac{\partial^2 u}{\partial x^2} = f(x,t) \\
+        u(x,0) = \varphi(x), \; u(0,t) = \psi(t), \; u(\ell,t) = \xi(t)
+    \end{cases}
+\end{equation*}
+
+Дискретизація в методі сіток відбувається в обидва напрямки. Нехай маємо сітку
+$n \times m$ з кроками $h=\frac{\ell}{n}$ та $\tau = \frac{T}{m}$. Апроксимація
+похідних в такому вигляді виглядає наступним чином, якщо позначити
+$u_{i,j}=u(x_i,t_j)$:
+\begin{gather*}
+    \frac{\partial u}{\partial t}\Big|_{(x_i,t_j)} \approx \frac{u_{i,j+1} - u_{i,j}}{\tau} \\
+    \frac{\partial^2 u}{\partial x^2}\Big|_{(x_i,t_j)} \approx \frac{u_{i-1,j} - 2u_{i,j} + u_{i+1,j}}{h^2}
+\end{gather*}
+
+Якщо позначити $f_{i,j} := f(x_i,t_j)$, то отримаємо наступну систему:
+\begin{equation*}
+    \frac{u_{i,j+1}-u_{i,j}}{\tau} = a^2 \cdot \frac{u_{i-1,j} - 2u_{i,j} + u_{i+1,j}}{h^2} + f_{i,j}
+\end{equation*}
+
+Крайові умови допомогають встановити нам значення на краях сітки. Зокрема, для
+наведеного вище рівняння, маємо наступні граничні умови на сітці: $u_{i,0} =
+\varphi(x_i)$, $u_{0,j} = \psi(t_j)$, $u_{n,k} = \xi(t_k)$.
+
+\subsection{Явна схема}
+
+Розглянемо, як саме розв'язати цю систему. Для цього, спочатку
+виразимо $u_{i,j+1}$ через $u_{i-1,j}$, $u_{i,j}$ та $u_{i+1,j}$:
+\begin{equation*}
+    u_{i,j+1} = u_{i,j} + \frac{a^2\tau}{h^2}(u_{i-1,j}-2u_{i,j}+u_{i+1,j}) + \tau f_{i,j}
+\end{equation*}
+
+Таким чином, невідоме значення вузла на наступному часовому шарі залежить лише
+від значень вузлів на поточному часовому шарі. Причому, початковий шар ми
+повністю знаємо: це і є гранична умова ($\{u_{i,0}\}_{i \in \{0,\dots,n\}}$).
+Отже, можемо послідовно брати шар $j \in \{0,\dots,m\}$ і обчислювати
+його, маючи значення на попередньому шарі $j-1$. 
+
+Така схема є стійкою, якщо $\frac{a^2\tau}{h^2} \leq \frac{1}{2}$, або ж просто
+$\tau \leq \frac{h^2}{2a^2}$. Бачимо, що крок за часом має бути сильно менший 
+за крок по простору. Тому, потрібно розглянути метод, що дає меншу похибку.
+
+\subsection{Неявна схема}
+
+По суті, використовується те саме рівняння, але для знаходження 
+похідної за часом на $j$-ому шарі, використовуємо поперешній шар $j-1$:
+\begin{equation*}
+    \frac{a^2}{h^2}u_{i-1,j} - \left(\frac{2a^2}{h^2} + \frac{1}{\tau}\right)u_{i,j} + \frac{a^2}{h^2} u_{i+1,j} = -\frac{u_{i,j-1}}{\tau} - f_{i,j}
+\end{equation*}
+
+Метод розв'язання наступний: починаємо з шару $j=1$ (бо нульовий шар нам
+заданий). Маємо систему лінійних рівнянь відносно $\{u_{i,j}\}_{i \in
+\{1,\dots,n-1\}}$, бо $u_{0,j}$ та $u_{n,j}$ нам відомі з граничних умов.
+Випишемо її явно:
+\begin{equation*}
+    \begin{cases}
+        - \left(\frac{2a^2}{h^2} + \frac{1}{\tau}\right)u_{1,1} + \frac{a^2}{h^2} u_{2,1} = -\frac{u_{1,0}}{\tau} - \frac{a^2}{h^2}u_{0,1} - f_{1,1} \\
+        \frac{a^2}{h^2}u_{i-1,1} - \left(\frac{2a^2}{h^2} + \frac{1}{\tau}\right)u_{i,1} + \frac{a^2}{h^2} u_{i+1,1} = -\frac{u_{i,0}}{\tau} - f_{i,1} \\
+        \frac{a^2}{h^2}u_{n-2,1} - \left(\frac{2a^2}{h^2} + \frac{1}{\tau}\right)u_{n-1,1} = - \frac{a^2}{h^2} u_{n,1} -\frac{u_{n,0}}{\tau} - f_{n-1,1}
+    \end{cases}
+\end{equation*}
+
+Ця матриця є діагонально домінуючою, оскільки $\left|\frac{2a^2}{h^2} +
+\frac{1}{\tau}\right| > \frac{2a^2}{h^2}$, тому розв'язок цієї 
+системи є стійким. 
+
+Далі ця дія повторюється для кожного наступного шару $j \in \{2,\dots,m\}$.
+Тобто, ми маємо систему лінійних рівнянь відносно $\{u_{i,j}\}_{i \in
+\{1,\dots,n-1\}}$, де $u_{0,j}$ та $u_{n,j}$ нам відомі з граничних умов. Це
+дозволяє знайти усі значення $u_{i,j}$.
+
+\newpage
+
+\section{Задача 3. Інтегральне рівняння.}
+
+\begin{problem}
+    Розв'язати наступне інтегральне рівняння:
+    \begin{equation*}
+        y(x) = x^2 + \lambda \int_{-1}^1 (x+t)y(t)dt
+    \end{equation*}
+\end{problem}
+
+\textbf{Розв'язання.} Маємо ядро інтеграла $K(x,t) = x+t$, що є виродженим,
+оскільки його можна записати у вигляді $K(x,t) = \sum_{i=1}^n f_i(x)g_i(t)$. В
+нашому випадку $f_1(x) = x, g_1 \equiv 1$, $f_2 \equiv 1$, $g_2(t)=t$. 
+
+\subsection{Теорія}
+Звернемося до теорії. В рівнянні $y(x)=f(x)+\lambda\sum_{i=1}^n f_i(x)\int_a^b
+g_i(t)y(t)dt$, розв'язок шукаємо у вигляді $y(x) = f(x) + \lambda\sum_{i=1}^n
+c_if_i(x)$, де $c_i = \int_a^b g_i(t)y(t)dt$. В такому разі, система зведеться
+до вигляду
+\begin{equation*}
+    c_i - \lambda \sum_{j=1}^n \alpha_{ij}c_j = f_i, \quad i = 1,\dots,n,
+\end{equation*}
+
+де в якості $\alpha_{ij} = \int_a^b g_i(t)f_j(t)dt$ та $f_i := \int_a^b
+g_i(t)f(t)dt$.
+
+\subsection{Фактичний розв'язок}
+Перейдемо до практики. Маємо два невідомих коефіцієнта $c_1$ та $c_2$. Тоді,
+розв'язок шукається у вигляді $y(x) = x^2 + \lambda c_1x + \lambda c_2$.
+Знаходимо коефіцієнти $\alpha_{ij}$ та $f_i$ з формул вище:
+\begin{equation*}
+    f_1 = \int_{-1}^1 1 \cdot t^2dt = \frac{2}{3}, \quad f_2 = \int_{-1}^1 t \cdot t^2dt = 0,
+\end{equation*}
+
+Нарешті, коефіцієнти $\alpha_{ij}$:
+\begin{gather*}
+    \alpha_{11} = \int_{-1}^1 1 \cdot xdx = 0, \quad 
+    \alpha_{12} = \int_{-1}^1 1 \cdot 1 dt = 2, \\ 
+    \alpha_{21} = \int_{-1}^1 t^2 dx = \frac{2}{3}, \quad 
+    \alpha_{22} = \int_{-1}^1 tdt = 0.
+\end{gather*}
+
+Тому, отримали систему:
+\begin{equation*}
+    \begin{cases}
+        c_1 - 2\lambda c_2 = \frac{2}{3} \\
+        c_2 - \frac{2}{3}\lambda c_1 = 0
+    \end{cases}
+\end{equation*}
+
+Звідси маємо $c_2 = \frac{2}{3}\lambda c_1$, підставляючи у перше, маємо $c_1 -
+\frac{4}{3}\lambda^2 c_1 = \frac{2}{3}$, звідки $c_1 = \frac{2}{3-4\lambda^2}$.
+Тому, $c_2 = \frac{4\lambda}{9-12\lambda^2}$. Остаточно:
+\begin{equation*}
+    \textcolor{blue}{y(x) = x^2 + \frac{2\lambda}{3-4\lambda^2}x + \frac{4\lambda^2}{9-12\lambda^2}}.
+\end{equation*}
+
+\textbf{Відповідь.} $y(x) = x^2 + \frac{2\lambda}{3-4\lambda^2}x +
+\frac{4\lambda^2}{9-12\lambda^2}$.
+
+\end{document}
