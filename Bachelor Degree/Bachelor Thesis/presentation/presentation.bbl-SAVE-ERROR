@@ -1,0 +1,376 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{anyt/global//global/global/global}
+    \entry{dangers}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=e579c650beb31c286389278140fadd63}{%
+           family={Bender},
+           familyi={B\bibinitperiod},
+           given={Emily\bibnamedelima M.},
+           giveni={E\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=f2b0ffb56c5d1e4220c16c0258e02eae}{%
+           family={Gebru},
+           familyi={G\bibinitperiod},
+           given={Timnit},
+           giveni={T\bibinitperiod}}}%
+        {{hash=698aa56654e49949b5a9ea038d23587e}{%
+           family={McMillan-Major},
+           familyi={M\bibinithyphendelim M\bibinitperiod},
+           given={Angelina},
+           giveni={A\bibinitperiod}}}%
+        {{hash=c3721cea1e5538fe0b83526d8333dbab}{%
+           family={Shmitchell},
+           familyi={S\bibinitperiod},
+           given={Shmargaret},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Virtual Event, Canada}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{c73d9460425aeddbb561b189551a3a98}
+      \strng{fullhash}{c4b1a296df1a50ba514ab947970f1784}
+      \strng{fullhashraw}{c4b1a296df1a50ba514ab947970f1784}
+      \strng{bibnamehash}{c73d9460425aeddbb561b189551a3a98}
+      \strng{authorbibnamehash}{c73d9460425aeddbb561b189551a3a98}
+      \strng{authornamehash}{c73d9460425aeddbb561b189551a3a98}
+      \strng{authorfullhash}{c4b1a296df1a50ba514ab947970f1784}
+      \strng{authorfullhashraw}{c4b1a296df1a50ba514ab947970f1784}
+      \field{labelalpha}{Ben+21}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The past 3 years of work in NLP have been characterized by the development and deployment of ever larger language models, especially for English. BERT, its variants, GPT-2/3, and others, most recently Switch-C, have pushed the boundaries of the possible both through architectural innovations and through sheer size. Using these pretrained models and the methodology of fine-tuning them for specific tasks, researchers have extended the state of the art on a wide array of tasks as measured by leaderboards on specific benchmarks for English. In this paper, we take a step back and ask: How big is too big? What are the possible risks associated with this technology and what paths are available for mitigating those risks? We provide recommendations including weighing the environmental and financial costs first, investing resources into curating and carefully documenting datasets rather than ingesting everything on the web, carrying out pre-development exercises evaluating how the planned approach fits into research and development goals and supports stakeholder values, and encouraging research directions beyond ever larger language models.}
+      \field{booktitle}{Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency}
+      \field{isbn}{9781450383097}
+      \field{series}{FAccT '21}
+      \field{title}{On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?}
+      \field{year}{2021}
+      \field{pages}{610\bibrangedash 623}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1145/3442188.3445922
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/3442188.3445922
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/3442188.3445922
+      \endverb
+    \endentry
+    \entry{cybenko}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=743aed8cb3e0d5dddafd15fc0421d6eb}{%
+           family={Cybenko},
+           familyi={C\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \strng{fullhash}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \strng{fullhashraw}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \strng{bibnamehash}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \strng{authorbibnamehash}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \strng{authornamehash}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \strng{authorfullhash}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \strng{authorfullhashraw}{743aed8cb3e0d5dddafd15fc0421d6eb}
+      \field{labelalpha}{Cyb89}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In this paper we demonstrate that finite linear combinations of compositions of a fixed, univariate function and a set of affine functionals can uniformly approximate any continuous function ofn real variables with support in the unit hypercube; only mild conditions are imposed on the univariate function. Our results settle an open question about representability in the class of single hidden layer neural networks. In particular, we show that arbitrary decision regions can be arbitrarily well approximated by continuous feedforward neural networks with only a single internal, hidden layer and any continuous sigmoidal nonlinearity. The paper discusses approximation properties of other possible types of nonlinearities that might be implemented by artificial neural networks.}
+      \field{isbn}{1435-568X}
+      \field{journaltitle}{Mathematics of Control, Signals and Systems}
+      \field{number}{4}
+      \field{title}{Approximation by superpositions of a sigmoidal function}
+      \field{volume}{2}
+      \field{year}{1989}
+      \field{pages}{303\bibrangedash 314}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1007/BF02551274
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/BF02551274
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/BF02551274
+      \endverb
+      \warn{\item article entry 'cybenko' (bibliography.bib): Invalid format '1989/12/01' of date field 'date' - ignoring}
+    \endentry
+    \entry{our-biometrics-2}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=c2374eff4092043800704faabc93283e}{%
+           family={Kuznetsov},
+           familyi={K\bibinitperiod},
+           given={Oleksandr},
+           giveni={O\bibinitperiod}}}%
+        {{hash=321ca20c5f62622f34f69359100ae206}{%
+           family={Zakharov},
+           familyi={Z\bibinitperiod},
+           given={Dmytro},
+           giveni={D\bibinitperiod}}}%
+        {{hash=44eee8b591f349933f72e2246e85d6ad}{%
+           family={Frontoni},
+           familyi={F\bibinitperiod},
+           given={Emanuele},
+           giveni={E\bibinitperiod}}}%
+        {{hash=bd43e4b0ad217619532468448ccce06e}{%
+           family={Maranesi},
+           familyi={M\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{33e18ac13362f1074a2e2a69e41aec89}
+      \strng{fullhash}{e645777805e300158dcdce4258040628}
+      \strng{fullhashraw}{e645777805e300158dcdce4258040628}
+      \strng{bibnamehash}{33e18ac13362f1074a2e2a69e41aec89}
+      \strng{authorbibnamehash}{33e18ac13362f1074a2e2a69e41aec89}
+      \strng{authornamehash}{33e18ac13362f1074a2e2a69e41aec89}
+      \strng{authorfullhash}{e645777805e300158dcdce4258040628}
+      \strng{authorfullhashraw}{e645777805e300158dcdce4258040628}
+      \field{labelalpha}{Kuz+24}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0167-4048}
+      \field{journaltitle}{Computers \& Security}
+      \field{title}{AttackNet: Enhancing biometric security via tailored convolutional neural network architectures for liveness detection}
+      \field{volume}{141}
+      \field{year}{2024}
+      \field{pages}{103828}
+      \range{pages}{1}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.cose.2024.103828
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0167404824001299
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0167404824001299
+      \endverb
+      \keyw{Biometric authentication,Convolutional neural networks,Liveness detection,Spoofing attacks,Deep learning architectures,Security and robustness}
+    \endentry
+    \entry{our-biometrics-3}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=c2374eff4092043800704faabc93283e}{%
+           family={Kuznetsov},
+           familyi={K\bibinitperiod},
+           given={Oleksandr},
+           giveni={O\bibinitperiod}}}%
+        {{hash=321ca20c5f62622f34f69359100ae206}{%
+           family={Zakharov},
+           familyi={Z\bibinitperiod},
+           given={Dmytro},
+           giveni={D\bibinitperiod}}}%
+        {{hash=44eee8b591f349933f72e2246e85d6ad}{%
+           family={Frontoni},
+           familyi={F\bibinitperiod},
+           given={Emanuele},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{30c916523c37d7fc255bfaf411b34f8c}
+      \strng{fullhash}{30c916523c37d7fc255bfaf411b34f8c}
+      \strng{fullhashraw}{30c916523c37d7fc255bfaf411b34f8c}
+      \strng{bibnamehash}{30c916523c37d7fc255bfaf411b34f8c}
+      \strng{authorbibnamehash}{30c916523c37d7fc255bfaf411b34f8c}
+      \strng{authornamehash}{30c916523c37d7fc255bfaf411b34f8c}
+      \strng{authorfullhash}{30c916523c37d7fc255bfaf411b34f8c}
+      \strng{authorfullhashraw}{30c916523c37d7fc255bfaf411b34f8c}
+      \field{labelalpha}{KZF24}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{1573-7721}
+      \field{journaltitle}{Multimedia Tools and Applications}
+      \field{number}{19}
+      \field{title}{Deep learning-based biometric cryptographic key generation with post-quantum security}
+      \field{volume}{83}
+      \field{year}{2024}
+      \field{pages}{56909\bibrangedash 56938}
+      \range{pages}{30}
+      \verb{doi}
+      \verb 10.1007/s11042-023-17714-7
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/s11042-023-17714-7
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/s11042-023-17714-7
+      \endverb
+      \warn{\item article entry 'our-biometrics-3' (bibliography.bib): Invalid format '2024/06/01' of date field 'date' - ignoring}
+    \endentry
+    \entry{kan}{article}{}{}
+      \name{author}{8}{}{%
+        {{hash=1c58afd2046daf734847b96dab2bf564}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Ziming},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=45f61f91eed498475eb6258bbca165c2}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Yixuan},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=0ab10eff5de236f1519d767e744e5cf0}{%
+           family={Vaidya},
+           familyi={V\bibinitperiod},
+           given={Sachin},
+           giveni={S\bibinitperiod}}}%
+        {{hash=0875ba21d3e8d07361aecb3962665cff}{%
+           family={Ruehle},
+           familyi={R\bibinitperiod},
+           given={Fabian},
+           giveni={F\bibinitperiod}}}%
+        {{hash=1a8ee0d401768d2087f11aa88386ce6f}{%
+           family={Halverson},
+           familyi={H\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d4bb6bd2724f026f198fb2fddbe7a5f7}{%
+           family={Soljačić},
+           familyi={S\bibinitperiod},
+           given={Marin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=627dcbbcdb723ced5f9dc3a51fde769d}{%
+           family={Hou},
+           familyi={H\bibinitperiod},
+           given={Thomas\bibnamedelima Y},
+           giveni={T\bibinitperiod\bibinitdelim Y\bibinitperiod}}}%
+        {{hash=b9b3c445e1013a97fc6318e06799b37b}{%
+           family={Tegmark},
+           familyi={T\bibinitperiod},
+           given={Max},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{4e02a2c1409094c9140c4b77dd060333}
+      \strng{fullhash}{fe2782c5c026601c4d592a079123770f}
+      \strng{fullhashraw}{fe2782c5c026601c4d592a079123770f}
+      \strng{bibnamehash}{4e02a2c1409094c9140c4b77dd060333}
+      \strng{authorbibnamehash}{4e02a2c1409094c9140c4b77dd060333}
+      \strng{authornamehash}{4e02a2c1409094c9140c4b77dd060333}
+      \strng{authorfullhash}{fe2782c5c026601c4d592a079123770f}
+      \strng{authorfullhashraw}{fe2782c5c026601c4d592a079123770f}
+      \field{labelalpha}{Liu+24}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:2404.19756}
+      \field{title}{Kan: Kolmogorov-arnold networks}
+      \field{year}{2024}
+    \endentry
+    \entry{kolmogorov-original}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=ec38574d2ab98953c5391a7de33c7214}{%
+           family={N.},
+           familyi={N\bibinitperiod},
+           given={Kolmogorov\bibnamedelima A.},
+           giveni={K\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Mathematical Society}%
+      }
+      \strng{namehash}{ec38574d2ab98953c5391a7de33c7214}
+      \strng{fullhash}{ec38574d2ab98953c5391a7de33c7214}
+      \strng{fullhashraw}{ec38574d2ab98953c5391a7de33c7214}
+      \strng{bibnamehash}{ec38574d2ab98953c5391a7de33c7214}
+      \strng{authorbibnamehash}{ec38574d2ab98953c5391a7de33c7214}
+      \strng{authornamehash}{ec38574d2ab98953c5391a7de33c7214}
+      \strng{authorfullhash}{ec38574d2ab98953c5391a7de33c7214}
+      \strng{authorfullhashraw}{ec38574d2ab98953c5391a7de33c7214}
+      \field{labelalpha}{N57}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Doklady Akademii Nauk SSSR}
+      \field{title}{On the Representation of Continuous Functions of one Variable and Addition}
+      \field{volume}{144}
+      \field{year}{1957}
+      \field{pages}{679\bibrangedash 681}
+      \range{pages}{3}
+      \verb{urlraw}
+      \verb https://cir.nii.ac.jp/crid/1571980075616322176
+      \endverb
+      \verb{url}
+      \verb https://cir.nii.ac.jp/crid/1571980075616322176
+      \endverb
+    \endentry
+    \entry{our-biometrics-1}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=321ca20c5f62622f34f69359100ae206}{%
+           family={Zakharov},
+           familyi={Z\bibinitperiod},
+           given={Dmytro},
+           giveni={D\bibinitperiod}}}%
+        {{hash=c2374eff4092043800704faabc93283e}{%
+           family={Kuznetsov},
+           familyi={K\bibinitperiod},
+           given={Oleksandr},
+           giveni={O\bibinitperiod}}}%
+        {{hash=44eee8b591f349933f72e2246e85d6ad}{%
+           family={Frontoni},
+           familyi={F\bibinitperiod},
+           given={Emanuele},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{f653f615bd4eae6fbe60e7fe3a770279}
+      \strng{fullhash}{f653f615bd4eae6fbe60e7fe3a770279}
+      \strng{fullhashraw}{f653f615bd4eae6fbe60e7fe3a770279}
+      \strng{bibnamehash}{f653f615bd4eae6fbe60e7fe3a770279}
+      \strng{authorbibnamehash}{f653f615bd4eae6fbe60e7fe3a770279}
+      \strng{authornamehash}{f653f615bd4eae6fbe60e7fe3a770279}
+      \strng{authorfullhash}{f653f615bd4eae6fbe60e7fe3a770279}
+      \strng{authorfullhashraw}{f653f615bd4eae6fbe60e7fe3a770279}
+      \field{labelalpha}{ZKF24}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0952-1976}
+      \field{journaltitle}{Engineering Applications of Artificial Intelligence}
+      \field{title}{Unrecognizable yet identifiable: Image distortion with preserved embeddings}
+      \field{volume}{137}
+      \field{year}{2024}
+      \field{pages}{109164}
+      \range{pages}{1}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.engappai.2024.109164
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0952197624013228
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0952197624013228
+      \endverb
+      \keyw{Cancelable biometrics,Deep learning,Triplet loss,Feature extraction,Convolutional neural networks,Information security}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

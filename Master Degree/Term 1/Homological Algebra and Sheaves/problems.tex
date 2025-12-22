@@ -1,0 +1,937 @@
+\documentclass{category-template}
+
+\usepackage{calrsfs}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge{Category Theory Course Notes}}
+
+    \textit{by Dmytro Zakharov}
+\end{center}
+
+\subsubsection*{Remark}
+
+This is a personal document that is intended to help me with understanding of
+Sheaves and Cohomology course at Kyiv School of Economics by Pierre Schapira,
+based on
+\href{https://webusers.imj-prg.fr/~pierre.schapira/LectNotes/HA.pdf}{his awesome
+Lecture Notes ``An Introduction to Categories and Homological Algebra''}.
+
+\section{Language of Categories}
+
+\subsection{Basic Theory}
+
+In what follows we denote by $\text{Hom}(X,Y)$ the set of mappings from $X$ to $Y$.
+
+\begin{definition}[Category]
+    A \textbf{category} $\mathcal{C}$ consists of objects $\text{ob}(\mathcal{C})$,
+    morphisms $\text{Hom}_{\mathcal{C}}(X,Y)$ for each $X,Y \in
+    \text{ob}(\mathcal{C})$, and associative composition map 
+    \begin{equation*}
+        \circ:
+    \text{Hom}_{\mathcal{C}}(X,Y) \times \text{Hom}_{\mathcal{C}}(Y,Z) \to
+    \text{Hom}_{\mathcal{C}}(X,Z)
+    \end{equation*}
+    We additionally require existence of an identity function $\text{id}_X \in
+    \text{Hom}(X,X)$ associated with every $X \in \text{ob}(\mathcal{C})$ such
+    that $f \circ \text{id}_X = f$ and $\text{id}_X \circ g = g$ for arbitrary
+    morphisms $f \in \text{Hom}_{\mathcal{C}}(X,Y)$ and $g \in
+    \text{Hom}_{\mathcal{C}}(Y,X)$.
+\end{definition}
+
+\begin{definition}[Types of morphisms]
+    We have the following types of morphisms:
+    \begin{itemize}
+        \item A morphism $f \in \text{Hom}(X, Y)$ is an \textbf{isomorphism} if
+        there exists $g \in \text{Hom}(Y, X)$ such that $f \circ g =
+        \text{id}_Y$ and $g \circ f = \text{id}_X$.
+        \item A morphism $f: X \to Y$ is an \textbf{monomorphism} (resp. an 
+        epimorphism) if for any morphisms $g_1,g_2: X \rightrightarrows Y$
+        the condition $f \circ g_1 = f \circ g_2$ (and $g_1 \circ f = g_2 \circ g$ resp.)
+        implies $g_1=g_2$. 
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    An object $\emptyset_{\mathcal{C}} \in \mathcal{C}$ is called
+    \textbf{initial} if $\text{Hom}(\emptyset_{\mathcal{C}}, X) \cong
+    \{\text{pt}\}$ for all $X \in \mathcal{C}$. An object
+    $\text{pt}_{\mathcal{C}}$ is \textbf{terminal} if it is initial in
+    $\mathcal{C}^{\text{op}}$. Object $0_{\mathcal{C}}$ is a
+    \textbf{zero-object} if it is both initial and terminal.
+\end{definition}
+
+\begin{definition}[Functor]
+    Let $\mathcal{C}$ and $\mathcal{C}'$ be two categories. A \textbf{functor}
+    $F: \mathcal{C} \to \mathcal{C}'$ consists of two maps: (1) mapping between
+    objects $F: \text{ob}(\mathcal{C}) \to \text{ob}(\mathcal{C}')$ and (2) for
+    all $X,Y \in \mathcal{C}$ mapping from one set of morphisms to another $F:
+    \text{Hom}_{\mathcal{C}}(X,Y) \to \text{Hom}_{\mathcal{C}'}(F(X),F(Y))$ such
+    that:
+    \begin{equation*}
+        F(\text{id}_X) = \text{id}_{F(X)}, \quad F(f \circ g) = F(f) \circ F(g)
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Types of Functor]
+    Let $F: \mathcal{C} \to \mathcal{C}'$ be a functor. Then,
+    \begin{itemize}
+        \item One says that $F$ is \textbf{faithful}/\textbf{full} if for any
+        pair $X,Y \in \mathcal{C}$, the mapping $\text{Hom}_{\mathcal{C}}(X,Y)
+        \to \text{Hom}_{\mathcal{C}}(F(X),F(Y))$ is injective/surjective.
+        \item One says that $F$ is \textbf{essentially surjective} if for each
+        $Y \in \mathcal{C}'$ there exists $X \in \mathcal{C}$ such that $F(X)
+        \cong Y$.
+        \item One says that $F$ is \textbf{conservative} if a morphism $f: X \to
+        Y$ in $\mathcal{C}$ is an isomorphism as soon as $F(f)$ is an
+        isomorphism.
+    \end{itemize}
+\end{definition}
+
+Now, given two functors $F_1,F_2: \mathcal{C}\rightrightarrows \mathcal{C}'$, we
+want to define their equivalence. For that reason, we first need to define how
+to draw a connection between two functors. This is done by means of the
+following definition.
+\begin{definition}
+Let $F,G$ be two functors from $\mathcal{C}$ to $\mathcal{C}'$. The
+\textbf{natural transformation} (or morphism of functors) $\alpha$ is the
+morphism $\alpha(X): F(X) \to G(X)$, indexed by some object $X \in \mathcal{C}$,
+such that the for any morphism $f \in \text{Hom}_{\mathcal{C}}(X,Y)$ the diagram below commutes:
+\[\begin{tikzcd}
+F(X) \arrow{r}{\alpha(X)} \arrow[swap]{d}{F(f)} & G(X) \arrow[swap]{d}{G(f)} \\
+F(Y) \arrow{r}{\alpha(Y)} & G(Y)
+\end{tikzcd}
+\]
+\end{definition}
+
+Since we have the notion of morphism between functors, we can form the category
+of functors. Namely, denote by $\text{Fct}(\mathcal{C},\mathcal{C}')$ the
+category of functors from $\mathcal{C}$ to $\mathcal{C}'$.
+
+Now, naturally, we sometimes want to state the equivalence of two categories
+(say, category of finite-dimensional matrices and finite vector spaces). One
+``obvious'' way to define equivalence is to require the existence of bijective
+functor, but this notion turns out to be too strict. For that reason, we require
+the existence of a map that, composed with the functors left and right, is
+isomorphic to the identity maps.
+
+\begin{definition}[Equivalence of categories]
+    A functor $F: \mathcal{C} \to \mathcal{C}'$ is an \textbf{equivalence} of
+    categories if there exists $G: \mathcal{C}' \to \mathcal{C}$ such that $G
+    \circ F \cong \text{id}_{\mathcal{C}}$ and $F \circ G \cong
+    \text{id}_{\mathcal{C}'}$.
+\end{definition}
+
+A slightly easier equivalent to this definition is following.
+
+\begin{theorem}
+    The functor $F: \mathcal{C} \to \mathcal{C}'$ is an equivalence of
+    categories if and only if $F$ is fully faithful and essentially surjective.
+\end{theorem}
+
+Now denote by $\mathcal{C}^{\wedge} = \text{Fct}(\mathcal{C}^{\text{op}},
+\textbf{Set})$ and $\mathcal{C}^{\vee} = \text{Fct}(\mathcal{C}^{\text{op}},
+\textbf{Set}^{\text{op}})$. Define the corresponding functors between 
+$\mathcal{C}$ and given two categories above:
+\begin{gather*}
+    h_{\mathcal{C}}: \mathcal{C} \to \mathcal{C}^{\wedge}, \quad X \mapsto \text{Hom}_{\mathcal{C}}(\cdot, X),\\
+    k_{\mathcal{C}}: \mathcal{C} \to \mathcal{C}^{\vee}, \quad X \mapsto \text{Hom}_{\mathcal{C}}(X, \cdot).
+\end{gather*}
+
+Since there is a natural equivalence between $\mathcal{C}^{\wedge}$ and
+$\mathcal{C}^{\vee}$: namely, $\mathcal{C}^{\vee} \cong
+\mathcal{C}^{\text{op},\wedge,\text{op}}$, we focus on $\mathcal{C}^{\wedge}$.
+
+The following Lemma is fundamental in the elementary category theory. In its
+essence, it asks a natural question: what can we say about $X$, given the set of
+morphisms to $X$ (that is, $\mathsf{Hom}_{\mathcal{C}}(\cdot,X)$)?
+
+\begin{lemma}[The Yonede lemma]
+    For functor $A \in \mathcal{C}^{\wedge}$ and $X \in \mathcal{C}$ there is an
+    isomorphism $\text{Hom}_{\mathcal{C}^{\wedge}}(h_{\mathcal{C}}(X), A) \cong
+    A(X)$, functorial with respect to $X$ and $A$.
+\end{lemma}
+
+\subsection{Problems}
+
+\begin{problem}
+    In a category $\mathcal{C}$, consider three morphisms $X \xrightarrow{f} Y
+    \xrightarrow{g} Z \xrightarrow{h} W$. Prove that if $f \circ g$ and $g \circ
+    h$ are isomorphisms, then $f$ is an isomorphism.
+\end{problem}
+
+\textbf{Proof.} 
+
+\begin{problem}
+    Prove that the categories $\textbf{Set}$ and $\textbf{Set}^{\text{op}}$ are
+    not equivalent and similarly with the categories $\textbf{Set}^f$ and
+    $\textbf{Set}^{f,\text{op}}$.
+\end{problem}
+
+\textbf{Proof.} Assume the contrary: suppose there exists an equivalence functor
+$F: \textbf{Set} \to \textbf{Set}^{\text{op}}$. Then, one obviously has
+$F(\emptyset) \cong \{\text{pt}\}$ and $F(\{\text{pt}\}) \cong \emptyset$.
+Recall that $F$ must be fully faithful, meaning for each $X,Y \in \mathcal{C}$ one has:
+\begin{equation*}
+    \text{Hom}_{\textbf{Set}}(X, Y) \xrightarrow{\cong} \text{Hom}_{\textbf{Set}^{\text{op}}}(F(X), F(Y)) 
+\end{equation*}
+
+Now, take $X := \{\text{pt}\}$ and $Y$ to be any finite set with more than two
+elements (say, $Y$ is any set of two elements). Then, the left handside
+$\text{Hom}_{\textbf{Set}}(\{\text{pt}\}, Y)$ contains more than 1 element. In
+contrast, the right handside is exactly $\text{Hom}_{\textbf{Set}}(F(Y),
+\emptyset)$, which contains exactly 1 element. Obviously, two finite sets cannot
+be isomorphic when they are of different sizes, so we reached the contradiction.
+
+\begin{problem}
+    This problem consists of two parts:
+    \begin{enumerate}
+        \item Let $F: \mathcal{C} \to \mathcal{C}'$ be a faithful functor and 
+        let $f$ be a morphism in $\mathcal{C}$. Prove that if $F(f)$ is a 
+        monomorphism (resp. an epimorphism), then $f$ is a monomorphism 
+        (resp. an epimorphism).
+        \item Assume now that $F$ is fully faithful. Prove that if $F(f)$ is 
+        an isomorphism, then $f$ is an isomorphism. In other words, fully 
+        faithful functors are conservative.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Proof.}
+
+\textit{Part 1.} We know two facts about $F$ and $f$:
+\begin{itemize}
+    \item Since $F$ is a faithful functor, we have $\text{Hom}_{\mathcal{C}}(X,
+    Y) \to \text{Hom}_{\mathcal{C}'}(F(X), F(Y))$ is injective.
+    \item Since $F(f)$ is a monomorphism, by definition for any $g_1,g_2: X
+    \rightrightarrows Y$ one has the following: $F(f) \circ g_1 = F(f) \circ g_2 \implies
+    g_1=g_2$.
+\end{itemize}
+
+Now, pick $g_1,g_2: X \rightrightarrows Y$ and we ought to show that $f \circ
+g_1 = f \circ g_2$ implies $g_1=g_2$. Apply functors on both sides, so we have:
+\begin{equation*}
+    F(f \circ g_1) = F(f \circ g_2) \iff F(f) \circ F(g_1) = F(f) \circ F(g_2)
+\end{equation*}
+
+Now since $F(f)$ is a monomorphism, this implies $F(g_1) = F(g_2)$. But since
+$F$ is faithful, that implies $g_1=g_2$. Thus, $f$ is a monomorphism.
+
+Epimorphism is proved in the similar manner, but with $g_j \circ f$ instead of
+$f \circ g_j$.
+
+\textit{Part 2.} Suppose $f \in \text{Hom}_{\mathcal{C}}(X,Y)$. Since $F(f)$ is
+an isomorphism, there exists a map $g \in \text{Hom}_{\mathcal{C}'}(F(Y),F(X))$
+such that $F(f) \circ g = \text{id}_{F(Y)}$ and $g \circ F(f) =
+\text{id}_{F(X)}$. We now shall construct a map $h \in
+\text{Hom}_{\mathcal{C}}(Y,X)$ such that $f \circ h = \text{id}_Y$ and $h \circ
+f = \text{id}_X$. If such map exists, then by applying functor we arrive at:
+\begin{equation*}
+    F(f) \circ F(h) = \text{id}_{F(Y)}, \quad F(h) \circ F(f) = \text{id}_{F(X)}
+\end{equation*}
+
+So it motivates us to set $h$ such that $F(h) = g$. Since $F$ is fully faithful,
+we can set $h := F^{-1}(g)$.
+
+\begin{problem}
+    Is the natural functor $\textbf{Set} \to \textbf{Rel}$ full, faithful, fully
+    faithful, conservative?
+\end{problem}
+
+\textbf{Answer.} We first construct the functor $F: \textbf{Set} \to
+\textbf{Rel}$. For objects, we have $X \xrightarrow{F} X$, while we associate
+every mapping $f \in \text{Hom}_{\textbf{Set}}(X, Y)$ with graph $F(f) =
+\{(x,f(x)): x \in X\} \subseteq X \times Y$. Just for practicing purposes, let
+us show that $F$ is indeed a valid functor. First, note that $F(\text{id}_X) =
+\Delta_{X \times X}$ and for $f \in \text{Hom}_{\textbf{Rel}}(X,Y)$ and 
+$g \in \text{Hom}_{\textbf{Rel}}(Y,Z)$ we have:
+\begin{equation*}
+    F(f) \circ F(g) = \{(x,z): \exists y \; \text{such that} \; (x,y) \in F(f), (y,z) \in F(g)\}
+\end{equation*}
+
+But note that $(x,y) \in F(f)$ means that $y=f(x)$ and similarly $(y,z) \in
+F(g)$ means $z=f(y)$ which in turn is nothing but $z=(f \circ g)(x)$. Thus,
+\begin{equation*}
+    F(f) \circ F(g) = \{(x,(f \circ g)(x)): x \in X\} = F(f \circ g)
+\end{equation*}
+
+Good, now we can finally check all the properties.
+
+\textit{(1) Fullness.} Is the map surjective? Surely not as most relations are
+not graphs. For instance, one cannot represent the relation $\{(1,a),(1,b)\}$
+for $a \neq b$ using $F$. 
+
+\textit{(2) Faithfulness.} Is the map injective? Suppose $F(g_1) = F(g_2)$, 
+meaning
+\begin{equation*}
+    \{(x,g_1(x)): x \in X\} = \{(x,g_2(x)): x \in X\}
+\end{equation*}
+
+This does imply $g_1 = g_2$, so $F$ is faithful.
+
+\textit{(3) Fully faithfulness.} The map is not full, thus it is not fully
+faithful.
+
+\textit{(4) Conservativeness.} Suppose $F(f)$ is an isomorphism, meaning we can
+find $g \in \text{Hom}_{\textbf{Rel}}(Y,X)$ such that $F(f) \circ g =
+\Delta_{F(Y) \times F(Y)}$ and $g \circ F(f) = \Delta_{F(X) \times F(X)}$. Take 
+the first condition:
+\begin{align*}
+    F(f) \circ g &= \{(x,x'): \exists y \; \text{such that} \; (x,y) \in F(f), (y,x') \in g\} \\
+    &= \{(x,x'): \exists y \; \text{such that} \; (f(x),x') \in g\}
+\end{align*}
+
+Equating this to $\Delta_{F(X) \times F(X)}$ gives $x=x'$. Thus, $S$ is the
+graph of $g$ and thus the inverse of $f$. Thus $f$ is a bijection.
+
+\begin{problem}
+    Prove that the category $\mathcal{C}$ is equivalent to the opposite category
+    $\mathcal{C}^{\text{op}}$ in the following cases:
+    \begin{enumerate}
+        \item $\mathcal{C}$ is the category of finite abelian groups
+        ($\textbf{Ab}^f$).
+        \item $\mathcal{C} = \textbf{Rel}$.
+    \end{enumerate}
+\end{problem}
+
+\textit{Part 2.} This part is surprisingly easy: given relation $f \subseteq X
+\times Y$, we map it to the relation $F(f) = \{(y,x): (x,y) \in f\} \subseteq Y
+\times X$. It is straightforward to show that this map is fully faithful and 
+essentially surjective.
+
+\textit{Part 1.} Define the functor $F: \textbf{Ab}^f \to \textbf{Ab}^f$ as 
+follows:
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\section{Limits}
+
+\subsection{Basic Theory}
+
+In what follows, we would need the notion of \textit{representable functors}.
+
+\begin{definition}[Representable Functors]
+    Given functor $F: \mathcal{C}^{\text{op}} \to \textbf{Set}$, we call it
+    \textbf{representable} if it is isomorphic to $h_{\mathcal{C}}(X)$ for some
+    $X \in \mathcal{C}$ in $\mathcal{C}^{\wedge}$. We call $X$ the
+    \textbf{representative} of $F$.
+
+    \textit{Note:} Alternatively, we call $F$ representable if there exists
+    representative $X \in \mathcal{C}$ such that $F(Y) \cong \text{Hom}(Y,X)$
+    for every $Y \in \mathcal{C}$.
+\end{definition}
+
+\begin{example}
+    Consider the forgetful functor $F: \textbf{Vect}_{k} \to \textbf{Set}$ that
+    maps every vector space to the underlying set. We claim that $F$ is
+    represented by field $k$. Indeed, we ought to show that $F(V) \cong
+    \text{Hom}(k,V)$ for each vector space $V$. Build the bijection as follows:
+    $\eta_V: V \to \text{Hom}(k,V)$ as $\eta_V(v) = \varphi_v$ where
+    $\varphi_v(a) = a \cdot v$.
+\end{example}
+
+Now, we shift our focus towards products and coproducts. 
+
+\begin{definition}[Products and coproducts]
+    Let $\mathcal{C}$ be a category and consider the family $\{X_i\}_{i \in I}$
+    of objects in $\mathcal{C}$ indexed by a $\mathcal{U}$-small set $I$. Consider 
+    two functors:
+    \begin{gather*}
+        \mathcal{C}^{\text{op}} \to \textbf{Set}, \; Y \mapsto \prod_{i \in I}\text{Hom}_{\mathcal{C}}(Y,X_i), \\
+        \mathcal{C} \to \textbf{Set}, \; Y \mapsto \prod_{i \in I}\text{Hom}_{\mathcal{C}}(X_i, Y).
+    \end{gather*}
+
+    The representatives of these two functors are called \textbf{product} and
+    \textbf{coproduct} and are denoted by $\prod_{i \in I}X_i$ and $\coprod_{i
+    \in I}X_i$, respectively.
+\end{definition}
+
+We shall now discuss the notion of limits.
+\begin{definition}
+    Let $I$ and $\mathcal{C}$ be categories with $I$ small. A \textbf{projective
+    system} (resp. an inductive system) in $\mathcal{C}$ indexed by $I$ is
+    nothing but a functor $\beta: I^{\text{op}} \to \mathcal{C}$ (resp. $\alpha:
+    I \to \mathcal{C}$).
+\end{definition}
+
+\begin{definition}[Projective limits in Set]
+    Assume $\mathcal{C} = \textbf{Set}$ and consider the projective 
+    system $\beta: I^{\text{op}} \to \textbf{Set}$. The limit of $\beta$ 
+    is given by:
+    \begin{equation*}
+        \lim \beta = \{(x_i)_i \in \prod_i\beta(i); \; \beta(s)(x_j) = x_i \; \text{for all} \; s \in \text{Hom}_I(i,j)\}.
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Limits]
+    Consider two functors $\beta: I^{\text{op}} \to \mathcal{C}$ and 
+    $\alpha: I \to \mathcal{C}$. For $X \in \mathcal{C}$, define the 
+    following functors from $I^{\text{op}}$ to $\textbf{Set}$:
+    \begin{gather*}
+        \text{Hom}_{\mathcal{C}}(X,\beta): i \mapsto \text{Hom}_{\mathcal{C}}(X,\beta(i)) \in \textbf{Set}, \\
+        \text{Hom}_{\mathcal{C}}(\alpha,X): i \mapsto \text{Hom}_{\mathcal{C}}(\alpha(i),X) \in \textbf{Set}
+    \end{gather*}
+    Assume that functor $X \mapsto \lim \text{Hom}_{\mathcal{C}}(X,\beta)$ is representable. Then, 
+    we call it $\lim\beta$. In other words, for any $X \in \mathcal{C}$ we have the following isomorphism:
+    \begin{equation*}
+        \text{Hom}_{\mathcal{C}}(X, \lim\beta) \cong \lim \text{Hom}_{\mathcal{C}}(X,\beta).
+    \end{equation*}
+    Similarly, for colimits we have:
+    \begin{equation*}
+        \text{Hom}_{\mathcal{C}}(\text{colim}\,\alpha,X) \cong \lim\text{Hom}_{\mathcal{C}}(\alpha,X).
+    \end{equation*}
+\end{definition}
+
+\subsection{Exercises}
+
+\begin{problem}
+    Let $I$ be a small set and $(X_i)_{i \in I}$ a family of sets 
+    indexed by $I$. Show that $\coprod_i X_i = \bigsqcup_i X_i$, the disjoint 
+    union of the sets $X_i$.
+\end{problem}
+
+\textbf{Solution.} We should show that $Z := \bigsqcup_i X_i$ is the
+representative of the functor $\textbf{Set} \to \textbf{Set}$ given by the
+mapping $F(Y) = \prod_{i \in I}\text{Hom}_{\mathcal{C}}(X_i, Y)$. More
+specifically, we need to show the following isomorphism: $F(Y) \cong
+\text{Hom}(Z, Y)$ for every $Y \in \textbf{Set}$. This unpacks into the 
+following expression:
+\begin{equation*}
+    \prod_{i \in I}\text{Hom}_{\mathcal{C}}(X_i, Y) \cong \text{Hom}\left(\bigsqcup_{i \in I} X_i, Y\right)
+\end{equation*}
+
+We build the isomorphism $\Phi: \prod_{i \in I}\text{Hom}_{\mathcal{C}}(X_i,
+Y) \to \text{Hom}\left(\bigsqcup_{i \in I} X_i, Y\right)$ as follows:
+\begin{equation*}
+    \Phi((f_i)_{i \in I}) = G, \quad G(i,x) := f_i(x), \quad (i, x) \in \bigsqcup_{i \in I} X_i
+\end{equation*}
+
+\textbf{Inverse.} For a given $G$, define a family $\Psi(G) = (f_i)_{i \in I}$
+by:
+\begin{equation*}
+    f_i := G \circ \iota_i: X_i \xrightarrow{\iota_i} Z \xrightarrow{G} Y, \quad 
+    \iota_i(x) := (i, x)
+\end{equation*}
+
+It is straightforward to show $\Psi \circ \Phi$ and $\Phi \circ \Psi$ yield
+identities.
+
+\begin{problem}
+    Construct a natural map $\bigsqcup_{i \in I} \text{Hom}_{\textbf{Set}}(Y,X_i) \to
+    \text{Hom}_{\textbf{Set}}(Y,\bigsqcup_{i \in I}X_i)$ and prove it is injective and
+    not surjective in general.
+\end{problem}
+
+\textbf{Solution.} Natural map $F$ is given as follows:
+\begin{equation*}
+    F: (i,f) \mapsto G: \textbf{Set} \to \textbf{Set}: Y \mapsto (i,f(Y))
+\end{equation*}
+
+In other words, given $\iota_i(x) = (i,x)$, we define $F(i,f) := \iota_i \circ
+f$.
+
+\begin{problem}
+    Let $X,Y \in \mathcal{C}$ and consider the category $\mathcal{D}$ whose
+    objects are triplets $Z \in \mathcal{C}$, $f: Z \to X$, $g: Z \to Y$, the
+    morphisms being the natural ones. Prove that this category admits a terminal
+    object if and only if the product $X \times Y$ exists in $\mathcal{C}$, and
+    that in such a case this terminal object is isomorphic to $X \times Y, X
+    \times Y \to X, X \times Y \to Y$. Deduce that if $X \times Y$ exists, it is
+    unique up to unique isomorphism.
+\end{problem}
+
+\begin{problem}
+    Let $I$ and $\mathcal{C}$ be two categories with $I$ small and denote by
+$\Delta$ the functor from $\mathcal{C}$ to $\text{Fct}(I, \mathcal{C})$, which,
+to $X \in \mathcal{C}$, associates the constant functor $\Delta (X): i \mapsto X$,
+$(i \to j) \mapsto \text{id}_X$.
+\begin{enumerate}
+    \item Assume that colimits indexed by $I$ exist. Prove the formula, for
+    $\alpha: I \to \mathcal{C}$ and $Y \in \mathcal{C}$:
+    \begin{equation*}
+        \text{Hom}_{\mathcal{C}}(\text{colim}\,\alpha, Y) \cong \text{Hom}_{\text{Fct}(I,\mathcal{C})}(\alpha,\Delta(Y)).
+    \end{equation*}
+    \item Assuming that limits exist, deduce the formula for $\beta:
+    I^{\text{op}} \to \mathcal{C}$ and $X \in \mathcal{C}$:
+    \begin{equation*}
+        \text{Hom}_{\mathcal{C}}(X,\lim \beta) \cong \text{Hom}_{\text{Fct}(I^{\text{op}}, \mathcal{C})}(\Delta(X), \beta)
+    \end{equation*}
+\end{enumerate}
+\end{problem}
+
+\textit{Part 1.} We shall build the isomorphism:
+\begin{equation*}
+    \Phi: \text{Hom}_{\mathcal{C}}(\text{colim}\,\alpha, Y) \to \text{Hom}_{\text{Fct}(I,\mathcal{C})}(\alpha,\Delta(Y)).
+\end{equation*}
+
+Take any morphism $f: \text{colim}\,\alpha \to Y$. We need to associate it
+with some natural transformation $\theta: \alpha \to \Delta(Y)$. Let
+$\varepsilon_i: \alpha(i) \to \text{colim}\,\alpha$ be a natural map. Then,
+we need to build a family $\theta_i: \alpha(i) \to \Delta(Y)(i)$. However note
+that $\Delta(Y)(i)=Y$, so we build $\theta_i: \alpha(i) \to Y$. So define
+$\theta_i$ as follows: $\theta_i = f \circ \varepsilon_i$. We now show that 
+this is indeed the natural transformation. Consider the following commutative 
+diagram:
+\[\begin{tikzcd}
+\alpha(i) \arrow{r}{\theta_i=f \circ \varepsilon_i} \arrow[swap]{d}{\alpha(f)} & \Delta(Y)(i)=Y \arrow[swap]{d}{(\Delta Y)(f)} \\
+\alpha(j) \arrow{r}{\theta_j=f \circ \varepsilon_j} & \Delta(Y)(j)=Y
+\end{tikzcd}
+\]
+
+\textit{Part 2.} We do similarly. Define the isomorphism:
+\begin{equation*}
+    \Psi: \text{Hom}_{\mathcal{C}}(X,\lim \beta) \to \text{Hom}_{\text{Fct}(I^{\text{op}}, \mathcal{C})}(\Delta(X), \beta)
+\end{equation*}
+
+Take any morphism $f: X \to \lim\beta$. For this $f$ we shall build the natural
+transformation $\alpha: \Delta(X) \to \beta$. For that I take any $i$ and build
+$\alpha(i): \Delta(X)(i) \to \beta(i)$ which basically gives me $\alpha(i): X
+\to \beta(i)$. Now suppose $\pi_i: \lim\beta \to X_i$ is the natural morphism.
+Take $\alpha(i) := \pi_i \circ f$. 
+
+\begin{problem}
+    (i) Let $\mathcal{C}$ be a category which admits colimits indexed by a category 
+    $I$. Let $\alpha: I \to \mathcal{C}$ be a functor and let $X \in \mathcal{C}$.
+    Construct the natural morphism
+    \begin{equation*}
+        \text{colim}_i \text{Hom}_{\mathcal{C}}(X,\alpha(i)) \to \text{Hom}_{\mathcal{C}}(X,\text{colim}_i \alpha(i)).
+    \end{equation*}
+
+    (ii) Let $\mathbf{k}$ be a field and denote by $\mathbf{k}[x]^{\leq n}$ the
+    $\textbf{k}$-vector space consisting of polynomials of degree $\leq n$. Prove 
+    the isomorphism $\mathbf{k}[x] \cong \text{colim}_n \mathbf{k}[x]^{\leq n}$ in 
+    $\text{Mod}(\mathbf{k})$ and, noticing that $\text{id}_{\mathbf{k}[x]} \not\in \text{colim}_n \text{Hom}_{\mathbf{k}}(\mathbf{k}[x], \mathbf{k}[x]^{\leq n})$, 
+    deduce that the morphism
+\end{problem}
+
+\begin{problem}
+    We consider the ordered set $\mathbb{N}$ as a category. Hence, for a
+category $\mathcal{C}$, a functor $\alpha: \mathbb{N} \to \mathcal{C}$ is
+defined by the data of the objects $\alpha(n) \in \mathcal{C}$, $n \in
+\mathbb{N}$, and the morphisms $\alpha(n<n+1): \alpha(n) \to \alpha(n+1)$. 
+
+(i) Consider the functor $\alpha: \mathbb{N} \to \text{Mod}(\mathbb{Z})$ given
+by $\alpha(n) = \mathbb{Z}$ and $\alpha(n<n+1)=2 \cdot: \mathbb{Z} \to
+\mathbb{Z}$. Calculate $\text{colim}\, \alpha$.
+
+(ii) Give an example of a functor $\alpha: \mathbb{N} \to
+\text{Mod}(\mathbb{Z})$ in which all $\alpha(n)$ are not $0$ and all morphisms
+$\alpha(n < n + 1)$ are not $0$ but $\text{colim}(\alpha) \cong 0$.
+\end{problem}
+
+Part (i). This is a directed colimit, so we can define the relation over $\bigsqcup_{i \in
+I}\mathbb{Z} = \mathbb{Z}^{\sqcup}$ as follows:
+\begin{equation*}
+    (x,i) \mathcal{R} (y,j) \iff \exists i,j,k \in \mathbb{N}: 2^{k-i}x = 2^{k-j}y \iff \frac{x}{2^i} = \frac{x}{2^j}
+\end{equation*}
+
+So $\mathbb{Z}^{\sqcup} / \mathcal{R} \cong \{\frac{x}{2^n}: x \in \mathbb{Z}, n
+\in \mathbb{N}\} = \boxed{\mathbb{Z}[1/2]}$.
+
+Part (ii). This happens if $\mathcal{R} = \bigsqcup_{i \in \mathbb{N}}\alpha(i)
+\times \bigsqcup_{i \in \mathbb{N}}\alpha(i)$. This can happen, for instance, in
+the following case: suppose $\alpha(n)$ is the group of rational points on the
+unit circle: say, $\mathbb{Q}/\mathbb{Z}$. Define the morphism
+$\alpha(n<n+1)=\star^{n+1}$. Now note that every element is equivalent to $1$. 
+Indeed:
+
+\section{Additive Categories}
+
+\begin{problem}
+    Let $\mathcal{C}$ be an additive category and let $X \in C(\mathcal{C})$
+    with differential $d_X$. Let $\{a_n\}_{n \in \mathbb{Z}}$ be a sequence in
+    $\mathbb{Z}$. Define the morphism $\delta_X: X \to X[1]$ by setting 
+    $\delta_X^n = a_nd_X^n$. Prove that $\delta_X$ is a morphism in 
+    $C(\mathcal{C})$ and is homotopic to zero.
+\end{problem}
+
+\textbf{Proof.} Recall that $f: X \to Y$ is a morphism if the following diagram commutes:
+\[
+\begin{tikzcd}
+	\dots \arrow{r}{} & {X^n} \arrow{r}{d_X^n} \arrow{d}{f^n} & {X^{n+1}} \arrow{r}{} \arrow{d}{f^{n+1}} & \dots \\
+	\dots \arrow{r}{} & {Y^n} \arrow{r}{d_Y^n} & {Y^{n+1}} \arrow{r}{} & \dots
+\end{tikzcd}
+\]
+
+In our particular case, as $\delta: X \to X[1]$, the diagram looks as follows:
+\[
+\begin{tikzcd}
+	\dots \arrow{r}{} & {X^n} \arrow{r}{d_X^n} \arrow{d}{\delta^n} & {X^{n+1}} \arrow{r}{} \arrow{d}{\delta^{n+1}} & \dots \\
+	\dots \arrow{r}{} & {X^{n+1}} \arrow{r}{d_{X[1]}^n} & {X^{n+2}} \arrow{r}{} & \dots
+\end{tikzcd}
+\]
+
+So we are left to prove that:
+\begin{equation*}
+    \delta^{n+1} \circ d_X^n = d_{X[1]}^n \circ \delta^n
+\end{equation*}
+
+Now by expanding $\delta^n$ and using the fact that $d_{X[1]}^n = -d_X^{n+1}$:
+\begin{equation*}
+    \text{LHS} = a_{n+1}d_X^{n+1} \circ d_X^n, \quad \text{RHS} = -d_X^{n+1} \circ a_n d_X^n
+\end{equation*}
+
+Trivially, both sides are 0, so our condition is met.
+
+Now we prove that $\delta_X$ is homotopic to zero. By definition, if $f$ is
+homotopic to zero if for all $p \in \mathbb{Z}$ there exists a morphism $s^p:
+X^p \to Y^{p-1}$ such that:
+\begin{equation*}
+    f^p = s^{p+1} \circ d_X^p + d_Y^{p-1} \circ s^p
+\end{equation*}
+
+Now, in our terms, we have: for all $p \in \mathbb{Z}$ we should find an 
+endomorphism $s^p: X^p \to X^p$ such that:
+\begin{equation*}
+    a_pd_X^p = s^{p+1} \circ d_X^p - d_X^p \circ s^p
+\end{equation*}
+
+Define $s^p := b_p \cdot \text{id}_{X^p}$ for some $\{b_p\}_{p \in \mathbb{Z}}$. By 
+substituting, we obtain:
+\begin{equation*}
+    a_pd_X^p = b_{p+1} \text{id}_{X^p} \circ d_X^p - d_X^p \circ b_p \text{id}_{X^p}
+    = b_{p+1}d_X^p - b_pd_X^p = (b_{p+1}-b_p)d_X^p
+\end{equation*}
+Thus we require $b_{p+1}-b_p=a_p$ for all $p$. Thus, for instance, define 
+$b_0 := 0$. The resultant morphism is thus $s^p = b_p\text{id}_{X^p}$.
+
+\begin{problem}
+    Let $\mathcal{C}$ be an additive category, $f,g: X \rightrightarrows Y$
+    two morphisms in $C(\mathcal{C})$. Prove that $f$ and $g$ are homotopic 
+    if and only if there exists a commutative diagram in $C(\mathcal{C})$.
+\[
+\begin{tikzcd}
+    Y \arrow{r}{\alpha(f)} \arrow[equal]{d}{} & {\text{Mc}(f)} \arrow{r}{\beta(f)} \arrow{d}{u} & X[1] \arrow[equal]{d}{} \\
+	Y \arrow{r}{\alpha(g)} & \text{Mc}(g) \arrow{r}{\beta(g)} & X[1]
+\end{tikzcd}
+\]
+
+Moreover, assert that in such case $u$ is an isomorphism in $C(\mathcal{C})$.
+\end{problem}
+
+\textbf{Solution.} First, assume $f$ and $g$ are homotopic. This means 
+that there exists a map $s^p$ s.t.:
+\begin{equation*}
+    f^p - g^p = s^{p+1} \circ d_X^p + d_Y^{p-1} \circ s^p
+\end{equation*}
+
+Now we shall construct the mapping $u: \text{Mc}(f) \to \text{Mc}(g)$. The map
+is defined as follows:
+\begin{equation*}
+    u^p: X^{p+1} \oplus Y^{p} \to X^{p+1} \oplus Y^{p}, \quad u^p(x,y) = \begin{bmatrix}
+        u^p_{1,1} & u^p_{1,2} \\
+        u^p_{2,1} & u^p_{2,2}
+    \end{bmatrix}\begin{bmatrix}
+        x \\ y
+    \end{bmatrix} = \begin{bmatrix}
+        u^p_{1,1}(x) + u^p_{1,2}(y) \\
+        u^p_{2,1}(x) + u^p_{2,2}(y)
+    \end{bmatrix}
+\end{equation*}
+
+What do we require from such a map? We need for diagram to commute, so we want
+$u \circ \alpha(f) = \alpha(g)$ and $\beta(g) \circ u = \beta(f)$. First condition means:
+\begin{equation*}
+    u^p \circ \alpha^p(f)(y) = u^p(0,y) = (u^p_{1,2}(y),u^p_{2,2}(y)) = \beta^p(f)(y) = (0, y)
+\end{equation*}
+
+Thus we have $u^p_{1,2}=0$ and $u^p_{2,2}=\text{id}_{Y^p}$. Second condition implies:
+\begin{equation*}
+    \beta^p(g) \circ u(x,y) = \beta^p(g)\begin{bmatrix}
+        u^p_{1,1}(x) + u^p_{1,2}(y) \\
+        u^p_{2,1}(x) + u^p_{2,2}(y)
+    \end{bmatrix} = u^p_{1,1}(x) + u^p_{1,2}(y) = x
+\end{equation*}
+
+Note however that $u^p_{1,2}(y) = 0$, so $u^p_{1,1}(x)=x$. Thus, we take 
+$u^p_{1,1} = \text{id}_{X^{p+1}}$. Thus, we have:
+\begin{equation*}
+    u^p \star = \begin{bmatrix}
+        \text{id}_{X^{p+1}} & 0 \\
+        \gamma^p & \text{id}_{Y^{p}}
+    \end{bmatrix}\star
+\end{equation*}
+
+So we ought to find $\gamma^p$. For that, we want $u$ to be a chain map:
+\begin{equation*}
+    d_{\text{Mc}(g)}^n \circ u^n = u^{n+1} \circ d_{\text{Mc}(f)}^n
+\end{equation*}
+
+\[
+\begin{tikzcd}
+	\dots \arrow{r}{} & {X^n \oplus Y^{n-1}} \arrow{r}{d_{\text{Mc}(f)}^n} \arrow{d}{u^n} & {X^{n+1} \oplus Y^n} \arrow{r}{} \arrow{d}{u^{n+1}} & \dots \\
+	\dots \arrow{r}{} & {X^{n} \oplus Y^{n-1}} \arrow{r}{d_{\text{Mc}(g)}^n} & {X^{n+1} \oplus Y^n} \arrow{r}{} & \dots
+\end{tikzcd}
+\]
+
+By expanding, we have:
+\begin{equation*}
+    \begin{bmatrix}
+        -d_X^{n+1} & 0 \\
+        g^{n+1} & d_Y^n
+    \end{bmatrix}\begin{bmatrix}
+        \text{id}_{X^{n+1}} & 0 \\
+        \gamma^n & \text{id}_{Y^{n}}
+    \end{bmatrix} = \begin{bmatrix}
+        \text{id}_{X^{n+2}} & 0 \\
+        \gamma^{n+1} & \text{id}_{Y^{n+1}}
+    \end{bmatrix}\begin{bmatrix}
+        -d_X^{n+1} & 0 \\
+        f^{n+1} & d_Y^n
+    \end{bmatrix}
+\end{equation*}
+
+By simplifying both sides, we arrive at:
+\begin{equation*}
+    \begin{bmatrix}
+        -d_X^{n+1} & 0 \\
+        g^{n+1} + d_Y^n \circ g^{n} & d_Y^n
+    \end{bmatrix} = \begin{bmatrix}
+        -d_X^{n+1} & 0 \\
+        -\gamma^{n+1} \circ d_X^{n+1} + f^{n+1} & d_Y^n
+    \end{bmatrix}
+\end{equation*}
+
+As can be seen, the nly requirement we impose:
+\begin{equation*}
+    g^{n+1} + d_Y^n \circ g^{n} = -\gamma^{n+1} \circ d_X^{n+1} + f^{n+1}
+\end{equation*}
+
+Or, by rearranging:
+\begin{equation*}
+    f^{n+1}-g^{n+1} = \gamma^{n+1} \circ d_X^{n+1} + d_Y^n \circ g^{n}
+\end{equation*}
+
+Thus, simply set $\gamma^n := s^{n+1}$. All in all:
+\begin{equation*}
+    u^p \star = \begin{bmatrix}
+        \text{id}_{X^{p+1}} & 0 \\
+        s^{p+1} & \text{id}_{Y^{p}}
+    \end{bmatrix}\star
+\end{equation*}
+
+The opposite direction is essentially the same. We start with arbitrary $u^p$
+and from the same derivations, arrive that $u^p$ must have this specific form. 
+The reason why is that it has the following inverse map:
+\begin{equation*}
+    v^p := \begin{bmatrix}
+        \text{id}_{X^{p+1}} & 0 \\
+        -s^{p+1} & \text{id}_{Y^p}
+    \end{bmatrix}
+\end{equation*}
+
+\begin{problem}
+    A category with translation $(\mathcal{A},T)$ is a category $\mathcal{A}$
+    together with an equivalence $T: \mathcal{A} \to \mathcal{A}$. A
+    differential object $(X,d_X)$ in a category with translation
+    $(\mathcal{A},T)$ is an object $X \in \mathcal{A}$ together with 
+    a morphism $d_X: X \to T(X)$. A morphism $f: (X,d_X) \to (Y,d_Y)$ of 
+    differential objects is a commutative diagram:
+    \[
+    \begin{tikzcd}
+        {X} \arrow{r}{d_X} \arrow{d}{f} & {TX} \arrow{d}{T(f)} \\
+        {Y} \arrow{r}{d_Y} & {TY} 
+    \end{tikzcd}
+    \]
+    One denotes by $\mathcal{A}_d$ the category consisting of differential
+    objects and morphisms of such objects. If $\mathcal{A}$ is additive, one
+    says that a differential object $(X,d_X)$ in $(\mathcal{A},T)$ is a complex
+    if the composition $X \xrightarrow[]{d_X} T(X) \xrightarrow[]{T(d_X)} T^2(X)$ is
+    zero. One denotes by $\mathcal{A}_c$ the full subcategory of $\mathcal{A}_d$ 
+    consisting of complexes.
+    \begin{enumerate}
+        \item Let $\mathcal{C}$ be a category. Denote by $\mathbb{Z}_d$ the set 
+        $\mathbb{Z}$ considered as a discrete category and still denote 
+        $\mathbb{Z}$ as the ordered set $(\mathbb{Z},\leq)$ considered as 
+        a category. Prove that $\text{Fct}(\mathbb{Z}_d,\mathcal{C})$ is 
+        a category with translation.
+        \item Show that the category $\text{Fct}(\mathbb{Z}, \mathcal{C})$ may
+        be identified to the category of differential objects in
+        $\text{Fct}(\mathbb{Z}_d, \mathcal{C})$.
+        \item Let $\mathcal{C}$ be an additive category. Show that the notions
+        of differential objects and complexes given above coincide with those in
+        Definition 4.2.1 when choosing $\mathcal{A} = C(\mathcal{C})$ and $T =
+        [1]$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textit{Part (i).} First note that $\text{Fct}(\mathbb{Z}_d,\mathcal{C})$ is
+nothing but a category of sequences $\{X_i\}_{i \in \mathbb{Z}}, X_i =
+\alpha(i)$ for given $\alpha: \mathbb{Z}_d \to \mathcal{C}$, equipped with
+endomorphisms $X_i \to X_i$. To show that it is a category with translation, we
+build an equivalence $T: \text{Fct}(\mathbb{Z}_d,\mathcal{C}) \to
+\text{Fct}(\mathbb{Z}_d,\mathcal{C})$. We build the following 
+family of translations:
+\begin{equation*}
+    T^p: X_i \mapsto X_{i+p}, X_i \to X_i \mapsto X_{i+p} \to X_{i+p}
+\end{equation*}
+
+Inverse map is given by $T^{-p}$.
+
+\textit{Part (ii).} We consider how differential objects in
+$\text{Fct}(\mathbb{Z}_d, \mathcal{C})$ look like under translation $T^1$. The
+tuple $(X,d_X)$ is essentially a sequence $\{X_i\}_i$ equipped with 
+$d_X: \{X_i\}_i \to \{X_{i+1}\}_i$. Moreover, since $d_X$ is a morphism,
+the following diagram commutes:
+\[
+\begin{tikzcd} X_i \arrow{r}{d_X^i} \arrow{d}{f_i} & X_{i+1} \arrow{d}{f_{i+1}} \\ Y_i \arrow{r}{d_Y^i} & Y_{i+1} \end{tikzcd}
+\]
+That said, category of differential objects is exactly $\text{Fct}(\mathbb{Z},\mathcal{C})$:
+\begin{equation*}
+    \text{Fct}(\mathbb{Z},\mathcal{C}) \cong \text{DiffObjs}(\text{Fct}(\mathbb{Z}_d,\mathcal{C}), T)
+\end{equation*}
+
+\textit{Part (iii).} Let us see what condition of composition $X
+\xrightarrow[]{d_X} T(X) \xrightarrow[]{T(d_X)} T^2(X)$ being zero using $T=[1]$
+and $\mathcal{A}=C(\mathcal{C})$ means.
+
+One has $X \in C(\mathcal{C})$, so $X$ is a complex. In turn, $d_X$ is nothing
+but $d_X: X \to X[1]$, so $d_X^n: X^n \to X^{n+1}$. Similarly, $T(d_X^n) =
+-d_X^{n+1}$. So we translate the diagram to:
+\begin{equation*}
+    X^n \xrightarrow[]{d_X^n} X^{n+1} \xrightarrow[]{-d_X^{n+1}} X^{n+2}
+\end{equation*}
+
+Stating that $d_X^n \circ d_X^{n+1} = 0$ is equivalent to saying that this 
+composition is $0$ for all $n$.
+
+\section{Abelian Categories}
+
+\begin{problem}
+    Consider two complexes in an abelian category $\mathcal{C}$:
+    \begin{gather*}
+        X_1' \to X_1 \to X_{1}'', \quad X_2' \to X_2 \to X_2''.
+    \end{gather*}
+    Prove that they are exact iff the sequence
+    \begin{equation*}
+        X_1' \oplus X_2' \to X_1 \oplus X_2 \to X_1'' \oplus X_2''
+    \end{equation*}
+    is exact.
+\end{problem}
+
+\textbf{Solution.} 
+
+\begin{problem}
+    If $M$ is a $\mathbb{Z}$-module, set $M^{\vee} :=
+    \text{Hom}(M,\mathbb{Q}/\mathbb{Z})$.
+    \begin{enumerate}
+        \item Prove that $\mathbb{Q}/\mathbb{Z}$ is injective in $\text{Mod}(\mathbb{Z})$.
+        \item Prove that the map $\text{Hom}_{\mathbb{Z}}(M,N) \to \text{Hom}_{\mathbb{Z}'}(M^{\vee},N^{\vee})$ is injective 
+        for $N,M \in \text{Mod}(\mathbb{Z})$.
+        \item Prove that if $P$ is a right projective $A$-module, then $P^{\vee}$ is left $A$-injective.
+        \item Let $M$ be an $A$-module. Prove that there exists an injective $A$-module 
+        $I$ and a monomorphism $M \to I$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textit{Part (i).} By Proposition 5.3.2, object $\mathbb{Q}/\mathbb{Z} \in
+\text{Mod}(\mathbb{Z})$ is injective if and only if, the following diagram
+commutes in $\mathcal{C}$ for $X',X \in \text{Mod}(\mathbb{Z})$ and the row 
+is exact:
+
+\[
+\begin{tikzcd}
+	{0} \arrow{r}{} & {X'} \arrow{d}{k} \arrow{r}{f} & X \arrow[dashrightarrow]{ld}{h} \\
+	{} & {\mathbb{Q}/\mathbb{Z}}
+\end{tikzcd}
+\]
+
+This way, $f$ is an injective homomorphism between abelian groups $X'$ and $X$,
+while $k: X' \to \mathbb{Q}/\mathbb{Z}$ is a character of $X'$. We shall show
+that $h: X' \to \mathbb{Q}/\mathbb{Z}$ is determined uniquely by $f$ and $k$.
+In fact, since $k = h \circ f$, we find $h = k \circ f^{-1}$. 
+
+\newpage
+
+\section{Sheaves on sites}
+
+\begin{problem}[Exercise 1.3]
+    Assume $X$ is a topological space and $U \in \text{Op}_X$. Prove that the
+    composition of morphisms of presites $U \xrightarrow{i_U} X
+    \xrightarrow{j_U}U$ is isomorphic to $\text{id}_U$. 
+\end{problem}
+
+\textbf{Proof.} We shall show that composition $\text{Op}_U \xrightarrow{j_U}
+\text{Op}_X \xrightarrow{i_U} \text{Op}_U$ gives an identity morphism
+$\text{id}_{\text{Op}_U}$. Let us compute $i_U \circ j_U(V)$ for some $V \in
+\text{Op}_U$. Note that $j_U(V)=V$ --- we simply include $V$ to the larger
+category $\text{Op}_X$. Then, we apply $i_U$ and get $i_U(V) = U \cap V$.
+However, since $V \in \text{Op}_U$, in particular one has $V \subseteq U$, so $U
+\cap V = V$. Therefore, $i_U \circ j_U(V) = V$ for any $V \in \text{Op}_U$, thus
+$i_U \circ j_U \cong \text{id}_{\text{Op}_U}$.
+
+\begin{problem}[Exercise 1.8]
+    Let $X$ be a topological space and let $X_{\text{finite}}$ be the site
+    defined as follows: $\mathcal{S} \subset \text{Op}_U$ is a covering of $U$
+    if there exists a finite subset $\mathcal{S}' \subset \mathcal{S}$ such that
+    $\bigcup_{V \in \mathcal{S}'}V = U$. Denote by $f: X \to X_{\text{finite}}$
+    the natural morphism. Prove that the presheaf $\mathcal{C}_X^{0,b}$ of
+    $\mathbb{C}$-valued continuous bounded functions is a sheaf on the site
+    $X_{\text{finite}}$ and calculate $f^{-1}\mathcal{C}_X^{0,b}$. 
+\end{problem}
+
+\textbf{Solution.} We first show that the presheaf $\mathcal{C}_X^{0,b}$ is a
+sheaf. We need to check two properties:
+\begin{quote}
+    \textit{(i)} For any open subset $U \subseteq X$, any open finite covering
+    $\{U_i\}_{i \in I}$, any continuous bounded $s \in F(U)$ satisfying $s|_{U_i}=0$ for all $i$,
+    one has $s=0$.
+\end{quote}
+
+This property is obvious. Indeed, if $s$ is zero on each $U_i$, it is clearly
+zero on $U$. The second property is less trivial:
+\begin{quote}
+    \textit{(ii)} For any open subset $U \subseteq X$, any open finite covering 
+    $\{U_i\}_{i \in I}$ and family $\{s_i \in F(U_i)\}_{i \in I}$ 
+    satisfying $s_i|_{U_i \cap U_j} = s_j|_{U_i \cap U_j}$ for all $i,j$, there 
+    exists $s \in F(U)$ with $s|_{U_i}=s_i$.
+\end{quote}
+
+For each $x \in U$, pick $x \in U_i$ and set $s(x) = s_i(x)$. It is well-defined
+since if $x \in U_j$, $j \neq i$, then $s_i(x)=s_j(x)$ since $x \in U_i \cap
+U_j$ and $s_i|_{U_i \cap U_j} = s_j|_{U_i \cap U_j}$. We shall check both
+continuity and boundness. Former is trivial since all $s_i$ are continuous. For
+boundness, notice that $|s_i(x)| \leq M_i$ for $x \in U_i$. Since $I$ is finite,
+define $M := \max_{i \in I}M_i$. Then, $|s(x)| \leq M$. Thus $s$ is bounded.
+
+We shall now find $f^{-1}\mathcal{C}_X^{0,b}$. By definition,
+
+\begin{equation*}
+    f^{-1}F: U \mapsto \text{colim}_{V \subseteq U, V \in X_{\text{finite}}}F(V) \cong \bigsqcup_{V \subseteq U, V \in X_{\text{finite}}}F(V) \quad / \quad \mathcal{R}
+\end{equation*}
+with $s_1\mathcal{R}s_2$ for $s_1 \in F(V_1)$, $s_2 \in F(V_2)$ iff exists $V_3
+\subseteq V_1 \cap V_2, V_3 \in X_{\text{finite}}$ such that $s_1|_{V_3}=s_2|_{V_3}$.
+
+Let us see what is generated by $[(s,V)]$ for bounded continuous $s: V \to
+\mathbb{C}$. Another function $t: W \to \mathbb{C}$ is in $[(s,V)]$ iff $s$ and
+$t$ agree on some subset of $V \cap W$. In paritcular, this means that $(s|_W,
+W) \in [(s,V)]$ for $W \subseteq V$. However, this implies that in fact $[(s,V)]
+\cong \varphi$ where $\varphi$ is some continuous but not necessarilly bounded
+function. Thus, $\boxed{f^{-1}\mathcal{C}_X^{0,b} \cong \mathcal{C}_X^{0}}$.
+
+\section{Abelian Sheaves}
+
+\begin{problem}[Exercise 1.7]
+    Let $X=\mathbb{R}^2$ with coordinates $(x,y)$, $Y=\mathbb{R}$ and let 
+    $\pi: X \to Y$ be the projection $(x,y) \mapsto x$. Let
+    \begin{gather*}
+        Z_0 = \{(x,y) \in \mathbb{R}^2: xy>1\}, \quad Z_1 = \{(x,y) \in \mathbb{R}^2: xy \geq 1,x>0\}, \\
+        Z_2 = \{(x,y) \in \mathbb{R}^2: x^2+y^2=1\}.
+    \end{gather*}
+    Calculate $R\pi_*\mathbf{k}_{XZ_i}$ for $i \in \{0,1,2\}$.
+\end{problem}
+
+\textbf{Solution.} We call the following isomorphism:
+\begin{equation*}
+    (R^p\pi_*F)_x \cong H^p(\pi^{-1}(x), F|_{\pi^{-1}(x)})
+\end{equation*}
+
+\textbf{Case for $Z_0$.} We have $F|_{\pi^{-1}(x)} \cong \mathbb{R}$
+
+\end{document}

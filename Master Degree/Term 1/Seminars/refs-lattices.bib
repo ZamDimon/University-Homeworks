@@ -1,0 +1,89 @@
+@book{complexity-goldwasser,
+    author = {Micciancio, Daniele and Goldwasser, S.},
+    title = {Complexity of Lattice Problems},
+    year = {2002},
+    isbn = {0792376889},
+    publisher = {Kluwer Academic Publishers},
+    address = {USA}
+}
+
+@misc{nist,
+    author = {Koen de Boer and Wessel van Woerden},
+    title = {Lattice-based Cryptography: A survey on the security of the lattice-based {NIST} finalists},
+    howpublished = {Cryptology {ePrint} Archive, Paper 2025/304},
+    year = {2025},
+    url = {https://eprint.iacr.org/2025/304}
+}
+
+@article{regev,
+    title={On lattices, learning with errors, random linear codes, and cryptography},
+    author={Regev, Oded},
+    journal={Journal of the ACM (JACM)},
+    volume={56},
+    number={6},
+    pages={1--40},
+    year={2009},
+    publisher={ACM New York, NY, USA}
+}
+
+@INPROCEEDINGS{kyber,
+    author={Bos, Joppe and Ducas, Leo and Kiltz, Eike and Lepoint, T and Lyubashevsky, Vadim and Schanck, John M. and Schwabe, Peter and Seiler, Gregor and Stehle, Damien},
+    booktitle={2018 IEEE European Symposium on Security and Privacy (EuroS\&P)}, 
+    title={CRYSTALS - Kyber: A CCA-Secure Module-Lattice-Based KEM}, 
+    year={2018},
+    pages={353-367},
+    doi={10.1109/EuroSP.2018.00032}
+}
+
+@misc{lac,
+    author = {Xianhui Lu and Yamin Liu and Zhenfei Zhang and Dingding Jia and Haiyang Xue and Jingnan He and Bao Li and Kunpeng Wang},
+    title = {{LAC}: Practical Ring-{LWE} Based Public-Key Encryption with Byte-Level Modulus},
+    howpublished = {Cryptology {ePrint} Archive, Paper 2018/1009},
+    year = {2018},
+    url = {https://eprint.iacr.org/2018/1009}
+}
+
+@article{dilithium, 
+title={CRYSTALS-Dilithium: A Lattice-Based Digital Signature Scheme}, 
+volume={2018}, 
+url={https://tches.iacr.org/index.php/TCHES/article/view/839}, 
+DOI={10.13154/tches.v2018.i1.238-268}, 
+number={1}, 
+journal={IACR Transactions on Cryptographic Hardware and Embedded Systems}, 
+author={Ducas, Léo and Kiltz, Eike and Lepoint, Tancrède and Lyubashevsky, Vadim and Schwabe, Peter and Seiler, Gregor and Stehlé, Damien}, 
+year={2018},
+month={Feb.}, 
+pages={238–268} }
+
+@book{BonehShoup2023,
+    author    = {Dan Boneh and Victor Shoup},
+    title     = {A Graduate Course in Applied Cryptography},
+    year      = {2023},
+    url =       {https://toc.cryptobook.us/}
+}
+
+@misc{fips-204,
+    author = {National Institute of Standards and Technology (NIST) and Thinh Dang and Jacob Lichtinger and Yi-Kai Liu and Carl Miller and Dustin Moody and Rene Peralta and Ray Perlner and Angela Robinson},
+    title = {Module-Lattice-Based Digital Signature Standard},
+    year = {2024},
+    month = {2024-08-13 04:08:00},
+    publisher = {Federal Inf. Process. Stds. (NIST FIPS), National Institute of Standards and Technology, Gaithersburg, MD},
+    url = {https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=958463},
+    doi = {https://doi.org/10.6028/NIST.FIPS.204},
+    language = {en},
+}
+
+@inproceedings{new-hope,
+    author = {Alkim, Erdem and Ducas, L\'{e}o and P\"{o}ppelmann, Thomas and Schwabe, Peter},
+    title = {Post-quantum key exchange: a new hope},
+    year = {2016},
+    isbn = {9781931971324},
+    publisher = {USENIX Association},
+    address = {USA},
+    abstract = {At IEEE Security \& Privacy 2015, Bos, Costello, Naehrig, and Stebila proposed an instantiation of Peikert's ring-learning-with-errors-based (Ring-LWE) key-exchange protocol (PQCrypto 2014), together with an implementation integrated into OpenSSL, with the affirmed goal of providing post-quantum security for TLS. In this work we revisit their instantiation and stand-alone implementation. Specifically, we propose new parameters and a better suited error distribution, analyze the scheme's hardness against attacks by quantum computers in a conservative way, introduce a new and more efficient error-reconciliation mechanism, and propose a defense against backdoors and all-for-the-price-of-one attacks. By these measures and for the same lattice dimension, we more than double the security parameter, halve the communication overhead, and speed up computation by more than a factor of 8 in a portable C implementation and by more than a factor of 27 in an optimized implementation targeting current Intel CPUs. These speedups are achieved with comprehensive protection against timing attacks.},
+    booktitle = {Proceedings of the 25th USENIX Conference on Security Symposium},
+    pages = {327–343},
+    numpages = {17},
+    location = {Austin, TX, USA},
+    series = {SEC'16}
+}

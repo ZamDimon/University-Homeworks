@@ -1,0 +1,64 @@
+\documentclass{template}
+
+
+\begin{document}
+
+\section*{Seminar Proposals}
+
+\subsection*{Optimizing Elliptic Curve Arithmetic}
+
+\begin{itemize}
+    \item Elliptic Curves and their importance to Cryptography (Definition of a
+    group $E(\mathbb{F}_p)$, Discrete Log and Diffie-Hellman assumptions). \textcolor{gray}{See
+    ``A Graduate Course in Applied Cryptography'', Section 15,
+    \url{https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf}.}
+    \item Projective Elliptic Curve equation (in homogeneous and Jacobian
+    forms), addition law in projective space, why it optimizes classical
+    addition law in affine space. \textcolor{gray}{See ``Complete addition
+    formulas for prime order elliptic curves'',
+    \url{https://eprint.iacr.org/2015/1060}}.
+    \item Scalar multiplication using double-and-add and non-adjacent form
+    algorithms. Multiple point multiplication (MSM) and its application to
+    polynomial commitment schemes (KZG).
+    \item Optimizing scalar multiplication using efficiently computable
+    endomorphisms. GLV Scalar Multiplication. \textcolor{gray}{See ``Guide to
+    Elliptic Curve Cryptography'', Section 3.5.}
+\end{itemize}
+
+\subsection*{Fast Fourier Transform over Finite Fields}
+
+\begin{itemize}
+    \item A short remark on structure of $\mathbb{F}_q^{\times}$ and primitive
+    $N$-th roots of unity in $\mathbb{F}_q$.
+    \item Lagrange and Barycentric Interpolation formulas. Using $N$-th roots of
+    unity subgroup for reducing complexity assymptotic. 
+    \item Fast Fourier Transform over FFT-friendly finite fields.
+    \item Elliptic Curve Fast Fourier Transform (ECFFT). See ``ECFFT: Fast
+    Polynomial Algorithms over all Finite Fields''
+    \url{https://arxiv.org/pdf/2107.08473}.
+\end{itemize}
+
+\textit{Note:} The last point of the lecture requires most preparation. The
+first three are already presented in my book. One might see a simplified
+presentation on these topics here:
+\url{https://zkdl-camp.github.io/files/slides/13-ntt.pdf}.
+
+\subsection*{Introduction to Zero-Knowledge Proofs}
+
+\begin{itemize}
+    \item What are zero-knowledge proofs and their applications. Interactive
+    Probabilistic Proofs (IP). Soundness, Argument of Knowledge, Zero-Knowledge
+    properties. Fiat-Shamir Heuristic.
+    \item $\Sigma$-protocols as an example of classical IP.
+    \item A glimpse into pairing-based zero-knowledge succinct non-interactive
+    argument of knowledge. Schwartz-Zippel Lemma, KZG polynomial commitment
+    scheme. High-level overview of Groth16: algebraic arithmetization and
+    quadratic arithmetic programs.
+\end{itemize}
+
+\textit{Note:} To avoid using pairings without knowing their algebraic nature,
+instead of the last point, we might consider zk-SNARKs based on multilinear
+extensions (Sum-Check and GKR protocols). See
+\url{https://zkdl-camp.github.io/files/slides/15-sumcheck.pdf}.
+
+\end{document}

@@ -1,0 +1,699 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Commutative Algebra Cheat Sheet}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\tableofcontents
+
+\newpage
+
+\section{Definitions}
+
+\subsection{Basic Stuff}
+
+Further assume $A$ is a unital commutative ring.
+
+\begin{definition}
+    An element $x \in A$ is said to be:
+    \begin{itemize}
+        \item \textbf{unit} if $x^{-1} \in A$;
+        \item \textbf{nilpotent} if $x^n = 0$ for some $n$;
+        \item \textbf{idempotent} if $x^2 = x$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    $I \subseteq A$ is an \textbf{ideal} if $aI \subseteq I$ for every $a \in A$
+    and $I$ is closed under addition. In particular, $\mathfrak{p} \subsetneq A$
+    is \textbf{prime} if $xy \in \mathfrak{p}$ implies $x \in \mathfrak{p}$ or
+    $y \in \mathfrak{p}$, while $\mathfrak{m} \subsetneq A$ is \textbf{maximal}
+    if no ideals are strictly contained between $\mathfrak{m}$ and $A$. 
+\end{definition}
+
+\begin{definition}
+    The \textbf{radical} of an ideal is $\sqrt{I} = \{x \in A: x^n \in I \;
+    \text{for some} \; n\}$. In particular, \textbf{nilradical} is $\mathfrak{N}_A = \{x
+    \in A: x^n = 0 \; \text{for some} \; n\}$. Finally, $I$ is \textbf{radical}
+    if $I = \sqrt{I}$.
+\end{definition}
+
+\begin{definition}
+    Let $S \subseteq A$ be a multiplicative system (that is, $S$ is endowed with
+    a closed multiplication map). Then, \textbf{localization} $A[S^{-1}]$ (or 
+    sometimes notation $S^{-1}A$ is used) can be defined in two ways:
+    \begin{enumerate}
+        \item[(i)] For $S=\{f_{\alpha}\}_{\alpha \in I}$, $A[S^{-1}] =
+        A[T_{\alpha}]_{\alpha \in I}/(T_{\alpha}f_{\alpha}-1)_{\alpha \in I}$.
+        \item[(ii)] The set $\{\frac{a}{b}: a \in A, b \in S\}$ where two
+        elements $\frac{a}{b} \sim \frac{a'}{b'}$ iff exists $s \in S$ such that
+        $s(ab'-a'b) = 0$.
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}
+    Two basic facts about $A[S^{-1}]$:
+    \begin{enumerate}
+        \item[(i)] $\ker(A \to A[S^{-1}]) = \{g \in A: gs = 0 \; \text{for some}
+        \; s \in S\}$.
+        \item[(ii)] Let $I \subseteq A$ be an ideal and let $S \subseteq A$ be a
+        multiplicative subset. Let $\pi: A \to A/I$ be a projection. Then, there
+        exists an isomorphism:
+        \begin{equation*}
+            (A/I)[\pi(S)^{-1}] \cong A[S^{-1}]/IA[S^{-1}].
+        \end{equation*}
+    \end{enumerate}
+\end{lemma}
+
+\begin{definition}
+    Map $A \to B$ is said to be \textbf{of finite type} if $B$ is a finitely
+    generated as an $A$-algebra, while it is \textbf{finite} if $B$ is a
+    finitely generated $A$-module. Finally, $B$ is \textbf{finitely presented}
+    if $B \cong A[x_1,\dots,x_n]/(f_1,\dots,f_m)$ for some elements
+    $f_1,\dots,f_m \in A[x_1,\dots,x_n]$.
+\end{definition}
+
+\subsection{Spectrum of a commutative ring}
+
+\begin{definition}
+    Define a set $\text{Spec}(A) = \{\mathfrak{p} \subseteq A: \mathfrak{p} \;
+    \text{is prime}\}$. We say that a subset $Z \subseteq \text{Spec}(A)$
+    is \textbf{closed} if $Z=V(I)$ for some ideal $I$ and
+    \begin{equation*}
+        V(I) = \{\mathfrak{p} \in \text{Spec}(A): I \subseteq \mathfrak{p}\}.
+    \end{equation*}
+
+    Open sets are if turn are defined as $D(I) = \{\mathfrak{p} \in
+    \text{Spec}(A): I \not\subseteq \mathfrak{p}\}$.
+\end{definition}
+
+\begin{lemma}
+    Closed subsets define a topology: they are closed under finite unions and
+    arbitrary intersections, and both $\emptyset$ and $\text{Spec}(A)$ are
+    closed.
+\end{lemma}
+
+\textbf{Proof.} The last fact is obvious: $\text{Spec}(A) = V(0)$ while
+$\emptyset = V(A)$. Now consider the union $V(I_0) \cup V(I_1)$. It consists of
+all prime ideals that contain either $I_0$ or $I_1$. Thus, $V(I_0) \cup V(I_1) =
+V(I_0 \cap I_1) = V(I_0I_1)$. It is also easy to see that $V(\sum I_{\alpha}) =
+\bigcap V(I_{\alpha})$. \qedwhite
+
+\subsection{Modules, Tensor Product, and Kähler Differential}
+
+\subsubsection{Modules}
+
+\begin{definition}
+    $M$ is an \textbf{$A$-module} if $(M,+)$ is an abelian group with a map $A
+    \times M \to M$ such that the following holds (roughly, meaning it is
+    linear):
+    \begin{enumerate}
+        \item[(i)] $a(m_1+m_2) = am_1 + am_2$;
+        \item[(ii)] $(a_1+a_2)m = a_1m + a_2m$;
+        \item[(iii)] $a_1(a_2m) = (a_1a_2)m$.  
+        \item[(iv)] $1_Am = m$. 
+    \end{enumerate}
+
+    Further denote by $\underline{\text{Mod}}_A$ the category of $A$-modules.
+\end{definition}
+
+\subsubsection{Tensor Product}
+
+\begin{definition}
+    \textbf{Tensor product} $\bullet \otimes_A \bullet$ is a bifunctor
+    $\underline{\text{Mod}}_A \times \underline{\text{Mod}}_A \to
+    \underline{\text{Mod}}_A$ satisfying the following universal property:
+    \[
+    \begin{tikzcd}
+        N \times M \arrow[-Stealth]{r}{\phi} 
+        \arrow[-Stealth]{rd}{h} & N \otimes_A M \arrow[-Stealth, dashed]{d}{\exists! f}  \\
+        & L
+    \end{tikzcd}
+    \]
+    where $e$ is a bilinear and $f$ is an $A$-linear morphism.
+\end{definition}
+
+\begin{definition}
+    Let $A \xrightarrow{f} B$ be a morphism of rings and let $N$ be a $B$-module. Then,
+    $N$ can be viewed as an $A$-module where for $n \in N$, multiplication with
+    $a \in A$ is defined as $f(a)n$. This is called a \textbf{restriction of
+    scalars}.
+\end{definition}
+
+\begin{definition}
+    Again, let $A \xrightarrow{f} B$ be a morphism of ring and now let $M$ be an
+    $A$-module. An \textbf{extension of scalars} is an $B$-module $M_B := B
+    \otimes_A M$ where $B$ is naturally perceived as an $A$-module and $b(b'
+    \otimes x) = bb' \otimes x$. Note that extension of scalars is the coproduct
+    of $A$-algebras.
+\end{definition}
+
+\begin{definition}
+    Let $S \subseteq A$ be a multiplicatively closed and $M$ an $A$-module. Let
+    $K := \{m \in M: \exists_{s \in S} sm=0\}$. Define the $A[S^{-1}]$-module
+    $M[S^{-1}]$ by considering the pairs $\{m/s: m \in M/K, s \in S\}$, where
+    $(m,s) \sim (m',s')$ iff $s'm = sm'$ and introducing the module structure as
+    $\frac{a}{s_1} \cdot \frac{m}{s_2} := \frac{am}{s_1s_2}$.
+\end{definition}
+
+\begin{proposition}
+    Let $S \subseteq A$ be a multiplicative system and $M$ an $A$-module. Then,
+    $M[S^{-1}] \cong A[S^{-1}] \otimes_A M$.
+\end{proposition}
+
+\begin{definition}
+    $M$ is a \textbf{flat} $A$-module if $(\cdot) \otimes_A M$ is left-exact.
+\end{definition}
+
+\subsubsection{Differentials}
+
+In this section, we denote our commutative algebra by $\mathbf{k}$ (stressing
+that this is typically a field).
+
+\begin{definition}
+    Let $A$ be a $\mathbf{k}$-algebra and $M$ be an $A$-module. A
+    $\mathbf{k}$-linear derivation $\delta: A \to M$ is a $\mathbf{k}$-linear
+    map satisfying the Leibniz rule $\delta(a_1a_2) = a_1\delta(a_2) +
+    a_2\delta(a_1)$ for every $a_1,a_2 \in A$.
+\end{definition}
+
+\begin{definition}
+    Let $A$ be a $\mathbf{k}$-algebra. Then there exists a pair $(\Omega,d)$
+    of an $A$-module $\Omega$ and a $\mathbf{k}$-linear derivation $d: A \to \Omega$
+    that is a universal in the sense of the following diagram:
+    \[
+    \begin{tikzcd}
+        A \arrow[-Stealth]{r}{d} 
+        \arrow[-Stealth]{rd}{\delta} & \Omega_{A/\mathbf{k}} \arrow[-Stealth, dashed]{d}{\exists! f}  \\
+        & L
+    \end{tikzcd}
+    \]
+    Moreover, $\Omega$ is generated by the set $d(A)$.
+\end{definition}
+
+\begin{lemma}
+    Let $S=\mathbf{k}[T_1,\dots,T_n]$ and let $I=(f_1,\dots,f_r)$ be an ideal of
+    $S$. Let $A = S/I$. Then,
+    \begin{equation*}
+        \Omega_{A/\mathbf{k}} \cong \frac{\Omega_{S/\mathbf{k}}}{I\Omega_{S/\mathbf{k}} + S(d(i): i \in I)}.
+    \end{equation*}
+\end{lemma}
+
+\begin{example}
+    Let us compute $\Omega_{\mathbb{C}/\mathbb{R}}$. In the setting of lemma above,
+    $S=\mathbb{R}[T]$, $I=(T^2+1)$, and $A=\mathbb{R}[T]/(T^2+1) \cong \mathbb{C}$. Thus:
+    \begin{align*}
+        \Omega_{\mathbb{C}/\mathbb{R}} &\cong \frac{\Omega_{\mathbb{R}[T]/\mathbb{R}}}{(T^2+1)\Omega_{\mathbb{R}[T]/\mathbb{R}}+\mathbb{R}[T](2TdT)} \\
+        &\cong \frac{\mathbb{R}[T]dT}{\mathbb{R}[T](T^2+1)dT + 2T\mathbb{R}[T]dT}\\
+        &\cong \frac{\mathbb{R}[T]dT}{((T^2+1),(2T))\mathbb{R}[T]dT} \cong \frac{\mathbb{R}[T]dT}{\mathbb{R}[T]dT} \cong 0
+    \end{align*}
+\end{example}
+
+\subsection{Integrality, Valuation Rings}
+
+\subsubsection{Integral Elements and Closure}
+
+\begin{definition}
+    Consider a ring homomorphism $f: A \to B$. We say that $b \in B$ is
+    \textbf{integral} over $A$ if there exists a monic $f \in A[T]$ such that
+    $f(b)=0$. $f$ is \textbf{integral} if every element of $B$ is integral over
+    $A$.
+\end{definition}
+
+\begin{lemma}
+    If $f$ is finite, then it is integral. Conversely, if $B$ is finitely 
+    generated as an $A$-algebra by elements integral over $A$, then $B$
+    is a finite $A$-module.
+\end{lemma}
+
+\textbf{Proof.} Suppose $f$ is finite, then $B=(b_1,\dots,b_n)$. Define $g_i: B
+\to B$ by multiplication by $b_i$. Then, by Cayley-Hamilton trick there exist
+$a_0,\dots,a_{n-1} \in A$ such that $b_i^n+a_{n-1}b_i^{n-1}+\dots+a_0=0$,
+meaning that $b_i$ is a root of some $A[T]$. Repeat for each $b_i$.
+
+For the second part, suppose $B$ is finitely generated by $b_1,\dots,b_n$
+integral over $A$. Fix $N$ large enough and write $b_i^N =
+\sum_{j=0}^{N-1}a_{ij}b_i^j$ for every $i$. By assumption, the $A$-module $B$ is
+generated by the set $\{b_1^{s_1}\dots b_n^{s_n}: s_1,\dots,s_n \in
+\mathbb{Z}_{\geq 0}\}$. Using the polynomial relation above, we see that in fact
+the $A$-module is generated by $\{b_1^{s_1}\dots b_n^{s_n}: 0 \leq s_1,\dots,s_n
+< N\}$. \qedwhite
+
+\begin{definition}
+    Let $A \to B$ be a ring homomorphism. Then, the set
+    \begin{equation*}
+        C := \{b \in B: b \; \text{is integral over} \; A\}
+    \end{equation*}
+    is an $A$-subalgebra of $B$. It is called the integral closure of $A$ in
+    $B$.
+\end{definition}
+
+\begin{definition}
+    The \textbf{normalization} of a domain $A$ is its integral closure in
+    $\text{Frac}(A)$. We say that $A$ is normal if it is equal to its
+    normalization.
+\end{definition}
+
+\subsubsection{Valuation Rings}
+
+\begin{definition}
+    Let $K$ be a field. A \textbf{valuation subring} of $K$ is a subring $K^+
+    \subseteq K$ such that for every non-zero $x \in K$, either $x \in K^+$ or
+    $x^{-1} \in K^+$.
+\end{definition}
+
+\begin{definition}
+    Let $K$ be a field. A \textbf{valuation} on $K$ is a map $|\cdot|: K \to
+    \Gamma \cup \{0\}$ where $\Gamma$ is a totally ordered abelian group such
+    that $|0|=0$, $|1|=1$, $|xy|=|x||y|$, and $|x+y| \leq \max\{|x|, |y|\}$.
+\end{definition}
+
+\subsection{Noetherian Rings}
+
+\begin{definition}
+    Let $A$ be a ring. The following conditions are equivalent:
+    \begin{enumerate}
+        \item[(i)] Every ideal $I \subseteq A$ is finitely generated.
+        \item[(ii)] Every submodule $N \subseteq M$ of a finitely 
+        generated $A$-module $M$ is finitely generated.
+        \item[(iii)] Every increasing sequence $I_0 \subseteq I_1 \subseteq \dots$ of 
+        ideals in $A$ stabilizes.
+        \item[(iv)] Every increasing sequence $N_0 \subseteq N_1 \subseteq \dots$ of 
+        submodules of a finitely generated $A$-module $M$ stabilizes. 
+    \end{enumerate}
+    If either of the condition holds, $A$ is a \textbf{Noetherian ring}.
+\end{definition}
+
+\begin{proposition}
+    Let $A$ be a Noetherian ring. Then the following hold.
+    \begin{enumerate}
+        \item[(a)] For every ideal $I \subseteq A$, the ring $A/I$ is Noetherian.
+        \item[(b)] Every localization of $A$ is Noetherian.
+        \item[(c)] \textbf{Hilbert's basis theorem.} The ring $A[T]$ is Noetherian.
+        \item[(d)] Every finitely generated $A$-algebra is Noetherian and f.p. in $A$.   
+    \end{enumerate}
+\end{proposition}
+
+\subsection{Graded Rings}
+
+\begin{definition}
+    Let $A$ be a ring and $\Lambda$ be a commutative monoid. We say that $A$ is
+    \textbf{$\Lambda$-graded} if there exists a decomposition $A =
+    \bigoplus_{\lambda \in \Lambda}A_{\lambda}$, where $A_{\lambda}$ are abelian
+    subgroups of $A$ such that $1 \in A_0$ and $A_{\lambda_1} \cdot
+    A_{\lambda_2} \subseteq A_{\lambda_1 + \lambda_2}$.
+
+    We say $M$ is a \textbf{$\Lambda$-graded} $A$-module if $M =
+    \bigoplus_{\lambda \in \Lambda}M_{\lambda}$ such that
+    $A_{\lambda_1}M_{\lambda_2} \subseteq M_{\lambda_1+\lambda_2}$ for every
+    $\lambda_1,\lambda_2 \in \Lambda$.
+\end{definition}
+
+\section{Results}
+
+\subsection{Nilradical is the intersection of prime ideals}
+\begin{lemma}
+    $\mathfrak{N}_A = \bigcap_{\mathfrak{p} \in \text{Spec}(A)}\mathfrak{p}$.
+\end{lemma}
+
+\textbf{Proof.} Inclusion $\mathfrak{N}_A \subseteq \bigcap_{\mathfrak{p} \in
+\text{Spec}(A)}\mathfrak{p}$ is easy. Suppose $x \in \mathfrak{N}_A$, meaning
+$x^n = 0$ for some $n$. So in particular, $x^n \in \mathfrak{p}$ for any prime
+ideal $\mathfrak{p} \in \text{Spec}(A)$. If $n=1$, we win. Otherwise, $x \cdot
+x^{n-1} \in \mathfrak{p}$, meaning either $x \in \mathfrak{p}$ or $x^{n-1} \in
+\mathfrak{p}$. If the former is true, we win. Otherwise, continue until we win.
+We eventually win.
+
+Let us prove the other direction, which is a bit more tricky. Take any $f$ that
+lies in every prime ideal. Consider the localization $A[f^{-1}]$. Since prime
+ideals of $A[f^{-1}]$ are in one-to-one correspondence to prime ideals
+$\mathfrak{p}$ of $A$ with $\mathfrak{p} \cap \{f^n\}_{n \geq 0} = \emptyset$,
+$A[f^{-1}]$ contains no prime ideals, so $A[f^{-1}]=0$. But then $1/1=0/1$ in
+$A[f^{-1}]$, meaning there is some $s \in S$ such that $s=0$. But since
+$S=\{f^n\}_{n \geq 0}$, this proves the lemma. \qedwhite
+
+\subsection{$\text{Spec}(A)$ is quasi-compact}
+
+\begin{lemma}
+    $X=\text{Spec}(A)$ is a quasi-compact topological space: meaning, every open
+    covering of $X$ has a finite subcovering.
+\end{lemma}
+
+\textbf{Proof.} Let $X = \bigcup_{\alpha \in I}U_{\alpha}$. One might more
+concretely assume $X = \bigcup_{\alpha \in I}D(f_{\alpha})$. Equivalently, if
+$I=(f_{\alpha})_{\alpha \in I}$, then $V(I) = \emptyset$, so no prime ideal
+contains $I$. Thus, $A/I$ is a zero-ring and so $A=I$. By definition of an ideal
+generated by a subset of a ring, we have a \textit{finite} expression
+\begin{equation*}
+    1 = \sum_{\beta \in J}g_{\beta}f_{\beta}, \quad g_{\beta} \in A.
+\end{equation*}
+
+Thus $\bigcup_{\beta \in J}D(f_{\beta})$ is the desired subcovering. \qedwhite
+
+\subsection{Tensor Product is Right-exact}
+
+\begin{proposition}
+    Let 
+    \begin{equation*}
+        M' \xrightarrow{f} M \xrightarrow{g} M'' \to 0 \quad (\star)
+    \end{equation*}
+    be an exact sequence in $\underline{\text{Mod}}_A$ and let 
+    $N \in \underline{\text{Mod}}_A$. Then the sequence
+    \begin{equation*}
+        M' \otimes_A N \xrightarrow{f \otimes 1} M \otimes_A N \xrightarrow{g \otimes 1} M'' \otimes_A N \to 0
+    \end{equation*}
+    is exact.
+\end{proposition}
+
+We need the auxiliary fact to prove this proposition.
+
+\begin{propositions}
+    Let $M' \to M \to M'' \to 0$ be exact. This sequence is exact 
+    iff for all $N \in \underline{\text{Mod}}_A$, the sequence
+    \begin{equation*}
+        0 \to \text{Hom}(M'', N) \to \text{Hom}(M, N) \to \text{Hom}(M', N)
+    \end{equation*}
+    is exact. Similarly, $N' \to N \to N'' \to 0$ is exact iff 
+    for all $M \in \underline{\text{Mod}}_A$ the following sequence is exact:
+    \begin{equation*}
+        0 \to \text{Hom}(M, N') \to \text{Hom}(M, N) \to \text{Hom}(M, N'').
+    \end{equation*}
+\end{propositions}
+
+We consider it to be known from basic category theory. 
+
+\textbf{Proof of proposition.} Let $P \in \underline{\text{Mod}}_A$. Since
+sequence $(\star)$ is exact, the sequence $\text{Hom}((\star), \text{Hom}(N,
+P))$ is exact by proposition above. Since $\text{Hom}(M \otimes_A N, P) \cong
+\text{Hom}(M, \text{Hom}(N,P))$, $\text{Hom}((\star) \otimes_A N, P)$ is exact.
+By invoking proposition above once again, $(\star) \otimes_A N$ is exact.
+\qedwhite
+
+\subsection{Structure of modules over PID}
+
+This theorem does not require knowing the proof for an exam.
+
+\begin{theorem}
+    Let $A$ be a PID and let $M$ be finitely generated $A$-module. Then,
+    \begin{equation*}
+        M \cong A^r \oplus \bigoplus_{i=1}^s A/(f_i^{m_i})
+    \end{equation*}
+    for some $r \geq 0$, irreducible elements $f_1,\dots,f_s \in A$, and
+    $m_1,\dots,m_s \geq 1$.
+\end{theorem}
+
+\subsection{Ring is local iff non-units form an ideal}
+
+\begin{lemma}
+    $A$ is local if any only if $A\setminus A^{\times}$ is an ideal.
+\end{lemma}
+
+\textbf{Proof.} Suppose $(A,\mathfrak{m})$ is local. Let $x$ be an element not
+in $\mathfrak{m}$. Then $x$ must be a unit. Otherwise, $x$ generates an ideal
+$(x)$ which is contained in the maximal ideal other than $\mathfrak{m}$.
+
+Conversely, suppose $I = A\setminus A^{\times}$ is an ideal. Then every ideal of
+$A$ must be contained in $I$ since ideals cannot contain units. \qedwhite
+
+\subsection{Nakayama's Lemma}
+
+\begin{lemma}
+    Let $(A,\mathfrak{m})$ be a local ring and let $M$ be a finitely 
+    generated $A$-module. Then, $M=\mathfrak{m}M$ implies $M=0$.
+\end{lemma}
+
+\textbf{Proof.} Let $M=(x_1,\dots,x_n)$. Since $\mathfrak{m}M=M$, then
+\begin{equation*}
+    x_i = \sum_{j=1}^n m_{ij}x_j \; \text{for some $m_{ij} \in \mathfrak{m}$.}
+\end{equation*}
+
+Thus $\mathbf{x} = Q\mathbf{x}$ for some $Q=\{m_{ij}\}$ and so $(E_{n \times
+n}-Q)\mathbf{x}=0$. Consider the matrix $T = E_{n \times n} - Q$. Let $\pi: A
+\to A/\mathfrak{m}$ be the natural projection, then $\pi(T) = E_{n \times n}$,
+and so $\det\pi(T) = 1$ in $\mathfrak{m}$. Since $\det\pi(T)$ is invertible in
+$A/\mathfrak{m}$, it is not in $\mathfrak{m}$, and thus invertible in $A$. Thus,
+$T$ is invertible as well. Thus, $\mathbf{x}=(m_1,\dots,m_n)=0$. \qedwhite
+
+\subsection{Finitely presented flat module over local ring is free}
+
+\begin{lemma}
+    Let $A$ be a local ring and $M$ is a finitely presented flat module. Then,
+    $M$ is free.
+\end{lemma}
+
+\textbf{Proof.} If $M$ is finitely presented, then
+\begin{equation*}
+    0 \to K \to A^n \to M \to 0
+\end{equation*}
+is exact and $K$ is finitely generated. Apply $\bullet \otimes_A
+(A/\mathfrak{m})$ functor. Suppose elements $m_i$ generate $M$, then their images
+generate $M/\mathfrak{m}M$ as $R/\mathfrak{m}$-vector space. We may assume these
+images $\overline{m}_i$ actually form a basis. Therefore, the map
+$(A/\mathfrak{m}A)^n \to M/\mathfrak{m}M$ is an isomorphism. However, in such
+case $K/\mathfrak{m}K \cong 0$ and so by Nakayama $K=0$. Thus, $M \cong A^n$.
+
+\subsection{Going-up Theorem}
+
+\begin{theorem}
+    Suppose $f:A \to B$ is an integral ring homomorphism, then the induced map
+    $f^*:\text{Spec}(B) \to \text{Spec}(A)$ is closed.
+\end{theorem}
+
+\textbf{Proof.} Let $Z = V(J) \subseteq \text{Spec}(B)$ be a closed subset for
+some ideal $J \subseteq B$. We must show that $f^*(V(J))$ is closed. Since this
+is an image of the composition $\text{Spec}(B/J) \to \text{Spec}(B) \to
+\text{Spec}(A)$ coming from the integral ring homomorphism $A \to B/J$, we might
+reduce our statement to $f^*(\text{Spec}(B))$ must be closed. Clearly,
+$\text{im}(f^*) \subseteq V(\ker f)$. We shall prove equality. Recall that
+$V(\ker f)$ is the image of $\text{Spec}(A/\ker f) \to \text{Spec}(A)$. We
+factor $A \to B$ as $A \twoheadrightarrow (A/\ker f) \hookrightarrow B$.
+Replacing $A$ by $A/\ker f$ we reduce to the case when $A \to B$ is 
+injective and to the claim that $\text{Spec}(B) \to \text{Spec}(A)$ is 
+surjective.
+
+Let $\mathfrak{p} \in \text{Spec}(A)$. The map $A_{\mathfrak{p}} \to
+B_{\mathfrak{p}}$ is integral and injective. In particular, $B_{\mathfrak{p}}
+\neq 0$. Take a maximal ideal $\mathfrak{m} \in \text{Spec}(B_{\mathfrak{p}})$
+and its image $\mathfrak{q} \in \text{Spec}(A_{\mathfrak{p}})$. We have 
+the following situation.
+
+\[
+    \begin{tikzcd}
+        A_{\mathfrak{p}} \arrow[-Stealth]{r}{\text{integral}}\arrow[-Stealth, two heads]{d}{} & B_{\mathfrak{p}}\arrow[-Stealth, two heads]{d}{} \\
+        A_{\mathfrak{p}}/\mathfrak{q} \arrow[-Stealth, hook]{r}{} & B_{\mathfrak{p}}/\mathfrak{m}
+    \end{tikzcd}
+\]
+
+The composition $A_{\mathfrak{p}} \to B_{\mathfrak{p}}/\mathfrak{m}$ is
+integral, so also $A_{\mathfrak{p}}/\mathfrak{q} \hookrightarrow
+B_{\mathfrak{p}}/\mathfrak{m}$ is integral. But note that since
+$A_{\mathfrak{p}}/\mathfrak{q}$ is a field, so is
+$B_{\mathfrak{p}}/\mathfrak{m}$, so $\mathfrak{m}$ is maximal. Hence
+$\mathfrak{q}$ is a maximal ideal of $A_{\mathfrak{p}}$. This ring is local, so
+that $\mathfrak{q}=\mathfrak{p}A_{\mathfrak{p}}$. This implies that
+$\mathfrak{p} \in \text{im}(f^*)$, which concludes the proof.
+
+
+\subsection{Artin-Tate Lemma}
+
+\begin{lemma}
+    Let $A$ be a Noetherian ring, let $C$ be a finite type $A$-algebra, and let 
+    $B \subseteq C$ be an $A$-subalgebra such that $C$ is finite over $B$. Then 
+    $B$ is of finite type over $A$.
+\end{lemma}
+
+\textbf{Proof.} Let $x_1,\dots,x_m$ generate $C$ as an $A$-algebra and let
+$y_1,\dots,y_n \in C$ generate $C$ as $B$-module. Then,
+\begin{equation*}
+    x_i = \sum_j b_{ij}y_j, \quad y_iy_j = \sum_k b_{ijk}y_k
+\end{equation*}
+
+Let $A' \subseteq B$ be an $A$-algebra generated by these elements. Then $A \to
+A'$ is of finite type by definition. In particular, $A'$ is Noetherian since $A$
+is. On the other hand, the above equations certify that $A' \to C$ is finite.
+Since $B$ is an $A'$-submodule of $C$, and $A'$ is Noetherian, we see that $A'
+\to B$ is finite, and in particular of finite type. Therefore $A \to A' \to B$
+is of finite type.\qedwhite
+
+\subsection{Hilbert's Basis Theorem}
+
+\begin{theorem}
+    If $A$ is Noetherian, so is $A[T]$.
+\end{theorem}
+
+\textbf{Proof.} Let $J \subseteq A[T]$ be an ideal. Suppose first that $J$
+contains some monic polynomial $f$ of degree $n$. Then, any $g \in J$ of degree
+$\deg(g) = m > n$ can be written as:
+\begin{equation*}
+    g = a_mT^{m-n}f + h
+\end{equation*}
+where $h$ is of degree less than $m$. By induction, we show that $J$ is
+generated by $f$ and $J \cap \bigoplus_{i<n}A\cdot T^n$. The latter is an
+$A$-submodule of $\bigoplus_{i<n}A\cdot T^n$ which is finitely generated since
+$A$ is Noetherian. If follows that $J$ is finitely generated.
+
+Assume we do not have any monic polynomials in $J$. Let $I \subseteq A$ be the
+set consisting of $0$ and all possible leading coefficients of elements in $J$.
+It is an ideal in $A$, and hence is finitely generated, say $I=(a_1,\dots,a_n)$
+with $a_i \neq 0$. By definition, we have elements $f_i=a_iT^{n_i}+\dots \in J$
+with leading coefficient $a_i$. Let $N := \max_i\{n_i\}$, then we similarly show
+that $J$ is generated by $(f_1,\dots,f_n)$ together with $J \cap
+\bigoplus_{i<n}A \cdot T^n$, and hence is finitely generated as $A$ is
+Noetherian.\qedwhite
+
+\subsection{Nullstellensatz Lemma}
+
+\begin{lemma}
+    Let $\mathbf{k}$ be a field and $L$ a finitely generated
+    $\mathbf{k}$-algebra. Then,
+    \begin{enumerate}
+        \item[(i)] If $L/\mathbf{k}$ is a field extension, $[L:\mathbf{k}]<\infty$. 
+        \item[(ii)] Let $\mathfrak{m} \subseteq L$ be a maximal ideal, then
+        $[L/\mathfrak{m}: \mathbf{k}]<\infty$. In particular, if the field is
+        algebraically closed ($\mathbf{k} = \overline{\mathbf{k}}$), then
+        $L/\mathfrak{m} \cong \mathbf{k}$.
+        \item[(iii)] If $\mathbf{k}=\overline{\mathbf{k}}$, then
+        $\text{MSpec}(L) \cong \text{Hom}_{\mathbf{k}}(L,\mathbf{k})$.
+        \item[(iv)] Let $\mathbf{k} = \overline{\mathbf{k}}$ and 
+        $\mathbf{k}^n$ is endowed with the Zariski topology: a set 
+        $Z \subseteq \mathbf{k}^n$ is closed iff it is of form
+        \begin{equation*}
+            V_k(I) = \{(x_1,\dots,x_n) \in \mathbf{k}^n: \forall_{f \in I} f(x_1,\dots,x_n) = 0\}
+        \end{equation*}
+        for some ideal $I \subseteq \mathbf{k}[T_1,\dots,T_n]$. Then, $Z \mapsto
+        Z \cap \mathbf{k}^n$ is a bijection between closed sets of
+        $\text{Spec}(L)$ and $\text{Spec}(\mathbf{k}^n)$.
+        \item[(v)] Define $I_k(Z)=\{f \in \mathbf{k}[T_1,\dots,T_n]:
+        \forall_{\mathbf{x} \in Z} f(\mathbf{x})=0\}$. Then,
+        \begin{enumerate}
+            \item[(a)] For an ideal $I \subseteq \mathbf{k}[T_1,\dots,T_n]$, $I_k(V_k(I)) = \sqrt{I}$.
+            \item[(b)] For a subset $Z \subseteq \mathbf{k}^n$, one has $V_k(I_k(Z)) = \overline{Z}$.
+            \item[(c)] $I_k$ and $V_k$ are mutually inverse bijections between
+            the sets of radical ideals of $\mathbf{k}[T_1,\dots,T_n]$ and the
+            set of Zariski closed sets of $\mathbf{k}^n$.  
+        \end{enumerate}
+    \end{enumerate}
+\end{lemma}
+
+\subsection{Noether normalization lemma}
+
+\begin{lemma}
+    Let $\mathbf{k}$ be a field and $A$ a non-trivial finitely generated
+    $\mathbf{k}$-algebra. Then, there exists an integral map $k[y_1,\dots,y_n]
+    \to A$ where $y_1,\dots,y_n$ are algebraically independent.
+\end{lemma}
+
+\textbf{Proof.} We prove this fact by induction. Base of induction is trivial.
+Assume $x_1,\dots,x_n$ are algebraically dependent and generate $A$, then there
+exists some polynomial $f$ such that $f(x_1,\dots,x_n)=0$ (otherwise $A \cong
+\mathbf{k}[x_1,\dots,x_n]$ and we are done). Define new elements
+$z_1,\dots,z_{n-1}$ as follows: $z_i := x_i - x_n^{m_i}$ where $m_i$ is some
+integer to be determined. Thus, we get:
+\begin{equation*}
+    f(z_1+x_n^{m_1},z_2+x_n^{m_2},\dots,z_{n-1}+x_n^{m_{n-1}},x_n) = 0.
+\end{equation*}
+
+Now let $f=\sum_{\alpha}a_{\alpha}T_1^{\alpha_1}\dots T_n^{\alpha_n}$. When 
+we expand the substitution, the typical term would be:
+\begin{equation*}
+    a_{\alpha}(z_1+x_n^{m_1})^{\alpha_1}(z_2+x_n^{m_2})^{\alpha_2}\dots (z_{n-1}+x_n^{m_{n-1}})^{\alpha_{n-1}}x_n^{\alpha_n}.
+\end{equation*}
+
+The highest power of $x_n$ in such case is $x_n^{\alpha_n + \sum_{i<n}\alpha_i
+m_i}$. We choose the integers $m_i$ such that all these exponents are distinct
+for every multi-index $\alpha$ where $a_{\alpha} \neq 0$ (for instance, let $m_i
+:= r^i$ for large enough $r$). Since exponents are distinct, there is a unique
+maximum exponent $N$. The equation then takes the form $cx_n^N + (\dots) = 0$
+where $c \in \mathbf{k}$. Dividing by $c$ we get a monic equation of $x_n$ with
+coefficients in $\mathbf{k}[z_1,\dots,z_{n-1}]$. Thus, $x_n$ is integral over
+$\mathbf{k}[z_1,\dots,z_{n-1}]$, and thus so are $x_i$. Applying transitivity of
+integrality, we win.
+
+\subsection{Chevalley's Theorem}
+
+\begin{theorem}
+    Let $f: A \to B$ be of finite presentation and let the induced continuous
+    map be $f^*: \text{Spec}(B) \to \text{Spec}(A)$. Then, for every
+    constructible subset $Z \subseteq \text{Spec}(B)$, its image $f^*(Z)
+    \subseteq \text{Spec}(A)$ is constructible.
+\end{theorem}
+
+\subsection{Equivalent conditions for separable field extensions}
+
+\begin{proposition}
+    The following statements are equivalent:
+    \begin{enumerate}
+        \item[(a)] $L/K$ is separable.
+        \item[(b)] $\Omega_{L/K} = 0$.
+        \item[(c)] $L \otimes_K \overline{K} \cong \overline{K}^n$ for some $n \geq 0$.
+        \item[(d)] $L \otimes_K L$ is reduced.
+        \item[(e)] $\#\text{Hom}_K(L, \overline{K}) = [L:K]$.
+        \item[(f)] $L \cong K[T]/(f(T))$ for some monic irreducible $f \in K[T]$.
+        \item[(g)] $\text{Tr}_{L/K}: L \to K$ is non-zero.
+        \item[(h)] $\langle x, y \rangle = \text{Tr}_{L/K}(xy): L \times L \to K$ is
+        non-generate.
+    \end{enumerate}
+\end{proposition}
+
+\underline{(a) $\Rightarrow$ (b).} Let $x \in L$ be an element with minimal
+polynomial $f \in K[T]$. Then, $\delta(f(x)) = f'\delta(x) = 0$ for every
+$K$-linear derivation $\delta: L \to L$. But since $L/K$ is separable, $f' \neq
+0$, and so $\delta = 0$.
+
+\underline{(c) $\Rightarrow$ (d).} Let $L \hookrightarrow \overline{K}$ be a
+natural inclusion. Tensor it with $\otimes_K$: $L \otimes_K L \hookrightarrow L
+\otimes_K \overline{K} \cong \overline{K}^n$. Since $\overline{K}^n$ is clearly
+reduced, so is $L \otimes_K L$.
+
+\subsection{Finiteness of integral closure}
+
+\begin{theorem}
+    Let $A$ be a domain with $K$ its field of fractions. Let $L$ be a
+    finite field extension of $K$. Let $B \subseteq L$ be an integral closure 
+    of $A$ in $L$:
+    \[
+    \begin{tikzcd}
+        B \arrow[-Stealth, hook]{r}{} & L \\
+        A \arrow[-Stealth, hook]{u}{} \arrow[-Stealth, hook]{r}{} & K \arrow[-Stealth, hook]{u}{}
+    \end{tikzcd}
+    \]
+    Suppose that one of the following conditions hold:
+    \begin{enumerate}
+        \item[(a)] $A$ is Noetherian and normal.
+        \item[(b)] $A$ is of finite type over $K$.
+        \item[(c)] $A$ is of finite type over $\mathbb{Z}$.
+    \end{enumerate}
+    Then, $A \to B$ is finite. In particular, $B$ is Noetherian.
+\end{theorem}
+
+\subsection{Criterion for a graded ring to be Noetherian}
+
+\begin{proposition}
+    Let $A = \bigoplus_{n\geq 0} A_n$ be a graded ring. $A$ is Noetherian if and only if
+    $A_0$ is Noetherian and $A$ is of finite type over $A_0$.
+\end{proposition}
+
+\textbf{Proof.} If $A_0$ is Noetherian and $A$ is of finite type over $A_0$,
+then this statement follows from the Hilbert basis theorem.
+
+Now, assume $A$ is Noetherian. Let $A_+ = \bigoplus_{n>0}A_n$, then $A_0 =
+A/A_+$ and it is Noetherian since $A$ is Noetherian. Now we show that $A_0 \to
+A$ is of finite type. Since $A_+$ is an ideal of a Noetherian ring, $A_+$ is
+finitely generated: say, $A_+=(f_1,\dots,f_r)$. Without loss of generality,
+assume each $f_i$ is homogeneous: say, $f_i \in A_{n_i}$. We claim that this set
+generates $A$ as an $A_0$-algebra. We show this by induction. For $n=0$ there is
+nothing to do. Let now $f \in A_n$ for $n>0$. Then, $f \in A_+$, so we can write
+$f=\sum_i h_if_i$ for $h_i \in A_{n-n_i}$. Since $n_i>0$, we have $n-n_i<n$, by
+the induction assumption we have $h_i \in A_0[f_1,\dots,f_r]$, so $f \in
+A_0[f_1,\dots,f_r]$. \qedwhite
+
+\end{document}

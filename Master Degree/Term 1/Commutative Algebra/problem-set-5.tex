@@ -1,0 +1,258 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Commutative Algebra Problem Set \#5}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1. Variant of Cayley-Hamilton]
+    Let $M$ be a finitely generated $A$-module and let $\varphi: M \to M$ an 
+    $A$-module morphism. Let $\mathfrak{a} \subseteq A$ be an ideal such that 
+    $\varphi(M) \subseteq \mathfrak{a} M$. Show that $\varphi$ satisfies an equation 
+    of the form 
+    \begin{equation*}
+        \varphi^n + a_{1}\varphi^{n-1} + \dots + a_n = 0
+    \end{equation*} 
+    where $a_i \in \mathfrak{a}^i$ for $i \in [n]$.
+\end{problem}
+
+\textbf{Solution.} Suppose $(e_1,\dots,e_n) = M$ is a set of generators. Since
+$\varphi(M) \subseteq \mathfrak{a}M$:
+\begin{equation*}
+    \varphi(e_i) = \sum_{j=1}^n \gamma_{i,j}e_j, \quad \gamma_{i,j} \in \mathfrak{a}, \quad i \in [n].
+\end{equation*}
+
+This implies
+\begin{equation*}
+    \sum_{j=1}^n (\delta_{i,j}\varphi - \gamma_{i,j})e_j = 0, \quad i \in [n],
+\end{equation*}
+
+and, in particular, that $\det(\varphi E_{n \times n} - \Gamma)$ for
+$\Gamma=(\gamma_{i,j})_{i,j \in [n]}$, $\gamma_{i,j} \in \mathfrak{a}$ is the
+zero endomorphism of $M$. When we have proven that $a_i \in \mathfrak{a}$, we
+simply stated that this determinant is clearly of form
+$\varphi^n+a_{1}\varphi^{n-1}+\dots+a_n=0$ for $a_i \in \mathfrak{a}$. Now we
+shall concretize that $a_i \in \mathfrak{a}^i$. For that, we shall show that
+each coefficient in the polynomial in $\varphi$ is a sum of products of exactly
+$i$ entries of $\Gamma$, hence lies in $\mathfrak{a}^i$.
+
+This statement is more or less clear from linear algebra, but let us show this
+explicitly\footnote{What follows is a very rough brute-force which I am very
+sure might be greatly simplified. But I am too dumb to figure out some elegant
+solution}. Denote by $S_n$ the set of permutations $[n] \to [n]$ and by
+$\text{Fix}(\sigma)$ the fixed points of $\sigma \in S_n$. Note that by
+definition of determinant:
+\begin{align*}
+    \det(\varphi E_{n \times n} - \Gamma) &= \sum_{\sigma \in S_n}\text{sign}(\sigma)\prod_{i=1}^n (\delta_{i,\sigma(i)}\varphi - \gamma_{i,\sigma(i)}) \\
+    &= \sum_{\sigma \in S_n} (\pm 1) \prod_{i \in [n] \setminus \text{Fix}(\sigma)} \gamma_{i,\sigma(i)} \prod_{i \in \text{Fix}(\sigma)} (\varphi - \gamma_{i,i}) \\
+    &= \sum_{\sigma \in S_n} \beta_{\sigma}\prod_{i \in \text{Fix}(\sigma)} (\varphi - \gamma_{i,i}),
+\end{align*}
+
+where $\beta_{\sigma} = \pm \prod_{i \in [n] \setminus \text{Fix}(\sigma)}
+\gamma_{i,\sigma(i)}$ (the exact value of sign is irrelevant for our
+discussion). Now, fix $\sigma$ and suppose $t := \#\text{Fix}(\sigma)$. Then,
+$\beta_{\sigma} \in \mathfrak{a}^{n-t}$. Now, when expanding the product
+$\prod_{i \in \text{Fix}(\sigma)} (\varphi - \gamma_{i,i})$, we notice that this
+expands into the sum $\sum_{j=0}^t \beta_j\varphi^j$ where clearly $\beta_j \in
+\mathfrak{a}^{t-j}$ (this coefficient is in fact exactly
+$\pm\sum_{|I|=t-j}\prod_{i \in I}\gamma_{i,i}$ where $I \subseteq
+\text{Fix}(\sigma)$) and $\beta_t=1$. Therefore,
+\begin{equation*}
+    \det(\varphi E_{n \times n} - \Gamma) = \sum_{\sigma \in S_n} \sum_{j=0}^t \underbrace{\beta_{\sigma}}_{\in \mathfrak{a}^{n-t}}\underbrace{\beta_j}_{\in \mathfrak{a}^{t-j}}\varphi^j,
+\end{equation*}
+
+so finally we conclude that for each $\sigma \in S_n$, the coefficient of
+$\varphi^j$ comes from $\mathfrak{a}^{n-t+t-j} = \mathfrak{a}^{n-j}$. Note that
+the power of $\mathfrak{a}$ is independent of $\sigma$, and so after summing
+over all permutations we obtain the final result. \qedwhite
+
+\begin{problem}[Exercise 2]
+    Let $k \not\supseteq \mathbb{F}_2$ be a field and let $A$ be a $k$-algebra. 
+    Construct a bijection between the sets of
+    \begin{itemize}
+        \item \textbf{involutions} on $A$, i.e. $k$-algebra homomorphisms $f: A \to A$
+        such that $f \circ f = \text{id}_A$.
+        \item \textbf{$\mathbb{Z}/2$-gradings} on $A$, i.e. direct sum 
+        decompositions of the underlying abelian group $A \cong A_0 \oplus A_1$
+        such that $k \subseteq A_0$ and $A_iA_j \subseteq A_{(i+j)\,\text{mod}\,2}$.
+    \end{itemize}
+\end{problem}
+
+\textbf{Solution.} Suppose $f: A \to A$ is an involution. Define
+\begin{equation*}
+    A_0 := \{a \in A: f(a) = a\}, \quad A_1 := \{a \in A: f(a) = -a\}.
+\end{equation*}
+
+Now note that any $a \in A$ can be written as ($2$ is invertible):
+\begin{equation*}
+    a = \frac{a+f(a)}{2} + \frac{a-f(a)}{2} \in A_0 \oplus A_1.
+\end{equation*}
+
+And also taking $x \in A_i$ and $y \in A_j$, we have
+\begin{equation*}
+    f(xy) = (-1)^i(-1)^jxy = (-1)^{i+j}xy \implies xy \in A_{(i+j)\,\text{mod}\,2}.
+\end{equation*}
+
+Now suppose $A \cong A_0 \oplus A_1$ is a $\mathbb{Z}/2$-grading. Define:
+\begin{equation*}
+    f(a_0 + a_1) = a_0 - a_1, \quad a_0 \in A_0, a_1 \in A_1
+\end{equation*}
+
+Now check properties:
+\begin{equation*}
+    f^2(a_0,a_1) = f(a_0 - a_1) = a_0 + a_1 \implies f^2 = \text{id}_A
+\end{equation*}
+and homomorphism:
+\begin{align*}
+    f((a_0+a_1)(b_0+b_1)) &= f(a_0b_0+a_0b_1+a_1b_0+a_1b_1)\\
+    &= a_0b_0+a_1b_1 - (a_0b_1+a_1b_0) \\
+    &= (a_0-a_1)(b_0-b_1) = f(a_0+a_1)f(b_0+b_1)
+\end{align*}
+
+Both maps are inverse and give a bijective correspondence.
+
+\begin{problem}[Exercise 3]
+    Prove that every UFD is normal.
+\end{problem}
+
+\textbf{Solution.} Suppose $A$ is a UFD. We shall show that it is integral
+closed in its field of fractions: that is, if $x \in \text{Frac}(A)$ is integral
+over $A$, then $x \in A$. Note that if $x=p/q$ is integral (and we may assume
+$\text{gcd}(p,q)=1$ since $A$ is UFD), then
+\begin{equation*}
+    \left(\frac{p}{q}\right)^n + a_{n-1}\left(\frac{p}{q}\right)^{n-1} + \dots + a_n = 0, \quad a_i \in A.
+\end{equation*}
+
+This implies
+\begin{equation*}
+    p^n + a_{n-1}qp^{n-1} + a_{n-2}q^2p^{n-2} + \dots + a_nq^n = 0.
+\end{equation*}
+
+And this, in particular, implies $q \mid p^n$ or $q \mid p$ since they are
+co-prime. Therefore, $q \in A^{\times}$, so $p/q \in A$ and so $A$ is integrally closed.
+
+\begin{problem}[Exercise 4]
+    A topological space $X$ is called \textbf{Noetherian} if every increasing 
+    chain of open subsets stabilizes.
+    \begin{enumerate}
+        \item[(a)] Let $A$ be a Noetherian ring. Prove that $\text{Spec}(A)$ is 
+        a Noetherian topological space.
+        \item[(b)] Does the converse hold?
+        \item[(c)] Prove that a topological space $X$ is Noetherian iff every 
+        open subset of $X$ is quasi-compact. 
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textit{Part (a).} Recall that basis open sets of $\text{Spec}(A)$ are $D(f) :=
+\{\mathfrak{p} \not\supseteq f\}$. Suppose $U \subseteq \text{Spec}(A)$ is some
+open subset and let $I(U) := \{f \in A: D(f) \subseteq U\}$. Trivially, $I(U)
+\subseteq A$ is an ideal. Additionally, $D(I(U)) = U$.
+
+Now take some increasing sequence of open sets:
+\begin{equation*}
+    U_1 \subseteq U_2 \subseteq U_3 \subseteq \dots
+\end{equation*}
+
+The corresponding ideals satisfy:
+\begin{equation*}
+    I(U_1) \subseteq I(U_2) \subseteq I(U_3) \subseteq \dots
+\end{equation*}
+
+Since $A$ is Noetherian, this chain stabilizes: say, $I(U_n) = I(U_N)$ for all
+$N \geq n$. But then $D(I(U_n)) = D(I(U_N))$ or $U_n=U_N$ for all $N \geq n$. \qedwhite
+
+\textit{Part (b).} Take $A := k[x_1,x_2,\dots] / (x_1^2, x_2^2, \dots)$. This
+ring is clearly non-Noetherian (take chain of ideals $(x_1) \subseteq (x_1,x_2)
+\subseteq (x_1,x_2,x_3) \subseteq \dots$). Denote $\mathfrak{m} :=
+(x_1,x_2,\dots)$. Notice that $\sqrt{0} = \mathfrak{m}$. Further note that
+$A/\mathfrak{m} \cong k$, so $\mathfrak{m}$ is the unique prime ideal of $A$,
+thus $\text{Spec}(A) = \{\mathfrak{m}\}$, and so it is trivially Noetherian.
+
+\textit{Part (c).} \textit{qc$\Rightarrow$Noetherian.} This direction is easier:
+suppose $U_1 \subseteq U_2 \subseteq U_3 \subseteq \dots$ is a chain of open
+sets and let $U := \bigcup_{n \in \mathbb{N}}U_n$. Note that $U$ is open and
+$\{U_n\}_{n \in \mathbb{N}}$ is its cover. Due to quasi-compactness, finitely 
+many of $U_n$ cover $U$, implying that the chain stabilizes.
+
+\textit{Noetherian$\Rightarrow$qc.} Let $X$ be Noetherian and $U \subseteq X$
+open. Let $\{U_{\alpha}\}_{\alpha \in I}$ be an open cover of $U$. Define family
+$\mathcal{V} := \{V \subseteq U: \text{$V$ is covered by finitely many
+$U_{\alpha}$}\}$, ordered by inclusion. Now note that we can apply Zorn's lemma
+to find the maximal element. Why? Note that every chain $V_1 \subseteq V_2
+\subseteq V_3 \subseteq \dots$ stabilizes due to $X$ being Noetherian, and so
+the upper bound is some $V_N \in \mathcal{V}$. Let the maximal element be $W$.
+We shall prove that $W = U$. Assume, however, otherwise. Then, we can pick $x
+\in U \setminus W$. Choose some $U_j$ such that $x \in U_j$. Then, $W \cup U_j$
+is a finite union of $U_{\alpha}$'s and strictly contains $W$, so $W$ is not
+maximal. Contradiction. Thus, $U$ is a finite union of $U_{\alpha}$'s, so every
+open $U$ is quasi-compact. \qedwhite
+
+\begin{problem}[Exercise 5]
+    Let $B$ be a ring and $M$ a $B$-module. We make the direct sum 
+    $B \oplus M\varepsilon$ into a ring with multiplication
+    \begin{equation*}
+        (b+m\varepsilon)(b'+m'\varepsilon) = bb' + (bm' + b'm)\varepsilon
+    \end{equation*}
+    The subgroup $I = 0 \oplus M\varepsilon$ is an ideal with $I^2=0$ 
+    and quotient $(B\oplus M\varepsilon)/I \cong B$. We denote by 
+    $\pi: B \oplus M\varepsilon \to B$ the quotient map. 
+
+    Let $A \to B$ be a map of rings and $M$ a $B$-module. Construct the bijection 
+    between the sets of
+    \begin{itemize}
+        \item $A$-linear derivations $\delta: B \to M$.
+        \item $A$-algebra homomorphisms $\varphi: B \to B \oplus M\varepsilon$
+        s.t. $\pi \circ \varphi = \text{id}_B$.
+    \end{itemize}
+\end{problem}
+
+\textbf{Solution.} Interestingly, this problem seems very related to how one
+works with infinitesimals in Physics. For instance, suppose we want to linearize
+some function $f: \mathbb{R} \to \mathbb{R}$ near $b$. Then, we have
+$f(b+\varepsilon) \approx f(b) + f'(b)\varepsilon$ for some very small
+$\varepsilon$. Here, by ``small'' we concretely mean $\varepsilon^2=0$ (so we
+neglect all quadratic terms in the expansion). Then, if we wish to multiply 
+two functions, linearized by this relation, we get:
+\begin{align*}
+    f(b+\varepsilon)g(b+\varepsilon) &= (f(b) + f'(b)\varepsilon)(g(b) + g'(b)\varepsilon) \\
+    &\approx f(b)g(b) + (f(b)g'(b) + f'(b)g(b))\varepsilon \\
+    &\approx f(b)g(b) + (fg)'(b)\varepsilon
+\end{align*}
+by neglecting the $\varepsilon^2$ term.
+
+So this sort of motivates us to, based on derivation $\delta: B \to M$, define
+the $B$-algebra homomorphism as $\varphi_{\delta} = b + \delta(b)\varepsilon$.
+Trivially, $\pi \circ \varphi_{\delta} = \text{id}_B$. Also, additivity 
+and $A$-linearity are obvious. Check multiplicativity:
+\begin{align*}
+    \varphi_{\delta}(b)\varphi_{\delta}(b') &= (b+\delta(b)\varepsilon)(b'+\delta(b')\varepsilon)\\
+    &= bb' + (b\delta(b') + b'\delta(b)) \\
+    &= bb' + \delta(bb') = \varphi_{\delta}(bb')
+\end{align*}
+
+Now compose the reverse direction. Suppose we are given $\varphi: B \to B \oplus
+M\varepsilon$ with $\pi \circ \varphi = \text{id}_B$. Since composition gives
+identity, $\varphi(b) = b + \delta_{\varphi}(b)\varepsilon$. Define
+$\delta_{\varphi}: B \to M$ to be the second component of $\varphi$ as above.
+Additivity and $A$-linearity are again clear, so let us check whether this gives
+$A$-derivation. Notice that since $\varphi$ is a homomorphism:
+\begin{align*}
+    \varphi(bb') &= \varphi(b)\varphi(b') = (b + \delta_{\varphi}(b)\varepsilon)(b' + \delta_{\varphi}(b')\varepsilon) \\
+    &= bb' + (\delta_{\varphi}(b)b' + \delta_{\varphi}(b')b),
+\end{align*}
+so $\delta(bb') = \delta_{\varphi}(b)b' + \delta_{\varphi}(b')b$, as required.
+
+Finally, evidently $\delta_{\varphi_{\delta}} = \delta$ and
+$\varphi_{\delta_{\varphi}} = \varphi$, so we indeed have a bijection. \qedwhite
+
+\end{document}

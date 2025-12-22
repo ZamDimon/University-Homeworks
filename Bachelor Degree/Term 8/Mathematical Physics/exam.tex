@@ -1,0 +1,429 @@
+\documentclass{exam_template}
+
+\usepackage{esint}
+
+\title{\huge\sffamily\bfseries Екзаменаційна Робота з предмету <<Рівняння Математичної Фізики>>}
+\author{\Large\sffamily Захаров Дмитро}
+\date{\sffamily 7 червня, 2025}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\maketitle
+
+\begin{center}
+    \textcolor{purple}{\textbf{Варіант 5}}
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Екзаменаційна Робота}
+
+\subsection{Питання 1. Гармонічні функції}
+
+\begin{problem}
+    Гармонічні функції, фундаментальні розв'язки рівняння Лапласа.
+\end{problem}
+
+\textbf{Відповідь.} Спочатку, визначимось з основним рівнянням, 
+яке ми будемо розглядати --- рівняння Лапласа:
+\begin{equation*}
+    \Delta u(\mathbf{x}) = 0, \quad \mathbf{x} \in \Omega \subseteq \mathbb{R}^n.
+\end{equation*}
+
+Тут $\Delta$ --- оператор Лапласа, що у декартовій системі координат 
+визначається для $u=u(x_1,\dots,x_n)$ як
+\begin{equation*}
+    \Delta u \triangleq \sum_{i=1}^n \frac{\partial^2 u}{\partial x_i^2}.
+\end{equation*}
+
+\subsubsection{Гармонічні функції}
+З рівнянням Лапласа дуже тісно пов'язані гармонічні функції. Дамо 
+означення у випадку обмеженої відкритої області $\Omega \subseteq \mathbb{R}^n$.
+
+\begin{definition}
+    Функція $u: \mathbb{R}^n \to \mathbb{R}$ називається \textbf{гармонічною} у
+    відкритій області $\Omega \subseteq \mathbb{R}^n$, якщо вона належить до
+    класу $\mathcal{C}^2(\Omega)$ і задовільняє рівнянню Лапласа $\Delta u = 0$
+    в цій області. 
+\end{definition}
+
+Поняття гармонічної функції можна розширити на випадок необмежених
+областей $\Omega \subseteq \mathbb{R}^n$.
+\begin{definition}
+    Функція $u: \mathbb{R}^n \to \mathbb{R}$ називається \textbf{гармонічною} у
+    необмеженій області $\Omega$ якщо для будь-якої відкритої підмножини
+    $\Omega' \subseteq \Omega$ має виконуватись (а) $u \in
+    \mathcal{C}^2(\Omega')$, (б) $u$ має задовільняти рівнянню Лапласа, а також
+    (в) існує радіус $\rho > 0$ такий, що
+    \begin{equation*}
+        \left|u(\mathbf{x})\right| \leq \frac{C}{\|\mathbf{x}\|^{n-2}} \; \text{для всіх $\|\mathbf{x}\| > \rho$} 
+    \end{equation*}
+\end{definition}
+
+\begin{example}
+    $u(x,y) = x^2-y^2$ є гармонічною функцією у $\mathbb{R}^2$, оскільки
+    $\Delta u = 0$ та вочевидь $u \in \mathcal{C}^2(\mathbb{R}^2)$. Навести 
+    простий приклад для $n \geq 3$ вже складно, але буквально згодом 
+    ми покажемо, що $u(x,y,z) = \frac{1}{\sqrt{x^2+y^2+z^2}}$ є 
+    гармонічною функцією у $\mathbb{R}^3 \setminus \{(0,0,0)\}$.
+\end{example}
+
+\subsubsection{Фундаментальні розв'язки рівняння Лапласа}
+Звичайно, що у рівняння $\Delta u = 0$ є безліч розв'язків. Наприклад, це може
+бути просто константна функція або $u(\mathbf{x}) = \mathbf{c}^{\top}\mathbf{x}$
+для постійного вектора $\mathbf{c} \in \mathbb{R}^n$. Проте, для того, щоб
+надалі розв'язувати більш складні задачі такі як рівняння Пуассона, нам потрібні
+спеціальні функції, які називаються \textbf{фундаментальними розв'язками}
+рівняння Лапласа. Зокрема, враховуючи симетрію рівняння Лапласа, цілком
+природньо шукати \textit{радіальний розв'язок}, себто $u(\mathbf{x}) =
+f(\|\mathbf{x}\|)$. В такому разі, для $\|\mathbf{x}\| \neq 0$, маємо:
+\begin{equation*}
+    \frac{\partial u}{\partial x_j} = \frac{x_j}{\|\mathbf{x}_j\|}f'(\|\mathbf{x}\|), \quad \frac{\partial^2 u}{\partial x_j^2} = \frac{1}{\|\mathbf{x}\|}f'(\|\mathbf{x}\|) - \frac{x_j^2}{\|\mathbf{x}\|^3}f'(\|\mathbf{x}\|) + \frac{x_j^2}{\|\mathbf{x}\|^2}f''(\|\mathbf{x}\|)
+\end{equation*}
+
+Звідси випливає, що
+\begin{align*}
+    \Delta u &= \sum_{j=1}^n \left[\frac{1}{\|\mathbf{x}\|}f'(\|\mathbf{x}\|) - \frac{x_j^2}{\|\mathbf{x}\|^3}f'(\|\mathbf{x}\|) + \frac{x_j^2}{\|\mathbf{x}\|^2}f''(\|\mathbf{x}\|)\right] \\
+    &= \frac{n-1}{\|\mathbf{x}\|}f'(\|\mathbf{x}\|) + f''(\|\mathbf{x}\|).
+\end{align*}
+
+Якщо позначити $r := \|\mathbf{x}\|$, то якщо $u(\mathbf{x}) =
+f(\|\mathbf{x}\|)$ є розв'язком рівняння Лапласа, то має виконуватись $f'' =
+\frac{1-n}{r}f'$. Проінтегрувавши, маємо $\log f' = (1-n)\log r + A$ або $f'(r)
+= A/r^{n-1}$. Звідси, отримаємо конкретний вираз:
+\begin{equation*}
+    f(r) = \begin{cases}
+        A \log r + B, & n=2, \\
+        \frac{A}{(2-n)r^{n-2}} + B, & n \geq 3
+    \end{cases}
+\end{equation*}
+
+Таким чином, функція
+\begin{equation*}
+    \textcolor{blue}{u(\mathbf{x}) = \begin{cases}
+        A \log \|\mathbf{x}\| + B, & n=2, \\
+        \frac{A}{(2-n)\|\mathbf{x}\|^{n-2}} + B, & n \geq 3
+    \end{cases}}
+\end{equation*}
+
+є розв'язком рівняння Лапласа $\Delta u = 0$ у $\mathbb{R}^n \setminus
+\{\mathbf{0}_n\}$. По суті, ми вже дуже близько наблизились до визначення 
+\textbf{фундаментального розв'язку} рівняння Лапласа. Але перед цим, 
+покладемо $B=0$ та $A=2-n$, і покажемо наступне
+\begin{proposition}
+    Задана функція $u$:
+    \begin{equation*}
+        u(\mathbf{x}) = \begin{cases}
+            \log \frac{1}{\|\mathbf{x}-\boldsymbol{\xi}\|}, & n=2, \\
+            \frac{1}{\|\mathbf{x}-\boldsymbol{\xi}\|^{n-2}}, & n \geq 3
+        \end{cases}
+    \end{equation*}
+    є гармонічною над областю $\mathbb{R}^n \setminus \{\boldsymbol{\xi}\}$.
+\end{proposition}
+
+\textbf{Доведення.} Ми вже показали, що задана функція задовільняє рівнянню
+Лапласа (випливає з виведення). Також, вочевидь, задана функція належить до
+класу $\mathcal{C}^2(\mathbb{R}^n \setminus \{\boldsymbol{\xi}\})$. Залишилось
+лише перевірити, що функція для $n \geq 3$ задовільняє умову
+$\left|u(\mathbf{x})\right| \leq \frac{C}{\|\mathbf{x}\|^{n-2}}$ для деякого $C
+> 0$ та всіх $\|\mathbf{x}\| > \rho$. Дійсно, розглянемо досить велике
+$\mathbf{x}$: таке, що наприклад $\|\mathbf{x}\| > 2\|\boldsymbol{\xi}\|$. Тоді,
+$\|\mathbf{x}-\boldsymbol{\xi}\| > \frac{1}{2}\|\mathbf{x}\|$ і тому
+$|u(\mathbf{x})| < \frac{2^{n-2}}{\|\mathbf{x}\|^{n-2}}$, тому $C = 2^{n-2}$ і 
+твердження доведено. \hfill $\blacksquare$
+
+Нарешті, визначимо \textbf{фундаментальний розв'язок} рівняння Лапласа.
+\begin{definition}
+    Фундаментальним розв'язком рівняння Лапласа називається функція
+    $\Phi(\mathbf{x},\boldsymbol{\xi})$, що має вигляд:
+    \begin{equation*}
+        \Phi(\mathbf{x},\boldsymbol{\xi}) = \begin{cases}
+            \frac{1}{2\pi}\log \frac{1}{\|\mathbf{x}-\boldsymbol{\xi}\|}, & n=2, \\
+            \frac{1}{n(n-2)V_n}\frac{1}{\|\mathbf{x-\boldsymbol{\xi}}\|^{n-2}}, & n \geq 3
+        \end{cases},
+    \end{equation*}
+    де $V_n = \frac{\pi^{n/2}}{\Gamma(n/2+1)}$ --- об'єм одиничної кулі у
+    $\mathbb{R}^n$.
+\end{definition}
+
+Головною властивістю фундаментального розв'язку є наступне (наводимо без
+доведення).
+\begin{theorem}
+    Нехай $f \in \mathcal{C}^2(\mathbb{R}^n)$ і позначимо
+    \begin{equation*}
+        u(\mathbf{x}) = \int_{\mathbb{R}^n}\Phi(\mathbf{x},\boldsymbol{\xi})f(\boldsymbol{\xi})d\boldsymbol{\xi},
+    \end{equation*}
+    де $\Phi(\mathbf{x},\boldsymbol{\xi})$ --- фундаментальний розв'язок
+    рівняння Лапласа. Тоді виконується $u \in \mathcal{C}^2(\mathbb{R}^n)$ та
+    $-\Delta u = f$ над $\mathbb{R}^n$.
+\end{theorem}
+
+\textbf{Дуже неформальна аргументація.} Помітимо, що
+$-\Delta_{\mathbf{x}}\Phi(\mathbf{x},\boldsymbol{\xi})=\delta(\mathbf{x}-\boldsymbol{\xi})$, де 
+$\delta(\cdot)$ --- дельта-функція Дірака. Тоді
+\begin{equation*}
+    -\Delta u(\mathbf{x}) = -\int_{\mathbb{R}^n}\Delta_{\mathbf{x}}\Phi(\mathbf{x},\boldsymbol{\xi})f(\boldsymbol{\xi})d\boldsymbol{\xi} = \int_{\mathbb{R}^n}\delta(\mathbf{x}-\boldsymbol{\xi})f(\boldsymbol{\xi})d\boldsymbol{\xi} = f(\mathbf{x})
+\end{equation*}
+
+\newpage
+
+\subsection{Питання 2. Хвильове рівняння}
+
+\begin{problem}
+    Задачі Коші для однорідного хвильового рівняння на осі. Формула Даламбера.
+\end{problem}
+
+\textbf{Відповідь.} Введемо поняття однорідного хвильового рівняння.
+\begin{definition}
+    \textbf{Однорідне хвильове рівняння} --- це рівняння вигляду
+    \begin{equation*}
+        \frac{\partial^2 u}{\partial t^2} = a^2 \frac{\partial^2 u}{\partial x^2}, \quad x \in \mathbb{R}, \; t > 0,
+    \end{equation*}
+    для початкових умов $u(x,0)=\varphi(x)$ та $u_t(x,0) = \psi(x)$.
+\end{definition}
+
+Постає природнє питання, як розв'язувати таке рівняння. Для цього, 
+робимо заміну змінних, щоб перейти до канонічної форми рівняння.
+\begin{equation*}
+    \xi = x - at, \quad \eta = x + at.
+\end{equation*}
+
+Чому такі заміни? Покажемо наступне.
+
+\begin{proposition}
+    За вищезазначеної заміни змінних $\xi = x - at$, $\eta = x + at$, однорідне
+    хвильове рівняння перетворюється у канонічний вигляд:
+    \begin{equation*}
+        \frac{\partial^2 u}{\partial \xi\partial \eta} = 0.
+    \end{equation*}
+\end{proposition}
+
+\textbf{Доведення.} Знайдемо перші похідні:
+\begin{align*}
+    \frac{\partial u}{\partial x} &= \frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial x} +
+    \frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial x} = \frac{\partial u}{\partial \xi} + 
+    \frac{\partial u}{\partial \eta}, \\
+    \frac{\partial u}{\partial t} &= \frac{\partial u}{\partial \xi}\frac{\partial \xi}{\partial t} +
+    \frac{\partial u}{\partial \eta}\frac{\partial \eta}{\partial t} = -a\frac{\partial u}{\partial \xi} +
+    a\frac{\partial u}{\partial \eta}.
+\end{align*}
+
+Тепер знайдемо другі похідні:
+\begin{align*}
+    \frac{\partial^2 u}{\partial x^2} &= \frac{\partial u_{\xi}}{\partial x} + \frac{\partial u_{\eta}}{\partial x} = \frac{\partial^2 u}{\partial \xi^2} +
+2\frac{\partial^2 u}{\partial \xi \partial \eta} + \frac{\partial^2 u}{\partial
+\eta^2} \\
+    \frac{\partial^2 u}{\partial t^2} &= -a\frac{\partial u_{\xi}}{\partial t} + a\frac{\partial u_{\eta}}{\partial t} = a^2\frac{\partial^2 u}{\partial \xi^2} -
+2a^2\frac{\partial^2 u}{\partial \xi \partial \eta} + a^2\frac{\partial^2 u}{\partial
+\eta^2} 
+\end{align*}
+Підставимо у хвильове рівняння:
+\begin{gather*}
+    a^2\frac{\partial^2 u}{\partial \xi^2} - 2a^2\frac{\partial^2 u}{\partial \xi \partial \eta} + a^2\frac{\partial^2 u}{\partial \eta^2} 
+    - a^2\left(\frac{\partial^2 u}{\partial \xi^2} +
+2\frac{\partial^2 u}{\partial \xi \partial \eta} + \frac{\partial^2 u}{\partial
+\eta^2}\right) = -4a^2\frac{\partial^2 u}{\partial \xi\partial \eta} = 0.
+\end{gather*}
+Звідки і випливає, що $\frac{\partial^2 u}{\partial \xi\partial \eta} = 0$.
+\hfill $\blacksquare$
+
+\textbf{Загальний розв'язок.} Помітимо, що з того факту, що $\frac{\partial}{\partial
+\eta}\left(\frac{\partial u}{\partial \xi}\right) = 0$, випливає, що похідна
+$\frac{\partial u}{\partial \xi}$ не залежить від $\eta$ і тому $\frac{\partial
+u}{\partial \xi} = f(\xi)$ для деякої функції $f$. Отже, якщо проінтегруємо по
+$\xi$, то отримаємо $u(\xi,\eta) = \int f(\xi)d\xi + G(\eta)$ для деякої функції
+$G$. Звичайно, що інтеграл можна замінити якоюсь іншою функцією $F(\xi)$, що
+залежить лише від $\xi$. Таким чином, $u(\xi,\eta) = F(\xi)+G(\eta)$ і тоді
+\textbf{загальний розв'язок} початкового рівняння має вигляд
+\begin{equation*}
+    \textcolor{blue}{u(x,t) = F(x-at) + G(x+at)}
+\end{equation*}
+
+Отже, маючи початкові умови $u(x,0)=\varphi(x)$ та $u_t(x,0)=\psi(x)$, ми можемо
+знайти конкретний вигляд функцій $F$ та $G$. Дійсно, маємо
+\begin{equation*}
+    \begin{cases}
+        F(x) + G(x) = \varphi(x), \\
+        -aF'(x) + aG'(x) = \psi(x).
+    \end{cases}
+\end{equation*}
+
+Отже лишається лише розв'язати цю систему. З першого рівняння маємо 
+$F(x) = \varphi(x) - G(x)$, тоді, підставляючи у друге, отримаємо
+\begin{equation*}
+    -a\varphi'(x) + aG'(x) + aG'(x) = \psi(x) \implies G'(x) = \frac{1}{2a}\left(\psi(x) + a\varphi'(x)\right).
+\end{equation*}
+
+Проінтегрувавши, маємо $G(x) = \frac{1}{2}\varphi(x) + \frac{1}{2a}\int_{x_0}^x
+\psi(\zeta)d\zeta$. Таким чином, одразу отримуємо $F(x) = \varphi(x) - G(x) =
+\frac{1}{2}\varphi(x) - \frac{1}{2a}\int_{x_0}^x \psi(\zeta)d\zeta$. Підставляючи 
+у наш початковий розв'язок $u(x,t) = F(x-at) + G(x+at)$, отримаємо
+\begin{align*}
+    \textcolor{blue}{u(x,t)} &= \frac{1}{2}\varphi(x-at) - \frac{1}{2a}\int_{x_0}^{x-at} \psi(\zeta)d\zeta + \frac{1}{2}\varphi(x+at) + \frac{1}{2a}\int_{x_0}^{x+at}
+\psi(\zeta)d\zeta \\
+    &= \frac{1}{2}(\varphi(x-at) + \varphi(x+at)) + \frac{1}{2a}\left(\int_{x_0}^{x+at} \psi(\zeta)d\zeta - \int_{x_0}^{x-at} \psi(\zeta)d\zeta\right) \\
+    &= \textcolor{blue}{\frac{1}{2}(\varphi(x-at) + \varphi(x+at)) + \frac{1}{2a}\int_{x-at}^{x+at} \psi(\zeta)d\zeta}
+\end{align*}
+
+Це рівняння і є \textbf{формулою Даламбера} для розв'язку задачі Коші для
+однорідного хвильового рівняння. Запишемо її остаточно більш формально.
+\begin{theorem}
+    Нехай $\varphi \in \mathcal{C}^2(\mathbb{R})$ та $\psi \in
+    \mathcal{C}^1(\mathbb{R})$. Тоді, існує єдиний розв'язок задачі Коші для
+    однорідного хвильового рівняння $\frac{\partial^2 u}{\partial t^2} = a^2
+    \frac{\partial^2 u}{\partial x^2}$ з початковими умовами $u(x,0) =
+    \varphi(x)$ та $u_t(x,0) = \psi(x)$. Цей розв'язок має вигляд:
+    \begin{equation*}
+        u(x,t) = \frac{1}{2}(\varphi(x-at) + \varphi(x+at)) + \frac{1}{2a}\int_{x-at}^{x+at} \psi(\zeta)d\zeta, \quad x \in \mathbb{R}, \; t > 0.
+    \end{equation*}    
+\end{theorem}
+
+\begin{remark}
+    У випадку неоднорідної правої частини, формула Даламбера виходить 
+    не сильно складнішою. Нехай $\frac{1}{a^2}\frac{\partial^2 u}{\partial t^2}
+    - \frac{\partial^2 u}{\partial x^2} = f(x,t)$. Тоді, розв'язок
+    задачі Коші для неоднорідного хвильового рівняння має вигляд:
+    \begin{equation*}
+        u(x,t) = \frac{1}{2}(\varphi(x-at) + \varphi(x+at)) + \frac{1}{2a}\int_{x-at}^{x+at} \psi(\zeta)d\zeta + \frac{a}{2}\int_{0}^{t} d\tau \int_{x-a(t-\tau)}^{x+a(t-\tau)} f(\zeta,\tau)d\zeta.
+    \end{equation*}
+\end{remark}
+
+\textbf{Фізична інтерпретація.} Хвильове рівняння, як і каже назва, описує
+розповсюдження хвиль у середовищі: найбільш поширено її виводять з коливання
+струни, проте таке саме рівняння описує звукові хвилі, електромагнітні хвилі у
+одновимірному випадку тощо. Дійсно, нехай ми маємо нитку довжини $L$ з 
+силом натягу $T$ та лінійною густиною маси $\rho$. В такому разі, розглянемо 
+другий закон Ньютона для малого шматку маси $\rho \Delta x$:
+\begin{equation*}
+    \rho \Delta x \frac{\partial^2 u}{\partial t^2} = T \Delta(\sin \theta),
+\end{equation*}
+де $\Delta(\sin \theta)$ --- це зміна кута нахилу нитки, що дорівнює
+різниці синусів кутів нахилу зліва та справа від шматка маси. Синус 
+кута ми можемо наблизити як часткову похідну за $x$ профіля струни $u(x,t)$, 
+а тому:
+\begin{equation*}
+    T \Delta(\sin \theta) \approx T\left(\frac{\partial u}{\partial x}(x+\Delta x,t) - \frac{\partial u}{\partial x}(x,t)\right) \approx T\Delta x \frac{\partial^2 u}{\partial x^2}.
+\end{equation*}
+
+Отже, отримане рівняння має вигляд:
+\begin{equation*}
+    \textcolor{blue}{\frac{\partial^2 u}{\partial t^2} = a^2 \frac{\partial^2 u}{\partial x^2}, \quad a = \sqrt{\frac{T}{\rho}}}
+\end{equation*}
+
+При цьому, $\varphi(x)$ задає початковий профіль струни, а $\psi(x)$ ---
+початкову швидкість коливань струни. У формулі Даламбера, перше частина
+$\frac{1}{2}(\varphi(x-at) + \varphi(x+at))$ показує суперпозицію двох хвиль,
+одна з яких (а саме $\varphi(x-at)$) рухається праворуч, а інша ---  ліворуч.
+Друга частина $\frac{1}{2a}\int_{x-at}^{x+at} \psi(\zeta)d\zeta$ відповідає
+ефекту початкової швидкості, де кожен імпульс дає вплив на відрізок довжини
+$2at$.
+
+
+\newpage
+
+\subsection{Задача 3}
+
+\begin{problem}
+    Розв'язати рівняння
+    \begin{equation*}
+        u_{tt} = u_{xx} + u - xt + t \sin \pi x, \quad x \in (0,2)
+    \end{equation*}
+    з умовами $u(0,t)\equiv 0$, $u(2,t)=2t$, $u(x,0)\equiv 0$,
+    $u_t(x,0)\equiv 0$.
+\end{problem}
+
+\textbf{Розв'язання.} Зробимо заміну у вигляді $u(x,t) = w(x,t) + v(x,t)$,
+щоб зробити крайові умови однорідними. Для цього оберемо $v(x,t) := tx$.
+В такому разі, маємо
+\begin{gather*}
+    w_{tt} = w_{xx} + w + tx - xt + t \sin \pi x, \quad x \in (0,2) \\
+    w_{tt} = w_{xx} + w + t \sin \pi x, \quad x \in (0,2).
+\end{gather*}
+
+В такому разі, крайові умови $w(0,t) = w(2,t) \equiv 0$, початкові умови $w(x,0)
+\equiv 0$ та $w_t(x,0) = -x$. Тепер, розкладаємо розв'язок у ряд Фур'є
+\begin{equation*}
+    w(x,t) = \sum_{n=1}^{\infty} w_n(t) \sin \frac{n \pi x}{2}.
+\end{equation*}
+
+Підставляємо у початкове рівняння:
+\begin{gather*}
+    \sum_{n=1}^{\infty} \ddot{w}_n(t) \sin \frac{n \pi x}{2} = \sum_{n=1}^{\infty} \left(1-\frac{n^2\pi^2}{4}\right) w_n(t)\sin \frac{n\pi x}{2} + t \sin \pi x \\
+    \sum_{n=1}^{\infty} \left[\ddot{w}_n(t) - \left(1-\frac{n^2\pi^2}{4}\right) w_n(t)\right] \sin \frac{n \pi x}{2} = t \sin \pi x
+\end{gather*}
+
+Тепер помітимо, що права частина по суті вже розкладена у ряд Фур'є, де 
+лише коефіцієнт при $n=2$ відрізняється від нуля. Отже, маємо два випадки.
+
+\textbf{Випадок 1.} $n \neq 2$. В такому разі, маємо рівняння
+\begin{equation*}
+    \ddot{w}_n(t) + \left(\frac{n^2\pi^2}{4}-1\right) w_n(t) = 0.
+\end{equation*}
+
+\textbf{Випадок 2.} $n=2$. В такому разі, маємо рівняння
+\begin{equation*}
+    \ddot{w}_2(t) + \left(\pi^2 - 1\right) w_2(t) = t.
+\end{equation*}
+
+Щоб розв'язати ці рівняння, потрібно знайти початкові умови для $w_n(t)$.
+Одна початкова умова вже відома, а саме $w_n(0) = 0$. Щоб знайти іншу,
+помітимо, що
+\begin{equation*}
+    w_t(x,0) = \sum_{n=1}^{\infty} \dot{w}_n(0) \sin \frac{n \pi x}{2} = -x.
+\end{equation*}
+
+Отже, треба розкласти функцію $\varphi(x) = -x$ у ряд Фур'є $\varphi(x) = \sum_{n=1}^{\infty} \varphi_n \sin \frac{n \pi x}{2}$, де
+\begin{align*}
+    \varphi_n &= \int_0^2 -x \sin \frac{n \pi x}{2} dx \\
+    &= \left[\frac{2x}{n \pi}\cos \frac{n\pi x}{2}\right]\Big|_{x=0}^{x=2} - \int_0^2 \frac{2}{n\pi}\cos \frac{n\pi x}{2}dx \\
+    &= \frac{4}{n\pi}\cos n\pi = \frac{4(-1)^n}{n\pi}
+\end{align*}
+
+Таким чином, $\dot{w}_n(0) = \varphi_n = \frac{4(-1)^n}{n\pi}$. Тепер 
+розв'яжемо рівняння для кожного з випадків.
+
+\textbf{Випадок 1.} Маємо рівняння вигляду
+\begin{equation*}
+    \ddot{w}_n(t) + \omega_n^2 w_n(t) = 0, \quad \omega_n^2 = \frac{n^2\pi^2}{4}-1.
+\end{equation*}
+
+Розв'язок має вигляд $w_n(t) = A_n \cos \omega_n t + B_n \sin \omega_n t$.
+Початкові умови дають $A_n=0$, а ось для $B_n$ маємо
+\begin{equation*}
+    \dot{w}_n(0) = B_n \omega_n = \frac{4(-1)^n}{n\pi} \implies B_n = \frac{4(-1)^n}{n\pi \omega_n}.
+\end{equation*}
+
+Отже розв'язок для $n \neq 2$ має вигляд $w_n(t) = \frac{4(-1)^n}{n\pi \omega_n} \sin \omega_n t$.
+
+\textbf{Випадок 2.} Маємо рівняння вигляду
+\begin{equation*}
+    \ddot{w}_2(t) + \omega_2^2 w_2(t) = t, \quad \omega_2^2 = \pi^2 - 1.
+\end{equation*}
+
+Розв'язок однорідної частини має вигляд $\widetilde{w}_{2,H}(t) = A_2 \cos
+\omega_2 t + B_2 \sin \omega_2 t$. Окрім цього видно, що 
+підходить частковий розв'язок $\widetilde{w}_2(t) = \frac{t}{\omega_2^2}$.
+Таким чином, шукаємо розв'язок у вигляді
+\begin{equation*}
+    w_2(t) = A_2 \cos \omega_2 t + B_2 \sin \omega_2 t + \frac{t}{\omega_2^2}.
+\end{equation*}
+
+З умови $w_2(0)=0$ маємо $A_2=0$. З умови $\dot{w}_2(0) = \frac{2}{\pi}$ маємо
+$B_2\omega_2 + \frac{1}{\omega_2^2} = \frac{2}{\pi}$, звідки $B_2 =
+\frac{1}{\omega_2}\left(\frac{2}{\pi} - \frac{1}{\omega_2^2}\right)$.
+Отже, розв'язок для $n=2$ має вигляд
+\begin{equation*}
+    w_2(t) = \frac{1}{\sqrt{\pi^2-1}}\left(\frac{2}{\pi} - \frac{1}{\pi^2-1}\right) \sin(\sqrt{\pi^2-1} t) + \frac{t}{\pi^2-1}.
+\end{equation*}
+
+Остаточно, тепер можемо записати розв'язок задачі Коші у вигляді
+\begin{align*}
+    u(x,t) &= xt + \frac{1}{\sqrt{\pi^2-1}}\left(\frac{2}{\pi} - \frac{1}{\pi^2-1}\right) \sin(\sqrt{\pi^2-1} t) \\
+    &+ \frac{t}{\pi^2-1} + \sum_{n=1,n \neq 2}^{\infty} \frac{4(-1)^n}{n\pi \omega_n} \sin \omega_n t \sin \frac{n \pi x}{2}, \quad \omega_n^2 = \frac{n^2\pi^2}{4}-1.
+\end{align*}
+
+\end{document}

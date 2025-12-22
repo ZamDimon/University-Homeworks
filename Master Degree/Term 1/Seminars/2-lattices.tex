@@ -1,0 +1,1928 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\usepackage{mdframed}
+\usepackage{varwidth} 
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+% Random sampling
+\newcommand\leftarrowS{\leftarrow\joinrel\smalldollar}
+\newcommand\rightarrowS{\smalldollar\joinrel\rightarrow}
+
+\makeatletter
+\newcommand{\smalldollar}{\mathrel{\mathpalette\small@dollar\relax}}
+\newcommand{\small@dollar}[2]{%
+  \vcenter{\hbox{%
+    $#1\textnormal{\fontsize{0.7\dimexpr\f@size pt}{0}\selectfont\$}$%
+  }}%
+}
+\makeatother
+
+
+\begin{document}
+
+\begin{center}
+    \Large\textcolor{blue!70!black}{\textbf{Introduction to Lattice-based Cryptography}} \\
+    \normalsize\textit{Dmytro Zakharov}
+\end{center}
+
+\begin{abstract}
+    In recent years, the interest in lattice-based cryptography has been
+    steadily increasing. One primary reason is, of course, that problems related
+    to lattices and their derivatives are widely believed to be \textit{hard
+    even for quantum computers}. Furthermore, there are settings where the
+    algebraic structure of lattices is natural: e.g., for fully-homomorphic
+    encryption.
+
+    This brief paper is a technical introduction to lattice-based cryptography.
+    We give formal definitions of lattices and introduce key related hardness
+    assumptions such as SVP, CVP, and several variants of LWE. We show how to
+    build public-key encryption (PKE) and digital signature schemes based on LWE
+    assumptions and partially prove the security of key constructions. Finally,
+    we provide a high-level specification of Kyber PKE and Dilithium signature
+    schemes.
+    
+    We aim to make these notes accessible while preserving rigorousness where
+    appropriate. Basic knowledge of cryptography and algebra is required.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+\section{Lattices}\label{section:lattices}
+
+\subsection*{Notation and Basic Notions}
+
+All vectors are written in bold (e.g., $\mathbf{x}$ or $\mathbf{y}$) and
+considered \textit{column} vectors by default. All real vector spaces are
+Euclidean: that is, for every $\mathbf{x}, \mathbf{y} \in V \subseteq
+\mathbb{R}^d$, we define the inner product $\langle \cdot, \cdot \rangle$ and
+$\ell_2$ norm $\|\cdot\|$ in a standard fashion:
+\begin{equation*}
+    \langle \mathbf{x}, \mathbf{y} \rangle \triangleq \sum_{i \in [d]} x_iy_i, \quad \|\mathbf{x}\| \triangleq \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle},
+\end{equation*}
+
+where we use $[d]$ to denote the set $\{1,\dots,d\}$. Additionally, we use $(d)$
+to denote the ranging set using 0-indexed notation: $\{0,\dots,d-1\}$. Other
+norms will be introduced on the go when needed. Finally, we use notation $x
+\leftarrowS \mathcal{X}$ to denote sampling from the distribution $\mathcal{X}$.
+If $\mathcal{X}$ is a set, the underlying distribution is uniform over
+$\mathcal{X}$. 
+
+\subsection{Definition}
+
+We start our discussion with the definition of the lattice. Following
+\cite{nist}, we provide two definitions: one is rather algebraic, while the
+other is more intuitive and practical. In fact, both definitions will be helpful
+since some facts are sometimes easier to prove using the first definition. 
+\begin{definition}\label{def:lattice}
+    Let $V$ be a real Euclidean vector space of finite dimension $d$. The
+    following two definitions of \textbf{lattice} $\Lambda \subseteq V$ of rank
+    $r \leq d$ are equivalent:
+    \begin{enumerate}
+        \item[\textit{(i)}] $\Lambda$ is a discrete additive subgroup of $V$
+        (with $\Lambda \cong \mathbb{Z}^r$ as $\mathbb{Z}$-modules).
+        \item[\textit{(ii)}] $\Lambda = \mathcal{L}(B) \triangleq \{B\mathbf{z}:
+        \mathbf{z} \in \mathbb{Z}^d\}$ for some matrix $B \in \mathbb{R}^{r
+        \times d}$ where its columns, further denoted as
+        $\{\mathbf{b}_1,\dots,\mathbf{b}_r\} \subseteq \mathbb{R}^d$, are
+        linearly independent over $V$. 
+    \end{enumerate}
+\end{definition}
+
+While the second definition is clear, the first one requires some deciphering.
+Since we work in the Euclidean space, it makes sense to define what it means for
+the set $S \subseteq V$ to be \textit{discrete}. Intuitively, it should mean
+that any two points $\mathbf{s}_1,\mathbf{s}_2 \in S$ are separated by some
+``considerable'' distance. To translate it into the mathematical language, we
+require that:
+\begin{equation*}
+    \inf_{\mathbf{s}_1 \neq \mathbf{s}_2 \in S} \|\mathbf{s}_1-\mathbf{s}_2\| > 0.
+\end{equation*}
+
+Besides $\Lambda$ being discrete, additive subgroup structure of $\Lambda$
+guarantees that $\Lambda$ is closed under any $\mathbb{Z}$-linear combinations:
+that is, for any $\mathbf{x}, \mathbf{y} \in \Lambda$ and $\lambda, \mu \in
+\mathbb{Z}$, we have $\lambda\mathbf{x} + \mu\mathbf{y} \in \Lambda$. Showing
+this property might sometimes be easier than finding the matrix $B$ in
+definition~\textit{(ii)} explicitly.
+
+\textbf{Geometric Intuition.} While definition~\textit{(i)} is useful, the
+definition~\textit{(ii)} gives an intuitive way of thinking of lattice $\Lambda
+= \mathcal{L}(B)$. If vector space $V$ is typically thought as a set of all
+$\mathbb{R}$-linear combinations\footnote{We further use notation $S+S':=\{s+s':
+s \in S, s' \in S'\}$ and for $a \in S$, set $aS := \{as: s \in S\}$.} $\sum_{i
+\in [d]}\mathbf{e}_i\mathbb{R}$ over some basis $\{\mathbf{e}_i\}_{i \in [d]}$,
+the lattice $\Lambda$ can be thought as all $\mathbb{Z}$-linear combinations
+$\sum_{i \in [r]}\mathbf{b}_i\mathbb{Z}$ over real basis $\{\mathbf{b}_i\}_{i
+\in [r]} \subseteq \mathbb{R}^d$. See \Cref{fig:lattice} for illustration.
+
+\begin{remark}\label{remark:lattice-in-integers}
+Note that the basis of lattice $\Lambda$ is not required to lie in
+$\mathbb{Z}^d$, compared to coefficients of the linear combination. However, in
+practice they usually do: note that we still can represent basis in memory only
+in the rational form (that is, $\mathbf{b}_i \in \mathbb{Q}^d$). With the proper
+rescaling, representation in $\mathbb{Z}^d$ would suffice.
+\end{remark}
+
+\begin{remark}
+    In this section we consider \textit{full-rank} lattices only: that is,
+    $\Lambda \cong \mathbb{Z}^{d}$ for $d=\dim(V)$.
+\end{remark}
+
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}
+    \coordinate (Origin)   at (0,0);
+    \coordinate (XAxisMin) at (-2,0);
+    \coordinate (XAxisMax) at (5,0);
+    \coordinate (YAxisMin) at (0,-2);
+    \coordinate (YAxisMax) at (0,5);
+    \draw [ultra thick, gray,-stealth] (XAxisMin) -- (XAxisMax);
+    \draw [ultra thick, gray,-stealth] (YAxisMin) -- (YAxisMax);
+
+    \clip (-2,-2) rectangle (5cm,5cm); 
+    \pgftransformcm{1}{0.6}{0.7}{1}{\pgfpoint{0cm}{0cm}}
+
+    \coordinate (Bone) at (0,2);
+    \coordinate (Btwo) at (2,-2);
+    \draw[style=help lines, dashed, ultra thick, black!20] (-14,-14) grid[step=2cm] (14,14);
+
+    \foreach \x in {-7,-6,...,7}{
+      \foreach \y in {-7,-6,...,7}{
+        \node[draw,circle,inner sep=2pt,fill] at (2*\x,2*\y) {};
+      }
+    }
+
+    \draw [ultra thick,-latex,blue!70!black] (Origin)
+        -- (Bone) node [right] {$\mathbf{b}_1$};
+    \draw [ultra thick,-latex,blue!70!black] (Origin)
+        -- (Btwo) node [below right] {$\mathbf{b}_2$};
+    \filldraw[fill=red!70!purple, dashed, very thick, fill opacity=0.3, draw=black] 
+        (Origin) -- (Bone) -- ($(Bone) + (Bone) - (Btwo)$) -- ($(Bone)-(Btwo)$) -- cycle;
+  
+    %\draw [ultra thick,-latex,red!70!purple] (Origin)
+    %    -- ($0+1*(Bone)-3*(Btwo)$) node [above left] {$\mathbf{b}_1-3\mathbf{b}_2$};
+    \draw [ultra thick,-latex,red!70!purple] (Origin)
+        -- ($(Bone)-(Btwo)$) node [above left] {$\mathbf{b}_1-\mathbf{b}_2$};
+    \filldraw[fill=blue!70!black, dashed, very thick, fill opacity=0.3, draw=black] 
+    (Origin) -- (Bone) -- ($(Bone)+(Btwo)$) -- (Btwo) -- cycle;
+    \node at ($0.5*(Bone)+0.5*(Btwo)$) {\footnotesize$\mathcal{P}(\textcolor{blue!70!black}{B})$};
+    \node at ($0.5*(Bone) + 0.5*($(Bone)-(Btwo)$)$) {\footnotesize$\;\mathcal{P}(\textcolor{red!70!purple}{B'})$};
+  \end{tikzpicture}
+  \caption{Lattice $\Lambda=\mathcal{L}(\textcolor{blue!70!black}{B})$ of rank
+  $2$ with basis $\textcolor{blue!70!black}{B} =
+  \{\textcolor{blue!70!black}{\mathbf{b}_1},\textcolor{blue!70!black}{\mathbf{b}_2}\}$.
+  $\textcolor{blue!70!black}{B}$ is an example of a ``good'' basis where basis
+  vectors are almost orthogonal. The basis $\textcolor{red!70!purple}{B'} =
+  \{\textcolor{blue!70!black}{\mathbf{b}_1},\textcolor{red!70!purple}{\mathbf{b}_1-\mathbf{b}_2}\}$
+  of the same lattice $\Lambda=\mathcal{L}(\textcolor{red!70!purple}{B'})$ is ``worse'' (the vectors seem more parallel and
+  fundamental domain $\mathcal{P}(\textcolor{red!70!purple}{B'})$ is skewed).}
+  \label{fig:lattice}
+\end{figure}
+
+\subsection{Fundamental Measures}
+
+\subsubsection{Fundamental Domain}
+
+A basis $B$ of $\Lambda = \mathcal{L}(B)$ is associated with the fundamental
+domain $\mathcal{P}(B) \triangleq \sum_{i \in
+[d]}\mathbf{b}_i[0,1)$\footnote{Sometimes, the interval $[-1/2, 1/2)$ is used
+instead of $[0,1)$ to center $\mathcal{P}(B)$ with respect to origin: in such
+case, $\mathcal{P}(B)$ is called a \textit{centered parallelepiped of $B$}}.
+
+What is special about this parallelepiped is that it represents all elements in
+the quotient group $V/\Lambda$: any element $\mathbf{x} \in V$ can be uniquely
+written as $\mathbf{x} = \mathbf{v} + \mathbf{p}$ where $\mathbf{v} \in \Lambda$
+and $\mathbf{p} \in \mathcal{P}(B)$. Moreover, the shape of this
+$\mathcal{P}(B)$ determines the ``quality'' of the basis $B$: if
+$\mathcal{P}(B)$ is skewed and is not concentrated in the origin, it is
+typically considered ``bad'' as some computational problems become much harder
+to solve. In turn, a non-skewed basis $B'$ primarily concentrated around the
+origin is considered ``good'' as $\{\mathbf{b}_i'\}_{i \in [d]}$ much more
+closely resembles the orthogonal basis than one of $B$ (and of course, the
+orthogonal basis in a sense is ``perfect'' because it is very ``nice'' to work
+with). Again, see \Cref{fig:lattice} for illustration.
+
+Another natural quantity to consider is the volume of such parallelepiped,
+called \textit{covolume}.
+
+\begin{definition}[Covolume]
+    The \textbf{covolume} $\text{Vol}(\Lambda)$ of lattice $\Lambda$ is defined as:
+    \begin{equation*}
+        \text{Vol}(\Lambda) \triangleq \text{Vol}(V/\Lambda) = \sqrt{|\det(B^{\top}B)|}.
+    \end{equation*}
+\end{definition}
+
+Note that the definition of $\mathcal{P}(B)$ depends on the choice of $B$ since
+the basis of $\Lambda$ is generally not unique. Thus, it might seem that
+covolume should also depend on the choice of $B$. However, we show the
+following.
+
+\begin{proposition}
+    The \textbf{covolume} $\text{Vol}(\Lambda)$ is an invariant of $\Lambda$:
+    that is, it does not depend on the choice of $B$.
+\end{proposition}
+
+\textbf{Proof.} Suppose $\Lambda = \mathcal{L}(B_0) = \mathcal{L}(B_1)$. Since
+$B_0$ and $B_1$ both generate $\Lambda$, one has $B_1 = UB_0$ for some matrix $U
+\in \text{GL}_d(\mathbb{Z})$. Since $U$ is an integer matrix with integer
+inverse, it is unimodular: that is, $|\det U| = 1$. It is then easy to see
+$|\det B_1^{\top}B_1| = |\det B_0^{\top}U^{\top}UB_0| = |\det B_0^{\top}B_0| =
+\text{Vol}(\Lambda)^2$. \qedwhite
+
+\subsubsection{Successive Minima}
+
+Turns out that one of the hardest computational problems is computing the
+shortest vectors of $\Lambda$. However, we need some preliminary work to
+formalize this statement. 
+
+Denote $B_{\rho}(\mathbf{x}_0) := \{\mathbf{x} \in V:
+\|\mathbf{x}-\mathbf{x}_0\|<\rho\}$ --- an open ball in $V$ of radius $\rho$
+centered at $\mathbf{x}_0$. 
+
+\begin{definition}[Successive minima]
+    The \textbf{$i^{\text{th}}$ minimum $\lambda_i(\Lambda)$} is the radius 
+    of the smallest sphere centered at the origin containing $i$ linearly 
+    independent lattice vectors:
+    \begin{equation*}
+        \lambda_i(\Lambda) \triangleq \inf \{\rho \in \mathbb{R}_{\geq 0}: \dim(\text{span}(\Lambda \cap B_{\rho}(\mathbf{0}))) \geq i\}.
+    \end{equation*}
+\end{definition}
+
+In particular, $\lambda_1(\Lambda) = \min_{\mathbf{x} \neq \mathbf{y} \in
+\Lambda}\|\mathbf{x}-\mathbf{y}\| = \min_{\mathbf{x} \in
+\Lambda\setminus\{\mathbf{0}\}}\|\mathbf{x}\|$ is called the \textit{first
+minimum} while the vector of length $\lambda_1(\Lambda)$ --- the shortest
+vector. The natural question to ask though is whether it exists at all: after
+all, in $\mathbb{R}^d$, for instance, it is clearly undefined. We give
+affirmative answer.
+
+\subsubsection*{Gram-Schmidt Orthogonalization*}
+
+This is probably a good place to remind the reader of the Gram-Schmidt
+Orthogonalization. Recall that the main goal of Gram-Schmidt Orthogonalization
+is, based on sequence of vectors $\{\mathbf{b}_1,\dots,\mathbf{b}_n\}$, produce
+orthogonal vectors $\{\mathbf{b}_1^*,\dots,\mathbf{b}_n^*\}$ such that
+$\text{span}\{\mathbf{b}_i\}_{i \in [n]} = \text{span}\{\mathbf{b}_i^*\}_{i \in
+[n]}$.
+
+For that, set $\mathbf{b}_1^* := \mathbf{b}_1$. Now we shall produce the vector
+$\mathbf{b}_2^*$ that is orthogonal to $\mathbf{b}_1$. For that, we set
+$\mathbf{b}_2^*$ to the component of $\mathbf{b}_2$ that is orthogonal to
+$\mathbf{b}_1$. Recall that the angle $\theta$ between $\mathbf{b}_1$ and
+$\mathbf{b}_2$ can be found as $\cos\theta = \langle \mathbf{b}_1, \mathbf{b}_2
+\rangle /(\|\mathbf{b}_1\| \cdot \|\mathbf{b}_2\|)$. The component of
+$\mathbf{b}_2$ parallel to $\mathbf{b}_1$ can be thus found as
+$\widehat{\mathbf{b}}_1 \cdot \|\mathbf{b}_2\|\cos\theta = \langle \mathbf{b}_1,
+\mathbf{b}_2 \rangle\mathbf{b}_1 /\|\mathbf{b}_1\|^2$ and so $\mathbf{b}_2^* :=
+\mathbf{b}_1 - \langle \mathbf{b}_1, \mathbf{b}_2 \rangle\mathbf{b}_1
+/\|\mathbf{b}_1\|^2$.
+
+In a similar fashion, one obtains the general relations for the rest of vectors:
+\begin{equation*}
+    \mathbf{b}_i^* := \mathbf{b}_i - \sum_{j=0}^{i-1}\mu_{i,j}\mathbf{b}_j^*, \quad \mu_{i,j} := \frac{\langle \mathbf{b}_i, \mathbf{b}_j^*\rangle}{\langle \mathbf{b}_j^*, \mathbf{b}_j^*\rangle}.
+\end{equation*}
+
+We shall further denote the result of Gram-Schmidt orthogonalization of $B$ by
+$B^*$. The question that might naturally arise: given such orthogonalization,
+can't we then always turn a ``bad'' basis of lattice $\Lambda$ into a ``good''
+basis? Unfortunately, typically $\mathcal{L}(B) \neq \mathcal{L}(B^*)$: the
+orthogonalization of a lattice basis is (typically) not a lattice basis.
+However, the idea of Gram-Schmidt orthogonalization lies in the core of many
+attacks on lattices. Besides, it has several nice properties which we list
+below:
+\begin{proposition}\label{prop:gram-schmidt-props}
+    Suppose $\Lambda = \mathcal{L}(B)$ is a lattice and $B^*$ is the
+    Gram-Schmidt orthogonalization of $B$ with columns $\{\mathbf{b}^*_j\}_{j
+    \in [d]}$. Then:
+    \begin{enumerate}
+        \item[\textit{(a)}] $\text{Vol}(\Lambda) = \prod_{j=1}^d \|\mathbf{b}_j^*\|$.
+        \item[\textit{(b)}] $\lambda_1(\Lambda) \geq \min_{j \in [d]}\|\mathbf{b}_j^*\| >
+        0$. 
+    \end{enumerate}
+\end{proposition}
+
+\textbf{Proof.} 
+
+\textit{Part (a).} Note that $\det(B) = \det(B^*)$: the process of Gram-Schmidt
+orthogonalization only comprises adding one row to another with some factor
+which does not change the determinant. Then, $\text{Vol}(\Lambda) =
+\sqrt{\det(B^{\top}B)} = \sqrt{\det((B^*)^{\top}B^*)} = \sqrt{\det
+\text{diag}\{\|\mathbf{b}_1^*\|^2, \dots, \|\mathbf{b}_d^*\|^2\}} = \prod_{j \in
+[d]}\|\mathbf{b}_j^*\|$.
+
+\textit{Part (b)} (adapted from~\cite{complexity-goldwasser}). Consider a
+generic non-zero lattice vector $B\mathbf{x}$ ($\mathbf{x} \in \mathbb{Z}^d
+\setminus \{\mathbf{0}\}$) and let $i$ be the biggest index such that $x_i \neq
+0$. We first prove that $|\langle B\mathbf{x}, \mathbf{b}_i^* \rangle| \geq
+\|\mathbf{b}_i^*\|^2$. From the definition of $i$, we know $B\mathbf{x} =
+\sum_{j=1}^i \mathbf{b}_jx_j$. Thus:
+\begin{align*}
+    \langle B\mathbf{x}, \mathbf{b}_i^* \rangle = \sum_{j=1}^i \langle \mathbf{b}_j, \mathbf{b}_i^*\rangle x_j &= \langle \mathbf{b}_i,\mathbf{b}_i^* \rangle x_i\\
+    &= \langle \mathbf{b}_i^* + \sum_{j<i}\mu_{i,j}\mathbf{b}_j^*, \mathbf{b}_i^*\rangle x_i \\
+    &= \langle \mathbf{b}_i^*, \mathbf{b}_i^*\rangle x_i + \sum_{j < i}\mu_{i,j}\langle \mathbf{b}_j^*, \mathbf{b}_i^*\rangle x_i \\
+    &= \|\mathbf{b}_i^*\|^2x_i.
+\end{align*}
+From this follows $|\langle B\mathbf{x}, \mathbf{b}_i^* \rangle| \geq
+\|\mathbf{b}_i^*\|^2|x_i| \geq \|\mathbf{b}_i^*\|^2$ and therefore
+$\|B\mathbf{x}\|\cdot\|\mathbf{b}_i^*\| \geq \|\mathbf{b}_i^*\|^2$. Clearly
+$\|\mathbf{b}_i^*\| \neq 0$ since $\mathbf{b}_i$'s are linearly independent, so
+$\|B\mathbf{x}\| \geq \|\mathbf{b}_i^*\| \geq \min_{j \in
+[d]}\|\mathbf{b}_j^*\|$. By definition of $\lambda_1(\Lambda)$, the result
+follows. \qedwhite
+
+\begin{proposition}
+    For lattice $\Lambda$, there exists $\mathbf{v} \in \Lambda$ such that
+    $\|\mathbf{v}\| = \lambda_1(\Lambda)$.
+\end{proposition}
+
+\textbf{Proof.} By the definition of $\lambda_1(\Lambda)$, there exists a
+sequence $\{\mathbf{v}_n\}_{n \in \mathbb{N}} \subseteq \Lambda$ such that
+$\lim_{n \to \infty}\|\mathbf{v}_n\| = \lambda_1(\Lambda)$. From
+Proposition~\ref{prop:gram-schmidt-props}, $\lambda_1(\Lambda) > 0$, so for all
+sufficiently large $n$ it must be $\|\mathbf{v}_n\| \leq 2\lambda_1(\Lambda)$,
+i.e., lattice vector $\mathbf{v}_n$ belongs to the closed ball
+$\overline{B}_{2\lambda_1(\Lambda)}(\mathbf{0})$. But this set is compact, so we
+might extract a convergent subsequence $\{\mathbf{v}_{i_j}\}_{j \in \mathbb{N}}$
+with limit $\mathbf{w} = \lim_{j \to \infty}\mathbf{v}_{i_j}$ and
+$\|\mathbf{w}\| = \lambda_1(\Lambda)$. We claim that $\mathbf{w} \in \Lambda$.
+By definition of $\mathbf{w}$, $\lim_{j \to \infty}\|\mathbf{v}_{i_j} -
+\mathbf{w}\|=0$. Therefore for all sufficiently large $j$, $\|\mathbf{v}_{i_j} -
+\mathbf{w}\| < \lambda_1(\Lambda)/2$. By triangle inequality for sufficiently
+large $j$ and all $k>j$, $\|\mathbf{v}_{i_j}-\mathbf{v}_{i_k}\| \leq
+\|\mathbf{v}_{i_j} - \mathbf{w}\| + \|\mathbf{w} - \mathbf{v}_{i_k}\| <
+\lambda_1(\Lambda)$. But $\mathbf{v}_{i_j}-\mathbf{v}_{i_k} \in \Lambda$, and 
+no non-zero lattice vector can have length strictly less than $\lambda_1(\Lambda)$.
+Thus, $\mathbf{v}_{i_k}=\mathbf{v}_{i_j}$ for all $k>j$. Thus $\mathbf{w}=\mathbf{v}_{i_j} \in \Lambda$. \qedwhite
+
+\subsection{Minkowski's Theorem}
+
+Clearly, one expects the dependence between the covolume of a lattice
+$\text{Vol}(\Lambda)$ and the first minimum $\lambda_1(\Lambda)$. In particular,
+for smaller covolume we expect the smaller first minimum $\lambda_1(\Lambda)$
+(or alternatively, one can say the lattice with large covolume cannot have a
+small first minimum). Moreover, by dimensionality analysis one should expect
+that $\lambda_1(\Lambda) \propto \text{Vol}(\Lambda)^{1/d}$. The Minkowski
+theorem gives the inequality between these two quantities.
+
+\begin{theorem}[Minkowski's Theorems]\label{theorem:minkowski}
+    Let $\Lambda=\mathcal{L}(B)$ be the lattice of rank $d$ with covolume
+    $\text{Vol}(\Lambda) = \det B$. Then,
+    \begin{enumerate}[align=left]
+        \item[\textbf{First Minkowski's Theorem}] $\lambda_1(\Lambda) < \sqrt{d}\text{Vol}(\Lambda)^{1/d}$.
+        \item[\textbf{Second Minkowski's Theorem}] $\prod_{i \in [d]}\lambda_i^{1/d} < \sqrt{d}\text{Vol}(\Lambda)^{1/d}$. 
+    \end{enumerate}
+\end{theorem}
+
+\textbf{Proof.} See \cite[Section 1.3]{complexity-goldwasser}.
+
+While the Minkowski's Theorem turns out to be asymptotically tight for ``bad''
+lattices, in general $\lambda_1(\Lambda)$ might be much smaller than
+$\sqrt{d}\text{Vol}(\Lambda)^{1/d}$. Consider a very simple example: let $d=2$
+and $\mathbf{b}_1 := \varepsilon \mathbf{e}_1$, $\mathbf{b}_2 :=
+(1/\varepsilon)\mathbf{e}_2$ (where $\mathbf{e}_1,\mathbf{e}_2$ is the canonical
+basis for $\mathbb{R}^2$). Minkowski's Theorem gives $\lambda_1(\Lambda) \leq
+\sqrt{2}$, however one easily sees that $\lambda_1(\Lambda) = \varepsilon$ can
+be made arbitrarily small.
+
+Moreover, Minkowski's Theorem proof is not constructive: we know that a vector
+of length below $\sqrt{d}\text{Vol}(\Lambda)^{1/d}$ exists, but there is no
+concrete algorithm to find it, let alone $\lambda_1(\Lambda)$. This became the
+core of one of the most well-known lattice computational problem: finding
+shortest vector in $\Lambda$. We introduce this and related problems in the next
+subsection.
+
+\subsection{Lattice Computational Problems}
+
+In this section, we finally define some problems that are currently believed to
+be unsolvable in polynomial time (under reasonable choice of parameters, of
+course). 
+
+\subsubsection{Shortest Vector Problem (SVP)}
+
+As previously announced, we start with the \textit{shortest vector
+problem} (SVP), which requires to find the vector of length
+$\lambda_1(\Lambda)$.
+
+\begin{definition}[Lattice Generation Algorithm]
+    A \textbf{lattice generation algorithm} $\mathsf{LGen}(1^{\mu})$ is a
+    probabilistic polynomial time (PPT) algorithm that takes the security
+    parameter $1^{\mu}$ and outputs the lattice basis\footnote{As previously
+    noted in Remark~\ref{remark:lattice-in-integers}, we might assume that $B$
+    is given in the integer representation.} $B \in \mathbb{Z}^{\mu \times \mu}$
+    where the lattice $\Lambda=\mathcal{L}(B)$ is of rank $\mu$.
+\end{definition}
+
+\begin{definition}[Shortest Vector Problem]\label{def:svp}
+    For a given adversary $\mathcal{A}$ and lattice generation algorithm
+    $\mathsf{LGen}(1^{\mu})$, define the game
+    $\underline{\mathsf{Game}\,\mathsf{SVP}}^{\mathcal{A}}_{\mathsf{LGen}}$ as follows:
+    \begin{enumerate}
+        \item Sample the lattice basis $B \gets \mathsf{LGen}(1^{\mu})$ and send to $\mathcal{A}$;
+        \item $\mathcal{A}$ outputs some $\mathbf{x} \in \mathbb{Z}^{\mu} \setminus \{\mathbf{0}\}$ based on $B \in \mathbb{Z}^{\mu \times \mu}$;
+        \item \textbf{return} $1$ iff $\|B\mathbf{x}\|=\lambda_1(\Lambda)$ and $0$ otherwise.
+    \end{enumerate}
+    We define the $\mathcal{A}$'s \textbf{advantage in solving the shortest
+    vector problem} as:
+    \begin{equation*}
+        \mathsf{Adv}^{\text{SVP}}_{\mathcal{A},\mathsf{LGen}}(\mu) := \text{Pr}\left[\underline{\mathsf{Game}\,\mathsf{SVP}}^{\mathcal{A}}_{\mathsf{LGen}}(\mu) = 1\right]
+    \end{equation*} 
+\end{definition}
+
+\begin{definition}[SVP Assumption]
+    We say that \textbf{Shortest Vector Problem (SVP) assumption} holds if for 
+    any PPT adversary $\mathcal{A}$,
+    \begin{equation*}
+        \mathsf{Adv}^{\text{SVP}}_{\mathcal{A},\mathsf{LGen}}(\mu) = \text{negl}(\mu).
+    \end{equation*}
+\end{definition}
+
+\subsubsection{Approximate Shortest Vector Problem ($\text{SVP}_{\gamma}$)}
+
+Turns out that the setting of \Cref{def:svp} is too strict: finding the shortest
+non-zero vector in lattice $\Lambda$ is too hard. Moreover, one expects that
+building cryptographic protocols on this assumption solely would be highly hard.
+So instead, we will require not finding the shortest vector, but
+``short-enough'', where the natural measure of ``short'' is ``the multiple of
+$\lambda_1(\Lambda)$''.
+
+\begin{definition}[Approximate Shortest Vector Problem]\label{def:appr-svp}
+    For a given adversary $\mathcal{A}$ and lattice generation algorithm
+    $\mathsf{LGen}(1^{\mu})$, define the game
+    $\underline{\mathsf{Game}\,\mathsf{SVP}}^{\mathcal{A}}_{\textcolor{red!70!purple}{\gamma},\mathsf{LGen}}$ as follows:
+    \begin{enumerate}
+        \item Sample the lattice basis $B \gets \mathsf{LGen}(1^{\mu})$ and send to $\mathcal{A}$;
+        \item $\mathcal{A}$ outputs some $\mathbf{x} \in \mathbb{Z}^{\mu} \setminus \{\mathbf{0}\}$ based on $(B,\textcolor{red!70!purple}{\gamma})$;
+        \item \textbf{return} $1$ iff $\|B\mathbf{x}\| \leq \textcolor{red!70!purple}{\gamma}\lambda_1(\Lambda)$ and $0$ otherwise.
+    \end{enumerate}
+    We define the $\mathcal{A}$'s \textbf{advantage in solving the approximate
+    shortest vector problem} as:
+    \begin{equation*}
+        \mathsf{Adv}^{\text{SVP}_{\textcolor{red!70!purple}{\gamma}}}_{\mathcal{A},\mathsf{LGen}}(\mu) := \text{Pr}\left[\underline{\mathsf{Game}\,\mathsf{SVP}}^{\mathcal{A}}_{\textcolor{red!70!purple}{\gamma},\mathsf{LGen}}(\mu) = 1\right]
+    \end{equation*} 
+\end{definition}
+
+\begin{definition}[Approximate SVP Assumption]\label{def:approximate-svp-assumption}
+    We say that \textbf{Approximate Shortest Vector Problem (SVP) assumption}
+    with given $\gamma$ holds if for any PPT adversary $\mathcal{A}$,
+    \begin{equation*}
+        \mathsf{Adv}^{\text{SVP}_{\gamma}}_{\mathcal{A},\mathsf{LGen}}(\mu) = \text{negl}(\mu).
+    \end{equation*}
+\end{definition}
+
+Typically, $\gamma$ is analyzed as a function of the rank of the lattice $\mu$.
+According to \cite[Section 2.2.5]{nist}, for example, vectors of length below
+$\gamma\lambda_1(\Lambda)$ for $\gamma = \sqrt{\mu}$ are considered ``very short''
+while $\gamma = \mathsf{poly}(\mu)$ is the most interesting case. As one
+expects, the Approximate SVP assumption does not hold for $\gamma=2^{\mu}$ by
+means of Lenstra-Lenstra-Lovasz (LLL) algorithm.
+
+\subsubsection{Approximate Closest Vector Problem ($\text{CVP}_{\gamma}$)}\label{section:approximate-cvp}
+
+A somewhat similar problem to SVP is, given some target vector $\mathbf{t} \in
+\mathbb{Z}^{\mu}$, find the closest vector to $\mathbf{t}$ on the lattice. This
+problem also turns out to be computationally hard. Similarly to SVP, the raw CVP
+problem is too strict, so we give formal definition for approximate CVP straight away.
+
+\begin{definition}[Approximate Closest Vector Problem]\label{def:cvp}
+    For a given adversary $\mathcal{A}$ and lattice generation algorithm
+    $\mathsf{LGen}(1^{\mu})$, define the game
+    $\underline{\mathsf{Game}\,\mathsf{CVP}}^{\mathcal{A}}_{\gamma,\mathsf{LGen}}$ as follows:
+    \begin{enumerate}
+        \item Sample the lattice basis $B \gets \mathsf{LGen}(1^{\mu})$;
+        \item Sample target vector $\mathbf{t} \leftarrowS \mathbb{Z}^{\mu}$ and
+        send $(B,\mathbf{t})$ to $\mathcal{A}$;
+        \item $\mathcal{A}$ outputs some $\mathbf{x} \in \mathbb{Z}^{\mu}$ based
+        on $(B,\mathbf{t},\gamma)$;
+        \item \textbf{return} $1$ iff $\|B\mathbf{x}-\mathbf{t}\| \leq \gamma\|B\mathbf{y}-\mathbf{t}\|$
+        for all $\mathbf{y} \neq \mathbf{x}$ and $0$ otherwise.
+    \end{enumerate}
+    We define the $\mathcal{A}$'s \textbf{advantage in solving the approximate closest
+    vector problem} as:
+    \begin{equation*}
+        \mathsf{Adv}^{\text{CVP}_{\gamma}}_{\mathcal{A},\mathsf{LGen}}(\mu) := \text{Pr}\left[\underline{\mathsf{Game}\,\mathsf{CVP}}^{\mathcal{A}}_{\gamma,\mathsf{LGen}}(\mu) = 1\right]
+    \end{equation*} 
+\end{definition}
+
+Similarly to~\Cref{def:approximate-svp-assumption}, we say that approximate CVP
+assumption with the approximate factor $\gamma$ holds if
+$\mathsf{Adv}^{\text{CVP}_{\gamma}}_{\mathcal{A},\mathsf{LGen}}(\mu)=\text{negl}(\mu)$
+for all PTT adversaries $\mathcal{A}$.
+
+\section{Learning With Errors (LWE)}\label{section:lwe}
+
+\subsection{Key Generation}
+
+Fix some modulo $q>1$ (further assume it is prime). Our primary goal is to build
+public key cryptography schemes in the lattice-fashionable way. Turns out that
+one of such approaches is to use \textbf{Learning With Errors} assumptions.
+
+Fix secret key $\mathbf{s} \in \mathbb{Z}_q^n$ which we assume, for the moment,
+is sampled uniformly randomly from the corresponding set (we will assume so
+until \Cref{section:kyber}). The public key, corresponding to $\mathbf{s}$, will
+be a vector of perturbed random inner products with $\mathbf{s}$. Specifically,
+the public information consists of multiple pairs $(\mathbf{a}, b) \in
+\mathbb{Z}_q^{n} \times \mathbb{Z}_q$ such that $b =
+\langle\mathbf{a},\mathbf{s}\rangle + e$ for an \textit{error} $e \in
+\mathbb{Z}_q$, typically taken from the distribution that produces very small
+values of $e$: for instance, one might think of $e \in [-\eta,\eta]\pmod{q}$ for
+$\eta \approx 3$. Denote such distribution by $\chi$.
+
+This way, we can give an intermediate version of our key generation as follows:
+
+\begin{center}
+\begin{varwidth}{0.7\linewidth}
+\begin{mdframed}[linecolor=black,
+                 linewidth=1.0pt,
+                 skipabove=10pt,
+                 skipbelow=10pt,
+                 leftmargin=0pt,
+                 rightmargin=0pt]
+\colorbox{purple!10}{\underline{\textbf{$\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$:}}}
+
+\begin{enumerate}
+    \item $\mathbf{s} \leftarrowS \mathbb{Z}_q^{\lambda}$; \hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Generate secret}}}
+    \item \underline{\textbf{for}} $i \in [\lambda]$:
+    \item \hspace{10px} $\mathbf{a}_i \leftarrowS \mathbb{Z}_q^{\lambda}$, $e \leftarrowS \chi$;
+    \item \hspace{10px} $b_i \gets \langle\mathbf{a}_i,\mathbf{s}\rangle + e$;\hspace{5px}{\footnotesize\texttt{\textcolor{gray!70!black}{// Generate random pertubation}}}
+    \item \textbf{return} $(\mathsf{pk}=\{(\mathbf{a}_i, b_i)\}_{i \in [\lambda]}, \mathsf{sk}=\mathbf{s})$.
+\end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\end{center}
+
+It is then natural to batch all pertubations into a single matrix $A$ and vector
+$\mathbf{b}$.\footnote{We also note that $A$ might not necessarily be (and is
+typically not) the square matrix, but just for the sake of exposition we for now
+assume $A \in \mathbb{Z}_q^{\lambda \times \lambda}$.} This way, our updated key
+generation scheme is in \Cref{fig:keygen} (where by $\chi^{\lambda}$ we denote
+the distribution over $\mathbb{Z}_q^{\lambda}$ where each component is taken
+from $\chi$).
+
+\begin{figure}[ht]
+\centering
+\begin{varwidth}{0.4\linewidth}
+\begin{mdframed}[linecolor=black,
+                 linewidth=1.0pt,
+                 skipabove=10pt,
+                 skipbelow=10pt,
+                 leftmargin=0pt,
+                 rightmargin=0pt]
+\colorbox{purple!10}{\underline{$\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$:}}
+\begin{enumerate}
+    \item $(\mathbf{s}, A) \leftarrowS \mathbb{Z}_q^{\lambda} \times \mathbb{Z}_q^{\lambda \times \lambda}$;
+    \item $\mathbf{e} \leftarrowS \chi^{\lambda}$;
+    \item $b \gets A\mathbf{s} + \mathbf{e}$;
+    \item \textbf{return} $(\mathsf{pk}=(A,b), \mathsf{sk}=\mathbf{s})$.
+\end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{LWE-based Key Generation Scheme}
+\label{fig:keygen}
+\end{figure}
+
+Note that we of course expect that solving $A\mathbf{s}+\mathbf{e}=\mathbf{b}$
+is hard with respect to $\mathbf{s}$. It should also be clear why we introduce
+the error term $\mathbf{e}$: assuming $\mathbf{e}=\mathbf{0}$, the equation
+simplifies to $A\mathbf{s}=\mathbf{b}$. This is a simple system of linear
+equations which can be further dealt with by means of, say, Gaussian
+elimination, which has $O(\lambda^3)$ complexity. The assumption of hardness of
+solving this equation for $\mathbf{e} \neq \mathbf{0}$ is what we introduce and
+treat in the next sections.
+
+\subsection{Search-LWE (SLWE) and Decisional-LWE (DLWE) Assumptions}
+
+In this section we shall finally formalize main assumptions about learning with
+errors problem. First, introduce the LWE instance generation algorithm as
+specified in~\Cref{fig:lwe-instance} below.
+
+\begin{figure}[ht]
+\centering
+\begin{varwidth}{0.45\linewidth}
+\begin{mdframed}[linecolor=black,
+                 linewidth=1.0pt,
+                 skipabove=10pt,
+                 skipbelow=10pt,
+                 leftmargin=0pt,
+                 rightmargin=0pt]
+\colorbox{purple!10}{\underline{$\mathsf{LWEGen}_{n,m,q,\chi}(1^{\lambda}, \mathbf{s}) \to \mathbb{Z}_q^{m \times n} \times \mathbb{Z}_q^m$:}}
+\begin{enumerate}
+    \item $A \leftarrowS \mathbb{Z}_q^{m \times n}$;
+    \item $\mathbf{e} \leftarrowS \chi$ (over $\mathbb{Z}_q^m$);
+    \item $\mathbf{b} \gets A\mathbf{s} + \mathbf{e}$;
+    \item \textbf{return} $(A, \mathbf{b})$.
+\end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{LWE Instance Generation}
+\label{fig:lwe-instance}
+\end{figure}
+
+Now, informally, LWE assumption states that, given output of
+$\mathsf{LWEGen}_{n,m,q,\chi}(1^{\lambda},\mathbf{s})$, it is impossible to
+determine $\mathbf{s}$ (\textit{Search-LWE assumption}). Similarly to many
+assumptions in other cryptographic systems (such as Diffie-Hellman assumption),
+LWE also has the decisional analog: distinguish output of
+$\mathsf{LWEGen}_{n,m,q,\chi}(1^{\lambda},\mathbf{s})$ from the uniform sample
+over $\mathbb{Z}_q^{m \times n} \times \mathbb{Z}_q^m$ (\textit{Decisional-LWE
+assumption}).  We state both assumptions more formally below.
+
+\begin{definition}[Search-LWE Assumption]\label{def:search-lwe-assumption}
+    For the given adversary $\mathcal{A}$ and LWE parameters $(n,m,q,\chi)$,
+    define $\underline{\mathsf{Game} \;
+    \mathsf{SLWE}}_{\mathsf{LWEGen}}^{\mathcal{A}}$ as specified
+    in~\Cref{fig:search-lwe}. Define the advantage of $\mathcal{A}$ as
+    \begin{equation*}
+        \mathsf{Adv}^{\text{SLWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda) = \text{Pr}\left[\underline{\mathsf{Game} \;
+    \mathsf{SLWE}}_{\mathsf{LWEGen}}^{\mathcal{A}}(\lambda) = 1\right].
+    \end{equation*}
+
+    We say that \textbf{Search-LWE assumption} (SLWE) holds if
+    $\mathsf{Adv}^{\text{SLWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda)=\text{negl}(\lambda)$.
+\end{definition}
+
+\begin{definition}[Decisional-LWE Assumption]\label{def:decision-lwe-assumption}
+    For the given adversary $\mathcal{A}$ and LWE parameters $(n,m,q,\chi)$,
+    define $\underline{\mathsf{Game} \;
+    \mathsf{DLWE}}_{\mathsf{LWEGen}}^{\mathcal{A}}$ as specified
+    in~\Cref{fig:decision-lwe}. Define the advantage of $\mathcal{A}$ as
+    \begin{equation*}
+        \mathsf{Adv}^{\text{DLWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda) = \left|\text{Pr}\left[\underline{\mathsf{Game} \;
+    \mathsf{DLWE}}_{\mathsf{LWEGen}}^{\mathcal{A}}(\lambda) = 1\right] - \frac{1}{2}\right|.
+    \end{equation*}
+
+    We say that \textbf{Decisional-LWE assumption} (DLWE) holds if
+    $\mathsf{Adv}^{\text{DLWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda)=\text{negl}(\lambda)$
+    for all PPT adversaries $\mathcal{A}$.
+\end{definition}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.45\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathsf{Game} \; \mathsf{SLWE}_{\mathsf{LWEGen}}^{\mathcal{A}}$:}}
+        \begin{enumerate}
+            \item $\mathbf{s} \leftarrowS \mathbb{Z}_q^{n}$;
+            \item $(A,\mathbf{b}) \leftarrowS \mathsf{LWEGen}_{n,m,q,\chi}(\mathbf{s})$;
+            \item $\widehat{\mathbf{s}} \gets \mathcal{A}(A,\mathbf{b})$;
+            \item \textbf{return} $\mathbf{s} =_? \widehat{\mathbf{s}}$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Search-LWE Game} 
+        \label{fig:search-lwe}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathsf{Game} \; \mathsf{DLWE}_{\mathsf{LWEGen}}^{\mathcal{A}}$:}}
+        \begin{enumerate}
+            \item $\mathbf{s} \leftarrowS \mathbb{Z}_q^{n}$;
+            \item $(A_0,\mathbf{b}_0) \leftarrowS \mathsf{LWEGen}_{n,m,q,\chi}(\mathbf{s})$;
+            \item $(A_1,\mathbf{b}_1) \leftarrowS \mathbb{Z}_q^{m \times n} \times \mathbb{Z}_q^m$;
+            \item $c \leftarrowS \{0,1\}$;
+            \item $\widehat{c} \gets \mathcal{A}(A_c,\mathbf{b}_c)$;
+            \item \textbf{return} $c =_? \widehat{c}$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Decision-LWE Game}
+        \label{fig:decision-lwe}
+    \end{minipage}
+\end{figure}
+
+The natural question to ask is whether SLWE and DLWE assumptions are equivalent
+or not. In fact, \cite{regev} has proven that these notions are in fact
+equivalent in case $q=\mathsf{poly}(n)$. We show this in the following
+proposition.
+
+\begin{proposition}[Following~\cite{regev}]
+    If $q=\mathsf{poly}(n)$, SLWE and DLWE assumptions are polynomially
+    equivalent. To put it the other way, if the SLWE assumption holds for LWE
+    instance with parameters $(n,m,q=\mathsf{poly}(n),\chi)$, then the DLWE
+    assumption also holds.
+\end{proposition}
+
+\textbf{Proof.} $\text{SLWE} \Rightarrow \text{DLWE}$ reduction is obvious. We
+therefore show $\text{DLWE} \Rightarrow \text{SLWE}$. Suppose exists adversary
+$\mathcal{A}$ that wins $\underline{\mathsf{Game} \;
+\mathsf{DLWE}}_{\mathsf{LWEGen}}^{\mathcal{A}}$ in a non-negligible probability.
+We construct $\mathcal{B}^{\mathcal{A}}$ that wins $\underline{\mathsf{Game} \;
+\mathsf{SLWE}}_{\mathsf{LWEGen}}^{\mathcal{B}}$ is a non-negligible probability
+as well.
+
+The informal idea is as follows: suppose $\mathcal{B}$ wants to solve
+$A\mathbf{s}+\mathbf{e}=\mathbf{b}$. Turns out that $\mathcal{B}$ can guess the
+coordinates of $\mathbf{s}$ one at a time, starting from $s_1$. Suppose
+$\mathcal{B}$ picks some $\widetilde{s} \in \mathbb{Z}_q$ and wants to check
+whether $\widetilde{s} = s_1$. Select some $\boldsymbol{\Delta} \leftarrowS
+\mathbb{Z}_q^m$ and let
+$\widetilde{A}=(\widetilde{\mathbf{a}}_1,\mathbf{a}_2,\dots,\mathbf{a}_n)$ where
+$\widetilde{\mathbf{a}}_1=\mathbf{a}_1+\boldsymbol{\Delta}$ (and where the
+initial matrix is given by $A=(\mathbf{a}_1,\dots,\mathbf{a}_n)$) and set
+$\widetilde{\mathbf{b}} := \mathbf{b} + \widetilde{s}\boldsymbol{\Delta}$. Now,
+if $\widetilde{s}=s_1$, then $\widetilde{\mathbf{b}} = \widetilde{A}\mathbf{s} +
+\mathbf{e}$, otherwise $\widetilde{\mathbf{b}} = \widetilde{A}\mathbf{s} +
+\mathbf{e}+(\widetilde{s}-s_1)\boldsymbol{\Delta}$. Since $\boldsymbol{\Delta}$
+is uniform, it follows that in the latter case $\widetilde{\mathbf{b}}$ is
+uniformly random and independent of $\widetilde{A}$. Thus, using $\mathcal{A}$,
+adversary $\mathcal{B}$ has an effective test for chosen $\widetilde{s}$, and
+thus $\mathcal{B}$ can range over all possible $q$ values, which is polynomial
+in $n$.
+
+This way, by using $\mathcal{B}^{\mathcal{A}}_{\text{SLWE}}$ defined in
+\Cref{fig:dlwe-to-slwe}, we obtain:
+\begin{equation*}
+    \mathsf{Adv}^{\text{DLWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda) \leq qn \cdot \mathsf{Adv}^{\text{SLWE}}_{\mathcal{B}^{\mathcal{A}},\mathsf{LWEGen}}(\lambda). \quad \qedwhite
+\end{equation*}
+
+\begin{remark}
+    Note that it might seem like the factor of $qn$ is too large to state the
+    equivalence of DLWE and SLWE (indeed, in the elliptic curve cryptography,
+    one typically uses $q$ exponential in the security parameter). However, in practical
+    applications, $q$ is typically not considerably large: for instance, in
+    Kyber~\cite{kyber}, $q=7681$ and $n=256$!
+
+    Also note that the brute-force complexity without the DLWE oracle is $q^n$,
+    which is of course overwhelmingly large! (compared to $qn$).
+\end{remark}
+
+\begin{figure}[ht]
+\centering
+\begin{varwidth}{0.7\linewidth}
+\begin{mdframed}[linecolor=black,
+                 linewidth=1.0pt,
+                 skipabove=10pt,
+                 skipbelow=10pt,
+                 leftmargin=0pt,
+                 rightmargin=0pt]
+\colorbox{purple!10}{\underline{$\mathcal{B}^{\mathcal{A}}_{\text{SLWE}}(1^{\lambda}, A=(\mathbf{a}_1,\dots,\mathbf{a}_n), \mathbf{b}) \to \mathbb{Z}_q^{m}$:}}
+\begin{enumerate}
+    \item $\widehat{\mathbf{s}} \gets \mathbf{0} \in \mathbb{Z}_q^m$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Prepare the output}}}
+    \item \textbf{for} $i \in [n]$:
+    \item \hspace{10px} \textbf{for} $\widetilde{s} \in \mathbb{Z}_q$:
+    \item \hspace{20px} $\boldsymbol{\Delta} \leftarrowS \mathbb{Z}_q^m$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Generate random offset}}}
+    \item \hspace{20px} $\widetilde{A} \gets (\mathbf{a}_1,\dots,\mathbf{a}_{i-1},\widetilde{\mathbf{a}}_i, \mathbf{a}_{i+1},\dots,\mathbf{a}_n)$, $\widetilde{\mathbf{a}}_i := \mathbf{a}_i+\boldsymbol{\Delta}$;
+    \item \hspace{20px} $\widetilde{\mathbf{b}} \gets \mathbf{b} + \widetilde{s}\boldsymbol{\Delta}$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Set offset vector $\widetilde{\mathbf{b}}$ and matrix $\widetilde{A}$}}}
+    \item \hspace{20px} $c \gets \mathcal{A}(\widetilde{A}, \widetilde{\mathbf{b}})$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Run DLWE oracle}}}
+    \item \hspace{20px} \textbf{if} $c=0$, set $\widehat{s}_i \gets \widetilde{s}$ and \textbf{break};
+    \item \textbf{return} $\widehat{\mathbf{s}}$.
+\end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{Algorithm for finding the solution to LWE instance given oracle to the DLWE.}
+\label{fig:dlwe-to-slwe}
+\end{figure}
+
+\subsection{LWE-based Public-Key Encryption}
+
+Finally, let us define the public-key encryption (PKE) scheme based on SLWE and
+DLWE assumptions! We remind the reader of the definition of a PKE scheme.
+\begin{definition}[Public-Key Encryption Scheme]
+    A \textbf{public-key encryption scheme} $\Pi_{\text{PKE}}$ is a triplet 
+    of the following PPT algorithms:
+    \begin{itemize}
+        \item $\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$
+        returns the pair of public key and secret key, respectively.
+        \item $\mathsf{Enc}(\mathsf{pk}, m) \to c$ takes the public key and message
+        and produces the ciphertext $c$.
+        \item $\mathsf{Dec}(\mathsf{sk}, c) \to m$ takes the secret key and ciphertext and restores the message $m$.
+    \end{itemize}
+    We require \textbf{correctness}:
+    \begin{equation*}
+        \forall m: \; \text{Pr}\left[ \widehat{m} = m \;\middle|\; \begin{aligned}
+            &(\mathsf{pk}, \mathsf{sk}) \gets \mathsf{KeyGen}(1^{\lambda}) \\
+            &\widehat{m} \gets \mathsf{Dec}(\mathsf{sk}, \mathsf{Enc}(\mathsf{pk}, m))
+        \end{aligned} \right] \geq 1 - \text{negl}(\lambda),
+    \end{equation*}
+    and \textbf{IND-CCA} and \textbf{IND-CPA} security. To not overwhelm the reader 
+    with the details, we will only focus on the IND-CPA security with the corresponding $\underline{\mathsf{Game} \; \mathsf{INDCPA}}^{\mathcal{A}}_{\Pi}$ defined in \Cref{fig:ind-cpa-game}. We 
+    naturally define advantage $\mathsf{Adv}_{\mathcal{A},\Pi_{\text{PKE}}}^{\text{IND-CPA}}(\lambda) := 2\left|\text{Pr}[\underline{\mathsf{Game} \; \mathsf{INDCPA}}^{\mathcal{A}}_{\Pi_{\text{PKE}}} = 1] - \frac{1}{2}\right|$ and say that $\Pi_{\text{PKE}}$ is \textbf{IND-CPA secure} if $\mathsf{Adv}_{\mathcal{A},\Pi_{\text{PKE}}}^{\text{IND-CPA}}(\lambda) = \text{negl}(\lambda)$ for all PPT $\mathcal{A}$.
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\begin{varwidth}{0.75\linewidth}
+\begin{mdframed}[linecolor=black, linewidth=1pt,
+                    skipabove=10pt, skipbelow=10pt]
+\colorbox{green!10}{\underline{$\mathsf{Game} \; \mathsf{INDCPA}_{\Pi}^{\mathcal{A}}(1^{\lambda})$:}}
+    \begin{enumerate}
+        \item $(\mathsf{pk},\mathsf{sk}) \gets \mathsf{KeyGen}(1^{\lambda})$;
+        \item $(m_0,m_1) \gets \mathcal{A}(\mathsf{pk})$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Typically one requires $|m_0|=|m_1|$}}}
+        \item $b \leftarrowS \{0,1\}$, $c_b \gets \mathsf{Enc}(\mathsf{pk}, m_b)$;
+        \item $\widehat{b} \gets \mathcal{A}(\mathsf{pk}, m_0, m_1, c_b)$;
+        \item \textbf{return} $\widehat{b} =_? b$.
+    \end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{IND-CPA Security Game. $\mathcal{A}$ might be
+allowed to perform steps 2--3 $\text{poly}(\lambda)$ times.} 
+\label{fig:ind-cpa-game}
+\end{figure}
+
+Now, we define the following PKE scheme based on $(n,m,q,\chi)$ assumption where
+the message space is $\{0,1\}$. The main idea is that encryption scheme will
+generate the new LWE instance $(A',\mathbf{b}')$ by taking a ``small'' linear
+combination of publicly known $(A,\mathbf{b})$. By additionally adding
+$m\lceil q/2 \rfloor$ to $\mathbf{b}'$, we obtain the encryption (further denote
+by $\lceil \cdot \rfloor: \mathbb{Q} \to \mathbb{Z}$ the function that rounds a
+given rational number to the nearest integer). Upon decryption, the holder of 
+the secret key $\mathbf{s}$ will be able to check whether $A'\mathbf{s}-\mathbf{b}'$
+produces the small error. If the term $m\lceil q/2 \rfloor$ was added to form 
+$\mathbf{b}'$, the resultant difference would be large, suggesting that the original 
+bit was $1$. Otherwise, decryption would output $0$. Let us put this formally in 
+the definition below.
+
+\begin{definition}[LWE-based PKE]\label{def:lwe-pke}
+    Based on LWE instance with parameters $(n,m,q,\chi)$, define the PKE scheme
+    $\Pi_{\text{PKE}}^{\text{LWE}}$ over message space $\{0,1\}$ as follows: $\mathsf{KeyGen}$ is specified in
+    \Cref{fig:keygen}, $\mathsf{Enc}$ in \Cref{fig:lwe-enc}, and $\mathsf{Dec}$
+    in \Cref{fig:lwe-dec}.
+\end{definition}
+
+Since we have to work with ``small'' and ``large'' elements of $\mathbb{Z}_q$,
+by $\|x\|_{\infty}$ for $x \in \mathbb{Z}_q$ we denote $x$ if $x \leq \frac{q}{2}$, and
+$q-x$ otherwise (for example, naturally, $\|q-3\|_{\infty} = 3$).
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.45\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathsf{Enc}(\mathsf{pk}, m \in \{0,1\}) \to (c \in \mathbb{Z}_q^n \times \mathbb{Z}_q)$:}}
+        \begin{enumerate}
+            \item $\Delta\mathbf{r}, \Delta\mathbf{z} \leftarrowS \chi^m$, $\Delta z' \leftarrowS \chi$;
+            \item $\widetilde{\mathbf{a}} \gets A^{\top}\Delta\mathbf{r} + \Delta\mathbf{z}$;
+            \item $\widetilde{b} \gets \mathbf{b}^{\top}\Delta\mathbf{r}  + \Delta z' + m\lceil q/2 \rfloor$;
+            \item \textbf{return} $c=(\widetilde{\mathbf{a}}, \widetilde{b})$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Encryption in $\Pi_{\text{PKE}}^{\text{LWE}}$} 
+        \label{fig:lwe-enc}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathsf{Dec}(\mathsf{sk}, c) \to m$:}}
+        \begin{enumerate}
+            \item Parse $(\widetilde{\mathbf{a}}, \widetilde{b}) \gets c$;
+            \item $\delta \gets \widetilde{b} - \mathbf{s}^{\top}\widetilde{\mathbf{a}}$;
+            \item \textbf{return} $1$ iff $\|\delta\|_{\infty} > q/4$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Decryption in $\Pi_{\text{PKE}}^{\text{LWE}}$}
+        \label{fig:lwe-dec}
+    \end{minipage}
+\end{figure}
+
+Now we show that $\Pi_{\text{PKE}}^{\text{LWE}}$ is a correct and secure PKE scheme.
+
+\begin{proposition}\label{prop:ind-cpa-security}
+    $\Pi_{\text{PKE}}^{\text{LWE}}$ is correct and IND-CPA secure under DLWE
+    assumption.
+\end{proposition}
+
+\textbf{Proof.} (\textit{Correctness}) Let us first show correctness. Assume $\mathsf{sk}=\mathbf{s}$
+and $\mathsf{pk}=(A,\mathbf{b})$ is the valid key-pair (that is, $A\mathbf{s}+\mathbf{e}=\mathbf{b}$ for ``small'' $\mathbf{e} \leftarrowS \chi^m$) and we formed
+$(\widetilde{\mathbf{a}}, \widetilde{b})$ according to \Cref{fig:lwe-enc}. Let 
+us try to decode this cipher by means of \Cref{fig:lwe-dec}:
+\begin{align*}
+    \delta &= \mathbf{b}^{\top}\Delta\mathbf{r} + \Delta z' + m\lceil q/2 \rfloor - 
+    \mathbf{s}^{\top}A^{\top}\Delta\mathbf{r} - \mathbf{s}^{\top}\Delta\mathbf{z} \\
+    &= (\mathbf{b} - A\mathbf{s})^{\top}\Delta \mathbf{r} + (\Delta z' - \mathbf{s}^{\top}\Delta\mathbf{z}) + m\lceil q/2 \rfloor \\
+    &= \textcolor{blue!70!black}{(\mathbf{e}^{\top}\Delta \mathbf{r} - \mathbf{s}^{\top}\Delta\mathbf{z} + \Delta z')} + m\lceil q/2 \rfloor
+\end{align*}
+
+Now note that the quantity marked in \textcolor{blue!70!black}{blue} is small.
+Indeed, let us show why. Assume that $\chi$ produces elements of $\mathbb{Z}_q$
+with the modulus not exceeding $\eta$. Then\footnote{In the sequel, we will show
+that $\mathbf{s}$ can be taken from the same distribution as the error term
+$\mathbf{e}$ (that is, from $\chi$), making upper bound even smaller.},
+\begin{equation*}
+    \|\textcolor{blue!70!black}{\mathbf{e}^{\top}\Delta \mathbf{r} - \mathbf{s}^{\top}\Delta\mathbf{z} + \Delta z'}\|_{\infty} \leq \|\mathbf{e}^{\top}\Delta \mathbf{r}\|_{\infty} + \|\mathbf{s}^{\top}\Delta\mathbf{z}\|_{\infty} + \|\Delta z'\|_{\infty} \leq n\eta^2 + n\eta + \eta \leq 2n\eta.
+\end{equation*}
+
+Clearly, $2n\eta$ is a small quantity (assuming $\eta \ll q/8n$). Now, if $m=0$, we
+get that $\|\delta\|_{\infty} = \|(\textcolor{blue!70!black}{\text{blue part}})\|_{\infty} < q/4$, so
+decryption works. If $m=1$, then $\delta = \lceil q/2\rfloor +
+(\textcolor{blue!70!black}{\text{blue part}})$, which is a large value, 
+so the decryption outputs $1$, as expected.
+
+(\textit{IND-CPA Security}). Suppose $\mathcal{A}$ solves the
+$\underline{\mathsf{Game} \; \mathsf{INDCPA}}_{\Pi}^{\mathcal{A}}$ with a
+non-negligible probability. We construct the $\mathcal{B}^{\mathcal{A}}$ that
+breaks the $\underline{\mathsf{Game} \;
+\mathsf{DLWE}}_{\mathsf{LWEGen}}^{\mathcal{B}}$ using $\mathcal{A}$ as an
+oracle. The high-level idea of the proof is the following: suppose $\mathcal{B}$
+is given a tuple $(A,\mathbf{b})$. If $(A,\mathbf{b})$ is a valid LWE instance,
+then it is a valid public key in $\Pi_{\text{PKE}}^{\text{LWE}}$, so
+$\mathcal{B}$ might run $\mathcal{A}$ on $\mathsf{pk}^* \gets (A,\mathbf{b})$.
+Then, if $\mathcal{A}$ correctly guesses the bit, then likely $\mathsf{pk}^*$
+was a valid key. In turn, if $\mathsf{pk}^*$ is a ``garbage'', with probability
+approximately $1/2$, the $\mathcal{A}$ would lose. Thus, $\mathcal{B}$ decision
+will be based on whether $\mathcal{A}$ guesses the correct bit or not. We
+encapsulate this in \Cref{fig:ind-cpa-to-dlwe}. One can then show:
+\begin{equation*}
+    \mathsf{Adv}^{\text{IND-CPA}}_{\mathcal{A},\Pi}(\lambda) \leq 2\mathsf{Adv}^{\text{DLWE}}_{\mathcal{B}^{\mathcal{A}},\mathsf{LWEGen}}(\lambda). 
+    \quad \qedwhite
+\end{equation*}
+
+\begin{figure}[ht]
+\centering
+\begin{varwidth}{0.7\linewidth}
+\begin{mdframed}[linecolor=black,
+                 linewidth=1.0pt,
+                 skipabove=10pt,
+                 skipbelow=10pt,
+                 leftmargin=0pt,
+                 rightmargin=0pt]
+\colorbox{purple!10}{\underline{$\mathcal{B}^{\mathcal{A}}_{\text{DLWE}}(1^{\lambda}, A, \mathbf{b}) \to \{0,1\}$:}}
+\begin{enumerate}
+    \item pass $\mathsf{pk}^* \gets (A,\mathbf{b})$ to $\mathcal{A}$;
+    \item get $(m_0,m_1)$ from $\mathcal{A}$; 
+    \item choose $d \leftarrowS \{0,1\}$;
+    \item send $c_d \gets \mathsf{Enc}(\mathsf{pk}^*, m_d)$ to $\mathcal{A}$;
+    \item $\mathcal{A}$ responds with $\widehat{d}$;
+    \item \textbf{return} $d =_? \widehat{d}$. 
+\end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{Algorithm for finding the solution to DLWE instance given oracle to the IND-CPA.}
+\label{fig:ind-cpa-to-dlwe}
+\end{figure}
+
+\subsection{Relation to Lattices}
+
+The reasonable question that the reader might rightfully have at this point:
+where are the lattices? So far, we have spent the whole \Cref{section:lattices}
+describing lattices, while the current section does not explicitly use them in
+any way.
+
+In fact, turns out that the LWE problem can be viewed as the lattice problem!
+
+\begin{definition}
+    For the LWE instance $(A,\mathbf{b})$ over parameters $(n,m,q,\chi)$, we
+    define the associated lattice $\Lambda_q(A)$ as follows:
+    \begin{equation*}
+        \Lambda_q(A) \triangleq \{\mathbf{y} \in \mathbb{Z}^m: \mathbf{y} = A\mathbf{x} \; (\text{mod}\; q) \; \text{for some} \; \mathbf{x} \in \mathbb{Z}^n\} = A\mathbb{Z}^n + q\mathbb{Z}^m.
+    \end{equation*}
+\end{definition}
+
+Now note that the vector $\mathbf{b}$ does not lie on the lattice $\Lambda_q(A)$
+(unless $\mathbf{e}=\mathbf{0}$ which makes LWE instance unsecure). But note
+that due to the modular equation, $\mathbf{b} = A\mathbf{s} + q\mathbf{z} +
+\mathbf{e}$ for some $\mathbf{z} \in \mathbb{Z}^m$ and since $A\mathbf{s} +
+q\mathbf{z} \in \Lambda_q(A)$, the distance from $\mathbf{b}$ to $\Lambda_q(A)$
+is bounded by $\|\mathbf{e}\|$. That said, although $\mathbf{b}$ is not in the
+lattice, it is very close to it! Therefore, almost surely, the closest vector to
+$\mathbf{b}$ is $A\mathbf{s} + q\mathbf{z}$. Now imagine that we know how to
+solve CVP defined in \Cref{section:approximate-cvp}. Then, based on
+$\mathbf{b}$, we can derive $A\mathbf{s}+q\mathbf{z}$, and then easily obtain
+$\mathbf{s}$ by solving a system of linear equations. Note that the
+approximation factor depends on the underlying distribution $\chi^m$, from which
+$\mathbf{e}$ is sampled. 
+
+This way, lattices are crucial for cryptanalysis of LWE-based schemes.
+
+\subsection{Variations of LWE}
+
+Let us analyze the efficiency of the PKE scheme provided in \Cref{def:lwe-pke}.
+\begin{proposition}
+    In the PKE scheme $\Pi_{\text{PKE}}^{\text{LWE}}$ over LWE instance
+    $(n,m,q,\chi)$, the public key size is $O(m\log q)$, secret key size is
+    $O(n\log q)$, and the codeword size is $O(m\log q)$: therefore, sending a
+    $B$-bit message takes $O(B m \log q)$ space.
+\end{proposition}
+
+\begin{remark}\label{remark:seeded-a}
+    One might ask why the public key size is not $O(nm\log q)$, given that we need
+to store the matrix $A$. Fortunately, $A$ is sampled randomly, so instead of
+storing the whole matrix, one might store the seed from which one can derive
+$A$ instead.
+\end{remark}
+
+Unfortunately, such key and ciphertext sizes are significantly larger than those
+of elliptic curve-based schemes (in fact, if $\lambda$ is taken as a security
+parameter, then ciphertext size scales as $O(\lambda^2)$). This led to the
+natural question: can we reduce these sizes?
+
+\subsubsection{Ring-LWE}
+
+Turns out that one possible answer to this question is to use objects other than
+$\mathbb{Z}_q^n$ as elements that possess certain useful structure: for
+instance, the popular choice is to use $\mathcal{R}_q :=
+\mathcal{R}/q\mathcal{R}$ for $\mathcal{R} = \mathbb{Z}[T]/(T^n+1)$ and $n$
+being a power-of-two. In such case, one might think of $\mathcal{R}$ either by: 
+\begin{enumerate}
+    \item[(a)] $(n-1)$-degree polynomials with operations modulo $T^n+1$;
+    \item[(b)] the ring of integers $\mathbb{Z}(\zeta_{2n})$ since $\mathcal{R}
+\cong \mathbb{Z}[T]/(\Phi_{2n}(T)) \cong \mathbb{Z}(\zeta_{2n})$ where $\zeta_N
+:= e^{2\pi i/N}$.
+\end{enumerate}
+
+Now, instead of having $(A,\mathbf{b}) \in \mathbb{Z}_q^{m \times n} \times
+\mathbb{Z}_q^m$ as a public key, we will store the public key as a pair $(a,b)
+\in \mathcal{R}_q^2$ where $b=as+e$, but over the polynomial space. However, we
+should clarify what ``small'' means in the context of $\mathcal{R}_q$ (since $e$
+here comes from some small distribution). For this reason, given $f(T)=\sum_{i
+\in (n)}f_iT^i \in \mathcal{R}_q$, define:
+\begin{equation*}
+    \|f\|_{\infty} \triangleq \max_{i \in (n)}\|f_i\|_{\infty}.
+\end{equation*}
+So in other words, polynomial $f(T) \in \mathcal{R}_q$ is large as long as its
+largest coefficient is large. 
+
+Further, we identify Ring-LWE instance by a tuple of $(\mathcal{R},n,q,\chi)$,
+where (\textit{i}) additive group of $\mathcal{R}$ is isomorphic to
+$\mathbb{Z}^n$, (\textit{ii}) instead of $\mathbb{Z}_q^n$ in ``plain'' LWE, we
+use field $\mathcal{R}_q := \mathcal{R}/q\mathcal{R}$, and (\textit{iii}) $\chi$
+is a (small) random distribution over $\mathcal{R}_q$.
+
+\begin{proposition}
+    Using Ring-LWE structure, we can reduce ciphertext size for a $n$-bit message
+    of PKE Scheme from \Cref{def:lwe-pke} from $O(nm\log q)$ to $O(n\log q)$.
+    Moreover, computing expression $as+e$ now takes only $O(n\log n)$ complexity
+    instead of $O(nm)$.
+\end{proposition}
+
+The reason for $O(n\log n)$ complexity for computing $as+e$ comes from the fact
+that we can utilize Number Theoretic Transform (NTT/FFT) for fast polynomial
+multiplication. The reason for reduced ciphertext size is less evident, but the
+idea is the following: instead of adding a $m\lceil q/2 \rfloor$ term to the
+second ciphertext piece in \Cref{fig:lwe-enc}, we are going to represent $n$
+bits of message $(m_i)_{i \in (n)}$ as a polynomial $m(T) := \sum_{i \in
+(n)}m_iT^i \in \mathcal{R}_q$. We specify details in the definition below.
+
+\begin{definition}\label{def:rlwe-pke}
+    Based on Ring-LWE instance with parameters $(\mathcal{R}, n, q,\chi)$, define the PKE scheme
+    $\Pi_{\text{PKE}}^{\text{RLWE}}$ over message space $\{0,1\}^n$ as follows: $\mathsf{KeyGen}$ is specified in
+    \Cref{fig:ring-keygen}, $\mathsf{Enc}$ in \Cref{fig:ring-lwe-enc}, and $\mathsf{Dec}$
+    in \Cref{fig:ring-lwe-dec}.
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\footnotesize 
+
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{purple!10}{\underline{$\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$:}}
+        \begin{enumerate}
+            \item $(s,a) \leftarrowS \mathcal{R}_q^2$;
+            \item $e \leftarrowS \chi$ (over $\mathcal{R}_q$);
+            \item $b \gets as + e \in \mathcal{R}_q$;
+            \item \textbf{return} $((a,b),s)$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Ring-LWE-based Key Generation}
+    \label{fig:ring-keygen}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Enc}(\mathsf{pk}, (m_i)_{i \in (n)} \in \{0,1\}^n) \to c$:}}
+        \begin{enumerate}
+            \item $m \gets \sum_{i \in (n)}m_iT^i \in \mathcal{R}_q$;
+            \item $\Delta r, \Delta z, \Delta z' \leftarrowS \chi$;
+            \item $\widetilde{a} \gets a\Delta r + \Delta z$;
+            \item $\widetilde{b} \gets b\Delta r  + \Delta z' + \lceil \frac{q}{2} \rfloor m$;
+            \item \textbf{return} $c=(\widetilde{a}, \widetilde{b})$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Ring-LWE-based Encryption} 
+    \label{fig:ring-lwe-enc}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Dec}(\mathsf{sk}, c) \to m$:}}
+        \begin{enumerate}
+            \item Parse $(\widetilde{a}, \widetilde{b}) \gets c$;
+            \item $\delta \gets \widetilde{b} - s\widetilde{a}$;
+            \item \textbf{return} $1$ iff $\|\delta\|_{\infty} > \frac{q}{4}$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Ring-LWE-based Decryption}
+    \label{fig:ring-lwe-dec}
+\end{minipage}
+\end{figure}
+
+Another valid question is whether introducing such structure should worsen the
+security: so in other words, given appropriate Ring-LWE instance
+$(\mathcal{R},n,q,\chi)$, is $\Pi_{\text{PKE}}^{\text{RLWE}}$ secure? Turns out
+that there are no algorithms for breaking analogous Ring-LWE-based assumption
+significantly faster than ``plain'' version of the LWE. To put this assumption
+formally, we slighly modify \Cref{def:search-lwe-assumption}.
+
+\begin{definition}
+    For the given adversary $\mathcal{A}$ and Ring-LWE parameters
+    $(\mathcal{R},n,q,\chi)$, define $\underline{\mathsf{Game} \;
+    \mathsf{SRLWE}}^{\mathcal{A}}$ as specified in~\Cref{fig:search-rlwe}. Define
+    the advantage of $\mathcal{A}$ as
+    \begin{equation*}
+        \mathsf{Adv}^{\text{SRLWE}}_{\mathcal{A}}(\lambda) = \text{Pr}\left[\underline{\mathsf{Game} \;
+    \mathsf{SRLWE}}^{\mathcal{A}}(\lambda) = 1\right].
+    \end{equation*}
+
+    We say that \textbf{Search-Ring-LWE assumption} (SRLWE) holds if
+    $\mathsf{Adv}^{\text{SRLWE}}_{\mathcal{A}}(\lambda)=\text{negl}(\lambda)$
+    for all PPT adversaries $\mathcal{A}$. Decisional version of Ring-LWE is
+    defined similarly to \Cref{def:decision-lwe-assumption}.
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\begin{varwidth}{0.4\linewidth}
+\begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+\colorbox{green!10}{\underline{$\mathsf{Game} \; \mathsf{SRLWE}^{\mathcal{A}}$:}}
+\begin{enumerate}
+    \item $(s,a) \leftarrowS \mathcal{R}_q^2$;
+    \item $e \leftarrowS \chi$;
+    \item $b \gets as + e$;
+    \item $\widehat{s} \gets \mathcal{A}(a,b)$;
+    \item \textbf{return} $s =_? \widehat{s}$.
+\end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{Search-Ring-LWE Game} 
+\label{fig:search-rlwe}
+\end{figure}
+
+We leave the following proposition without a proof as it closely resembles one
+specified in Proposition~\ref{prop:ind-cpa-security}. For concrete details and
+survey on possible attacks, see for example \cite{lac}.
+\begin{proposition}
+    $\Pi_{\text{PKE}}^{\text{RLWE}}$ is correct and IND-CPA secure under Decisional Ring-LWE
+    assumption.
+\end{proposition}
+
+\subsubsection{Module-LWE}
+
+The idea of Module-LWE is to in a way ``blend'' together Ring-LWE and plain-LWE.
+Namely, instead of using $\mathcal{R}_q$ in Ring-LWE, we will use vectors from
+$\mathcal{R}_q^{\ell}$. Note that equipping $\mathcal{R}_q$ with a vector
+structure naturally induces metric notions we have used before: e.g., for
+$\bm{f}=(f_1,\dots,f_{\ell}) \in \mathcal{R}_q^{\ell}$, we have
+$\|\bm{f}\|_{\infty} := \max_{i \in [\ell]}\|f_i\|_{\infty}$ and $\langle
+\bm{f}, \bm{g} \rangle = \sum_{i \in [\ell]}f_ig_i$ is a valid inner product
+that produces output in $\mathcal{R}_q$. 
+
+The analogy to plain-LWE equation $\mathbf{b} = A\mathbf{s}+\mathbf{e}$ for $A
+\in \mathbb{Z}_q^{n \times m}$, $\mathbf{s} \in \mathbb{Z}_q^m$, and
+$\mathbf{b},\mathbf{e} \in \mathbb{Z}_q^n$, is now $\mathbf{b}_{\mathcal{R}} =
+A_{\mathcal{R}}\mathbf{s}_{\mathcal{R}} + \mathbf{e}_{\mathcal{R}}$ for
+$A_{\mathcal{R}} \in \mathcal{R}_q^{k \times \ell}$, $\mathbf{s} \in
+\mathcal{R}_q^{\ell}$, and $\mathbf{s}_{\mathcal{R}},\mathbf{e}_{\mathcal{R}}
+\in \mathcal{R}_q^{k}$, where operations are done inside ring $\mathcal{R}_q$.
+We call $(A,\mathbf{b})$ a Module-LWE instance with parameters
+$(\mathcal{R},k,\ell,q,\chi)$ if it is an output of $\mathsf{MLWEGen}_{\mathcal{R},k,\ell,q,\chi}$
+defined in \Cref{fig:mlwe-gen}. Now we define Module-LWE assumption in the 
+definition below.
+
+\begin{definition}
+    For the given adversary $\mathcal{A}$ and Module-LWE parameters
+    $(\mathcal{R},k,\ell,q,\chi)$, define $\underline{\mathsf{Game} \;
+    \mathsf{SMLWE}}^{\mathcal{A}}$ as specified in~\Cref{fig:mlwe-game}. Define
+    the advantage of $\mathcal{A}$ as
+    \begin{equation*}
+        \mathsf{Adv}^{\text{SMLWE}}_{\mathcal{A}}(\lambda) = \text{Pr}\left[\underline{\mathsf{Game} \;
+    \mathsf{SMLWE}}^{\mathcal{A}}(\lambda) = 1\right].
+    \end{equation*}
+
+    We say that \textbf{Search-Module-LWE assumption} (SMLWE) holds if
+    $\mathsf{Adv}^{\text{SMLWE}}_{\mathcal{A}}(\lambda)=\text{negl}(\lambda)$
+    for all PPT adversaries $\mathcal{A}$. Decisional Module-LWE is defined
+    similarly to \Cref{def:decision-lwe-assumption}.
+\end{definition}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.45\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathsf{MLWEGen}_{\mathcal{R},k,\ell,q,\chi}(\mathbf{s}) \to \mathcal{R}_q^{k \times \ell}
+            \times \mathcal{R}_q^{k}$:}}
+        \begin{enumerate}
+            \item $A \leftarrowS \mathcal{R}_q^{k \times \ell}$;
+            \item $\mathbf{e} \leftarrowS \chi$ (over $\mathcal{R}_q^k$);
+            \item $\mathbf{b} \gets A\mathbf{s} + \mathbf{e}$;
+            \item \textbf{return} $(A,\mathbf{b})$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Modular-LWE $(\mathcal{R},k,\ell,q,\chi)$ instance generation} 
+        \label{fig:mlwe-gen}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathsf{Game}\;\mathsf{SMLWE}_{\mathsf{MLWEGen}}^{\mathcal{A}}(1^{\lambda})$:}}
+        \begin{enumerate}
+            \item $\mathbf{s} \leftarrowS \mathcal{R}_q^{\ell}$;
+            \item $(A,\mathbf{b}) \leftarrowS \mathsf{MLWEGen}(\mathbf{s})$;
+            \item $\widehat{\mathbf{s}} \gets \mathcal{A}(A,\mathbf{b})$;
+            \item \textbf{return} $\mathbf{s} =_? \widehat{\mathbf{s}}$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Search Modular-LWE Game}
+        \label{fig:mlwe-game}
+    \end{minipage}
+\end{figure}
+
+At first glance, it might seem that Module-LWE looks much less efficient than
+Ring-LWE: for instance, why should representing $A$ as a matrix
+$\mathcal{R}_q^{k \times \ell}$ be any more efficient than using a single
+$\mathcal{R}_q$? Notice that to adjust the security of Ring-LWE, one must
+regulate $n$ --- the power of cyclotomic polynomial. However, it must be a power
+of two, which makes such parameter adjusting highly problematic. For Module-LWE,
+one typically fixes $(q,n)$ (which fully determine $\mathcal{R}_q$-arithmetic
+efficiency), and then changes $\ell$ to set target security level.
+
+This way, key sizes (which are primarily determined by a storage of $\mathbf{b}$
+by Remark~\ref{remark:seeded-a}) turn out to be more or less equal for both
+Ring-LWE and Module-LWE:
+\begin{itemize}
+    \item \textit{Dilithium}~\cite{dilithium}, being a Module-LWE, uses
+    parameters $q=2^{23}-2^{13}+1$, $n=256$, and $(k,\ell) \in
+    \{(3,2),(4,3),(5,4),(6,5)\}$; If we take, say $(k,\ell)=(4,3)$, we need $kn
+    = 1024$ elements of $\mathbb{Z}_q$ to store $\mathbf{b} \in
+    \mathcal{R}_q^{k}$.
+    \item \textit{NewHope}~\cite{new-hope}, being a Ring-LWE, uses
+    $q=2^{13}+2^{12}+1$ and $n=1024$. Notice that although we have a single
+    polynomial $b \in \mathcal{R}_q$, we still need $1024$ elements of
+    $\mathbb{Z}_q$ for storage.
+\end{itemize}
+
+Turns out that implementing analogous PKE scheme to ones in \Cref{def:lwe-pke}
+and \Cref{def:rlwe-pke} based on Module-LWE assumptions leads to the Kyber PKE
+description! We specify the details in \Cref{section:kyber}.
+
+\section{Lattice-based Cryptographic Protocols}
+
+In \Cref{section:lwe}, we have defined the public-key encryption scheme based on
+LWE assumptions (specifically, based on plain-LWE and Ring-LWE). In this
+section, we shall see how to implement several familiar cryptographic protocols
+using these assumptions.
+
+\subsection{Kyber Public-Key Encryption}\label{section:kyber}
+
+As previously announced, Kyber PKE Scheme~\cite{kyber} is, in the essence, a
+Module-LWE-based adaptation of \Cref{def:lwe-pke} and \Cref{def:rlwe-pke}.
+
+\begin{definition}\label{def:kyber} Based on Module-LWE instance with parameters
+    $(\mathcal{R},k,\ell,q,\chi)$, define the PKE scheme
+    $\Pi_{\text{PKE}}^{\text{Kyber}}$ over message space $\{0,1\}^n$ as follows:
+    $\mathsf{KeyGen}$ is specified in \Cref{fig:kyber-keygen}, $\mathsf{Enc}$ in
+    \Cref{fig:kyber-enc}, and $\mathsf{Dec}$ in \Cref{fig:kyber-dec}.
+
+    In particular, original paper \cite{kyber} proposes the following
+    parameters: $n=256$, $k=\ell=3$, $q=7681$, and $\chi$ is the centered
+    binomial distribution $B_{\eta}$ for $\eta=4$.
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\footnotesize 
+
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{purple!10}{\underline{$\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$:}}
+        \begin{enumerate}
+            \item $\mathbf{s},\mathbf{e} \leftarrowS \chi^k$ (over $\mathcal{R}_q^k$);
+            \item $A \leftarrowS \mathcal{R}_q^{k \times k}$;
+            \item $\mathbf{b} \gets A\mathbf{s} + \mathbf{e}$;
+            \item \textbf{return} $((A,\mathbf{b}),\mathbf{s})$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Kyber Key Generation (note that $\ell=k$)}
+    \label{fig:kyber-keygen}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Enc}(\mathsf{pk}, (m_i)_{i \in (n)} \in \{0,1\}^n) \to c$:}}
+        \begin{enumerate}
+            \item $m \gets \sum_{i \in (n)}m_iT^i \in \mathcal{R}_q$;
+            \item $\Delta \mathbf{r}, \Delta \mathbf{z} \leftarrowS \chi^k$;
+            \item $\Delta z' \leftarrowS \chi$;
+            \item $\widetilde{\mathbf{a}} \gets A^{\top}\Delta\mathbf{r} + \Delta\mathbf{z}$;
+            \item $\widetilde{b} \gets \mathbf{b}^{\top}\Delta \mathbf{r} + \Delta z' + \lceil \frac{q}{2} \rfloor m$;
+            \item \textbf{return} $c=(\widetilde{\mathbf{a}}, \widetilde{b})$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Kyber Encryption} 
+    \label{fig:kyber-enc}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Dec}(\mathsf{sk}, c) \to m$:}}
+        \begin{enumerate}
+            \item Parse $(\widetilde{\mathbf{a}}, \widetilde{b}) \gets c$;
+            \item $\delta \gets \widetilde{b} - \mathbf{s}^{\top}\widetilde{\mathbf{a}}$;
+            \item \textbf{return} $1$ iff $\|\delta\|_{\infty} > \frac{q}{4}$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Kyber Decryption}
+    \label{fig:kyber-dec}
+\end{minipage}
+\end{figure}
+
+\textbf{Short-Secret LWE (ss-LWE)*.} Before stating the security of the Kyber
+PKE, notice the subtle difference from our previous PKE schemes: here, the
+secret value $\mathbf{s}$ is sampled from the same distribution as the error
+$\mathbf{e}$. This surely optimizes the storage requirements, but it might seem
+that this significantly reduces the security: for starters, the number of
+possible values of $\mathbf{s}$ reduces from $q^{nk}$ down to $\eta^{nk}$ (where
+each coefficient $c_i$ from output of $\chi$ is bounded by $\eta$:
+$\|c_i\|_{\infty} \leq \eta$). However, $\eta^{nk}$ is still an exponentially
+large value: even for $\eta=2$, the number of possible values is $2^{768}$ given
+Kyber parameters. This motivates us to modify the LWE assumptions to allow
+$\mathbf{s}$ to be sampled from smaller distributions. Further, we will show
+results for plain LWE, and the following results can be trivially generalized to
+Ring and Module LWEs.
+
+\begin{definition}[ss-LWE]
+    Let $\underline{\mathsf{Game} \;
+    \text{\textsf{ss}-\textsf{LWE}}}_{\mathsf{LWEGen}}^{\mathcal{A}}$ be as
+    specified in~\Cref{fig:search-lwe}, but $\mathbf{s}$ is sampled from the
+    distribution $\chi$. Similarly define the advantage of adversary $\mathcal{A}$
+    as follows:
+    \begin{equation*}
+        \mathsf{Adv}^{\text{ss-LWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda) = \text{Pr}\left[\underline{\mathsf{Game} \;
+    \text{\textsf{ss}-\textsf{LWE}}}_{\mathsf{LWEGen}}^{\mathcal{A}}(\lambda) = 1\right].
+    \end{equation*}
+
+    We say that \textbf{short-secret LWE assumption} holds if
+    $\mathsf{Adv}^{\text{ss-LWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda)=\text{negl}(\lambda)$
+    for all PPT $\mathcal{A}$.
+\end{definition}
+
+We claim that ss-LWE and search LWE assumptions are in fact polynomially
+equivalent (although with different LWE instances parameters). We introduce the
+following proposition.
+
+\begin{proposition}
+    The following two statements are true:
+    \begin{enumerate}
+        \item[(a)] if \textsf{ss}-\textsf{LWE} assumption holds with parameters
+        $(n,m,q,\chi)$, then \textsf{LWE} assumption with the same parameters
+        $(n,m,q,\chi)$ holds as well;
+        \item[(b)] if \textsf{LWE} assumption holds with parameters
+        $(n,m,q,\chi)$, then \textsf{ss}-\textsf{LWE} assumption with parameters
+        $(n,m-n,q,\chi)$ holds as well.
+    \end{enumerate}
+\end{proposition}
+
+\textbf{Proof.} \textit{Part (a).} Assume
+$\mathsf{Adv}^{\text{SLWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda)$ is
+non-negligible for some $\mathcal{A}$. We build $\mathcal{B}^{\mathcal{A}}$ that
+uses $\mathcal{A}$ as an oracle and breaks the \textsf{ss}-\textsf{LWE}
+assumption in \Cref{fig:ss-lwe-to-s-lwe}. Note that $\mathbf{b} +
+A\boldsymbol{\delta}$ is distributed uniformly over $\mathbb{Z}_q^m$, thus
+$(A,\widetilde{\mathbf{b}})$ is a valid instance of \textsf{SLWE}, which is
+needed for a valid $\mathcal{A}$ execution at step 3. Thus,
+\begin{equation*}
+    \mathsf{Adv}^{\text{SLWE}}_{\mathcal{A},\mathsf{LWEGen}}(\lambda) = \mathsf{Adv}^{\text{ss-LWE}}_{\mathcal{B}^{\mathcal{A}},\mathsf{LWEGen}}(\lambda).
+\end{equation*}
+
+\textit{Part (b).} Now assume
+$\mathsf{Adv}^{\text{ss-LWE}}_{\mathcal{A},\mathsf{LWEGen}(n,m-n,q,\chi)}(\lambda)$
+is non-negligible for some $\mathcal{A}$. We build $\mathcal{B}^{\mathcal{A}}$
+that uses $\mathcal{A}$ as an oracle and breaks the \textsf{SLWE} assumption for
+parameters $(n,m,q,\chi)$ in \Cref{fig:s-lwe-to-ss-lwe}. The main trick here is
+to rearrange the original equation $\mathbf{b}=A\mathbf{s}+\mathbf{e}$ to get
+the \textsf{ss-LWE} instance of smaller size. We do precisely that: following
+steps 1--5, we obtain $\widetilde{\mathbf{b}} = \widetilde{A}\mathbf{e}_1 +
+\mathbf{e}_2$, which is clearly a \textsf{ss-LWE} instance with parameters
+$(n,m-n,q,\chi)$, making oracle call at step 6 valid. Notice that solving this
+\textsf{ss-LWE} instance provides $\mathcal{B}$ with an error piece
+$\mathbf{e}_1$, making it possible to restore $\mathbf{s}$ by solving a linear
+equation $\mathbf{b}_1 = A_1\mathbf{s} + \mathbf{e}_1$. Thus,
+\begin{equation*}
+    \mathsf{Adv}^{\text{ss-LWE}}_{\mathcal{A},\mathsf{LWEGen}(n,m-n,q,\chi)}(\lambda) = \mathsf{Adv}^{\text{SLWE}}_{\mathcal{B}^{\mathcal{A}},\mathsf{LWEGen}(n,m,q,\chi)}(\lambda). \quad \qedwhite
+\end{equation*}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.3\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathcal{B}_{\text{ss-LWE}}^{\mathcal{A}_{\text{SLWE}}}(A,\mathbf{b}) \to \mathbf{s}$:}}
+        \begin{enumerate}
+            \item $\boldsymbol{\delta} \leftarrowS \mathbb{Z}_q^m$;
+            \item $\widetilde{\mathbf{b}} \gets \mathbf{b} + A\boldsymbol{\delta}$;
+            \item $\widetilde{\mathbf{s}} \gets \mathcal{A}_{\text{SLWE}}(A,\widetilde{\mathbf{b}})$;
+            \item $\widehat{\mathbf{s}} \gets \widetilde{\mathbf{s}} - \boldsymbol{\delta}$
+            \item \textbf{return} $\widehat{\mathbf{s}}$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Solving ss-LWE given Search-LWE solver} 
+        \label{fig:ss-lwe-to-s-lwe}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.65\linewidth}
+        \begin{mdframed}[linecolor=black, linewidth=1pt,
+                         skipabove=10pt, skipbelow=10pt]
+        \colorbox{green!10}{\underline{$\mathcal{B}_{\text{SLWE}}^{\mathcal{A}_{\text{ss-LWE}}}(A,\mathbf{b}) \to \mathbf{s}$:}}
+        \begin{enumerate}
+            \item let $A = \begin{bmatrix}
+                A_1 \\ A_2
+            \end{bmatrix}$ where $A_1 \in \mathbb{Z}_q^{n \times n}$, $A_2 \in \mathbb{Z}_q^{(m-n) \times n}$;
+            \item let $\mathbf{b} = \begin{bmatrix}
+                \mathbf{b}_1 \\ \mathbf{b}_2
+            \end{bmatrix}$ where $\mathbf{b}_1 \in \mathbb{Z}_q^{n}$, $\mathbf{b}_2 \in \mathbb{Z}_q^{m-n}$;
+            \item let $\mathbf{e} = \begin{bmatrix}
+                \mathbf{e}_1 \\ \mathbf{e}_2
+            \end{bmatrix}$ where $\mathbf{e}_1 \in \mathbb{Z}_q^{n}$, $\mathbf{e}_2 \in \mathbb{Z}_q^{m-n}$;
+            \item $\widetilde{A} \gets -A_2A_1^{-1} \in \mathbb{Z}_q^{(m-n) \times n}$;
+            \item $\widetilde{\mathbf{b}} \gets \widetilde{A}\mathbf{b}_1 + \mathbf{b}_2 \in \mathbb{Z}_q^{m-n}$;
+            \item $\widehat{\mathbf{e}}_1 \gets \mathcal{A}_{\text{ss-LWE}}(\widetilde{A},\widetilde{\mathbf{b}})$;
+            \item $\widehat{\mathbf{s}} \gets A_1^{-1}(\mathbf{b}_1 - \mathbf{e}_1)$;
+            \item \textbf{return} $\widehat{\mathbf{s}}$.
+        \end{enumerate}
+        \end{mdframed}
+        \caption{Solving Search-LWE given ss-LWE solver}
+        \label{fig:s-lwe-to-ss-lwe}
+    \end{minipage}
+\end{figure}
+
+Now with the ss-LWE assumption in mind, we can state the security of the Kyber
+PKE.
+\begin{proposition}
+    $\Pi_{\text{PKE}}^{\text{Kyber}}$ is correct and IND-CPA secure under
+    Short-Secret Decisional Module-LWE assumption.
+\end{proposition}
+
+\subsection{Dilithium Digital Signature}\label{section:dilithium}
+
+In this section, we specify the main idea behind the well-known lattice-based
+signature scheme \textit{Dilithium}~\cite{dilithium}. Compared to previous
+discussion, we omit formal proofs of security and concentrate on the
+construction. 
+
+First, recall the definition of the signature scheme.
+\begin{definition}[Signature Scheme]
+    A \textbf{signature scheme} $\Sigma$ is a triplet of the following effective
+    probabilistic algorithms:
+    \begin{itemize}
+        \item $\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$
+        outputs the pair of public and secret key, respectively.
+        \item $\mathsf{Sign}(\mathsf{sk}, m) \to \sigma$ signs a message 
+        $m$ using secret key $\mathsf{sk}$ and thereby produces signature $\sigma$.
+        \item $\mathsf{Verify}(\mathsf{pk}, m, \sigma) \to \{0,1\}$ checks
+        whether the signature $\sigma$ was produced by signing message $m$ using
+        $\mathsf{sk}$ corresponding to $\mathsf{pk}$ and outputs the decision.
+    \end{itemize}
+
+    We require \textbf{correctness}:
+    \begin{equation*}
+        \forall m: \; \text{Pr}\left[ \mathsf{Verify}(\mathsf{pk}, m, \sigma) = 1 \;\middle|\; \begin{aligned}
+            &(\mathsf{pk}, \mathsf{sk}) \gets \mathsf{KeyGen}(1^{\lambda}) \\
+            &\sigma \gets \mathsf{Sign}(\mathsf{sk}, m)
+        \end{aligned} \right] \geq 1 - \text{negl}(\lambda),
+    \end{equation*}
+    and unforgeability against chosen-message attacks, roughly meaning that
+    obtaining $\text{poly}(\lambda)$ pairs $(\sigma_i,m_i)$ signed by some
+    key-pair $(\mathsf{pk},\mathsf{sk})$ does now allow $\mathcal{A}$ to produce
+    a valid pair $(\widehat{\sigma},\widehat{m})$. See \cite[Section
+    13]{BonehShoup2023} for more details.
+\end{definition}
+
+\subsubsection{Schnorr Signature}
+
+Further denote by $H$ the hash function from $\{0,1\}^*$ to the appropriate
+domain. One of the most widely used digital signatures schemes (especially in
+the Bitcoin applications) is the \textit{Schnorr Signature Scheme}. We define it
+below.
+
+\begin{definition}\label{def:schnorr}
+    Fix a cyclic abelian group $\mathbb{G} = \langle g \rangle$ of order $q$.
+    Define the \textbf{Schnorr Signature} scheme $\Sigma_{\text{Schnorr}}$ as a
+    triplet of functions specified in \Cref{fig:schnorr-keygen},
+    \Cref{fig:schnorr-sign}, and \Cref{fig:schnorr-verify}.
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\footnotesize 
+
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{purple!10}{\underline{$\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$:}}
+        \begin{enumerate}
+            \item $\alpha \leftarrowS \mathbb{Z}_q$;
+            \item $h \leftarrow g^{\alpha} \in \mathbb{G}$;
+            \item \textbf{return} $(h, \alpha)$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Schnorr keypair generation}
+    \label{fig:schnorr-keygen}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Sign}(\alpha, m \in \{0,1\}^*) \to \sigma$:}}
+        \begin{enumerate}
+            \item $r \leftarrowS \mathbb{Z}_q$, $a \gets g^r$;
+            \item $e \gets H(m, a)$;
+            \item $z \gets r + \alpha e$;
+            \item \textbf{return} $\sigma := (e, z)$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Schnorr signing} 
+    \label{fig:schnorr-sign}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Verify}(h, m, \sigma) \to \{0,1\}$:}}
+        \begin{enumerate}
+            \item parse $(e, z) \gets \sigma$;
+            \item $a' \gets g^{z}h^{-e}$;
+            \item \textbf{return} $1$ iff $e = H(m,a')$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Schnorr signature verification}
+    \label{fig:schnorr-verify}
+\end{minipage}
+\end{figure}
+
+Why all of a sudden we decided to bring up the Schnorr signature when
+considering LWE-based signature? Turns out that in the essence, the structure of
+Dilithium greatly resembles Schnorr signatures! Note that Schnorr signature is a
+compiled interactive $\Sigma$-protocol. In the terminology of interactive
+protocols, $a$ in a \textit{commitment}, $e$ is a \textit{challenge}, and $z$ is
+a \textit{response}. Our hope is that we can construct a similar protocol that
+will have different yet resembling expressions for $(a,e,z)$, but in the ``LWE
+language''.
+
+\subsubsection{LWE-like $\Sigma$-protocol}\label{section:lwe-sigma}
+
+Fix $(\mathcal{R},k,\ell,q)$ Module-LWE instance. We are going to require a
+couple of additional sets to make our scheme work: 
+\begin{itemize}
+    \item $\mathcal{Q}_{\eta}$ is a set of polynomials $\sum_{j \in (n)}\alpha_jT^j$ in $\mathcal{R}_q$ with $\|\alpha_j\|_{\infty} \leq \eta$.
+    \item $\widetilde{\mathcal{Q}}_{\gamma}$ is a set of polynomials $\sum_{j \in
+    (n)}\alpha_jT^j$ in $\mathcal{R}_q$ with $\|\alpha_j\|_{\infty} < \gamma$
+    for relatively large $\gamma$.
+    \item $\mathcal{B}_{\tau}$ is a set polynomials in $\mathcal{Q}_1$, exactly $\tau$
+    of whose coefficients are $\pm 1$.
+\end{itemize}
+
+Additionally set $\nu := \tau\eta$. For instance, for NIST FIPS 204
+standard~\cite{fips-204} one chooses parameters $q=2^{23}-2^{13}+1$, $n=256$,
+$(k,\ell)=(8,7)$, $\eta=2$, $\gamma=2^{19}$, $\tau=60$, $\nu = 120$. 
+
+\textbf{First Attempt.} Fix hash function $H: \{0,1\}^* \to \mathcal{B}_{\tau}$.
+We present the first attempt of building LWE-based Schnorr-like signature in
+\Cref{fig:first-attempt-keygen}, \Cref{fig:first-attempt-sign}, and
+\Cref{fig:first-attempt-verify}.
+
+\begin{figure}[ht]
+\centering
+\footnotesize 
+
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{purple!10}{\underline{$\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$:}}
+        \begin{enumerate}
+            \item $A \leftarrowS \mathcal{R}_q^{k \times \ell}$;
+            \item $\mathbf{s}_1 \leftarrowS \mathcal{Q}_{\eta}^{\ell}, \mathbf{s}_2 \leftarrowS \mathcal{Q}_{\eta}^{k}$;
+            \item $\mathbf{t} \gets A\mathbf{s}_1 + \mathbf{s}_2$;
+            \item $\mathsf{pk} \gets (A,\mathbf{t}) \in \mathcal{R}_q^{k \times \ell} \times \mathcal{R}_q^{k}$;
+            \item $\mathsf{sk} \gets (\mathbf{s}_1,\mathbf{s}_2) \in \mathcal{Q}_{\eta}^{\ell+k}$;
+            \item \textbf{return} $(\mathsf{pk},\mathsf{sk})$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{First-attempt LWE: key generation}
+    \label{fig:first-attempt-keygen}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Sign}(\mathsf{sk}, m \in \{0,1\}^*) \to \sigma$:}}
+        \begin{enumerate}
+            \item parse $(\mathbf{s}_1,\mathbf{s}_2) \gets \mathsf{sk}$;
+            \item $\mathbf{r} \leftarrowS \widetilde{\mathcal{Q}}_{\gamma}^{\ell}$;
+            \item $\mathbf{a} \gets A\mathbf{r}$; \hspace{3px}{\textcolor{gray!70!black}{\footnotesize\textit{// commitment}}}
+            \item $e \gets H(m,\mathbf{a})$; \hspace{3px}{\textcolor{gray!70!black}{\footnotesize\textit{// challenge}}}
+            \item $\mathbf{z} \gets \mathbf{r} + e\mathbf{s}_1$; \hspace{3px}{\textcolor{gray!70!black}{\footnotesize\textit{// response}}}
+            \item $\sigma \gets (e,\mathbf{z}) \in \mathcal{B}_{\tau} \times \mathcal{R}_q^{\ell}$;
+            \item \textbf{return} $\sigma$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{First-attempt LWE: signing} 
+    \label{fig:first-attempt-sign}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Verify}(\mathsf{pk}, m, \sigma) \to \{0,1\}$:}}
+        \begin{enumerate}
+            \item parse $(e, \mathbf{z}) \gets \sigma$;
+            \item parse $(A,\mathbf{t}) \gets \mathsf{pk}$;
+            \item compute $\mathbf{a}'$;
+            \item \textbf{return} $1$ iff $e=H(m,\mathbf{a}')$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{First-attempt LWE: signature verification}
+    \label{fig:first-attempt-verify}
+\end{minipage}
+\end{figure}
+
+Notice that the protocol greatly resembles the Schnorr signature scheme
+previously presented in \Cref{def:schnorr}. However, the biggest issue so far is
+step 3 in \Cref{fig:first-attempt-verify}: how can the verifier recompute the
+commitment $\mathbf{a}'$ specifically?
+
+Note that $\mathbf{z} = \mathbf{r} + e\mathbf{s}_1$, thus $A\mathbf{z} =
+A\mathbf{r} + eA\mathbf{s}_1 = \mathbf{a} + e(\mathbf{t}-\mathbf{s}_2)$ and so
+we obtain $A\mathbf{z} - e\mathbf{t} = \mathbf{a} - e\mathbf{s}_2$.
+Unfortunately, this way we only obtain $\mathbf{a}-e\mathbf{s}_2$ where
+$\mathbf{s}_2$ is unknown to the verifier. However, here where our distributions
+$\mathcal{Q}_{\eta}$ and $\mathcal{B}_{\tau}$ might come into play: notice that
+$e\mathbf{s}_2$ is a vector of polynomials in $\mathcal{R}_q^k$ with small
+coefficients (since $\|s_{2,i}\|_{\infty} \leq \eta$ for all $i \in [k]$ and
+$\|e\|_{\infty} \leq 1$ by construction).
+
+Thus, we might modify our idea in the following way: the signer will use the
+function called $\mathsf{HighBits}$, which will divide and round each
+coefficient of $\mathbf{w}$ which hopefully eventually removes the noise
+$e\mathbf{s}_2$ (we give concrete specifics later on). The signer then composes
+the challenge $e = H(m,\mathbf{a}_H)$ where $\mathbf{a}_H =
+\mathsf{HighBits}(\mathbf{a})$.
+
+If $\mathsf{LowBits}$ of $\mathbf{a}-e\mathbf{s}_2$ is sufficiently small then,
+as $e\mathbf{s}_2$ is small, we have
+$\mathsf{HighBits}(\mathbf{a}-e\mathbf{s}_2)=\mathsf{HighBits}(\mathbf{a})$, and
+so the verifier can compute $\mathbf{a}'$. This way, we modify the signing
+procedure by making signer recompute $(e,\mathbf{z})$ while
+$\mathsf{LowBits}(\mathbf{a}-e\mathbf{s}_2)$ is not sufficiently small.
+
+\textbf{Second Attempt.} We encapsulate observations above in
+\Cref{fig:second-attempt-sign} and \Cref{fig:second-attempt-verify}.
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}[t]{0.45\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Sign}(\mathsf{sk}, m \in \{0,1\}^*) \to \sigma$:}}
+        \begin{enumerate}
+            \item parse $(\mathbf{s}_1,\mathbf{s}_2) \gets \mathsf{sk}$;
+            \item \textcolor{green!50!black}{\textbf{while} $\mathsf{LowBits}(\mathbf{a}-e\mathbf{s}_2)$ is large}:
+            \item \hspace{20px}$\mathbf{r} \leftarrowS \widetilde{\mathcal{Q}}_{\gamma}^{\ell}$;
+            \item \hspace{20px}$\mathbf{a} \gets A\mathbf{r}$; 
+            \item \hspace{20px}\textcolor{green!50!black}{$\mathbf{a}_H \gets \mathsf{HighBits}(\mathbf{a})$};
+            \item \hspace{20px}$e \gets H(m, \textcolor{green!50!black}{\mathbf{a}_H})$; 
+            \item \hspace{20px}$\mathbf{z} \gets \mathbf{r} + e\mathbf{s}_1$;
+            \item $\sigma \gets (e,\mathbf{z})$;
+            \item \textbf{return} $\sigma$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Second-attempt LWE: signing} 
+    \label{fig:second-attempt-sign}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.4\linewidth}
+    \begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+        \centering
+        \colorbox{green!10}{\underline{$\mathsf{Verify}(\mathsf{pk}, m, \sigma) \to \{0,1\}$:}}
+        \begin{enumerate}
+            \item parse $(e, \mathbf{z}) \gets \sigma$;
+            \item parse $(A,\mathbf{t}) \gets \mathsf{pk}$;
+            \item \textcolor{green!50!black}{$\mathbf{a}'_H \gets \mathsf{HighBits}(A\mathbf{z} - e\mathbf{t})$};
+            \item \textbf{return} $1$ iff $e=H(m,\textcolor{green!50!black}{\mathbf{a}'_H})$.
+        \end{enumerate}
+    \end{mdframed}
+    \caption{Second-attempt LWE: signature verification}
+    \label{fig:second-attempt-verify}
+\end{minipage}
+\end{figure}
+
+However,
+this attempt also contains numerous problems we have to mitigate:
+\begin{itemize}
+    \item \textbf{Issue \#1.} Public key $(A,\mathbf{t}) \in \mathcal{R}_q^{k
+    \times \ell} \times \mathcal{R}_q^k$ is very large: we are going to derive
+    $A$ from the public seed $\rho$ and use only ``high order bits'' of
+    coefficients in $\mathbf{t}$.
+    \item \textbf{Issue \#2.} Secret key $(\mathbf{s}_1,\mathbf{s}_2) \in
+    \mathcal{Q}_{\eta}^{\ell+k}$ is similarly too large: we are going to
+    generate these values from the \textit{secret seed $\rho'$}.
+    \item \textbf{Issue \#3.} Costly hashing: during signing, on each step we
+    have to perform $H(m,\mathbf{a}_H)$, which is expensive if $m$ is large.
+    Instead, we are going to set $\mu \gets H(m)$ and on each step compute
+    $H(\mu,\mathbf{a}_H)$.
+    \item \textbf{Issue \#4.} Scheme is non-deterministic (which might be
+    undesirable for some applications) and requires too many random samplings
+    $\mathbf{r} \leftarrowS \widetilde{\mathcal{Q}}_{\gamma}^{\ell}$. Instead,
+    we will generate $\mathbf{r}$ from the seed $\rho''$ and counter $\kappa$,
+    where $\rho''$ in turn will be obtained by hashing a secret seed $K$ and
+    $\mu$.
+    \item \textbf{Issue \#5.} This protocol is not fully zero-knowledge: by
+    careful inspection of coefficients of $\mathbf{z}$, one might sometimes get
+    some information about these coefficients (e.g., if some coefficient is
+    $\gamma+\nu$, then the corresponding coefficient of $e\mathbf{s}_1$ is
+    $\nu$). The solution is that signer, while producing the signature, will
+    ensure that $\|\mathbf{z}\|_{\infty} < \gamma-\nu$.
+\end{itemize}
+
+\subsubsection{Dilithium Protocol Simplified Specification}
+
+\textbf{HighBits and LowBits.} Now, let us define these functions 
+more carefully.
+\begin{definition}
+    Fix even $\alpha \in \mathbb{N}$ such that $q-1=m\alpha$. Functions
+    $\mathsf{HighBits}_{\alpha}(x)$ and $\mathsf{LowBits}_{\alpha}(x)$ will be
+    informally defined as quotient and remainder of division $x$ by $\alpha$,
+    respectively. More formally, let $x = x_H\alpha+x_L$ where $|x_L| \leq
+    \alpha/2$ and $0 \leq x_H \leq m$. Then, we set
+    $\mathsf{HighBits}_{\alpha}(x) := x_H$ and $\mathsf{LowBits}_{\alpha}(x) :=
+    x_L$.
+\end{definition}
+
+\textbf{Additional parameters.} We slighly modify parameters specified earlier
+in \Cref{section:lwe-sigma}: instead of $\gamma$, we use $\gamma_1$, and we
+additionally introduce parameters $\gamma_2$ (which in NIST FIPS 204, for
+instance, is $(q-1)/32 \approx 2^{18}$) and $\alpha := 2\gamma_2$. Additionally,
+denote by $H(\bullet;d): \{0,1\}^* \to \{0,1\}^d$ the hash function returning
+$d$-bit binary string as an output, $H_{\mathcal{B}}(\bullet): \{0,1\}^{2\lambda} \to
+\mathcal{B}_{\tau}$ the hash function returning polynomial in
+$\mathcal{B}_{\tau}$, and by $\gets_{\rho}$ sampling with seed $\rho$.
+
+Finally, we are ready to present almost complete specification of the Dilithium
+protocol.
+
+\begin{definition}[Dilithium Signature Scheme]
+    We define the \textbf{Dilithium} signature scheme
+    $\Sigma_{\text{Dilithium}}$ as a triplet of functions specified in
+    \Cref{fig:delithium-keygen}, \Cref{fig:delithium-sign}, and
+    \Cref{fig:delithium-verify}.
+\end{definition}
+
+Let us again check the \textit{correctness} of the obtained scheme. Notice that
+\begin{equation*}
+    A\mathbf{z} - e\mathbf{t} = A(\mathbf{r}+e\mathbf{s}_1) - e(A\mathbf{s}_1+\mathbf{s}_2) = A\mathbf{r} - e\mathbf{s}_2 = \mathbf{a} - e\mathbf{s}_2.
+\end{equation*}
+
+Since $\|\mathsf{LowBits}_{2\gamma_2}(\mathbf{a}-e\mathbf{s}_2)\|_{\infty} \leq
+\gamma_2 - \nu$ and $\|e\mathbf{s}_2\|_{\infty} \leq \nu$, we have
+\begin{equation*}
+    \mathbf{a}_H' = \mathsf{HighBits}_{2\gamma_2}(A\mathbf{z}-e\mathbf{t}) = \mathsf{HighBits}_{2\gamma_2}(\mathbf{a}-e\mathbf{s}_2) = \mathsf{HighBits}_{2\gamma_2}(\mathbf{a}) = \mathbf{a}_H.
+\end{equation*}
+
+Thus, valid signatures are accepted.
+
+\begin{figure}[H]
+\centering
+\begin{varwidth}{0.75\linewidth}
+\begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                    skipabove=5pt, skipbelow=5pt,
+                    innerleftmargin=5pt, innerrightmargin=5pt]
+\centering
+\colorbox{purple!10}{\underline{$\mathsf{KeyGen}(1^{\lambda}) \to (\mathsf{pk},\mathsf{sk})$:}}
+\begin{enumerate}
+    \item $(\rho,\rho',K) \leftarrowS \{0,1\}^{n} \times \{0,1\}^{2n} \times \{0,1\}^{n}$; \hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Generate seeds}}}
+    \item $A \leftarrowS_{\rho} \mathcal{R}_q^{k \times \ell}$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Sample matrix from seed $\rho$}}}
+    \item $(\mathbf{s}_1,\mathbf{s}_2) \leftarrowS_{\rho'} \mathcal{Q}_{\eta}^{\ell}\times\mathcal{Q}_{\eta}^k$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// Sample secrets from seed $\rho'$}}}
+    \item $\mathbf{t} \gets A\mathbf{s}_1+\mathbf{s}_2$;
+    \item $\mathsf{tr} \gets H(\rho,\mathbf{t};2\lambda)$;
+    \item $\mathsf{pk} \gets (\rho,\mathbf{t})$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// $\rho$ can be used for restoring $A$}}}
+    \item $\mathsf{sk} \gets (\rho',K,\textcolor{gray!70!black}{\mathsf{tr}})$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// $\rho'$ can be used for restoring $\mathbf{s}_1$ and $\mathbf{s}_2$}}}
+    \item \textbf{return} $(\mathsf{pk},\mathsf{sk})$.
+\end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{Dilithium key generation}
+\label{fig:delithium-keygen}
+\end{figure}
+\begin{figure}[H]
+\centering
+\begin{varwidth}{0.85\linewidth}
+\begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+    \centering
+    \colorbox{green!10}{\underline{$\mathsf{Sign}(\mathsf{sk},m) \to \sigma$:}}
+    \begin{enumerate}
+        \item $A \leftarrowS_{\rho} \mathcal{R}_q^{k \times \ell}$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// resample same $A$ from seed $\rho$}}}
+        \item $\mu \gets H(\mathsf{tr},m; 2n)$;
+        \item $\mathsf{rnd} \gets \mathbf{0}^n$ \textbf{if} deterministic mode, $\mathsf{rnd} \leftarrowS \{0,1\}^n$ otherwise;
+        \item $\rho'' \gets H(K,\mathsf{rnd},\mu; 2n)$; 
+        \item $\kappa \gets 0$; $\mathbf{z} \gets \,\perp$; \hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// initialize counter}}}
+        \item \textbf{while} $\mathbf{z} = \,\perp$:
+        \item \hspace{20px} $\mathbf{r} \leftarrowS_{(\rho'',\kappa)}\widetilde{\mathcal{Q}}_{\gamma_1}^{\ell}$;
+        \item \hspace{20px} $\mathbf{a} \gets A\mathbf{r}$; $\mathbf{a}_H \gets \mathsf{HighBits}_{2\gamma_2}(\mathbf{a})$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// compute high-bits of commitment}}}
+        \item \hspace{20px} $\widetilde{e} \gets H(\mu,\mathbf{a}_H; 2\lambda)$;
+        \item \hspace{20px} $e \gets H_{\mathcal{B}}(\widetilde{e}) \in \mathcal{B}_{\tau}$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// compute challenge}}}
+        \item \hspace{20px} $\mathbf{z} \gets \mathbf{r} + e\mathbf{s}_1$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// compute response}}}
+        \item \hspace{20px} $\bm{\delta} \gets \mathsf{LowBits}_{2\gamma_2}(\mathbf{a} - e\mathbf{s}_2)$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// compute ``noise'' level}}}
+        \item \hspace{20px} \textbf{if} $\|\mathbf{z}\|_{\infty} \geq \gamma_1-\nu$ or $\|\bm{\delta}\|_{\infty} \geq \gamma_2-\nu$, then set $\mathbf{z} \gets \,\perp$;
+        \item \hspace{20px} $\kappa \gets \kappa+\ell$;\hspace{5px}{\textcolor{gray!70!black}{\footnotesize\texttt{// update counter}}}
+        \item \textbf{return} $\sigma=(\widetilde{e}, \mathbf{z})$.
+    \end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{Dilithium message signing}
+\label{fig:delithium-sign}
+\end{figure}
+\begin{figure}[H]
+\centering
+\begin{varwidth}{0.85\linewidth}
+\begin{mdframed}[linecolor=black, linewidth=1.0pt,
+                     skipabove=5pt, skipbelow=5pt,
+                     innerleftmargin=5pt, innerrightmargin=5pt]
+    \centering
+    \colorbox{green!10}{\underline{$\mathsf{Verify}(\mathsf{pk},m,\sigma) \to \{0,1\}$:}}
+    \begin{enumerate}
+        \item parse $(\rho,\mathbf{t}) \gets \mathsf{pk}$;
+        \item parse $(\widetilde{e},\mathbf{z}) \gets \sigma$;
+        \item \textbf{if} $\|\mathbf{z}\|_{\infty} \geq \gamma_1-\nu$ then \textbf{return} 0;
+        \item $A \leftarrowS_{\rho} \mathcal{R}_q^{k \times \ell}$;
+        \item $\mathsf{tr} \gets H(\rho,\mathbf{t};2n)$; $\mu \gets H(\mathsf{tr},m;2n)$;
+        \item $e \gets H_{\mathcal{B}}(\widetilde{e}) \in \mathcal{B}_{\tau}$;
+        \item $\mathbf{a}_H' \gets \mathsf{HighBits}_{2\gamma_2}(A\mathbf{z}-e\mathbf{t})$;
+        \item \textbf{return} $1$ \textbf{if} $\widetilde{e} = H(\mu,\mathbf{a}_H';2\lambda)$ and $0$ otherwise.
+    \end{enumerate}
+\end{mdframed}
+\end{varwidth}
+\caption{Dilithium signature verification}
+\label{fig:delithium-verify}
+\end{figure}
+
+Finally, we state the security of $\Sigma_{\text{Dilithium}}$ without a proof.
+Curious reader is of course encouraged to read the original paper
+\cite{dilithium} for details.
+\begin{proposition}
+    $\Sigma_{\text{Dilithium}}$ is \textbf{zero-knowledge} and
+    \textbf{unforgeable against chosen-message} attack assuming (1) Decisional
+    Module-LWE, (2) Module-SIS (Short-Integer Solution)\footnote{We have not
+    defined it rigorously, but informally we assume finding a \textit{short}
+    solution to $[A|E_{k \times k}]\mathbf{s}=0$ for $A \in \mathcal{R}_q^{k
+    \times \ell}$ and identity matrix $E_{k \times k}$ is hard.}, and (3)
+    (Quantum) Random Oracle Model (QROM).
+\end{proposition}
+
+\subsection*{Acknowledgements}
+
+Some of the arguments and ideas used in these notes were particularly inspired
+by awesome courses ``Cryptography 101 with Alfred Menezes''\footnote{See
+\url{https://cryptography101.ca/}.} (\Cref{section:dilithium} is primarily based
+on ``Kyber and Dilithium'' lectures) and lecture materials by François Charles
+on lattices during ICMU Summer School on Number Theory.
+
+\subsection*{References}
+\footnotesize
+\renewcommand{\refname}{\vspace{-1em}}
+\bibliographystyle{alphaurl}
+\bibliography{refs-lattices}
+
+\end{document}

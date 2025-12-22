@@ -1,0 +1,346 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Commutative Algebra Problem Set \#7}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $A$ be a valuation ring with fractional field $K$ and
+    residue field $L$, and denote by $\pi: A \to L$ the quotient map. Let $B$
+    be the valuation ring with fraction field $L$ and residue field $E$.
+    Consider the subring $C \subseteq A$ defined by
+    \begin{equation*}
+        C = \{x \in A: \pi(x) \in B\}.
+    \end{equation*}
+    Prove that $C$ is a valuation ring with fraction field $K$ and residue field
+    $E$.
+\end{problem}
+
+\textbf{Solution.} To better visualize the problem, consider the diagram below:
+\[
+    \begin{tikzcd}
+        K & \\
+        (A,\mathfrak{m}_A) \arrow[-Stealth, hook]{u}{} \arrow[two heads]{r}{\pi} & L \\
+        C \arrow[-Stealth, hook]{u}{} \arrow[two heads]{r}{\pi} & (B,\mathfrak{m}_B) \arrow[-Stealth, hook]{u}{} \arrow[two heads]{r}{\pi'} & E
+    \end{tikzcd}
+\]
+
+\textcolor{blue!70!black}{\textbf{Fraction field.}} First, let us show that
+$\text{Frac}(C) = K$. Note that the inclusion $\text{Frac}(C) \subseteq K$ is
+trivial, so we have to show $K \subseteq \text{Frac}(C)$. Informally, this
+inclusion means that whenever we have $a_0/a_1 \in K$ for $a_0,a_1 \in A$, $a_1
+\neq 0$, we can multiply both numerator and denominator by some $s \neq 0$ to
+get $a_0s/a_1s \in \text{Frac}(C)$ (thus $a_0s, a_1s \in C$). We formally
+encapsulate this observation in the following claim.
+
+\textbf{Claim \#1.} $\text{Frac}(C) = K$ iff for every $a \in A$ exists $s \in C
+\setminus \{0\}$ such that $as \in C$.
+
+Let us show this holds for our scenario. Take any $a \in A$. If $\pi(a) \in B$,
+we automatically win (then, $a \in C$ and thus take $s = 1$). Otherwise, if
+$\pi(a) \not\in B$, $\pi(a)^{-1} \in B$ since $B$ is the valuation ring with
+$\text{Frac}(B) = L$. Then, $\pi(a)b=1$ for some $b \in B$. Since map $C \to B$
+is surjective, there is some $s \in C$ such that $\pi(s)=b$. Then, $\pi(a)\pi(s)
+= \pi(as)=1$, meaning $as-1 \in \text{ker}(\pi) \subseteq C$. Thus, $as \in C$,
+as was required to show.
+
+\textcolor{blue!70!black}{\textbf{Valuation Ring.}} Let us now show that $C$ is
+a valuation ring: that is, for every $x \in K^{\times}$, either $x \in C$ or
+$x^{-1} \in C$. Indeed, take any $x \in K^{\times}$. Since $A$ is a valuation
+ring, either $x \in A$ or $x^{-1} \in A$. Suppose $x \not\in A$, then $x^{-1}
+\in \mathfrak{m}_A$ (since $x^{-1}$ is non-invertible). Thus, $\pi(x^{-1}) = 0
+\in B$ and so $x^{-1} \in C$.  
+
+Suppose otherwise that $x \in A$. If $\pi(x) \in B$, we win. Otherwise,
+$\pi(x)^{-1} \in B$. Thus, $xs \in 1 + \mathfrak{m}_A$ similar to discussion
+above. Thus, $x \in A^{\times}$ (if that was not the case, $1 \in
+\mathfrak{m}_A$ which is a contradiction) and so $x^{-1} \in A$. Thus,
+$\pi(x^{-1}) = \pi(x)^{-1} \in B$ and so $x^{-1} \in C$.
+
+\textcolor{blue!70!black}{\textbf{Maximal Ideal.}} Finally, denote by
+$\mathfrak{m}_C$ the maximal ideal of $C$ (since we have proven that $C$ is a
+valuation ring, $C$ is local). We shall show that $C/\mathfrak{m}_C \cong E$,
+where the isomorphism is induced from the map $\sigma := \pi' \circ \pi: C \to
+E$. Indeed, note that both $\pi$ and $\pi'$ are surjective, thus so is their
+composition. From surjectivity follows $\text{im}(\sigma) = E$. 
+
+Finally, we want to find kernel. Evidently, $\text{ker}(\sigma) =
+\pi^{-1}(\mathfrak{m}_B)$. We claim that $\pi^{-1}(\mathfrak{m}_B) \cong
+\mathfrak{m}_C$. This immediately follows from the following fact.
+
+\textbf{Claim \#2.} $c \in C^{\times}$ iff $\pi(c) \in B^{\times}$.
+
+\textbf{Proof of claim.} If $cc'=1$, then $\pi(c)\pi(c')=1$, so $\pi(c) \in
+B^{\times}$. Suppose now that $\pi(c) \in B^{\times}$, then $\pi(c) \neq 0$ and
+so $c \not\in \text{ker}(\pi) = \mathfrak{m}_A$, thus $c \in A^{\times}$. In
+such case $\pi(c)^{-1}=\pi(c^{-1}) \in B$, thus $c^{-1} \in C$, and so $c$ is
+invertible.
+
+Thus, $C/\text{ker}(\sigma) \cong \text{im}(\sigma)$ which is equivalent to
+$C/\mathfrak{m}_C \cong E$. \qedwhite
+
+\begin{problem}[Exercise 2]
+    Let $\zeta = e^{2\pi i/5}$ be the primitive root of unity of order $5$ and
+    let $K = \mathbb{Q}(\zeta)$. Prove that the ring of integers $\mathcal{O}_K$
+    (the integral closure of $\mathbb{Z}$ in $K$) is equal to $\mathbb{Z}[\zeta]$.
+\end{problem}
+
+\textbf{Solution.} We shall show two inclusions. Additionally, nothing restricts
+us from considering a bit more general case for $\zeta = e^{2\pi i/p}$ where $p$
+is prime.
+
+\underline{$\mathbb{Z}[\zeta] \subseteq \mathcal{O}_K$.} Note that $\zeta \in
+\mathcal{O}_K$ since it is a root of the $p$th cyclotomic polynomial $\Phi_p(T)
+= 1+T+T^2+\dots+T^{p-1}$. Thus, the basis of $\mathbb{Z}[\zeta]$ given by
+$\{1,\zeta,\dots,\zeta^{p-2}\}$ also lies in $\mathcal{O}_K$ (since
+$\mathcal{O}_K$ is a ring). Finally, since any element of $\mathbb{Z}[\zeta]$ is
+a $\mathbb{Z}$-linear combination of these basis elements, it is also in
+$\mathcal{O}_K$.
+
+\underline{$\mathcal{O}_K \subseteq \mathbb{Z}[\zeta]$.} This part is
+unexpectedly hard. We need to show that if element $\alpha =
+\sum_{j=0}^{p-2}a_j\zeta^j \in \mathcal{O}_K$ with $a_j \in \mathbb{Q}$, then
+$a_j \in \mathbb{Z}$. My first attempt was to consider traces of elements of
+form $\text{Tr}(\zeta^{-i}\alpha)$ (which must be integers), showing $pa_i -
+\sum_{j=0}^{p-2}a_p \in \mathbb{Z}$. However, this only helped me to deduce $a_j
+\in \frac{1}{p}\mathbb{Z}$. Then I was stuck.
+
+After searching various discussions on \texttt{mathoverflow}, I have found some
+literature which includes the proof of this fact. Two notable sources are
+``Algebraic Number Theory'' by Jürgen Neukirch (p.58--60, 10.1 and 10.2) and
+``Algebraic Theory of Numbers'' by Pierre Samuel (p.42--44, Theorem 2). Both
+books notices the special structure of a principal ideal $(\lambda)$ for
+$\lambda=1-\zeta$. However, it was personally very hard for me to follow
+Neukirch's version of the proof. A more elementary and straightfoward proof is
+imo given in Samuel, which I insert below.
+
+The proof consists of showing three small facts, and then combining them
+together to show that $a_j \in \mathbb{Z}$.
+
+\textcolor{blue!70!black}{\textbf{Fact \#1.}} $\text{Tr}(\zeta^j)=p-1$ if $j=0$
+and $-1$ otherwise.
+
+This follows from the direct computation of $\text{Tr}(\zeta^j) =
+\sum_{i=0}^{p-1}\zeta^{ij}$.
+
+\textcolor{blue!70!black}{\textbf{Fact \#2.}} $(1-\zeta) \cap \mathbb{Z} =
+p\mathbb{Z}$ (where $(1-\zeta)$ is the principal ideal in $\mathcal{O}_K$).
+
+\textbf{Proof.} First one notices $p=\prod_{j=1}^{p-1}(1-\zeta^j)$, and in
+particular $p \in (1-\zeta)$. Thus, $p\mathbb{Z} \subseteq (1-\zeta) \cap
+\mathbb{Z}$. Assume now that $p\mathbb{Z} \neq (1-\zeta) \cap \mathbb{Z}$. Since
+$p\mathbb{Z}$ is the maximal ideal in $\mathbb{Z}$, $(1-\zeta) \cap \mathbb{Z} =
+\mathbb{Z}$, thus $1-\zeta$ is a unit in $\mathcal{O}_K$. But in such case, all
+conjugates\footnote{We recall that the conjugates of $\alpha$ are
+$\{\sigma(\alpha): \sigma \in \text{Gal}(K/\mathbb{Q})\}$.} $1-\zeta^j$ are also
+units, and thus so is $p$ in $\mathcal{O}_K \cap \mathbb{Z}$. Thus, $p^{-1} \in
+\mathbb{Z}$. Contradiction.
+
+\textcolor{blue!70!black}{\textbf{Fact \#3.}} For any $\beta \in \mathcal{O}_K$,
+$\text{Tr}(\beta(1-\zeta)) \in p\mathbb{Z}$. 
+
+\textbf{Proof.} Note that $\text{Tr}(\beta(1-\zeta))$ is the sum of all
+conjugates $\beta_j(1-\zeta^j)$. Notice that each such conjugate is a multiple
+of $1-\zeta^j$ which in turn is a multiple of $1-\zeta$. Thus,
+$\text{Tr}(\beta(1-\zeta)) \in (1-\zeta)$. But since $\text{Tr}(\cdot)$ of an
+element of $\mathcal{O}_K$ is an integer, $\text{Tr}(\beta(1-\zeta)) \in
+\mathbb{Z} \cap (1-\zeta) = p\mathbb{Z}$, where the equality follows from
+\textcolor{blue!70!black}{\textbf{Fact \#2}}.
+
+\textcolor{green!50!black}{\textbf{Proof of $\mathcal{O}_K \subseteq
+\mathbb{Z}[\zeta]$.}} Take any $\alpha = a_0+a_1\zeta+\dots+a_{p-2}\zeta^{p-2}
+\in \mathcal{O}_K$. Then,
+\begin{equation*}
+    \alpha(1-\zeta) = a_0(1-\zeta) + a_1(\zeta-\zeta^2) + \dots + a_{p-2}(\zeta^{p-2}-\zeta^{p-1}).
+\end{equation*}
+
+By applying $\text{Tr}(\cdot)$ to both sides and using
+\textcolor{blue!70!black}{\textbf{Fact \#1}}, one obtains
+$\text{Tr}(\alpha(1-\zeta)) = a_0\text{Tr}(1-\zeta) = pa_0$. But invoking
+\textcolor{blue!70!black}{\textbf{Fact \#3}}, one gets $pa_0 \in p\mathbb{Z}$,
+so $a_0 \in \mathbb{Z}$. Now,
+\begin{equation*}
+    (\alpha - a_0)\zeta^{-1} = a_1 + a_2\zeta + \dots + a_{p-2}\zeta^{p-3}
+\end{equation*}
+and $(\alpha-a_0)\zeta^{-1}$ is clearly in $\mathcal{O}_K$. Thus, we can apply
+the same argument to deduce $a_1 \in \mathbb{Z}$. We continue for all $a_j$. \qedwhite
+
+\begin{problem}[Exercise 3]
+    Let $K$ be an algebraically closed field and let $R$ be a finitely generated
+    $K$-algebra. Suppose that for every maximal ideal $\mathfrak{m} \subseteq R$
+    we have $R_{\mathfrak{m}} = K$. Prove that $R \cong K^n$ for some $n \geq
+    0$.
+\end{problem}
+
+\textbf{Solution.} The solution seems to be quite straightforward after I
+decided to take a look at Artinian rings... We use the following fact.
+
+\begin{propositions}[Stacks Project, Lemma 10.60.5\footnote{\url{https://stacks.math.columbia.edu/tag/00KH}}]
+    A Noetherian ring where every prime ideal is maximal is Artinian.
+\end{propositions}
+
+Now, recall that prime ideals of $R_{\mathfrak{m}}$ are in 
+one-to-one correspondence with the prime ideals of $R$ contained in $\mathfrak{m}$: 
+\[\{(0)\} = \text{Spec}(R_{\mathfrak{m}}) \longleftrightarrow \{ \mathfrak{p} \in
+\text{Spec}(R) \mid \mathfrak{p} \subseteq \mathfrak{m} \},\]
+
+thus $\{ \mathfrak{p} \in \text{Spec}(R) \mid \mathfrak{p} \subseteq
+\mathfrak{m} \}$ contains only one element, being $\mathfrak{m}$ itself.
+Thus, by proposition, $R$ is Artinian. Next, we use the following:
+
+\begin{propositions}[Stacks Project, Lemma 10.53.3\footnote{\url{https://stacks.math.columbia.edu/tag/00J4}}]
+    Artinian ring has only finitely many maximal ideals.
+\end{propositions}
+
+Thus, suppose $\mathfrak{m}_1,\dots,\mathfrak{m}_n$ are maximal ideals of $R$.
+We prove that these ideals are comaximal.
+
+\textbf{Comaximality}. Assume on the contrary $\mathfrak{m}_i + \mathfrak{m}_j
+\subseteq \mathfrak{n} \subsetneq R$. Localize at $\mathfrak{n}$:
+$(\mathfrak{m}_i + \mathfrak{m}_j)R_{\mathfrak{n}} \subseteq
+\mathfrak{n}R_{\mathfrak{n}}$. Since $R_{\mathfrak{n}}$ is a field and
+$\mathfrak{n}R_{\mathfrak{n}}$ is the maximal ideal of the local ring
+$R_{\mathfrak{n}}$, we have $\mathfrak{n}R_{\mathfrak{n}} = 0$ and so
+$(\mathfrak{m}_i + \mathfrak{m}_j)R_{\mathfrak{n}} \subseteq 0$. Thus, both
+$\mathfrak{m}_iR_{\mathfrak{n}}=0$ and $\mathfrak{m}_jR_{\mathfrak{n}}=0$, but
+then $\mathfrak{m}_i = \mathfrak{m}_j = \mathfrak{n}$. Contradiction.
+
+Thus, by Chinese remainder theorem,
+\begin{equation*}
+    R \cong R / \bigcap_{i=1}^n \mathfrak{m}_i \cong \prod_{i=1}^n R/\mathfrak{m}_i \cong K^n.
+\end{equation*}
+
+Here, we used weak Nullstellensatz for $R/\mathfrak{m}_i \cong K$ and the fact
+that $\bigcap_{i=1}^n \mathfrak{m}_i = 0$ (not sure how to prove the latter
+formally, but roughly the argument is as follows: suppose $x \in \bigcap_{i=1}^n
+\mathfrak{m}_i$, then by localizing at every $\mathfrak{m}_i$ we get $x=0$ in
+$R_{\mathfrak{m}_i}$, meaning that $x=0$ globally). \qedwhite
+
+\begin{problem}[Exercise 4]
+    Let $k$ be a field and let $R=k\lBrack T_1,\dots, T_n \rBrack$ be the 
+    ring of formal power series in $n \geq 1$ variables. Prove that $R$ is a 
+    local ring with the maximal ideal $(T_1,\dots,T_n)$.
+\end{problem}
+
+\textbf{Solution.} Before considering the general setting, suppose $n=1$ for a
+moment. To show that $k\lBrack T \rBrack$ is a local ring, we need to show that
+all non-units are contained in the ideal $(T)$. Indeed, notice that an element
+in $k\lBrack T \rBrack$ is invertible iff the constant term is invertible, but
+for the field, this implies that it is non-zero (more explicitly, the inverse
+for $f = \sum_{n \geq 0}f_nT^n$ is given by $g = \sum_{n \geq 0}g_nT^n$ where
+$g_0=f_0^{-1}$ and $g_n = -f_0^{-1}\sum_{i=1}^n f_ig_{n-i}$). Thus, all
+non-invertible elements must be divisible by $T$ and thus form an ideal $(T)$.  
+
+Now we move to the general case by induction. Suppose $k\lBrack
+T_1,\dots,T_{n-1} \rBrack$ is a local ring with the maximal ideal
+$(T_1,\dots,T_{n-1})$. Now notice that $k\lBrack T_1,\dots, T_n \rBrack \cong
+k\lBrack T_1,\dots, T_{n-1} \rBrack\lBrack T_n \rBrack$ and thus element in
+$k\lBrack T_1,\dots, T_n \rBrack$ is non-unit iff the first coefficient (from
+$k\lBrack T_1,\dots, T_{n-1} \rBrack$) is non-unit, which means that this
+coefficient lies in $(T_1,\dots,T_{n-1})$. Thus, any non-unit $\varphi \in
+k\lBrack T_1,\dots, T_n \rBrack$ has a form
+\begin{equation*}
+    \varphi = \sum_{k \geq 0}f_kT_n^k = \underbrace{\sum_{i=1}^{n-1}h_iT_i}_{f_0 \in (T_1,\dots,T_{n-1})} + \underbrace{T_n\sum_{k \geq 0} f_{k+1}T_n^k}_{\in (T_n)}, \quad f_i, h_i \in k\lBrack T_1,\dots, T_{n-1} \rBrack,
+\end{equation*}
+which is clearly in $(T_1,\dots,T_n)$. \qedwhite
+
+\begin{problem}[Exercise 5]
+    Prove that the element $Y^2-X^2(X+1)$ of the power series ring
+    $\mathbb{C}\lBrack X,Y \rBrack$ is the product of two non-units.
+\end{problem}
+
+\textbf{Solution.} Note that in the ring $\mathbb{C}[X,Y]$ the ideal
+$(Y^2-X^2(X+1))$ is prime and thus such decomposition is impossible. However, in
+$\mathbb{C}\lBrack X,Y \rBrack$ we can hope that we can find some two
+\textit{infinite} series that will cancel out all terms except for $X^2$, $X^3$,
+and $Y^2$ in the product. 
+
+Now, it is very tempting to use the ``difference of two squares'' formula:
+\begin{equation*}
+    Y^2 - X^2(X+1) = (Y - X\sqrt{X+1})(Y + X\sqrt{X+1}).
+\end{equation*}
+
+And well, turns out that this is apparently a valid step to do! Notice that:
+\begin{equation*}
+    \sqrt{1+X} = 1 + \frac{X}{2} - \frac{X^2}{8} + \frac{X^3}{16} - \frac{5X^4}{128} + \dots,
+\end{equation*}
+which lies in $\mathbb{C}\lBrack X \rBrack$. Consequently, both
+$Y-X\sqrt{X+1}$ and $Y+X\sqrt{X+1}$ lie in $\mathbb{C}\lBrack X,Y \rBrack$.
+Moreover, they are non-units since they lie in $(X,Y)$. \qedwhite
+
+\begin{problem}[Exercise 6]
+    Let $p$ be a prime and let 
+    \begin{equation*}
+        A^{\circ} = \mathbb{Z}_p \langle T \rangle = \varprojlim_{n} (\mathbb{Z}/p^n\mathbb{Z})[T]
+    \end{equation*}
+    be the $p$-adic completion of $\mathbb{Z}[T]$. Let
+    \begin{equation*}
+        A = \mathbb{Q}_p\langle T \rangle = A^{\circ}[1/p].
+    \end{equation*}
+    Prove that
+    \begin{equation*}
+        A \cong \left\{ f = \sum_{n \geq 0}a_nT^n \in \mathbb{Q}_p\lBrack T \rBrack: |a_n|_p \to 0 \; \text{as} \; n \to \infty \right\}.
+    \end{equation*}
+\end{problem}
+
+\textbf{Solution.} By definition, $A^{\circ}$ is the subring of $\prod_n
+(\mathbb{Z}/p^n\mathbb{Z})[T]$ such that for each $(f_1,f_2,f_3,\dots)$ one has
+$f_n \equiv f_{n+1} \pmod{p^n}$. This condition deciphers as follows: if $f_n =
+\sum_{i \geq 0}f_{n,i}T^i$, $f_{n,i} \in \mathbb{Z}/p^n\mathbb{Z}$ and $f_{n+1}
+= \sum_{i \geq 0}f_{n+1,i}T^i$, $f_{n+1,i} \in \mathbb{Z}/p^{n+1}\mathbb{Z}$,
+then one has $f_{n,i} \equiv f_{n+1,i} \pmod{p^n}$. This way, the sequence
+$(f_{1,i},f_{2,i},\dots)$ represents some $p$-adic integer $f_i \in
+\mathbb{Z}_p$ by definition. This way, we can associate any element $f \in
+A^{\circ}$ with the power series $\sum_{i \geq 0}a_iT^i$ for $a_i = (f_{n,i})_{n
+\geq 0} \in \mathbb{Z}_p$. Here is the neat visualization below:
+
+\[
+\begin{array}{rcccccc}
+ & \bm{T}^0 & \bm{T}^1 & \bm{T}^2 & \bm{T}^3 & \dots &  \\
+\hline
+f_1 \in (\mathbb{Z}/p)[T] & f_{1,0} & f_{1,1} & \color{gray}{0} & \color{gray}{0} & \dots & \text{Degree } d_1 \\
+f_2 \in (\mathbb{Z}/p^2)[T] & f_{2,0} & f_{2,1} & f_{2,2} & \color{gray}{0} & \dots & \text{Degree } d_2 \\
+f_3 \in (\mathbb{Z}/p^3)[T] & f_{3,0} & f_{3,1} & f_{3,2} & f_{3,3} & \dots & \text{Degree } d_3 \\
+\vdots & \downarrow & \downarrow & \downarrow & \downarrow & \ddots & \downarrow \\
+\hline
+\textbf{Limit } f \in \mathbb{Z}_p\langle T \rangle & \bm{a}_0 & \bm{a}_1 & \bm{a}_2 & \bm{a}_3 & \dots & |a_i|_p \to 0
+\end{array}
+\]
+
+However, of course not any element of $\mathbb{Z}_p\lBrack T \rBrack$ belongs to
+$A^{\circ}$: we need to find some condition for coefficients of this infinite
+series. For now, we have not used that each $f_n$ has a finite number of terms:
+that is, $f_{n,i} = a_{i,n} \equiv 0 \pmod{p^n}$ starting from some $i \geq d_n$
+for each $n>0$. By means of staring at the figure above, one notices $\nu_p(a_i)
+\geq n$ for all $i>d_n$, implying $|a_i|_p \leq p^{-n}$ for all $i > d_n$,
+implying that $|a_i|_p \to 0$ for $i \to \infty$. Thus,
+\begin{equation*}
+    \mathbb{Z}_p \langle T \rangle \cong \left\{\sum_{n \geq 0}a_nT^n \in \mathbb{Z}_p\lBrack T \rBrack: |a_n|_p \to 0 \; \text{as} \; n \to \infty\right\}.
+\end{equation*}
+
+Now we localize: $A = A^{\circ}[1/p]$. In principle, this should not drastically
+change the representation given above. Indeed, note that any element $g \in A$
+can be written as $g = p^{-m}f$ for some $f \in A^{\circ}$ and some integer $m
+\geq 0$. Using representation above, let $f = \sum_{n \geq 0}a_nT^n$ with
+$\lim_{n \to \infty}|a_n|_p = 0$. Then, $g=\sum_{n \geq 0}(p^{-m}a_n)T^n$ with
+now $p^{-m}a_n \in \mathbb{Q}_p$. But note that $p^{-m}$ is just some constant,
+so we still have that $\lim_{n \to \infty}|p^{-m}a_n|_p = 0$.
+
+What remains to show is the reverse inclusion: if it so happens that for some
+$g=\sum_{n \geq 0}a_nT^n \in \mathbb{Q}_p\lBrack T \rBrack$ we have $\lim_{n \to
+\infty}|a_n|_p=0$, then $g \in A$. But notice that the limit being equal to $0$
+means the sequence is bounded: that is, $|a_n|_p \leq p^{m}$ for all $n$ and
+some fixed large enough $m$. Then, $|p^ma_n|_p \leq 1$ and thus $p^ma_n \in
+\mathbb{Z}_p$ for all $n$. Thus, $g = p^{-m}f$ where $f = \sum_{n \geq
+0}(p^ma_n)T^n \in A^{\circ}$ as $\lim_{n \to \infty}|p^ma_n|=0$. \qedwhite
+
+\end{document}

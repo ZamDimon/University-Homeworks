@@ -1,0 +1,91 @@
+\documentclass{template}
+
+\begin{document}
+
+\subsection*{Mentorship Proposal}
+
+In this brief document, I would like to outline three key practical topics I am
+most interested in for our better understanding of what areas of Mathematics I
+should primarily focus on. I decided not to include purely Cryptographic topics
+considering our focus on Pure Mathematics.
+
+\textbf{Understanding ecpairing.} Elliptic Curve bilinear pairing (or
+\textit{ecpairing} for short) is a cornerstone of many modern cryptography
+protocols. For instance, a large class of zk-SNARKs (succinct non-interactive
+argument of knowledge) are based on pairing-friendly elliptic
+curves~\cite{pari,groth16}. Very roughly, given a cyclic group $\mathbb{G} =
+\langle g \rangle$ of (typically prime) order $q$, the user might conceal some
+value $\alpha \in \mathbb{Z}/q\mathbb{Z}$ by computing the point $g^{\alpha} \in
+\mathbb{G}$. Given three ``encrypted'' points $(u,v,w)=(g^{\alpha}, g^{\beta},
+g^{\gamma})$, one can then check linear properties between $\alpha,\beta,\gamma$
+without finding them explicitly. For instance, by checking $u^2v^3 = w^5$ we can
+verify whether $2\alpha+3\beta=5\gamma$. However, what if we wanted to check
+whether $\alpha \cdot \beta = \gamma$? There is no way to do that without any
+more advanced algebraic structure. For that reason, cryptographers used prior
+research studies from algebraic geometrists and constructed an
+\textit{efficient} and \textit{secure} bilinear map $e: \mathbb{G} \times
+\mathbb{G} \to \mathbb{G}_T$ with $\mathbb{G}$ being a special group of points
+on elliptic curve\footnote{I am actually oversimplifying the explanation since
+$e$ in practice is \textit{assymetric} bilinear map where two inputs are
+different elliptic curves, one being the twist of another. But I hope I made the
+high-level explanation clear enough.}. Such mapping satisfies
+$e(g^{\alpha},g^{\beta})=e(g^{\alpha\beta},g)=e(g,g^{\alpha\beta})=e(g,g)^{\alpha\beta}$.
+That said, to check whether $\alpha \cdot \beta = \gamma$ one can check whether
+$e(u,v) = e(w,g)$. 
+
+Now, the construction of Weil and Tate pairing are highly complicated and
+cryptographers even have simplified 150-page documents just to understand
+how it is computed~\cite{pairing-for-beginners}. While I have practically
+implemented pairing during one of my projects, I still have no idea (from
+the Mathematical perspective) about the nature of this object. So I am
+highly interested in understanding this and related concepts of elliptic
+curves. Additionally, I would like to explore what makes such construction
+secure.
+
+\textbf{Complex Algebraic Structures for Cryptography.} One additional 
+interesting question that arises in Cryptography is as follows:
+\begin{quote}
+    Is it possible to construct an \textbf{efficient} and \textbf{secure}
+    multilinear maps (at the very least, efficient 3-way multilinear map
+    $e(\cdot,\cdot,\cdot)$)?
+\end{quote}
+While algebraic geometry has natural generalizations of pairings on curves,
+they are not efficiently computable (meaning, we cannot practically
+implement them). \href{https://www.youtube.com/watch?v=8WDOpzxpnTE}{Dan
+Boneh in his awesome lecture ``Pairings in Cryptography''} provides an
+awesome overview of pairings and, in particular, discusses why
+cryptographers care about more complex multilinear maps.
+
+That said, it is interesting to check which concepts of algebraic geometry might
+become useful for cryptographic applications. I should note that this is not
+limited to pairings. For instance, I would be glad to read about Hyperelliptic
+cryptography~\cite{hyperelliptic}, where instead of elliptic curves,
+cryptographers try to come up with more sophisticated curves. In particular, a
+\href{http://pustaka.unp.ac.id/file/abstrak_kki/EBOOKS/Kriptografi%20dan%20Ethical%20Hacking%20B.pdf}{``Handbook of Elliptic and Hyperelliptic Curve Cryptography''} 
+seems to be an interesting book on this topic (besides, I happen to have a
+physical copy in my office).
+
+\textbf{Optimizing Elliptic Curve-based Protocols.} This is also an exciting
+topic! One of my commerical projects consisted in optimizing elliptic curve
+operations (namely, scalar multiplication and ecpairing), implemented as the
+arithmetical circuit over PlonK-based zero-knowledge system. In layman's terms,
+the only difference from standard implementation is that in such arithmetical
+systems, modular inverse costs the same as modular multiplication. This, in
+turn, resulted in numerous nice mathematical optimizations of these operations.
+For instance, one paper suggested using Algebraic tori for such systems to make
+implementation faster~\cite{r1cs} (using the same technique in the ``regular''
+setup is senseless). Additionally, there are numerous non-standard techniques to
+optimize operations over certain elliptic curves: for instance, using projective
+space or efficient curve endomorphisms. There are even dedicated books on this
+topic: see
+\href{https://link.springer.com/book/10.1007/b97644}{``Guide to Elliptic Curve Cryptography''}.
+
+That said, it could be nice to explore and to systematize such studies and even
+implement them practically.
+
+\subsection*{References}
+\renewcommand{\refname}{\vspace{-1em}}
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}

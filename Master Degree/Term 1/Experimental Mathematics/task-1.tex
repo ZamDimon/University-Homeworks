@@ -1,0 +1,58 @@
+\documentclass{test-template}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge{Experimental Mathematics}} \\
+    Exercises Sheet \#1 \\
+    Error-Correction Codes
+\end{center}
+
+\subsection*{Motivation}
+
+One of the most useful cryptographic gadget that frequently arises in numerous
+applications is \textbf{Error-Correction Codes} (ECC). While we further give the
+rigorous definition, the rough purpose of ECC is, as the name suggests, correct
+errors during transmission through noisy channel or during some complicated
+processing of data. As previously mentioned, such construction is used in
+various applications: ranging from error-correction in computer memory or data
+storage devices (such as HDDs, SSDs, USBs) to fuzzy extractors (recovering
+strong cryptographic keys from biometrics) or zero-knowledge protocols (namely,
+zk-STARKs).
+
+Error-Correction Codes are primarily based on linear algebra and polynomials.
+The primary goal of this exercise sheet is to implement the \textit{Reed-Solomon
+Codes}, which are among most basic and fundamental types of ECC. 
+
+\subsection*{Theory}
+
+We define the $(n,k)$ error-correction code $\mathcal{C}$ first. Fix the finite
+alphabet $\Sigma$. You might think of alphabet as the basic building blocks
+which constitute messages and codewords. Most commonly $\Sigma$ is just
+$\{0,1\}$ (in such case, both messages and codewords are nothing but a sequence
+of bits) or, for linear codes, some finite field elements $\mathbb{F}_q$ (more
+on that later).
+
+We call error-correction code $\mathcal{C}$ an $(n,k)$-code if messages come
+from set $\Sigma^k$, while codewords from $\Sigma^n$. Always assume $n \geq k$:
+we always extend $k$-sized messages to the larger $n$-sized codespace. This way,
+if some errors occur in larger-dimensional space, we hope that we can fix a
+certain number of errors.
+
+Now we want to induce certain metric over $\Sigma^n$. This is done using 
+\textbf{Hamming distance}. Let us give the definition.
+
+\begin{definition}
+    The \textbf{Hamming distance} $\Delta(\mathbf{x},\mathbf{y})$ for two
+    codewords $\mathbf{x},\mathbf{y} \in \Sigma^n$ is defined as the number of
+    positions where $\mathbf{x}$ and $\mathbf{y}$ differ:
+    \begin{equation*}
+        \Delta(\mathbf{x},\mathbf{y}) \triangleq \#\{i \in [n]: x_i \neq y_i\}, \quad \mathbf{x},\mathbf{y} \in \Sigma^n.
+    \end{equation*}
+
+    The Hamming distance naturally induces the norm over $\Sigma^n$ denoted by
+    $\|\mathbf{x}\|_0 := \Delta(\mathbf{x},\mathbf{0})$, which is called a
+    \textbf{Hamming weight}.
+\end{definition}
+
+\end{document}

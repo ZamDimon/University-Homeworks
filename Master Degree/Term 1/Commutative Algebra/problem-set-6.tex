@@ -1,0 +1,178 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Commutative Algebra Problem Set \#6}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $Z = \text{Spec}(A) \setminus \{\eta\}$ where $\eta$ is the generic
+    point. Prove that there does not exist a finitely generated
+    $\mathbb{Z}$-algebra $A$ such that the image of $\text{Spec}(A) \to
+    \text{Spec}(\mathbb{Z})$ is equal to $Z$.
+\end{problem}
+
+\textbf{Solution.} Suppose otherwise that there exists some finitely generated
+$\mathbb{Z}$-algebra $A \cong \mathbb{Z}[T_1,\dots,T_n]/I$ such that $f:
+\text{Spec}(A) \to \text{Spec}(\mathbb{Z})$ has the image of precisely $Z$. Note
+that by the problem statement, $f^{-1}(\eta) = \emptyset = \text{Spec}(A
+\otimes_{\mathbb{Z}} \kappa(0))$. Note:
+\begin{align*}
+    \text{Spec}(A \otimes_{\mathbb{Z}} \kappa(0)) &= \text{Spec}(\mathbb{Z}[T_1,\dots,T_n]/I \otimes_{\mathbb{Z}} \mathbb{Q})
+    \\ &= \text{Spec}(\mathbb{Q}[T_1,\dots,T_n]/(I\mathbb{Q}[T_1,\dots,T_n])) =\emptyset
+\end{align*}
+
+Thus, we obtain $\mathbb{Q}[T_1,\dots,T_n]/(I\mathbb{Q}[T_1,\dots,T_n]) \cong
+0$. This can only happen in the following scenario:
+\begin{equation*}
+    \mathbb{Q}[T_1,\dots,T_n] = I\mathbb{Q}[T_1,\dots,T_n], \quad I \subseteq \mathbb{Z}[T_1,\dots,T_n]
+\end{equation*}
+
+We claim that this implies that there exists a non-zero integer $N \in I$.
+Indeed, since $1 \in I\mathbb{Q}[T_1,\dots,T_n]$, there exist
+$a_1/b_1,\dots,a_r/b_r \in \mathbb{Q}$ and $f_1,\dots,f_r \in I$
+such that $\sum_{i=1}^r (a_i/b_i)f_i = 1$. Multiply both sides by $N :=
+\prod_{i=1}^r b_i$ to get $\mathbb{Z}$-linear combination of $f_1,\dots,f_r \in
+I$ that equals $N \neq 0$. Now, note:
+\begin{equation*}
+    f(\mathfrak{p}) = \mathbb{Z} \cap \mathfrak{p} \subseteq \{p\mathbb{Z}: p \mid N\}.
+\end{equation*}
+
+Finally, $f^{-1}(q\mathbb{Z}) = \emptyset$ for any prime $q>N$ --- contradiction. \qedwhite
+
+\begin{problem}[Exercise 2]
+    Let $k=\mathbb{F}_q$ be the field with $q$ elements and let
+    \begin{equation*}
+        A = k[X,Y] / (X^qY - XY^q)
+    \end{equation*}
+    Let $a,b \in k$ not both zero, consider the $k$-algebra map
+    \begin{equation*}
+        \phi_{a,b}: k[T] \to A, \; T \mapsto aX + bY.
+    \end{equation*}
+    Prove that the map $\phi_{a,b}$ is not finite.
+\end{problem}
+
+\textbf{Solution.} Suppose otherwise that the map $\phi_{a,b}$ is finite. That
+said, for fixed $e_1,\dots,e_n \in A$, any element $f(X,Y) \in A$ can be written
+as:
+\begin{equation*}
+    f(X,Y) = \sum_{i=1}^n c_i(aX + bY)e_i(X, Y), \quad \text{for some $c_1,\dots,c_n \in k[T]$}
+\end{equation*}
+
+Suppose $d := \max_{i \in [n]}\{\deg e_i\}$, then set $f(X,Y) := Y^{d+1}$. Thus we have:
+\begin{equation*}
+    Y^{d+1} = \sum_{i=1}^n c_i(aX + bY)e_i(X, Y)
+\end{equation*}
+
+If this equality holds, then it should hold for any substitution. Thus, 
+consider $X := -(b/a)Y$. Then, we have:
+\begin{equation*}
+    Y^{d+1} = \sum_{i=1}^n c_i(0)e_i(-bY/a, Y) = \sum_{i=1}^n \gamma_i \widetilde{e}_i(Y).
+\end{equation*}
+
+Degree of the left-hand side is $d+1$, while the degree of right-hand side is
+bounded above by $d$. Contradiction. \qedwhite
+
+\begin{problem}[Exercise 3]
+    Let $k$ be a field and $A$ a finitely generated domain over $k$. Let 
+    $L$ be the integral closure of $k$ in $A$. Show that $L$ is finite 
+    over $k$. 
+\end{problem}
+
+\textbf{Solution.} As noted in the hint, we show that $L$ is a field.
+Suppose $\ell \in L$, thus $\ell$ is the root of some monic polynomial
+\begin{equation*}
+    \ell^n + c_1\ell^{n-1} + \dots + c_n = 0, \quad c_j \in k.
+\end{equation*}
+
+Thus, we have:
+\begin{equation*}
+    \ell(\ell^{n-1}+\dots+c_{n-1}) = -c_n \Rightarrow \ell^{-1} = -\frac{1}{c_n}\ell^{n-1} - \frac{c_1}{c_n}\ell^{n-2} - \dots - \frac{c_{n-1}}{c_n}.
+\end{equation*}
+
+Note that we can safely assume $c_n \neq 0$ (or otherwise $\ell=0$ which surely
+does not have an inverse $\ell^{-1}$). While we have successfully found
+$\ell^{-1} \in k$ explicitly, why is it in $L$? First note that $\ell^{-1} \in
+A$ because each $\ell^j \in A$ and on the right-hand side we have a $k$-linear
+combination of elements of $A$. Second, $\ell^{-1}$ is clearly the root of
+polynomial 
+\begin{equation*}
+    c_n(\ell^{-1})^n + c_{n-1}(\ell^{-1})^{n-1} + \dots + c_1\ell^{-1} + 1 = 0
+\end{equation*}
+
+Thus $\ell^{-1} \in L$. Therefore, $L$ is a field. 
+
+Now, take $\mathfrak{m} \subseteq A$ some maximal ideal. From Nullstellensatz,
+$A/\mathfrak{m}$ is a finite field extension of $k$. Define $\pi: L
+\hookrightarrow A/\mathfrak{m}$ --- a natural restriction of $A \to
+A/\mathfrak{m}$ over $L$. Note that this is a valid embedding: it is clearly a
+homomorphism, and moreover since $L$ is a field, $\ker(\pi)$ is either $(0)$ or
+$(1)$, the latter being clearly impossible since $\pi(1)=1$. Thus:
+\begin{equation*}
+    L \cong \pi(L) \subseteq A/\mathfrak{m}.
+\end{equation*}
+
+Since $[A/\mathfrak{m}:k] < \infty$, $[L:k]<\infty$, and so $L$ is finite over
+$k$.\qedwhite
+
+\begin{problem}[Exercise 4]
+    Let $X$ be a spectral space and let $W \subseteq X$ be a constructible subset. 
+    Prove that $W$ is quasi-compact.
+\end{problem}
+
+\textbf{Solution.} Since $W$ is constructible, $W = \bigcup_{\alpha \in I}
+U_{\alpha} \cap V_{\alpha}$ for $I$ --- finite, and $U_{\alpha}$
+are open while $V_{\alpha}$ are closed.
+
+Now suppose $W = \bigcup_{\gamma \in J} W_{\gamma}$ for open $W_{\gamma}$ and
+potentially infinite $J$. Therefore, $\bigcup_{\gamma \in J} W_{\gamma} =
+\bigcup_{\alpha \in I} U_{\alpha} \cap V_{\alpha}$. Fix some $\alpha$.
+$V_{\alpha}$ is quasi-compact since it is closed. Then, $\{V_{\alpha} \cap
+W_{\gamma}\}_{\gamma \in J}$ covers $V_{\alpha} \cap U_{\alpha}$. Since
+$V_{\alpha}$ is quasi-compact, the open cover $\{V_{\alpha} \cap
+W_{\gamma}\}_{\gamma \in J}$ has a finite subcover (say, indexed by finite
+$J_{\alpha}$). Thus, we can construct the finite subcover as:
+\begin{equation*}
+    W = \bigcup_{\alpha \in I}\bigcup_{\gamma \in J_{\alpha}} W_{\gamma}
+\end{equation*}
+with $\sum_{\alpha \in I}|J_{\alpha}| < \infty$. \qedwhite
+
+\begin{problem}[Exercise 5]
+    Let $A$ be a ring and let $Z \subseteq \text{Spec}(A)$ be a closed subset.
+    Prove that $Z$ is constructible if and only if there exists a finitely
+    generated ideal $I \subseteq A$ such that $Z=V(I)$.
+\end{problem}
+
+\textbf{Solution.} Further denote $X := \text{Spec}(A)$.
+
+$(\Rightarrow)$ Assume $Z$ is constructible, thus quasi-compact by
+\textit{Exercise 4}. Then, $X \setminus Z = \bigcup_{i=1}^n D(f_i)$. Take
+complement to get $Z = \bigcap_{i \in I}V(f_i) = V(f_1,\dots,f_n)$. Thus $I :=
+(f_1,\dots,f_n)$ is the needed finitely generated ideal.
+
+$(\Leftarrow)$ Let $I=(f_1,\dots,f_n)$ for some $f_i \in A$. Then, 
+$Z = V(I) \cap D(1)$. \qedwhite
+
+\begin{problem}[Exercise 6*]
+    Let $Z = \text{Spec}(A) \setminus \{\eta\}$ where $\eta$ is the generic
+    point. Prove that there does not exist a 
+    $\mathbb{Z}$-algebra $A$ such that the image of $\text{Spec}(A) \to
+    \text{Spec}(\mathbb{Z})$ is equal to $Z$.
+\end{problem}
+
+\textbf{Proof} (I guess?) Similarly to \textit{Exercise 1}, assuming that such
+$\mathbb{Z}$-algebra exists, $A \otimes_{\mathbb{Z}} \mathbb{Q} = 0$. This more
+or less evidently implies that $A$ is a torsion $\mathbb{Z}$-module, so in
+particular $n\mathbf{1}_A=0$ and thus moreover $\text{char}(A)=n$. This
+similarly requires image to be the subset of $\{p\mathbb{Z}: p \mid n\}$, which
+is finite, thus the contradiction. \qedwhite
+
+\end{document}

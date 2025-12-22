@@ -1,0 +1,44 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerouterthemeAltarguelles}
+
+\mode<presentation>
+
+% remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% headline navigation
+\defbeamertemplate*{headline}{Altarguelles}{
+    \begin{beamercolorbox}[ht=1.2em,dp=1.6em]{section in head/foot}
+        \begingroup
+        % Temporarily force the structure foreground (used by the active section) to be white
+        \setbeamercolor{structure}{fg=white} 
+        {\usebeamerfont{headline section}\insertnavigation{\paperwidth}}
+        \endgroup
+    \end{beamercolorbox}
+}
+
+% frame title
+\defbeamertemplate*{frametitle}{Altarguelles}{
+    \begin{beamercolorbox}[wd=.95\paperwidth]{normal text}
+        {\usebeamerfont{frame title}\insertframetitle}
+    \end{beamercolorbox}
+}
+
+\mode<all>
+\endinput
+
+% --- Force Navigation Bar Colors ---
+% Redefine the template that draws each section title in the headline
+\defbeamertemplate*{section in head/foot}{altarguelles-nav}
+{%
+  % Check if the section being drawn is the current one
+  \ifnum\c@section=\the\beamer@section@nr%
+    % STYLE FOR THE CURRENT, HIGHLIGHTED SECTION
+    \usebeamerfont{section in head/foot}\color{white}\insertsectionhead%
+  \else%
+    % STYLE FOR OTHER, NON-HIGHLIGHTED SECTIONS
+    \usebeamerfont{section in head/foot shaded}\color{white!70}\insertsectionhead%
+  \fi%
+}
+% Activate the new template
+\setbeamertemplate{section in head/foot}[altarguelles-nav]

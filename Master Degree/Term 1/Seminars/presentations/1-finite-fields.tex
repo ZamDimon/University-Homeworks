@@ -1,0 +1,290 @@
+\documentclass{zkdl-presentation-template}
+
+\usepackage[T1]{fontenc}
+%\usepackage{kerkis}
+%\usepackage{kmath}
+%\usepackage{concmath}
+%\usepackage{centernot}
+\usepackage{lmodern}
+
+% Bibliography
+\usepackage[
+  backend=biber,
+  style=alphabetic
+]{biblatex}
+\bibliography{refs-1.bib}
+
+\title[Finite Field Extensions]{\textbf{Finite Field Extensions. Existence and Practical Usage}}
+\author{Dmytro Zakharov\\ \normalfont Kyiv School of Economics \\ \normalfont Mathematics Department}
+\date{October 9, 2025}
+% \homepage{zkdl-camp.github.io}
+% \github{ZKDL-Camp}
+
+\begin{document}
+    \frame {
+        \tikz [remember picture,overlay]
+        \node at
+            ([yshift=1.5cm,xshift=-3.0cm]current page.south east) 
+            %or: (current page.center)
+            {\includegraphics[width=120pt]{images/kse.png}};
+        \titlepage
+    }
+
+	\section{Introduction}
+
+    \begin{frame}{Prime Fields}
+        \begin{definition}[Field]
+            Recall that $\mathbb{K}$ is a \textbf{field} if:
+            \begin{itemize}
+                \item $(\mathbb{K},+)$ and $(\mathbb{K}\setminus\{0\},\times)$
+                form abelian groups.
+                \item Distributive law holds: $a(b+c)=ab+ac$ for arbitrary $a,b,c \in \mathbb{K}$.
+            \end{itemize}
+            \vspace{10px}
+
+            Field $\mathbb{K}$ is \textbf{finite} if it contains finite number of
+            elements.
+        \end{definition}
+
+        The most basic example of such field is the \textbf{prime field}
+        $\mathbb{Z}/p\mathbb{Z}$, further denoted simply as $\mathbb{F}_p$.
+        For instance, for $p=5$ one has:
+        \begin{gather*}
+            2+4 = 1, \quad 3 \cdot 4 = 2, \quad 3^{-1} = 2 \quad \textcolor{gray!75!black}{(\textit{all over $\mathbb{F}_5$})}
+        \end{gather*}
+
+        \begin{alertblock}{Motivating Question}
+            However, is this the only form of finite field?
+        \end{alertblock}
+    \end{frame}
+
+    \begin{frame}{Constructing $\mathbb{F}_{p^2}$} 
+        Let us give some example of the field with $p^2$ elements.
+
+        \begin{example}
+            Suppose it so happens that $p \equiv 3 \pmod{4}$. Then, the 
+            following quotient ring
+            \begin{equation*}
+                \mathbb{F}_{p^2} \cong \mathbb{F}_p[X] / \langle X^2+1 \rangle
+            \end{equation*}
+            is a finite field with $p^2$ elements.
+        \end{example}
+        \vspace{-10px}
+        \textbf{Proof.} Let us carefully go step-by-step:
+        \begin{enumerate}
+            \item $\mathbb{K}[X]/\langle f(X) \rangle$ is a field iff $f(X) \in
+            \mathbb{K}[X]$ is irreducible over $\mathbb{K}$.
+            \item Thus, we prove that $X^2+1$ is irreducible over such $\mathbb{F}_p$.
+            \item We note that $-1$ is a square in $\mathbb{F}_p$ iff $p \equiv 1 \pmod{4}$. Thus,
+            $-1$ is not a square when $p \equiv 3 \pmod{4}$, so $X^2+1$ is irreducible.
+            \item Thus $ \mathbb{F}_p[X] / \langle X^2+1 \rangle$ is a field. It
+            obviously contains $p^2$ elements since there are $p^2$ linear
+            polynomials over $\mathbb{F}_p$.
+        \end{enumerate}
+    \end{frame}
+
+    \begin{frame}{More on $\mathbb{F}_{p^2}$} 
+        
+        \textbf{Remark \#1.} Such construction
+        is typically denoted as $\mathbb{F}_p(i)$ where $i^2=-1$. We will see
+        why.
+        
+        \textbf{Remark \#2.} Moreover, $\mathbb{F}_{p^2}$ is a \textit{field
+        extension} of $\mathbb{F}_p$.
+
+        \begin{definition}[Field Extension]
+            Let $\mathbb{F}$ be a field. $\mathbb{K}$ is called a \textbf{field
+            extension} if (i) $\mathbb{K}$ is a field, (ii) $\mathbb{F}
+            \subseteq \mathbb{K}$. This is commonly denoted as
+            $\mathbb{K}/\mathbb{F}$.
+        \end{definition}
+
+        Obviously, all elements in $\mathbb{F}_p$ are contained in
+        $\mathbb{F}_{p^2}$, so we have an extension
+        $\mathbb{F}_{p^2}/\mathbb{F}_p$. Let us give an example.
+
+        \begin{example}
+            Pick $p:=19$. Then, $\mathbb{F}_{361} \cong \mathbb{F}_{19}(i)$. Example of operations:
+            \begin{align*}
+                \textbf{Addition:} && (1+10i) + (18+15i) = 19+25i = 6i \\
+                \textbf{Multiplication:} && (5+6i)(6+7i) = 30+71i+42i^2 = 7+14i.
+            \end{align*} 
+        \end{example}
+    \end{frame}
+
+    \begin{frame}{Extending to $\mathbb{F}_{p^n}$} In general, for
+        $\mathbb{F}_p$, we can always find irreducible $f(X) \in \mathbb{F}_p$
+        with $\deg f = n$, so $\mathbb{F}_{p^n}$ is constructed as:
+        \begin{equation*}
+            \mathbb{F}_{p^n} \cong \mathbb{F}_p[X] / \langle f(X) \rangle.
+        \end{equation*}
+
+        \textbf{Today's Goal:} Why this is true?
+
+        \begin{example}[Binary Field Extensions]
+            Once, I was asked, why the library \textit{Binius}, operating over 
+            binary field extensions, gives
+            \begin{equation*}
+                3 + 5 = 6
+            \end{equation*}
+            Turns out this is done over $\mathbb{F}_{2^8} \cong
+            \mathbb{F}_2[X] / \langle X^8+X^4+X^3+X+1 \rangle$. So that said, we have:
+            \begin{equation*}
+                3 \leftrightarrow 1+X, \; 5 \leftrightarrow 1+X^2 \Rightarrow 3+5 \leftrightarrow X^2+X \leftrightarrow 6.
+            \end{equation*}
+        \end{example}
+    \end{frame}
+
+    \begin{frame}{More on Field Extensions}
+        \begin{example}[Cont. on $\mathbb{F}_{2^8}$]
+            Moreover, we can have more ridiculous statements:
+            \begin{equation*}
+                128 \times 15 = 193 \; \textcolor{gray!75!black}{(\textit{over $\mathbb{F}_2[X] / \langle X^8+X^4+X^3+X+1 \rangle$})}.
+            \end{equation*}
+            Indeed, $128 \leftrightarrow X^7$, $15 \leftrightarrow
+            X^3+X^2+X+1$. One then checks:
+            \begin{equation*}
+                X^7(X^3+X^2+X+1) \equiv X^7+X^6+1 \pmod{X^8+X^4+X^3+X+1}
+            \end{equation*}
+        \end{example}
+
+        However, is the only way to construct $\mathbb{F}_{p^n}$ is to consider
+        quotient $\mathbb{F}_p[X]/\langle f(X) \rangle$ with $\deg f = n$? Let $m \mid n$. Then,
+        \begin{equation*}
+            \mathbb{F}_{p^n} \cong \mathbb{F}_{p^m}[X] / \langle g(X) \rangle, \quad g(X) \in \mathbb{F}_{p^m}[X], \; \deg g = n/m.
+        \end{equation*}
+        So we have a field extension $\mathbb{F}_{p^n}/\mathbb{F}_{p^m}$ for $m
+        \mid n$. Again, it is unobvious why such construction always exists.
+    \end{frame}
+
+    \begin{frame}{Example: BN254 Field Extensions}
+        The last fact is commonly exploited in cryptographic protocols
+        implementation. For instance, in BN254, one needs to perform arithmetic 
+        over $\mathbb{F}_{p^{12}}$ with:
+        \begin{equation*}
+            p = \mathtt{0x30644E7\dots C208C16D87CFD47}
+        \end{equation*}
+
+        \begin{center}
+        \normalsize\begin{tikzpicture}[
+            node distance=0.75cm and 1.5cm,
+            field/.style={circle, draw=gray!50, fill=gray!10, very thick, minimum size=10mm},
+            arrow/.style={-latex, very thick}
+        ]
+
+        % Define the nodes (fields)
+        \node[field] (fp) {$\mathbb{F}_p$};
+        \node[field, right=of fp] (fp2) {$\mathbb{F}_{p^2}$};
+        \node[field, above right=of fp2] (fp6) {$\mathbb{F}_{p^6}$};
+        \node[field, below right=of fp2] (fp4) {$\mathbb{F}_{p^4}$};
+        % Position Fp12 relative to Fp2 to ensure it is centered between Fp4 and Fp6
+        \node[field, right=3.0cm of fp2] (fp12) {$\mathbb{F}_{p^{12}}$};
+
+        % Draw the arrows and label the extensions
+        \draw[arrow] (fp) -- (fp2) node[midway, above] {$u^2 - \alpha$};
+
+        \draw[arrow] (fp2) -- (fp6) node[midway, above, sloped] {$v^3 - \beta$};
+        \draw[arrow] (fp2) -- (fp4) node[midway, below, sloped] {$v^2 - \beta$}; % Assuming a different variable for clarity
+
+        \draw[arrow] (fp6) -- (fp12) node[midway, above, sloped] {$w^2 - \gamma$};
+        \draw[arrow] (fp4) -- (fp12) node[midway, below, sloped] {$w^3 - \gamma$}; % Assuming a different variable for clarity
+
+        \end{tikzpicture}
+        \end{center}
+
+        Turns out, that such tower of extensions give (i) for upper path, better
+        speed, (2) for lower path, better compression. See~\cite{tower}.
+    \end{frame}
+
+    \begin{frame}{Tower of Fields}
+        \begin{example}[BN254 Tower of Fields]
+            One has the following construction:
+            \begin{gather*}
+                \mathbb{F}_{p^2} \cong \mathbb{F}_p[u] / \langle u^2+1 \rangle, \\
+                \mathbb{F}_{p^6} \cong \mathbb{F}_{p^2}[v] / \langle v^3 - \xi \rangle, \\
+                \mathbb{F}_{p^{12}} \cong \mathbb{F}_{p^6}[w] / \langle w^2 - v \rangle,
+            \end{gather*}
+            with $\xi = 9+u$.
+        \end{example}
+    \end{frame}
+
+    \section{Existence}
+
+    \begin{frame}{Basic properties of Finite Fields}
+        Further, assume that $\mathbb{K}$ is an aribtrary finite field of size $q$.
+
+        \begin{lemma}
+            \[X^q - X = \prod_{\alpha \in \mathbb{K}}(X-\alpha)\]
+        \end{lemma}
+
+        \textbf{Proof.} Every $\alpha \in \mathbb{K}$ is a root in both sides of
+        equation. Polynomials are of same degree, which proves the equality.
+
+        \textbf{Corollary 1.} Let $\mathbb{K}'/\mathbb{K}$ be the field extension.
+        Then, an element $\alpha \in \mathbb{K}'$ is in $\mathbb{K}$ iff
+        $\alpha^q = \alpha$.
+
+        \textbf{Corollary 2.} If $f(X) \mid (X^q-X)$, then $f(X)$ has $\deg f$
+        roots.
+
+        \begin{lemma}
+            The integer multiples of the identity form a subfield of
+            $\mathbb{K}$ isomorphic to $\mathbb{Z}/p\mathbb{Z}$ for some prime $p$.
+        \end{lemma}
+    \end{frame}
+
+    \begin{frame}{Why $\#\mathbb{K} = p^n$?} 
+        
+        \textbf{Proof.}
+        Let $e$ be the multiplicative identity of $\mathbb{K}$. Define morphism
+        $\phi: \mathbb{Z} \to \mathbb{K}$ as $n \mapsto ne$. It is clearly a
+        ring homomorphism. Moreover, $\text{im}\,\phi$ is a finite subring of
+        $\mathbb{K}$, so it is an integral domain; $\text{ker}\,\phi$ is a
+        non-zero prime ideal. Thus, $\text{im}\,\phi \cong
+        \mathbb{Z}/p\mathbb{Z}$ for prime $p$.
+
+        This way, we shall think of $\mathbb{K}$ as a finite dimensional space
+        over $\mathbb{Z}/p\mathbb{Z}$. Let $n$ be such dimension and let
+        $\omega_1,\dots,\omega_n$ be its basis. Then every element $\omega \in
+        \mathbb{K}$ and be expressed uniquely as $a_1\omega_1+\dots+a_n\omega_n$
+        with $a_i \in \mathbb{Z}/p\mathbb{Z}$. It follows that $\mathbb{K}$ has 
+        $p^n$ elements. Thus, we have proven
+
+        \begin{lemma}
+            The number of elements in the finite field is a power of prime. 
+        \end{lemma}
+
+        We call this prime a \textbf{characteristic} of $\mathbb{K}$.
+    \end{frame}
+
+    \begin{frame}{Other Basic Facts}
+        \begin{lemma}
+            Suppose $p=\text{char}(\mathbb{K})$. Then, for any $\alpha,\beta \in
+            \mathbb{K}$ one has $(\alpha+\beta)^{p^d} = \alpha^{p^d} +
+            \beta^{p^d}$ for any integer $d>0$.
+        \end{lemma}
+    \end{frame}
+
+    \begin{frame}{Multiplicative Group $\mathbb{K}^{\times}$}
+        \begin{theorem}
+            Any multiplicative group $\mathbb{F}_q^{\times}$ is \textbf{cyclic}
+            with $q-1$ elements.
+        \end{theorem}
+
+        \textbf{Proof.}
+    \end{frame}
+
+    \begin{frame}[allowframebreaks]{References}
+        \printbibliography
+    \end{frame}
+
+    \begin{frame}[plain]
+        \centering
+        \LARGE
+        \textbf{Any Questions?} \\
+        
+        \vspace{0.2cm} \Huge \ding{170} \large \\
+        
+        \vspace{1cm}
+    \end{frame}
+\end{document}
