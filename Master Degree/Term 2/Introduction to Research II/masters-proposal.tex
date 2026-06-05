@@ -1,0 +1,109 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+\usepackage{bbm}
+
+\usepackage{calrsfs}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+
+\begin{document}
+
+\section*{Master's Degree Proposals}
+
+\subsection*{Lattice-based Folding Schemes}
+
+\textbf{Background.} Classical elliptic curve-based cryptography enabled
+numerous protocols and is arguably the cryptography branch that yields the most
+efficient schemes (signature schemes such as Schnorr or ECDSA with sizes below
+100~B, succinct proving systems based on elliptic curve pairing etc.) However,
+such schemes are not secure against quantum computers. Consequently, the
+question arises how to construct post-quantum secure counterparts of previous
+schemes built on top of elliptic curves.
+
+Currently lattice-based cryptography is the most promising solution to this
+problem. Specifically, one of the major lattice-based assumptions (called
+\textit{Short Integer Solution}) states that finding the ``short'' solution to
+equation $\mathbf{Ax}=0$ for a random matrix $\mathbf{A} \in \mathbb{Z}_q^{n
+\times m}$ with respect to $\mathbf{x} \in \mathbb{Z}_q^m$ is hard (where by
+``short'' we mean $\|\mathbf{x}\|_{\infty}<\gamma$ for appropriate $\gamma$).
+Many major tricks to making such schemes more efficient is related to
+considering the cyclotomic number field $\mathbb{K} := \mathbb{Q}[X]/(X^n+1)$
+for $n=2^k$, and using $R/qR$ instead of $\mathbb{Z}_q$
+(where $R \cong \mathbb{Z}[X]/(X^n+1)$ is the ring of integers of
+$\mathbb{K}$). That said, the equation $\mathbf{Ax}=0$ is now solved for a
+random matrix in $R_q^{n \times m}$ and the norm is now taken with
+respect to the geometry inherited from the structure of $\mathbb{K}$
+(such modification is called \textit{Module Short Integer Solution} or MSIS for short).
+
+\textbf{Goal.} There are currently numerous studies on how to apply such
+assumptions on ``classical'' cryptographical constructions (such as digital
+signatures or public key encryption). However, it is still unresolved how to put
+more advanced protocols on lattice-based rails: multisignatures, threshold
+signatures, succinct proving systems etc.
+
+The promising line of research is \textit{folding schemes}. Recall that the goal
+of proving systems over binary relation $\mathcal{R}$ is to demonstrate the
+knowledge of the secret data (witness) $\mathbbm{w}$ such that $(\mathbbm{x},
+\mathbbm{w}) \in \mathcal{R}$ for a public statement $\mathbbm{x}$. The
+\textit{reduction} $\Pi: \mathcal{R} \to \mathcal{R}'$ is the protocol allowing
+to reduce proving the statement $\mathbbm{x}$ over $\mathcal{R}$ to proving the
+statement $\mathbbm{x}'$ over $\mathcal{R}'$ (with the property that any
+efficient witness extractor of $\mathcal{R}'$ can extract the witness from
+$\mathcal{R}$). Finally, the \textit{folding scheme} is a reduction
+$\Pi_{\text{fd}}: \mathcal{R}_{\text{agg}} \times \mathcal{R}_{\text{comp}} \to
+\mathcal{R}_{\text{agg}}$: i.e., instead of considering a complicated relation
+$\mathcal{R}_{\text{agg}} \times \mathcal{R}_{\text{comp}}$ we reduce it to a
+single relation $\mathcal{R}_{\text{agg}}$. This allows to fold proving 
+thousands of same relations to a single relation $\mathcal{R}_{\text{agg}}$.
+
+Turns out that lattice assumptions allow to build effective folding schemes.
+Most recent papers on these topics are
+\textit{LatticeFold}~\cite{cryptoeprint:2024/257} by Dan Boneh and Binyi Chen
+(Stanford), \textit{Neo}~\cite{cryptoeprint:2025/294} by Wilson Nguyen and Srinath Setty
+(Stanford and Microsoft Research), and \textit{Cyclo}~\cite{cryptoeprint:2026/359} by
+Albert Garreta et al. (University of Tartu and Nethermind). 
+
+\textbf{Goal \#1.} Survey all aforementioned schemes and understand underlying techniques.
+
+\textbf{Goal \#2.} The schemes presented are \textit{not zero-knowledge}. 
+The goal is to build the zero-knowledge-secure version of one of presented protocols
+and prove it.
+
+\textit{Details.} Two primary reasons why they are not zero-knowledge:
+\begin{itemize}
+    \item Underlying sum-check protocol (\textit{i.e.}, showing
+    $\sum_{\vec{\mathbf{b}} \in \{0,1\}^{\nu}} f(\vec{\mathbf{b}}) = H$ for $f \in R[X_1,\dots,X_{\nu}]$ and public $H \in R$ for some ring $R$) is not
+    zero-knowledge by default. One should apply techniques to make it
+    zero-knowledge (\textit{e.g.}, apply techniques from
+    \cite{cryptoeprint:2017/305}).
+    \item Ajtai commitment scheme $\mathbf{x} \mapsto \mathbf{Ax}$ is
+    \textit{binding} under MSIS assumption, but not hiding. Is it possible to
+    use randomized (hiding) Ajtai commitment scheme $(\mathbf{x},\mathbf{r}) \mapsto
+    \mathbf{Ax}+\mathbf{Br}$ instead? How much worse schemes become in terms of efficiency?
+\end{itemize}
+
+\textbf{Goal \#3.} One concrete practical application of folding scheme is
+batching multiple \textit{range proofs} (proofs that some private amount $s \in
+\mathbb{N}$ lies in range $0 \leq s \leq L$ for $L \in \mathbb{N}$). Is it possible
+to specifically optimize the scheme where $\mathcal{R}_{\text{comp}}$ is the range proof?
+
+\textit{Possible solution.} Apply techniques from \cite{cryptoeprint:2020/517} and see what happens.
+
+\subsection*{Isogeny-based Cryptography}
+
+Another quite novel area of post-quantum research requiring
+arguably the most heavy algebraic preliminaries is \textit{isogeny-based cryptography}.
+
+\textbf{Goal \#1.} Understand the SQISign construction:
+
+\begin{center}
+    \url{https://sqisign.org/spec/sqisign-20250707.pdf}
+\end{center}
+
+\textbf{Goal \#2.} Is it possible to construct key derivation, multisignatures, threshold signatures on top?
+
+\bibliographystyle{alphaurl}
+\bibliography{refs-proposal}
+
+\end{document}

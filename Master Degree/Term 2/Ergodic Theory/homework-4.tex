@@ -1,0 +1,254 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Dynamical Systems Homework \#4}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $(X,\mathcal{B},\mu,T)$ be a totally ergodic measure preserving system.
+    Show that for each $f \in L^2(X,\mu)$, we have 
+    \begin{equation*}
+        \frac{1}{N}\sum_{n=0}^{N-1}U_T^{n^2}f \xrightarrow[N \to \infty]{L^2} \int_X fd\mu.
+    \end{equation*}
+\end{problem}
+
+\textbf{Solution.} We will use \cite[Theorem 1.4]{Bergelson_1987}. We restate it here.
+\begin{theorem}[Van der Corput's Difference Theorem]
+    If $\mathcal{H}$ is a Hilbert space and $(g_n)_{n \geq 0} \subseteq \mathcal{H}$
+    is a bounded sequence satisfying
+    \begin{equation*}
+        \lim_{N \to \infty} \frac{1}{N}\sum_{n=0}^{N-1} \langle g_{n+h}, g_n\rangle = 0,
+    \end{equation*} 
+    for every $h \in \mathbb{N}$, then $\lim_{N \to \infty}\|\frac{1}{N}\sum_{n=0}^{N-1}g_n \| = 0$.
+\end{theorem}
+
+We will apply this theorem for $\mathcal{H}=L^2(X,\mu)$ and $g_n := U_T^{n^2}f$.
+Also without loss of generality assume $\int_X fd\mu=0$ (otherwise we can always
+write $f=\alpha+f^*$ with $\alpha=\int_X fd\mu$ and $f^* = f
+- \alpha$). Now, let us evaluate the scalar product:
+\begin{equation*}
+    \langle g_n, g_{n+h} \rangle = \langle U_T^{(n+h)^2}f, U_T^{n^2}f \rangle = \langle U_T^{2nh}U_T^{h^2}f, f \rangle,
+\end{equation*}
+where in the last equality we used the fact that $U_T$ is an isometry,
+\textit{i.e.} $\langle U_Tf, U_Tg \rangle = \langle f, g \rangle$.
+Now we evaluate the limit of the average:
+\begin{equation*}
+    \lim_{N \to \infty}\frac{1}{N}\sum_{n=0}^{N-1}\langle g_n, g_{n+h} \rangle = \lim_{N \to \infty}\left\langle \frac{1}{N}\sum_{n=0}^{N-1}U_{T^{2h}}^nU_T^{h^2}f,f \right\rangle.
+\end{equation*}
+
+Here, we used the fact that $U_{T}^{2nh} = U_{T^{2h}}^n$.
+
+Now we invoke the $L^2$ Mean Ergodic Theorem applied to the transformation $T^{2h}$:
+\begin{equation*}
+    \frac{1}{N}\sum_{n=0}^{N-1}U_{T^{2h}}^n(U_T^{h^2}f) \xrightarrow[N \to \infty]{L^2} P_{\mathcal{I}}(U_T^{h^2}f),
+\end{equation*}
+
+where $P_{\mathcal{I}}: L^2(X,\mu) \to \mathcal{I}$ is a projection and
+$\mathcal{I} = \{f \in L^2(X,\mu): U_{T^{2h}}f = f\}$. Finally, we use the fact
+that $(X,\mathcal{B},\mu,T)$ is \textit{totaly ergodic}, implying $T^{2h}$ is
+ergodic. Therefore, $P_{\mathcal{I}}(U_T^{h^2}g) = \int_X U_T^{h^2}fd\mu =
+\int_X fd\mu$ (last equality is due to $T$ being measure-preserving).
+Since we assumed $\int_X fd\mu = 0$, we conclude that our chosen sequence 
+$(g_n)_{n \geq 0}$ satisfies conditions of the theorem. Consequently,
+\begin{equation*}
+    \frac{1}{N}\sum_{n=0}^{N-1}U_T^{n^2}f \xrightarrow[N \to \infty]{L^2} \int_X fd\mu.
+\end{equation*}
+
+\begin{problem}[Exercise 2]
+    Let $k \in \mathbb{N}$, $\alpha \in \mathbb{R} \setminus \mathbb{Q}$ and let 
+    $T: \mathbb{R}^d/\mathbb{Z}^d \to \mathbb{R}^d/\mathbb{Z}^d$ be given by
+    \begin{equation*}
+        T: (x_1,x_2,\dots,x_d) \mapsto (x_1+\alpha, x_2+x_1, x_3+x_2,\dots, x_d + x_{d-1}).
+    \end{equation*}
+    Show that the topological dynamical system $(\mathbb{R}^d/\mathbb{Z}^d,T)$ is uniquely ergodic.
+\end{problem}
+
+\textbf{Solution.} As the hint suggests, we use Furstenberg's Theorem and prove
+the statement by induction. The base of induction is $(\mathbb{R}/\mathbb{Z}, T:
+x_1 \mapsto x_1+\alpha)$ which is well-known to be both ergodic and uniquely
+ergodic. Now assume that $(\mathbb{R}^{d-1}/\mathbb{Z}^{d-1},T_{d-1})$ with
+$T_{d-1}$ given above is uniquely ergodic with invariant Lebesgue measure
+$\mu_{d-1}$. Then, we can view our map $T_d$ on $\mathbb{R}^d/\mathbb{Z}^d$ as a
+skew product over $T_{d-1}$: that is, we have $T_d(\mathbf{x}, x_d) =
+(T_{d-1}(\mathbf{x}), x_d + \pi(\mathbf{x}))$ where $\mathbf{x}=(x_1,\dots,x_{d-1}) \in
+\mathbb{R}^{d-1}/\mathbb{Z}^{d-1}$ and $\pi: (x_1,\dots,x_{d-1}) \mapsto x_{d-1}$
+is a continuous projection. By Furstenberg's Theorem, to show $T_d$ is uniquely
+ergodic, it is now sufficient to show that $T_d$ is ergodic.
+
+\underline{\textit{Ergodicity of $T_d$.}} Here we use Fourier-analytic approach.
+Let $F \in L^2(\mathbb{R}^d/\mathbb{Z}^d)$ and $F \circ T_d = F$. Expand $F$ into Fourier series:
+\begin{equation*}
+    F(\mathbf{x}, x_d) = \sum_{m \in \mathbb{Z}} f_m(\mathbf{x})e^{2\pi i m x_d} \; \text{where} \; f_m \in L^2(\mathbb{R}^{d-1}/\mathbb{Z}^{d-1}) \; \text{and} \; \sum_{m \in \mathbb{Z}} \|f_m\|_2^2 < \infty.
+\end{equation*}
+
+Now substitute into $F \circ T_d = F$:
+\begin{equation*}
+    \sum_{m \in \mathbb{Z}} f_m(T_{d-1}\mathbf{x})e^{2\pi i m (x_d+x_{d-1})} = \sum_{m \in \mathbb{Z}} f_m(\mathbf{x})e^{2\pi i m x_d},
+\end{equation*}
+
+implying $f_m(T_{d-1}\mathbf{x})e^{2\pi imx_{d-1}} = f_m(\mathbf{x})$ for all $m \in \mathbb{Z}$.
+For $m=0$, this reduces to $f_0 \circ T_{d-1}=f_0$, implying $f_0$ is a constant function.
+Otherwise, write $f_m(T_{d-1}\mathbf{x}) = e^{-2\pi imx_{d-1}}f_m(\mathbf{x})$. Expand $f_m$
+into Fourier series again:
+\begin{equation*}
+    f_m(\mathbf{x}) = \sum_{\mathbf{n} \in \mathbb{Z}^{d-1}} \widehat{f}_{m,\mathbf{n}}e^{2\pi i\langle \mathbf{n}, \mathbf{x} \rangle}.
+\end{equation*}
+
+On the left-hand side we obtain:
+\begin{equation*}
+    f_m \circ T_{d-1}(\mathbf{x}) = \sum_{\mathbf{n} \in \mathbb{Z}^{d-1}} \widehat{f}_{m,\mathbf{n}}e^{2\pi i E(\mathbf{x},\mathbf{n})}, \; E(\mathbf{x},\mathbf{n}) = n_1\alpha + \sum_{j=1}^{d-2}(n_j+n_{j+1})x_j + n_{d-1}x_{d-1}.
+\end{equation*}
+
+On the right-hand side:
+\begin{equation*}
+    e^{-2\pi imx_{d-1}}f_m(\mathbf{x}) = \sum_{\mathbf{n} \in \mathbb{Z}^{d-1}} \widehat{f}_{m,\mathbf{n}}e^{2\pi i G(\mathbf{x},\mathbf{n})}, \; G(\mathbf{x}, \mathbf{n}) = \sum_{j=1}^{d-2}n_jx_j + (n_{d-1}-m)x_{d-1}.
+\end{equation*}
+
+Since $f_m \circ T_{d-1}=e^{-2\pi imx_{d-1}}f_m$, coefficients of both expressions
+must match frequency by frequency. Inspect the exponent for $x_{d-1}$: on the right-hand side,
+the frequency is $n_{d-1}-m$, while on the left-hand side, it is $n_{d-1}$. Thus:
+\begin{equation*}
+    |\widehat{f}_{m,n_1,\dots,n_{d-1}}| = |\widehat{f}_{m,n_1',\dots,n_{d-1}+m}| = |\widehat{f}_{m,n_1'',\dots,n_{d-1}+2m}| = \dots,
+\end{equation*}
+forcing too many coefficients to be non-zero if $\widehat{f}_{m} \neq 0$.
+Thus, all coefficients are strictly $0$ and thus $\widehat{f}_m = 0$.
+This concludes the proof that $F$ is a constant and thus $T_{d-1}$ is ergodic.
+
+\begin{problem}[Exercise 3]
+    Let $p(n) = a_0n^d + a_1n^{d-1} + \dots + a_{d-1}n+a_d$ be a polynomial
+    sequence with real coefficients. Show that the following conditions 
+    are equivalent:
+    \begin{enumerate}
+        \item[(a)] The coefficient $a_i$ is irrational for at least one $0 \leq i < d$;
+        \item[(b)] The sequence $(p(n) \; \text{mod} \; 1)_{n \geq 0}$ is equidistributed (in $\mathbb{R}/\mathbb{Z}$, with respect to the Lebesgue measure). 
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} 
+
+\underline{$(b) \Rightarrow (a)$}. We prove contrapositively (\textit{i.e.}, $\neg(a) \Rightarrow \neg(b)$).
+Assume $a_i=p_i/q_i$ for $p_i \in \mathbb{Z}$, $q_i \in \mathbb{N}$, and let $q := \text{lcm}(q_0,\dots,q_{d-1})$.
+
+\textit{Claim.} $(p(n))_{n \geq 0}$ is periodic in $\mathbb{R}/\mathbb{Z}$ with a period at most $q$.
+
+\textit{Proof.} Compute $p(n+q)-p(n)$:
+\begin{equation*}
+    p(n+q) - p(n) = \sum_{k=0}^{d-1} a_{d-k}((n+q)^k - n^k).
+\end{equation*}
+
+Note that $(n+q)^k-n^k$ is always a multiple of $q$: say, $(n+q)^k-n^k := c_kq$. Then,
+\begin{equation*}
+    p(n+q) - p(n) = \sum_{k=0}^{d-1} p_{d-k}c_k \cdot \frac{q}{q_{d-k}} \in \mathbb{Z}.
+\end{equation*}
+
+Thus $p(n+q)=p(n)$ in $\mathbb{R}/\mathbb{Z}$.
+
+\underline{$(a) \Rightarrow (b)$}. 
+
+\textit{Claim.} Without loss of generality, we might assume $a_0 \in \mathbb{R} \setminus \mathbb{Q}$.
+
+\textit{Proof.} Assume $k$ is the highest degree whose coefficient is
+irrational. Let $p_{\leq k}(n) = a_d + a_{d-1}n + \dots + a_{d-k}n^k$ and
+$p_{>k}(n)=a_{d-k-1}n^{k+1} + \dots + a_0n^d$. Let $q$ be the common denominator
+of rational coefficients in $p_{>k}(n)$. Also note that $(p_{>k}(n))_{n \geq 0}$
+is periodic (see argument above). Let $n=qm+r$ for $0 \leq r<q$. Then, $p(qm+r) =
+p_{>k}(r) + p_{\leq k}(qm+r)$ in $\mathbb{R}/\mathbb{Z}$. Note that $p_{>k}(r)$
+is just a constant while $p_{\leq k}(qm+r)$ is a polynomial of $m$ of degree $k$
+with leading coefficient $a_{d-k}q^k$, which is irrational. If we prove the
+result of equidistributivity of $p_{\leq k}(qm+r)$, we are done. 
+
+Assuming $a_0 \in \mathbb{R} \setminus \mathbb{Q}$, we invoke Corollary~4.32
+and so the statement holds.
+
+\begin{problem}[Exercise 4]
+    Construct a sequence of ergodic measures for the full binary shift 
+    $\mu_n \in \mathcal{M}_e^{\sigma}(\{0,1\}^{\mathbb{N}})$ that converges 
+    in the weak* topology to some measure $\mu \in \mathcal{M}^{\sigma}(\{0,1\}^{\mathbb{N}})$
+    that is not ergodic.
+\end{problem}
+
+\textbf{Solution.} For each $N \in \mathbb{N}$, consider the following point:
+\begin{equation*}
+    x^{(N)} = 0^N \parallel 1^N \parallel 0^N \parallel 1^N \parallel \dots.
+\end{equation*}
+Note that the period of this point is exactly $2N$. This allows us to define 
+the following ergodic measures:
+\begin{equation*}
+    \mu_N := \frac{1}{2N}\sum_{n=0}^{2N-1}\delta_{\sigma^n(x^{(N)})}.
+\end{equation*}
+
+\textit{Claim.} $\mu_N \xrightarrow[N \to \infty]{} \mu$ where $\mu=\frac{1}{2}\delta_{\mathbf{0}} + \frac{1}{2}\delta_{\mathbf{1}}$ (where $\mathbf{0}=0000\dots$ and $\mathbf{1}=1111\dots$).
+
+\textit{Proof.} Let $z \in \{0,1\}^{\ell}$ be an arbitrary finite binary string
+of length $\ell$ and by $\mathsf{C}(z)$ denote the corresponding cylinder set. By
+definition, $\mu_N(\mathsf{C}(z))$ measures the frequency of the string $z$
+appearing as a subblock in the cyclic word $0^N \parallel 1^N$. Without loss of
+generality, further assume $N>\ell$ (as we are taking a limit, this is legit).
+Consider three cases.
+
+\textit{Case \#1.} $z=0^{\ell}$. We have $\mu_N(\mathsf{C}(0^{\ell})) = \frac{N-\ell+1}{2N}  \xrightarrow[N \to \infty]{} 1/2$.
+
+\textit{Case \#2.} $z=1^{\ell}$. Similarly $\mu_N(\mathsf{C}(1^{\ell})) = \frac{N-\ell+1}{2N} \xrightarrow[N \to \infty]{} 1/2$.
+
+\textit{Case \#3.} Since $N>\ell$, transition from 0s to 1s happens exactly once 
+per $2N$ blocks, and the transition from 1s to 0s happens exactly once. Thus, any 
+specific string $z$ other than $0^{\ell}$ or $1^{\ell}$ can appear at most exactly 1 time: 
+$\mu_N(\mathsf{C}(z)) \leq \frac{1}{2N} \xrightarrow[N \to \infty]{} 0$.
+
+Note that these three cases produce identical measures to $\mu = \frac{1}{2}\delta_{\mathbf{0}} + \frac{1}{2}\delta_{\mathbf{1}}$, concluding the proof.
+
+Finally note that $\mu$ is not ergodic: for instance, the set $\{\mathbf{0}\}$ is $\sigma$-invariant
+but its measure is $\mu(\{\mathbf{0}\}) = 1/2$. 
+
+\begin{problem}[Exercise 5]
+    Describe the ergodic measures for the following measure-preserving systems:
+    \begin{enumerate}
+        \item[(a)] $(\mathbb{R}/\mathbb{Z},\mathcal{B},\lambda,x \mapsto x+\alpha)$ where $\alpha \in \mathbb{Q}$;
+        \item[(b)] The finite space $X=\{1,2,3\}$ equipped with the normalized counting measure $\mu$ and the map $T$ specified by $T(1)=2$, $T(2)=1$, and $T(3)=3$;
+        \item[(c)] $(\mathbb{R}^2/\mathbb{Z}^2, \mathcal{B}, \lambda, (x,y) \mapsto (x+\alpha,-y))$ where $\alpha \in \mathbb{R} \setminus \mathbb{Q}$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} 
+
+\textit{Part (a).} Let $\alpha=p/q$ for $p \in \mathbb{Z}$, $q \in \mathbb{N}$.
+Without loss of generality, assume $(p,q)=1$.
+Under this transformation, every point $x \in \mathbb{R}/\mathbb{Z}$ is strictly
+periodic with period $q$. Therefore, we have an uncountable family 
+of ergodic measures parameterized by the base points $x \in [0,1/q)$:
+\begin{equation*}
+    \mu_x = \frac{1}{q}\sum_{n=0}^{q-1}\delta_{x+np/q}.
+\end{equation*}
+
+\textit{Part (b).} Transformation $T$ partitions $X$ into two
+distinct orbits: one is $1 \xrightarrow{T} 2 \xrightarrow{T} 1$ and the other is $3 \xrightarrow{T} 3$. 
+
+Thus, there are exactly two ergodic measures: $\mu_1 = \frac{1}{2}\delta_1 + \frac{1}{2}\delta_2$ and $\mu_2 = \delta_3$.
+
+\textit{Part (c).} Note that along the first coordinate, the map $x \mapsto x+\alpha$
+is uniquely ergodic, while along the second coordinate, values $y_0$ simply oscilate under $T$: $y_0 \to -y_0 \to y_0$.
+Therefore, any ergodic measure in our system must be uniformly spread across the first coordinate
+and uniformly supported on the given $\{y_0,-y_0\}$. Consequently, we get two cases:
+
+\textit{Case \#1. $y_0 \in (0,1/2)$.} We have ergodic measures
+\begin{equation*}
+    \mu_{y_0} = \lambda \times \left(\frac{1}{2}\delta_{y_0} + \frac{1}{2}\delta_{-y_0}\right).
+\end{equation*} 
+
+\textit{Case \#2. $y_0 \in \{0,1/2\}$.} Then, $\mu_{y_0} = \lambda \times \delta_{y_0}$.
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{alphaurl}
+\bibliography{refs}
+
+\end{document}

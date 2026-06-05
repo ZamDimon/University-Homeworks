@@ -1,0 +1,804 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+
+% For fancy caligraphic font
+\usepackage{calrsfs}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+
+\begin{document}
+
+\chapter{Intro to Galois Theory}
+
+\section{Meeting \#1 Notes}
+
+These and subsequent notes are based on \cite{artin-galois}.
+
+\subsection{Normal Extensions}
+
+Recall the notation from the book:
+\begin{itemize}
+    \item $G := \text{Aut}(L/K) \triangleq \{\sigma \in \text{Aut}(L): \forall_{x \in K} \; \sigma(x) = x\}$.
+    \item $\text{Fix}(L/K) = \{x \in L: \forall_{\sigma \in G}\; \sigma(x) = x\}$.
+\end{itemize}
+
+Clearly, $K \subseteq \text{Fix}(L/K)$, but the converse is not always the case.
+When it is, though, the extension $L/K$ is called \textbf{normal}.
+
+\begin{definition}
+    The following are equivalent definitions of $L/K$ being a
+    \textbf{normal extension}:
+    \begin{enumerate}
+        \item[(a)] $[L:K]$ is finite and $\text{Fix}(L/K) = K$.
+        \item[(b)] any irreducible polynomial $f \in K[T]$ such that $f$ has at
+        least one root in $L$ splits in $L$.
+    \end{enumerate}
+\end{definition}
+
+\begin{example}
+    We demonstrate the definition (a) on two examples:
+    \begin{enumerate}
+        \item[(a)] $L := \mathbb{Q}(\sqrt{2})$ is a normal extension of $\mathbb{Q}$. Indeed,
+    every $\mathbb{Q}$-automorphism of $L$ is determined where it sends
+    $\sqrt{2}$. The only posibilities are $\text{id}: \sqrt{2} \mapsto \sqrt{2}$
+    and $\sigma: \sqrt{2} \mapsto -\sqrt{2}$. To find fixed field, we notice
+    that $a+b\sqrt{2} \in \text{Fix}(L/K)$ iff $a+b\sqrt{2}=a-b\sqrt{2}$ which
+    implies $b=0$. Thus, $L/\mathbb{Q}$ is a normal extension.
+        \item[(b)] $L:=\mathbb{Q}(\sqrt[3]{2})$ is not a normal extension.
+        Similarly, automorphisms are determined where they send roots of
+        $T^3-2$, which are $\sqrt[3]{2}$, $\sqrt[3]{2}\omega$ and
+        $\sqrt[3]{2}\omega^2$, but the latter two roots are not in
+        $\mathbb{Q}(\sqrt[3]{2})$. Thus, $G=\{\text{id}\}$ and so
+        $\text{Fix}(L/\mathbb{Q})=L$.
+    \end{enumerate}
+
+    In general, to fix the issue in (b), it suffices to take the extension $L :=
+    \mathbb{Q}(\sqrt[p]{2}, \zeta_p)$ where $\zeta_p$ is the principle root of
+    $1$.
+\end{example}
+
+\begin{theorem}
+    If $L/K$ is a normal extension, then $[L:K] = \#\text{Aut}(L/K)$.
+\end{theorem}
+
+\textbf{Proof.} Let $G=\{\sigma_1,\dots,\sigma_n\}$. Since this is a group, the
+identity occurs, say, $\sigma_1 := \text{id}$. Suppose $[L:K]>n$. Then, there
+exist $\alpha_1,\dots,\alpha_{n+1} \in L$ which are linearly independent over
+$K$. Thus, there exists a non-trivial solution in $L$ to the system of equations
+\begin{equation*}
+    \sum_{j=1}^{n+1}x_j\sigma_i(\alpha_j) = 0, \quad 1 \leq i \leq n.
+\end{equation*}
+
+Note that non-trivial solutions do not lie in $K$: otherwise, since $\sigma_1$
+is the identity, the first equation would be the dependence between
+$\alpha_1,\dots,\alpha_{n+1}$. 
+
+Among all non-trivial solutions $\mathbf{x}_1,\dots,\mathbf{x}_{n+1}$ we choose
+one which has the least number of elements different from $0$: let, for
+instance, this solution be $(z_1,\dots,z_r,0,\dots,0)$ where all $z_i \neq 0$.
+Moreover, $r \neq 1$, because this would imply $z_1=0$. Also without 
+loss of generality let $z_r=1$. Thus,
+\begin{equation*}
+    z_1\sigma_i(\alpha_1) + \dots + z_{r-1}\sigma_i(\alpha_{r-1}) + \sigma_i(\alpha_r) = 0, \quad 1 \leq i \leq n.
+\end{equation*}
+
+Since the whole solution cannot lie in $L$, there is some element in $L
+\setminus K$, say, $z_1 \in L \setminus K$. There is some automorphism
+$\sigma_k$ such that $\sigma_k(z_1) \not\in K$. Note that
+$\sigma_k\sigma_1,\dots,\sigma_k\sigma_n$ is a permutation of
+$\sigma_1,\dots,\sigma_n$, thus, applying $\sigma_k$ to equation above,
+\begin{equation*}
+    \sigma_k(z_1) \cdot \sigma_k\sigma_j(\alpha_1) + \dots + \sigma_k(z_{r-1}) \cdot \sigma_k\sigma_j(\alpha_{r-1}) + \sigma_k\sigma_j(\alpha_r) = 0.
+\end{equation*}
+
+And thus by renaming, we get:
+\begin{equation*}
+    \sigma_k(z_1) \cdot \sigma_i(\alpha_1) + \dots + \sigma_k(z_{r-1}) \cdot \sigma_i(\alpha_{r-1}) + \sigma_i(\alpha_r) = 0.
+\end{equation*}
+
+Now, subtracting this equation from the previous,
+\begin{equation*}
+    (z_1-\sigma_k(z_1))\sigma_i(\alpha_1) + \dots + (z_{r-1}-\sigma_k(z_{r-1}))\sigma_i(\alpha_{r-1}) = 0.
+\end{equation*}
+which is a non-trivial solution to the system having fewer than $r$ elements, contrary 
+to the choice of $r$.
+
+\begin{theorem}
+    $L/K$ is a normal extension iff $L$ is the splitting field of a separable $f
+    \in K[T]$.
+\end{theorem}
+
+\textbf{Proof.} Suppose $L$ splits $f$. If all roots of $f$ are in $K$, then the
+proposition is trivial, since thus $L=K$ and only the unit automorphism leaves
+$K$ fixed.
+
+Thus suppose $f$ has $n>1$ roots in $L\setminus K$. We proceed by
+\underline{induction}: suppose our assumption holds for all pairs of fields with
+fewer than $n$ roots of $f$ outside $K$. Let $f(T) = f_1(T)\dots f_r(T)$ be a
+factorization of $f$ into irreducible factors. Assume that one of those has a
+degree greater than one (otherwise $f$ splits in $K$). Suppose $\deg f_1 = s >
+1$ and let $\alpha_1 \in L$ be the root of $f_1$. Then, $[K(\alpha_1):K] = s$.
+By inductive assumption, $L/K(\alpha_1)$ is a normal extension and thus each
+element of $L\setminus K(\alpha_1)$ is moved by some automorphism $\sigma_1: L
+\to L$ that leaves $K(\alpha_1)$ fixed.
+
+As $f$ is separable, the roots $\alpha_1,\dots,\alpha_s$ of $f_1$ are distinct
+elements of $L$. Thus, there exist isomorphisms $\sigma_i: K(\alpha_1) \to
+K(\alpha_i)$ leaving $K$ fixed and $\alpha_i = \sigma_i(\alpha_1)$. By applying
+one of the Theorems before, as $L$ is a splitting field of $f$ in $K(\alpha_1)$,
+it is also a splitting field in $K(\alpha_i)$. Thus, we can extend each
+isomorphism to an automorphism $\sigma_i: L \to L$ that leave $K$ fixed and
+mapping $\alpha_1 \mapsto \alpha_i$.
+
+Now suppose $\theta$ is fixed under all automorphisms of $L$ that leave $K$
+fixed. In particular, it is fixed by all automorphism fixing $K(\alpha_1)$, and
+thus it lies in $K(\alpha_1)$, so
+$\theta=c_0+c_1\alpha_1+\dots+c_{s-1}\alpha_1^{s-1}$. By appling each $\sigma_i$
+and noting that $\sigma_i(\theta)=\theta$, we obtain
+$\theta=c_0+c_1\alpha_i+\dots+c_{s-1}\alpha_i^{s-1}$. Thus, the polynomial
+$(c_0-\theta)+c_1T+\dots+c_{s-1}T^{s-1}$ has $s$ roots
+$\alpha_1,\dots,\alpha_s$. But it has a smaller degree than $s$, thus it is a
+zero polynomial, implying $c_0=\theta$. This shows that $\theta \in K$.
+
+We next first prove the following lemma.
+\begin{lemma}
+    If $L/K$ is a normal extension, then $L$ is a separable extension of $K$.
+    Moreover, any element of $L$ is a root of an equation over $K$ which splits
+    completely in $L$.
+\end{lemma}
+
+\textbf{Proof of lemma.} Let $\{\sigma_1,\dots,\sigma_s\}=\text{Aut}(L/K)$. Let
+$\alpha \in L$ and let $\alpha_i = \sigma_i(\alpha)$. Note that
+$\sigma_j(\alpha_i) = \sigma_j(\sigma_i(\alpha)) =
+\sigma_j\sigma_i(\alpha)=\sigma_k(\alpha)=\alpha_k$ for some $k$. Thus, each
+$\sigma_i$ permutes $(\alpha_1,\dots,\alpha_s)$. Now consider the polynomial
+$f(T) := \prod_{i=1}^s (T-\alpha_i)$. Clearly, $\sigma_i$ fix coefficients of
+$f$, and since $L/K$ is normal, $f \in K[T]$. If $g \in K[T]$ also has $\alpha$
+as a root, then applying automorphism to $g(\alpha)=0$, we obtain
+$g(\alpha_i)=0$, so $\deg g > s$. Hence $f$ is irreducible, and the lemma is
+established.
+
+Back to the theorem. Now assume that $L/K$ is a normal extension. Let
+$\omega_1,\dots,\omega_s$ be the basis of $L/K$. Let $f_i$ be the separable
+polynomial having $\omega_i$ as a root. Then, $L$ is a splitting field of $f(T)
+= \prod_{j=1}^t f_j(T)$.
+
+\begin{definition}
+    Let $f \in K[T]$ and $L$ the splitting field of $f$. Then, $\text{Aut}(L/K)$
+    is the \textbf{group of the equation $f(T)=0$}.
+\end{definition}
+
+\begin{theorem}[Fundamental Theorem]
+    If $f \in K[T]$ is separable and $G$ is the group of equation $f(T)=0$
+    with $L$ the splitting field of $f$, then:
+    \begin{enumerate}
+        \item[(a)] There is a bijection between subgroups $H \leq G$ and $K
+        \subseteq F \subseteq L$ given by $H \mapsto \{x \in L: \forall_{\sigma
+        \in H} \sigma(x)=x\}$, $K \mapsto \text{Gal}(E/K)$.
+        \item[(b)] Intermediate field $F$ is normal over $K$ iff
+        $\text{Gal}(L/F) \triangleleft G$. In fact, $\text{Gal}(F/K) \cong
+        G/\text{Gal}(L/F)$.
+        \item[(c)] For any intermediate $F$, $[L:F]=|\text{Gal}(L/F)|$ and
+        $[F:K] = [G:\text{Gal}(L/F)]$ and $[E:F]=|G|$.
+    \end{enumerate}
+\end{theorem}
+
+\subsection{Finite Fields}
+
+Nothing new in particular. If $K$ is a finite field, 
+$K^{\times}$ is cyclic. 
+
+\begin{theorem}
+    Two finite fields with the same number of elements are isomorphic.
+\end{theorem}
+
+\textbf{Proof.} Assume $K$ and $K'$ are of order $q=p^n$. Then, $K/\mathbb{F}_p$
+and $K'/\mathbb{F}_p$ are splitting fields of $T^{q-1}-1$. By Theorem 10, the
+isomorphism between two base fields $\mathbb{F}_p$ can be extended to the
+isomorphism between $K$ and $K'$.
+
+\subsection{Roots of Unity}
+
+Suppose $K$ is a field with characteristic $p$ and $L$ is the splitting field of
+the polynomial $T^n-1$ where $p$ does not divide $n$. Then, $L$ is a field
+generated out of $K$ by the adjunction of a primitive $n^{\text{th}}$ root of
+unity. Since derivative of $T^n-1$ is $nT^{n-1}$ has only the root $0$, $L/K$ is
+a normal extension. If $1,\zeta_n,\zeta_n^2,\dots,\zeta_n^{n-1}$ are the roots of
+$T^n-1$ in $L$, they form a cyclic group under multiplication. 
+
+\begin{theorem}
+    If $L$ is generated from $K$ by a primitive $n^{\text{th}}$ root of unity,
+    then the group $G := \text{Aut}(L/K)$ is abelian for any $n$ and cyclic if $n$ is
+    the prime number.
+\end{theorem}
+
+Clearly $L=K(\zeta_n)$. Thus, if $\sigma$ and $\tau$ are distinct elements of
+$G$, $\sigma(\zeta_n) \neq \tau(\zeta_n)$. But $\sigma(\zeta_n) =
+\zeta_n^{n_{\sigma}}$. Moreover, $\tau\sigma(\zeta_n) =
+\tau(\zeta_n^{n_{\sigma}})=\tau(\zeta_n)^{n_{\sigma}}=\zeta_n^{n_{\sigma}n_{\tau}}
+= \sigma\tau(\zeta_n)$. Thus,
+\begin{equation*}
+    \text{Aut}(K(\zeta_n)/K) \to (\mathbb{Z}/n\mathbb{Z})^{\times}, \quad \sigma(\zeta_n) = \zeta_n^{n_{\sigma}} \mapsto n_{\sigma}
+\end{equation*}
+is a homomorphism. This is also clearly an isomorphism. If $n$ is prime, this
+group forms a cyclic group.
+
+\section{Meeting \#2 Notes}
+
+\textit{Comment: This is a better and more structured way to prove theorem from the 
+previous meeting.}
+
+\textbf{Recall.} We say that $L/K$ is \textbf{normal} if $\text{Fix}(L/K) = K$
+and $[L:K] < \infty$.
+
+\begin{lemma}
+    Let $L/K$ be normal. Then, any $\alpha \in L$ is a root of a separable $f
+    \in K[T]$ that splits completely in $L$.
+\end{lemma}
+
+\textbf{Proof.} Let $\alpha \in L$, $G := \text{Aut}(L/K)$ and
+$\mathcal{O}(\alpha) := \{\sigma(\alpha): \sigma \in G\}$. Additionally, let $f
+\in K[T]$ be the minimal polynomial of $\alpha$.
+
+\textbf{Claim \#1.} $\mathcal{O}(\alpha)$ are roots of $f$.
+
+\textit{Proof of Claim \#1.} We have $f(\alpha)=0$, thus $\sigma(f(\alpha)) = 0$
+since $\sigma \in G$ fixes $0$. But $\sigma(f(\alpha)) = \sigma(\sum_i
+f_i\alpha^i) = \sum_i \sigma(f_i)\sigma(\alpha)^i = \sum_i f_i\sigma(\alpha)^i =
+f(\sigma(\alpha)) = 0$. Thus, $\sigma(\alpha)$ is also a root of $f$.
+
+\textbf{Claim \#2.} $f(T) = \prod_{\beta \in \mathcal{O}(\alpha)}(T-\beta)$.
+
+\textit{Proof of Claim \#2.} Let $g(T) = \prod_{\tau \in G}(T-\tau(\alpha))$.
+Take any $\sigma \in G$. Then,
+\begin{equation*}
+    \sigma(g) = \sigma\prod_{\tau \in G}(T-\tau(\alpha)) = \prod_{\tau \in G}(T - \sigma\tau(\alpha)),
+\end{equation*}
+
+but clearly $\tau \mapsto \sigma\tau$ is a bijection, so $\forall_{g \in
+G}\;\sigma(g) = g$. Thus, $g \in K[T]$. Now, since all roots of $g$ are roots of
+$f$, $g \mid f$. But since $f$ is minimal and $g(\alpha)=0$, $f \mid g$. Thus,
+$f=g$.
+
+\begin{theorem}
+    $L/K$ is normal iff $L$ is a splitting field of separable $f \in K[T]$.
+\end{theorem}
+
+\textbf{Proof.} Suppose $L/K$ is normal, then $[L:K]=n<\infty$, so
+$L=K(\alpha_1,\dots,\alpha_n)$. Let $f_i \in K[T]$ be the minimal polynomial of
+$\alpha_i$. Then, $L$ is a splitting field of $f := \prod_{i=1}^n f_i$. 
+
+Indeed, $f \in K[T]$ since each $f_i \in K[T]$. It clearly splits in $L$ since
+each $f_i$ does. So we are left to show that $f$ is separable. Suppose otherwise
+that there is a repeated root: $f(\beta)=f'(\beta)=0$ for some $\beta \in L$.
+Then, $\beta$ is a root of only one $f_{\ell}$: if it were the root of $f_i$ and
+$f_j$ for $i \neq j$, $f_i$ and $f_j$ would be the minimal polynomial of
+$\beta$, meaning $f_i=f_j$. Thus,
+\begin{equation*}
+    f'(\beta) = \sum_{i=1}^n f_i'(\beta) \prod_{j \neq i} f_j(\beta) = f_{\ell}'(\beta) \prod_{i \neq \ell}f_i(\beta)
+\end{equation*}
+
+Since $f_{\ell}'(\beta) \neq 0$, $\prod_{i \neq \ell}f_i(\beta)=0$, meaning some
+other $f_i(\beta)=0$ for $i \neq \ell$. Contradiction.
+
+Now suppose $L$ is the splitting field of a separable $f \in K[T]$. Suppose $n$
+roots lie in $L$ but not in $K$. We prove this fact by induction in $n$. If
+$n=0$, the statement is obvious as $L=K$. Otherwise, assume $f = \prod_i f_i$ be
+the decomposition of $f$ into irreducible polynomials in $K[T]$. Let $s:=\deg
+f_1$. Without loss of generality, assume $s>1$. Then, $[K(\alpha):K]=s$. Now
+consider the extension $K \subseteq K(\alpha_1) \subseteq L$. Note that $f_1$
+splits completely over $K(\alpha_1)$, so the polynomial $f$ has strictly fewer
+roots outside the base field than over $K$. Thus, $L/K(\alpha_1)$ is normal.
+Thus, $\text{Fix}(L/K(\alpha_1)) = K(\alpha_1)$.
+
+Now, let $\alpha_1,\dots,\alpha_s$ be roots of $f_1$. Then, by Theorem 8, there
+exist isomorphisms $\sigma_i: K(\alpha_1) \to K(\alpha_i)$, which in turn can be
+extended to automorphisms $\sigma_i: L \to L$.
+
+Take any $\theta \in \text{Fix}(L/K) \subseteq
+\text{Fix}(L/K(\alpha_1))=K(\alpha_1)$. Thus,
+$\theta=c_0+c_1\alpha_1+\dots+c_{s-1}\alpha_1^{s-1}$. Apply $\sigma_i$ to
+$\theta$ and use $\sigma_i(\theta)=\theta$.
+
+\section{Meeting \#3 Notes}
+
+These notes are based on ``Fields and Galois Theory'' by J.S. Milne~\cite{milneFT}. 
+
+\begin{definition}
+    A \textbf{primitive $n^{\text{th}}$ root of unity} in $K$ is $\zeta_n \in K$
+    such that $\text{ord}(\zeta_n)=n$ in $K^{\times}$.
+\end{definition}
+
+\begin{proposition}
+    Let $K$ be a field of characteristic not dividing $n$ and let $L$ be the
+    splitting field of $T^n - 1$. Then,
+    \begin{enumerate}
+        \item[(a)] there exists a primitive $n$th root of unity in $L$;
+        \item[(b)] if $\zeta_n$ is a primitive $n$th root of unity in $L$, then 
+        $L=K(\zeta_n)$;
+        \item[(c)] $L/K$ is a Galois extension and $\text{Gal}(L/K) \to
+        (\mathbb{Z}/n\mathbb{Z})^{\times}$ is an injective homomorphism.
+    \end{enumerate}
+\end{proposition}
+
+\textbf{Proof.} (a) The roots of $T^n-1$ are distinct, because its derivative
+$nT^{n-1}$ is zero only at $T=0$ unless $\text{char}(K) \mid n$, thus $L$
+contains $n$ distinct $n$th roots of unity. They form a finite subgroup of
+$L^{\times}$, and thus they form a cyclic group. Generators are sought elements.
+
+(b) The roots of $T^n-1$ are the powers of $\zeta_n$ (in fact, $\zeta_n$ is the
+generator of a cyclic subgroup formed by roots of $T^n-1$), thus $K(\zeta_n)$
+contains them all.
+
+(c) Since $L$ is a splitting field of a separable polynomial $T^n-1$, extension
+$L/K$ is Galois. Now let $\sigma \in \text{Gal}(L/K)$ and $\zeta_n$ be some
+primitive root. Then, $\sigma(\zeta_n) = \zeta_n^{i_{\sigma}}$ for some
+$i_{\sigma}$ with $\gcd(i_{\sigma}, n)=1$. Thus, we define the map
+$\text{Gal}(L/K) \to (\mathbb{Z}/n\mathbb{Z})^{\times}$ by sending
+$\sigma(\zeta_n)=\zeta_n^{i_{\sigma}} \mapsto i_{\sigma}$. It is clearly a
+homomorphism.
+
+\newpage
+
+\section{Normal Basis}
+
+These notes are based on \cite{conrad}. Let $L/K$ be a Galois extension of
+degree $n$ and $G := \text{Gal}(L/K) = \{\sigma_1,\dots,\sigma_n\}$. A
+\textbf{normal basis} for $L/K$ is a basis consisting of a set of $K$-conjugate
+elements $G\beta := \{\sigma(\beta): \sigma \in G\}$.
+
+\begin{example}
+    Consider $\mathbb{C}/\mathbb{R}$. The basis $\{1,i\}$ is \textbf{not} a
+    normal basis since $i$ is not the conjugate of $1$, while $\{i,-i\}$ is a
+    set of $\mathbb{R}$-conjugate elements that is not normal since they are not
+    linearly independent. An actual example of the normal basis is
+    $\{1+i,1-i\}$.
+\end{example}
+
+\begin{example}
+    For prime $p$, the basis $\{1,\zeta_p,\dots,\zeta_p^{p-2}\}$ is \textbf{not}
+    a normal basis of $\mathbb{Q}(\zeta_p)/\mathbb{Q}$, but
+    $\{\zeta_p,\zeta_p^2,\dots,\zeta_p^{p-1}\}$ is a valid normal
+    basis\footnote{In general, the primitive roots of unity in the $n$th
+    cyclotomic field form a normal basis iff $n$ is square-free. For instance,
+    for $\mathbb{Q}(\zeta_9)/\mathbb{Q}$, the set
+    $\{\zeta_9,\zeta_9^2,\dots,\zeta_9^8\}$ is not normal since
+    $1+\zeta_9^3+\zeta_9^6=0$.}.
+\end{example}
+
+\begin{example}
+    For $\mathbb{Q}(\sqrt{2}+\sqrt{3})/\mathbb{Q}$, the four $\mathbb{Q}$-conjugates 
+    of $\sqrt{2}+\sqrt{3}$ are not a normal basis since they add up to $0$. An example 
+    of the normal basis is:
+    \begin{equation*}
+        \{1+\sqrt{2}+\sqrt{3}+\sqrt{6}, 1-\sqrt{2}+\sqrt{3}-\sqrt{6}, 1+\sqrt{2}-\sqrt{3}-\sqrt{6}, 1-\sqrt{2}-\sqrt{3}+\sqrt{6}\}.
+    \end{equation*}
+\end{example}
+
+The main theorem that we will prove is that \textit{any finite Galois extension
+admits the normal basis}. But before that, we will need the following auxilary
+lemma.
+
+\begin{lemma}
+    Let $L/K$ be a Galois extension with $G=\text{Gal}(L/K)$ and let
+    $\{\omega_1,\dots,\omega_n\}$ be the basis of $L/K$. Then, the $n$-tuples
+    $(\sigma_1(\omega_i), \sigma_2(\omega_i), \dots, \sigma_n(\omega_i))$ (for
+    $i \in [n]$) are an $L$-basis for $L^n$ (or speaking more algebraically,
+    $\det(\sigma_i(\omega_j))_{ij} \neq 0$).
+\end{lemma}
+
+\textbf{Proof.} Suppose these elements span $W \subseteq L^n$. We want to show
+that $W=L^n$, but suppose otherwise $W \subsetneq L^n$. In such case there is a
+non-zero functional $\varphi \in (L^n)^{\vee}$ that vanishes on $W$. Suppose
+$\varphi(\mathbf{v}) = (c_1,\dots,c_n) \cdot \mathbf{v}$. If $\varphi$ vanishes
+on $W$, then $(c_1,\dots,c_n) \cdot
+(\sigma_1(\omega_i),\dots,\sigma_n(\omega_i))=0$ for every $i \in [n]$. Thus, we
+get $\sum_{j=1}^nc_j\sigma_j(\omega_i)=0$ for all $i$ and by taking
+$K$-linear combinations, $\sum_{j=1}^nc_j\sigma_j(x)=0$ for all $x \in L$.
+Due to the linear independence of characters, each $c_j$ is zero and thus
+$\varphi=0$.
+
+\begin{theorem}
+    Each finite Galois extension $L/K$ admits the normal basis.
+\end{theorem}
+
+\textbf{Proof.} Denote $G = \text{Gal}(L/K) = \{\sigma_1,\dots,\sigma_n\}$ and
+assume $\sigma_1 = \text{id}_L$. The proof is split into two cases:
+\begin{enumerate}
+    \item field $K$ is infinite;
+    \item field $K$ is finite (that is, $L \cong \mathbb{F}_{q^d}$ and $K \cong
+    \mathbb{F}_q$).
+\end{enumerate}
+
+\textcolor{blue!70!black}{\textbf{Case \#1 -- Infinite field.}} Fix some $\beta
+\in L$. Let us explore what a $K$-linear dependence relation would look like for
+fixed $\beta \in L$:
+\begin{equation*}
+    \sum_{j=1}^n a_j\sigma_j(\beta) = 0.
+\end{equation*}
+for some $\{a_j\}_{j \in [n]} \subseteq K$. Applying $\sigma_i^{-1}$ 
+to both sides gives new linear relations
+\begin{equation*}
+    \sum_{j=1}^na_j \cdot \sigma_i^{-1}\sigma_j(\beta) = 0, \quad i \in [n].
+\end{equation*}
+
+Thus, collecting these together for each $i$ yields $D(\beta)\mathbf{a}=0$ for
+$D(\beta)=\{\sigma_i^{-1}\sigma_j(\beta)\}_{ij}$. For $G\beta$ to be a basis, we
+want for this equation to have the only solution $\mathbf{a}=0$. In other words,
+we need to find some $\beta \in L$ such that $\det D(\beta) \neq 0$.
+
+Write $\beta = \sum_{k \in [n]}b_k\omega_k$ where $\{\omega_k\}_{k \in [n]}$ is
+a basis of $L/K$. Consider the polynomial
+\begin{equation*}
+    \Delta(T_1,\dots,T_n) := \det\left(\sum_{k=1}^n \sigma_i^{-1}\sigma_j(\omega_k) \cdot T_k\right) \in L[T_1,\dots,T_n].
+\end{equation*}
+
+Since $n$-tuples $\sigma_i(\omega_j)$ form a basis for $L^n$, there exist some $d_1,\dots,d_n \in L$ such that
+\begin{equation*}
+    \sum_{k=1}^n d_k(\sigma_1(\omega_k), \dots, \sigma_n(\omega_k)) = (1,0,\dots,0).
+\end{equation*} 
+
+Or, component-wise, $\sum_{k=1}^n d_k\omega_k = 1$ but $\sum_{k=1}^n
+d_k\sigma(\omega_k)=0$ for $\sigma \neq \text{id}_L$. Thus:
+\begin{equation*}
+    \sum_{k=1}^n d_k \cdot \sigma_i^{-1}\sigma_j(\omega_k) = \delta_{ij}
+\end{equation*}
+and so $\Delta(d_1,\dots,d_n) = \det \mathbb{I}_n = 1$. Thus, $\Delta$ is a
+non-zero polynomial. Consequently, since $K$ is infinite, there should 
+exist some $b_1,\dots,b_n \in K$ such that $\Delta(b_1,\dots,b_n) \neq 0$. Then,
+\begin{equation*}
+    0 \neq \Delta(b_1,\dots,b_n) = \det\left(\sum_{k=1}^n b_k \cdot \sigma_i^{-1}\sigma_j(\omega_k)\right) = \det\left(\sigma_i^{-1}\sigma_j\sum_{k=1}^n b_k \omega_k\right) = \det(\sigma_i^{-1}\sigma_j(\beta)).
+\end{equation*}
+Thus, $G\beta$ is a normal basis for $L/K$.
+
+\textcolor{green!70!black}{\textbf{Case \#2 -- Finite field.}} Recall that any
+finite Galois extension of finite fields is cyclic: say, $G = \langle \sigma
+\rangle$ (more concretely, $\sigma$ is the Frobenius endomorphism $x \mapsto
+x^q$). We treat $L$ as a $K[T]$-module by letting $T$ act on $L$ as $\sigma$, so
+$f(T)\alpha = f(\sigma)\alpha$. The polynomial $T^n-1$ annihilates all of $L$
+since $\sigma^n(\alpha)=\alpha$ for every $\alpha \in L$. Note that there are no
+other lower-degree polynomials satisfying this property: if say
+$c_0+c_1T+\dots+c_{m}T^m$ also annihilates the whole $L$ for $m<n$, then
+$\sum_{i=1}^m c_i\sigma^i(\alpha)=0$, and so by linear independence each
+$c_i=0$.
+
+The annihilator ideal $\text{Ann}_{K[T]}(L)=\{f \in K[T]: f(\sigma) \equiv 0 \;
+\text{on $L$}\}$ is principal and due to observations above,
+$\text{Ann}_{K[T]}(L) = (T^n-1)$. From the commutative algebra (namely, from the
+theorem of finitely generated modules over PID), there exists some $\beta \in L$
+such that $\text{Ann}_{K[T]}(\beta) = (T^n-1)$.
+
+Consider the map $K[T] \to L, f \mapsto f(\sigma)\beta$. Its kernel is precisely
+$(T^n-1)$, thus it induces the $K$-linear embedding $K[T]/(T^n-1)
+\hookrightarrow L$. Moreover, as both sets are of dimension $n$ (viewed as
+$K$-vector spaces), this map is also surjective. Thus, the basis of
+$K[T]/(T^n-1)$ (which is $1,T,\dots,T^{n-1}$) is mapped to the basis of $L$
+(which is now $\beta,\sigma(\beta),\dots,\sigma^{n-1}(\beta)$), concluding the
+proof.
+
+It was shown as the consequence on the meeting that
+\begin{theorem}[Hilbert's Theorem 90]
+    $H^1(\text{Gal}(L/K), L^{\times}) = 0$.
+\end{theorem}
+
+\section{Kummer Extensions}
+
+Further denote by $\mu_n(K) = \{x \in \overline{K}: x^n=1\}$ the group of $n$th
+roots of unit of field $K$. Denote the primitive root of unity by $\zeta$. We
+define the Kummer extensions as follows.
+
+\begin{definition}\label{def:kummer-extension}
+    Let $n$ be a positive integer and let $K$ be a field such that:
+    \begin{enumerate}
+        \item $\text{char}(K)$ does not divide $n$;
+        \item $\mu_n(K) \subseteq K^{\times}$.
+    \end{enumerate}
+    An extension $L/K$ is called a \textbf{Kummer extension} if for some set
+    $\Delta \subseteq K^{\times}$, 
+    \begin{equation*}
+        L = K(\sqrt[n]{\Delta}) \triangleq K(\sqrt[n]{d}: d \in \Delta).
+    \end{equation*}
+\end{definition}
+
+First we consider Kummer extension by adjoining a single element $a \in K$ such
+that $T^n=a$ has a root in $L$ (so that $\Delta = \{a\}$).
+
+\begin{lemma}
+    Consider the Kummer extension $L=K(\sqrt[n]{a})$ for some $a \in K^{\times}$. Then,
+    \begin{enumerate}
+        \item[(i)] $L/K$ is a Galois extension;
+        \item[(ii)] if $\alpha \in L$ is a root of $T^n=a$, then 
+        $\sigma \mapsto \sigma(\alpha)/\alpha$ induces 
+        embedding $\text{Gal}(L/K) \hookrightarrow \mu_n(K)$;
+        \item[(iii)] if $a$ is of order $n$ in $K^{\times}/(K^{\times})^n$,
+        then $\text{Gal}(L/K) = \langle \sigma \rangle$ is cyclic
+        for $\sigma(\alpha) = \zeta\alpha$.
+    \end{enumerate}
+\end{lemma}
+
+\begin{remark}
+    Note that the point \textit{(i)} is not obvious. Assume we remove the
+    condition that $K$ contains $\mu_n(K)$. Then, $K := \mathbb{Q}$ and $L =
+    \mathbb{Q}(\sqrt[3]{2})$ do not induce the Galois extension $L/K$. This is
+    fixed by letting $K := \mathbb{Q}(\zeta_3)$, then
+    $\text{Gal}(\mathbb{Q}(\zeta_3,\sqrt[3]{2})/\mathbb{Q}(\zeta_3)) \cong
+    \mathbb{Z}/3\mathbb{Z}$.
+\end{remark}
+
+\textbf{Proof.} \textit{Part (i).} Since $\mu_n(K) \subseteq K$, the roots of
+$T^n-a$ are precisely $\{\alpha,\zeta\alpha,\dots,\zeta^{n-1}\alpha\}$, which 
+all trivially lie in $L$. Therefore, $L$ is a splitting field of $T^n-a$. 
+Clearly $T^n-a$ is separable since it has a derivative $nT^{n-1}$, which 
+has the only root $0$ whenever $\text{char}(n)$ does not divide $n$.
+
+\textit{Part (ii).} Denote $\phi: \text{Gal}(L/K) \to K^{\times}, \sigma \mapsto
+\sigma(\alpha)/\alpha$. Note that $\sigma(\alpha^n) = \sigma(a) = a$, meaning
+$\sigma(\alpha)^n = a$. Thus, $\sigma(\alpha)$ is a root of $T^n-1$, so
+$\sigma(\alpha) = \zeta^i\alpha$ for some $i$. Thus, $\sigma(\alpha)/\alpha =
+\zeta^i \in \mu_n(K) \subseteq K^{\times}$.
+
+To check injectivity, note that if $\phi(\sigma)=\text{id}_L$, then
+$\sigma(\alpha)=\alpha$. Since $L=K(\alpha)$, an automorphism that fixes the
+generator must be identity. Thus, $\ker(\phi)=\{\text{id}_L\}$.
+
+\textit{Part (iii).} It is fairly easy to see that $T^n-a$ is irreducible if $a$
+is of order $n$ in $K^{\times}/(K^{\times})^n$. Then, $\#\text{Gal}(L/K)=n$ and
+since $\text{Gal}(L/K)$ is isomorphic to a subgroup of $\mu_n(K)$, it must be
+isomorphic to the whole $\mu_n(K)$. Thus, $\text{Gal}(L/K) \cong \mu_n(K)$, and
+$\mu_n(K)$ is cyclic. There must be some $\sigma$ such that
+$\phi(\sigma)=\zeta$, meaning $\sigma(\alpha)=\zeta\alpha$.
+
+Thus, we have observed that if the field contains some appropriate element $a$
+of order $n$ in $K^{\times}/(K^{\times})^n$, then the corresponding 
+Kummer extension is cyclic. Turns out the converse is also true.
+
+\begin{lemma}\label{lemma:cyclic-extension}
+    Let $L/K$ be a Galois extension with $\text{Gal}(L/K) \cong
+    \mathbb{Z}/n\mathbb{Z}$ and $K$ satisfies (i) and (ii) of
+    \Cref{def:kummer-extension}. Then, $L=K(\sqrt[n]{b})$ for some $b \in K$.
+\end{lemma}
+
+\textbf{Proof.} We have already proven that every cyclic extension admits the
+normal basis. Therefore, let $L=K(\gamma)$ where $\{\sigma(\gamma): \sigma \in
+\text{Gal}(L/K)\}$ is a basis of $L/K$. Consider
+\begin{equation*}
+    \beta = \sum_{s=0}^{n-1}\zeta^s\sigma^s(\gamma).
+\end{equation*}
+
+Notice that $\sigma(\beta) = \zeta^{-1}\beta$. Moreover, $\beta \neq 0$ since
+$\{\gamma,\dots,\sigma^{n-1}(\gamma)\}$ are linearly independent over $K$. Therefore,
+$\beta^n \in K$ and $\beta^r \not\in K$ for $0<r<n$. Thus $\beta^n=b$ is of
+order $n$ in $K^{\times}/(K^{\times})^n$; by Lemma 1, $K(\sqrt[n]{b})$ is a
+cyclic extension of degree $n$ contained in $L$, so $L=K(\sqrt[n]{b})$.
+
+\begin{lemma}
+    $K(\sqrt[n]{a}) \cong K(\sqrt[n]{b})$ iff $a=b^rc^n$ for some $c \in K$
+    and $(r,n)=1$.
+\end{lemma}
+
+\textbf{Proof.} The ``if'' part is obvious, so we prove the ``only if'' part.
+
+Suppose that $K(\alpha)=K(\beta)$ with $\alpha^n=a$ and $\beta^n=b$. Let
+$\sigma$ be the generator of the Galois group with $\sigma\alpha=\zeta\alpha$,
+then $\sigma\beta=\zeta^i\beta$ for some $i$. Suppose
+$\beta=\sum_{j=0}^{n-1}c_j\alpha^j$, then
+$\sigma\beta=\sum_{j=0}^{n-1}c_j\zeta^j\alpha^j$, so we can only have
+$\beta=c_i\alpha^i$.
+
+\begin{lemma}\label{lemma:abelian-extensions} Let $L/K$ be a finite extension
+    with $G:=\text{Gal}(L/K)$ abelian, of exponent dividing $n$. Let $G =
+    \bigoplus_{i=1}^r G_i$. For each $i$, let $L_i=\text{Fix}(H_i)$ for
+    $H_i := \bigoplus_{j \neq i} G_j$. Then,
+    \begin{enumerate}
+        \item[(i)] $\text{Gal}(L_i/K) \cong G_i$;
+        \item[(ii)] $L_i = K(\alpha_i)$ with $\alpha_i^n = a_i \in K$;
+        \item[(iii)] $L=K(\sqrt[n]{\Delta})$ is a Kummer extension with
+        $\Delta=\{a_1,\dots,a_r\}$.  
+    \end{enumerate}
+
+    \textbf{Slogan:} If the base field contains roots of unity, any abelian
+    extension of exponent dividing $n$ is formed by extraction of roots of
+    elements of $K$.
+\end{lemma}
+
+\textbf{Proof.} 
+
+\textit{Part (i).} $\text{Gal}(L_i/K) \cong G/H_i \cong G_i$. First congruence
+is due to the fundamental theorem of Galois theory, the second simply by
+cancelling out everything besides $G_i$.
+
+\textit{Part (ii).} Let $n_i=\#G_i$. Since $n_i \mid n$ and $K$ contains $n$th
+roots of unity, $K$ also contains $n_i$th roots of unity. Therefore, by
+\Cref{lemma:cyclic-extension}, $L_i=K(\sqrt[n_i]{b_i})$ for some $b_i \in K$. 
+
+
+\begin{theorem}
+    There is a one-to-one correspondence
+    \begin{equation*}
+        \{\text{Abelian extensions of $K$ of exponent $n$}\} \leftrightarrow \{\text{Subgroups of $K^{\times}/(K^{\times})^n$}\}.
+    \end{equation*}    
+\end{theorem}
+
+\textbf{Proof.} Define two maps:
+\begin{enumerate}
+    \item $\psi$ that maps subgroups to abelian extensions: $\Delta \mapsto K(\sqrt[n]{\Delta})$;
+    \item $\varphi$ that maps abelian extensions to subgroups: $L/K \mapsto (L^{\times})^n \cap K^{\times}/(K^{\times})^n$.
+\end{enumerate}
+
+We show that both $\varphi \circ \psi$ and $\psi \circ \varphi$ are identity maps. 
+
+\underline{$\varphi \circ \psi = \text{id}$.} We show that
+$\varphi(\psi(\Delta)) = \Delta$. This is equivalent to showing $\varphi(L) =
+\Delta$ for $L=K(\sqrt[n]{\Delta})$. Clearly, since $\varphi$ sends $L$ to
+$(L^{\times})^n \cap K^{\times}/(K^{\times})^n$, we have $\Delta \subseteq
+\varphi(L)$. Now take any $b \in \varphi(L) \setminus \Delta$. Then, $b$ induces
+an extension $K(\sqrt[n]{b}) \subseteq L$. By the isomorphism of Kummer
+extensions, if $K(\sqrt[n]{b}) \subseteq K(\sqrt[n]{\Delta})$, the class $b$
+must be generated by the classes of $\Delta$. Thus, $b \in \Delta$, and so
+$\varphi(\psi(\Delta)) = \Delta$.
+
+\underline{$\psi \circ \varphi = \text{id}$.} Let $L/K$ be an abelian extension
+of exponent $n$. Then, $L=K(\sqrt[n]{\Delta})$ by
+\Cref{lemma:abelian-extensions} and then $\psi(K(\sqrt[n]{\Delta})) = \Delta$
+(by the same argument as above) and thus $\varphi(\Delta) = K(\sqrt[n]{\Delta})
+= L$.
+
+\subsection{Cohomologies}
+
+\begin{lemma}
+    $H^1(G, \mu_n(K)) \cong \text{Hom}(G, \mu_n(K)) \cong K^{\times}/(K^{\times})^n$.
+\end{lemma}
+
+\textbf{Proof.} We apply this lemma by letting $L := \overline{K}$. There is an
+exact sequence
+\begin{equation*}
+    0 \to \mu_n(K) \to L^{\times} \xrightarrow{\nu: x \mapsto x^n} L^{\times} \to 0
+\end{equation*}
+
+Taking the cohomology functor $H(G, \cdot)$, we get
+\begin{equation*}
+    H^0(G, \mu_n(K)) \to H^0(G, L^{\times}) \xrightarrow{\nu} 
+    H^0(G, L^{\times}) \to H^1(G, \mu_n(K)) \to H^1(G, L^{\times}) \to \dots
+\end{equation*}
+
+Notice that $G$ acts trivially on $\mu_n(K)$, $H^1(G, \mu_n(K)) \cong
+\text{Hom}(G, \mu_n(K))$, so we get
+\begin{equation*}
+    \mu_n(K) \to K^{\times} \xrightarrow{\nu} K^{\times} \to \text{Hom}(G, \mu_n(K)) \to 0.
+\end{equation*}
+
+That said, $\text{Hom}(G, \mu_n(K)) \cong K^{\times}/(K^{\times})^n$.
+
+\chapter{Algebraic Power Series}
+
+\section{Eisenstein's Theorem}
+
+\begin{definition}
+    For field $\kappa$, we say that $f \in \kappa\llbracket x \rrbracket$ is \textbf{algebraic function over $\kappa$} iff $f$ is algebraic over $\kappa(x)$ (rational functions over $\kappa$).
+    That is, $f$ satisfies $P(x,f(x))=0$ for $P \in \kappa[x]$.
+\end{definition}
+
+\begin{example}
+    $x^{1/2}$ is not an algebraic function since it does not belong to $\kappa\llbracket x \rrbracket$. In turn, $f(x) := (1-4x)^{-1/2}$ is algebraic function over any field: first, $f \in \kappa\llbracket x \rrbracket$:
+    \begin{equation*}
+        (1-4x)^{-1/2} = \sum_{n \geq 0}\binom{2n}{n}x^n,
+    \end{equation*}
+    and it satisfies $(1-4x)f(x)^2=0$.
+\end{example}
+
+\begin{example}
+    Assume $\kappa$ has character $p$. Then, the function $f(x)=\sum_{n \geq 0}x^{p^n}$ is algebraic.
+    Indeed, notice that $f(x) = x+f(x^p) = x+f(x)^p$, so $f$ satisfies $f(x)^p-f(x)+x=0$.
+\end{example}
+
+Our goal is to show the following fact.
+\begin{theorem}[Eisenstein's Theorem]
+    Let $f \in \mathbb{Q}\llbracket x \rrbracket$ be an algebraic power series. Then, there exist $N,M \in \mathbb{N}$ such that $Mf(Nx) \in \mathbb{Z}\llbracket x\rrbracket$.
+\end{theorem}
+
+Without loss of generality, further assume $f(0)=0$: otherwise, $f(x) = \frac{p}{q} + f^*(x)$ for $f^*(0)=0$, and so if we prove that there exist $M,N \in \mathbb{N}$ such that $Mf^*(Nx) \in \mathbb{Z}\llbracket x \rrbracket$, then $(qM)f(Nx)=pM+q \cdot Mf^*(Nx)$ trivially lies in $\mathbb{Z}\llbracket x \rrbracket$.
+
+\subsection{Diagonals}
+
+\begin{definition}
+    Let $f(x_1,\dots,x_n) = \sum_{\vec{u} \in \mathbb{N}_{\geq 0}^n}a_{\vec{u}}\mathbf{x}^{\vec{u}} \in \mathbb{Q}\llbracket x_1,\dots, x_n \rrbracket$ where by $\mathbf{x}^{\vec{u}}$ we denote $x_1^{u_1}\dots x_n^{u_n}$.
+    Define the \textbf{diagonal} of $f$ as $\mathcal{D}\{f\}(t) := \sum_{m\geq 0}a_{m,\dots,m}t^m$.
+\end{definition}
+
+\begin{definition}
+    We say that $f \in \kappa \llbracket x \rrbracket$ is \textbf{diagonal of a rational function} (\textbf{DRF}) iff $f = \mathcal{D}\{F\}$ for some $F \in \mathbb{Q}[x,y]$.
+\end{definition}
+
+Our goal is to show that any algebraic $f \in \mathbb{Q}\llbracket x \rrbracket$ is a DRF of a specific rational function. 
+Specifically, we show the following proposition.
+
+\begin{proposition}\label{prop:drf}
+    Let $P \in \kappa[x,y]$ and let $\varphi(x)=\sum_{m \geq 1}c_mx^m \in \kappa\llbracket x \rrbracket$ satisfy $P(x,\varphi(x))=0$.
+    If $P_y'(0,0) \neq 0$, then
+    \begin{equation*}
+        \varphi = \mathcal{D}\left\{ y^2P_y'(xy,y) / P(xy, y) \right\}.
+    \end{equation*} 
+    Field $\kappa$ above is arbitrary.
+\end{proposition}
+
+\textbf{Proof.} Write $P(x,y) = (y-\varphi(x))Q(x,y)$ with $Q \in \kappa\llbracket x \rrbracket[y]$.
+We have $Q(0,0) \neq 0$ since $\varphi(0)=0$. Then,
+\begin{equation*}
+    \frac{1}{P} \cdot \frac{\partial P}{\partial y} = \frac{1}{y-\varphi(x)} + \frac{1}{Q} \cdot \frac{\partial Q}{\partial y}.
+\end{equation*}
+
+Substitute $x \mapsto xy$ and multiply everything by $y^2$:
+\begin{equation*}
+    \frac{y^2P'_y(xy,y)}{P(xy,y)} = \frac{y^2}{y-\varphi(xy)} + \frac{y^2Q_y'(xy,y)}{Q(xy,y)}.
+\end{equation*}
+
+Apply $\mathcal{D}\{\cdot\}$ to both sides. On the left we have the desired expression from the proposition statement. 
+On the right:
+\begin{equation*}
+    \textcolor{blue!70!black}{\mathcal{D}\left\{ \frac{y^2}{y-\varphi(xy)} \right\}} + \textcolor{green!70!black}{\mathcal{D}\left\{ \frac{y^2Q_y'(xy,y)}{Q(xy,y)} \right\}}.
+\end{equation*}
+
+We show that the left diagonal is exactly $\varphi$ while the right one is zero. Note:
+\begin{align*}
+    \textcolor{blue!70!black}{\mathcal{D}\left\{ \frac{y^2}{y-\varphi(xy)} \right\}} = \mathcal{D}\{y(1-y^{-1}\varphi(xy))^{-1}\} = \mathcal{D}\left\{ \sum_{n \geq 0} y^{-n+1}\varphi(xy)^n \right\}.
+\end{align*}
+
+Now notice the following: $\varphi(xy)$ is simply the sum $\sum_k \alpha_kx^ky^k$. Therefore, the polynomial $\varphi(xy)^n$ is also of form $\sum_k \beta_kx^ky^k$.
+Hence each $y^{-n+1}\varphi(xy)^n$ is of form $\sum_k \beta_kx^ky^{k-n+1}$. 
+Diagonal only includes those terms corresponding to $k$'s such that $k = k-n+1$, implying $n=1$. 
+Therefore, we obtain quite a straightforward result:
+\begin{equation*}
+    \textcolor{blue!70!black}{\mathcal{D}\left\{ \frac{y^2}{y-\varphi(xy)} \right\}} = \mathcal{D}\{\varphi(xy)\} = \varphi.
+\end{equation*}
+
+Now the remaining term is easy to analyze. Notice that since $Q(0,0) \neq 0$, we can expand $H(x,y) := Q_y'(x,y)/Q(x,y)$ into some series $\sum_{(i,j) \in \mathbb{N}_{\geq 0}^2}\alpha_{ij}x^iy^j$.
+Substituting $x \mapsto xy$ and multiplying by $y^2$ we obtain $y^2H(xy,y) = \sum_{(i,j) \in \mathbb{N}_{\geq 0}^2}\alpha_{ij}x^iy^{i+j+2}$, which contains no diagonal terms.
+Thus, 
+\begin{equation*}
+    \textcolor{green!70!black}{\mathcal{D}\left\{ \frac{y^2Q_y'(xy,y)}{Q(xy,y)} \right\}} = 0,
+\end{equation*}
+
+and the proposition is proven.
+
+\begin{proposition}[Corollary]
+    Any algebraic function $\varphi \in \mathbb{Q}\llbracket x \rrbracket$ is a DRF\footnote{Here, we need to argue why $P_y'(0,0) \neq 0$.}.
+\end{proposition}
+
+\subsection{Proof of Eisenstein's Theorem}
+
+Now, we are in position to prove Eisenstein's Theorem.
+
+\textbf{Proof.} We have established that $\varphi = \mathcal{D}\{q(x,y)/r(x,y)\}$ for $q,r \in \mathbb{Q}[x,y]$.
+Let $\varphi(t) = \sum_{n \geq 0}\varphi_nt^n$. We need to find integers $N,M$ such that $M\varphi_nN^n \in \mathbb{Z}$ for all integers $n \geq 0$.
+
+From the construction in \Cref{prop:drf}, the denominator $r(0,0) \neq 0$. Without loss of generality, let $r(0,0)=1$ (otherwise we can rescale both numerator and denominator).
+Write $r(x,y) = 1 - s(x,y)$ where $s(0,0)=0$. Now note:
+\begin{equation*}
+    \frac{q(x,y)}{r(x,y)} = \frac{q(x,y)}{1-s(x,y)} = q(x,y)\sum_{k \geq 0}s(x,y)^k.
+\end{equation*} 
+
+Now, we are going to eliminate polynomial denominators. For concreteness, let
+\begin{equation*}
+    q(x,y) = \sum_{i,j} \frac{\alpha_{ij}}{\beta_{ij}}x^iy^j, \quad s(x,y) = \sum_{i,j} \frac{\gamma_{ij}}{\delta_{ij}}x^iy^j.
+\end{equation*} 
+
+Let $J := \text{lcm}(\beta_{ij})$ and $M := \text{lcm}(\delta_{ij})$ (since $q$ and $s$ are polynomials in $\mathbb{Q}$, this definition is fully valid).
+Now note:
+\begin{equation*}
+    \varphi_n = \textit{``coefficient of $x^ny^n$ in $q(x,y)\sum_{k \geq 0}s(x,y)^k$''}.
+\end{equation*}
+
+Since $s(0,0)=0$, each term in $s$ is of degree at least $1$.
+Consequently, each term in $s(x,y)^k$ is of degree at least $k$.
+Since the term $x^ny^n$ has a total degree $2n$, the only terms that can contribute to it are $\{s(x,y)^k\}_{k \leq 2n}$.
+The coefficient of $x^ny^n$ in $q(x,y)s(x,y)^k$ has a denominator that divides $MJ^k$.
+Since there is a finite number of terms that contribute to the total $x^ny^n$, the total denominator divides $MJ^{2n}$.
+Consequently, $M(J)^{2n}\varphi_n \in \mathbb{Z}$.
+
+Therefore, by taking $N := J^2$, we obtain the desired result.
+
+\bibliographystyle{alphaurl}
+\bibliography{refs}
+
+\end{document}

@@ -1,0 +1,219 @@
+\documentclass{template}
+
+\usepackage{calrsfs}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Algebraic Geometry Problem Set \#4}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $X$ be a scheme. Let $U,V \subseteq X$ be two affine open subsets.
+    Prove that every $x \in U \cap V$ admits an open neighbourhood $W \subseteq U \cap V$
+    which is distinguished in both $U$ and $V$.
+\end{problem}
+
+\textbf{Solution.} The intersection $U \cap V$ is an open subset of $X$
+contained in $U$, thus is an open subset of the affine scheme $U$.
+In any affine scheme, distinguished opens form a basis of Zariski topology.
+Therefore, since $x \in U \cap V$, there exists a regular function 
+$f \in \mathcal{O}_X(U)$ such that $x \in D_U(f) \subseteq U \cap V$.
+Similarly, as $D_U(f)$ is an open subset of the affine scheme $V$,
+there exists a regular function $g \in \mathcal{O}_X(V)$ such that 
+$x \in D_V(g) \subseteq D_U(f)$. This way, we got a chain:
+\begin{equation*}
+    x \in D_V(g) \subseteq D_U(f) \subseteq U \cap V.
+\end{equation*}
+
+We claim $W = D_V(g)$. The hard part is showing that it is distinguished in $U$.
+
+Since $D_U(f)$ is distinguished open subset of affine scheme $U$, we know that
+$\mathcal{O}_X(D_U(f)) \cong \mathcal{O}_X(U)[f^{-1}]$. Also note that we can
+restrict $g \in \mathcal{O}_X(V)$ to $D_U(f)$: let $\overline{g} := g|_{D_U(f)}
+\in \mathcal{O}_X(D_U(f))$. Because $\mathcal{O}_X(D_U(f))$ is localized at $f$, write
+\begin{equation*}
+    \overline{g} = \frac{f'}{f^n}, \quad f' \in \mathcal{O}_X(U).
+\end{equation*}
+
+Now we do the following non-obvious series of observations:
+\begin{equation*}
+    W = D_V(g) = D_{D_U(f)}(\overline{g}) = D_{D_U(f)}(f') = D_U(f) \cap D_U(f') = D_U(ff').
+\end{equation*}
+
+First equality is our definition of $W$. The second is due to the fact 
+that the points where $g$ does not vanish on $V$ is precisely the set of points
+where $\overline{g}$ does not vanish on $D_U(f)$. The third equality is 
+since for $\overline{g}$ to be zero in $D_U(f)$, the numerator must be zero 
+(as $f$ is inherently invertible in $\mathcal{O}_X(U)[f^{-1}]$). 
+Finally, for the fourth equality notice that points in $D_U(f)$ where $f'$ does 
+not vanish is exactly the set of points where both $f$ and $f'$ do not vanish.
+The last equality is obvious.
+
+Thus, $W=D_U(ff')$ and since $f,f' \in \mathcal{O}_X(U)$, $ff' \in \mathcal{O}_X(U)$,
+which proves the statement.
+
+\begin{problem}[Exercise 2, Affine communication lemma]
+    Let $X$ be a scheme and let $\mathcal{U}$ be a family of affine open 
+    subsets of $X$ enjoying the following property: for every affine open 
+    $U \subseteq X$ and every finite cover $U = U_1 \cup \dots \cup U_r$
+    by distinguished opens $U_1, \dots, U_r \subseteq U$ we have 
+    \begin{equation*}
+        U \in \mathcal{U} \; \Leftrightarrow \; U_1,\dots,U_r \in \mathcal{U}.
+    \end{equation*}
+    Suppose that $X$ admits an affine open cover $X = \bigcup_{\alpha \in I}U_{\alpha}$
+    with $U_{\alpha} \in \mathcal{U}$. Show that every affine open $U \subseteq X$
+    belongs to $\mathcal{U}$.
+\end{problem}
+
+\textbf{Solution.} We first prove the auxilary claim.
+
+\textit{Claim.} Let $U \in \mathcal{U}$, then any distinguished open $V \subseteq U$ is in $\mathcal{U}$.
+
+\textit{Proof.} Let $V=D(f) \subseteq U$. Find the distinguished
+open sets $\{D(g_\alpha)\}_{\alpha \in I}$ that cover $U \setminus V$. 
+Thus, $U = V \cup \bigcup_{\alpha \in I}D(g_{\alpha})$. Since $U$
+is an affine scheme, it is quasi-compact. Thus, extract a finite subcover:
+$U = V \cup D(g_1) \cup \dots \cup D(g_r)$. By the property of $\mathcal{U}$,
+it immediately follows that $V \in \mathcal{U}$.
+
+Now let $V \subseteq X$ be arbitrary open. We are given the open cover $X =
+\bigcup_{\alpha \in I}U_{\alpha}$ and $U_{\alpha} \in \mathcal{U}$ for all
+$\alpha \in I$. Pick any point $x \in V$ and assume $x \in U_{\beta}$ for some
+$\beta$. Thus, $x \in V \cap U_{\beta}$. Apply Exercise 1: there exists
+an open $W_x$ such that $x \in W_x \subseteq V \cap U_{\beta}$ and $W_x$
+is distinguished in both $V$ and $U_{\beta}$. By auxilary claim above,
+as $U_{\beta} \in \mathcal{U}$, we obtain $W_x \in \mathcal{U}$.
+
+Finally, notice that $V = \bigcup_{x \in V}W_x$ and as $V$ is affine,
+it is quasi-compact, so $V = W_{x_1} \cup \dots \cup W_{x_r}$. 
+Since $W_{x_i} \in \mathcal{U}$, we obtain $V \in \mathcal{U}$.
+
+\begin{problem}[Exercise 3]
+    Let $X$ be either a scheme or an algebraic set. Let $f_1,\dots,f_r \in \mathcal{O}(X)$
+    be elements such that the opens $D(f_1),\dots,D(f_r) \subseteq X$ are affine 
+    and which generate the unit ideal in $\mathcal{O}(X)$. Show that $X$ is affine.
+\end{problem}
+
+\textbf{Solution.} We prove that $\pi: X \to \text{Spec}(\mathcal{O}_X(X))$ is
+an isomorphism. Given setup, it suffices to prove that restriction $\pi_i:
+D_X(f_i) \to D_{\mathcal{O}_X(X)}(f_i)$ is an isomorphism of schemes. Finally,
+since both $D_X(f_i)$ and $D_{\mathcal{O}_X(X)}(f_i)$ are affine, this reduces
+to showing that induced map of their coordinate rings is an isomorphism:
+$\mathcal{O}_X(X)[f_i^{-1}] \to \mathcal{O}_X(D(f_i))$.
+
+Since $D(f_1),\dots,D(f_r)$ cover $X$, we have an exact sequence
+\begin{equation*}
+    0 \to \mathcal{O}_X(X) \to \prod_{j=1}^r \mathcal{O}_X(D(f_j)) \to \prod_{j,k=1}^r \mathcal{O}_X(D(f_jf_k)).
+\end{equation*}
+
+Localization functor is exact, so apply $(-)[f_i^{-1}]$:
+\begin{equation*}
+    0 \to \mathcal{O}_X(X)[f_i^{-1}] \to \prod_{j=1}^r \mathcal{O}_X(D(f_j))[f_i^{-1}] \to \prod_{j,k=1}^r \mathcal{O}_X(D(f_jf_k))[f_i^{-1}].
+\end{equation*}
+
+Now notice that $\mathcal{O}_X(D(f_j))[f_i^{-1}] \cong \mathcal{O}_X(D(f_if_j))$
+and similarly $\mathcal{O}_X(D(f_jf_k))[f_i^{-1}] \cong \mathcal{O}_X(D(f_if_jf_k))$. Thus,
+\begin{equation*}
+    0 \to \mathcal{O}_X(X)[f_i^{-1}] \to \prod_{j=1}^r \mathcal{O}_X(D(f_if_j)) \to \prod_{j,k=1}^r \mathcal{O}_X(D(f_if_jf_k))
+\end{equation*}
+is exact. But note that this is nothing but a sheaf sequence for $\mathcal{O}_{D(f_i)}$
+using the open cover $D(f_if_1),\dots,D(f_if_r)$. Thus, $\mathcal{O}_X(X)[f_i^{-1}] \cong \mathcal{O}_X(D(f_i))$
+as was required.
+
+\begin{problem}[Exercise 4]
+    Let $f: Y \to X$ be a map of schemes. Prove that $f$ is affine iff 
+    exists an affine open cover $X = \bigcup_{\alpha \in I}U_{\alpha}$ such that 
+    $f^{-1}(U_{\alpha})$ is affine for each $\alpha \in I$.
+\end{problem}
+
+\textbf{Solution.}
+
+$(\Rightarrow)$ This is trivial. Any scheme admits an affine open cover, 
+say, $\bigcup_{\alpha}U_{\alpha}$, and $f^{-1}(U_{\alpha})$ is affine 
+by definition of $f$. 
+
+$(\Leftarrow)$ We employ Exercise 2. Specifically, let
+\begin{equation*}
+    \mathcal{U} := \{U \subseteq X: \text{$U$ is affine open}, \text{$f^{-1}(U)$ is an affine scheme}\}.
+\end{equation*}
+We are given the cover $\{U_{\alpha}\}_{\alpha \in I}$ such that $U_{\alpha} \in \mathcal{U}$.
+Assuming $\mathcal{U}$ enjoys the property from Exercise 2, we obtain that 
+every open $U \subseteq X$ is in $\mathcal{U}$, thus $f^{-1}(U)$ is an affine scheme, 
+which is precisely the definition of $f$ being affine.
+
+Now we shall prove why for any affine open $U \subseteq X$ and finite cover
+$U = U_1 \cup \dots \cup U_r$ by distinguished opens $U_i = D_U(g_i)$ we have
+$U \in \mathcal{U} \Leftrightarrow U_1,\dots,U_r \in \mathcal{U}$.
+
+$(\Rightarrow)$ Assume $U \in \mathcal{U}$, meaning $f^{-1}(U)$ is an affine scheme. Note:
+\begin{equation*}
+    f^{-1}(U_i) = f^{-1}(D_U(g_i)) = D_{f^{-1}(U)}(f^{\#}_U(g_i))
+\end{equation*}
+where $f^{\#}_U: \mathcal{O}_X(U) \to \mathcal{O}_Y(f^{-1}(U))$ is a local pullback. 
+Thus $U_i \in \mathcal{U}$.
+
+$(\Leftarrow)$ Invoke Exercise 3.
+
+\begin{problem}[Exercise 5]
+    Let $X$ be a noetherian scheme and $\mathcal{F}$ a coherent sheaf on $X$.
+    Prove that $\mathcal{F}$ is locally free of rank one (i.e., it is a line bundle)
+    if and only if there exists a coherent sheaf $\mathcal{M}$ such that 
+    $\mathcal{F} \otimes_{\mathcal{O}_X} \mathcal{M} \cong \mathcal{O}_X$.
+    Such $\mathcal{O}_X$-modules are called invertible.
+\end{problem}
+
+\textbf{Solution.} 
+
+$(\Rightarrow)$. This part is for the most part covered in the notes. The sheaf
+$\mathcal{M}$ must be a dual sheaf to $\mathcal{F}$, \textit{i.e.}
+\begin{equation*}
+    \mathcal{M} = \mathcal{F}^{\vee} = \text{$\mathcal{H}$om}_{\mathcal{O}_X}(\mathcal{F}, \mathcal{O}_X).
+\end{equation*}
+
+The isomorphism $\mathcal{F} \otimes_{\mathcal{O}_X} \mathcal{M} \to
+\mathcal{O}_X$ is given by $s \otimes \phi \mapsto \phi(s)$. To show 
+it is an isomorphism, check it locally. Since $\mathcal{F}$ is a line bundle,
+$\mathcal{F}|_U \cong \mathcal{O}_U$ and thus $\mathcal{F}^{\vee}|_U \cong \mathcal{O}_U$,
+and thus $(\mathcal{F} \otimes \mathcal{F}^{\vee})|_{U} \cong \mathcal{O}_U$.
+Clearly, $\mathcal{O}_U \otimes \mathcal{O}_U \to \mathcal{O}_U$ via $a \otimes b \mapsto ab$ is an isomorphism.
+
+$(\Leftarrow)$. Now given $\mathcal{F}$ is invertible (\textit{i.e.},
+$\mathcal{F} \otimes_{\mathcal{O}_X} \mathcal{M} \cong \mathcal{O}_X$ for some
+coherent sheaf $\mathcal{M}$), we need to show that it is a line bundle. First,
+we pass to stalks. Since stalks preserve isomorphisms, we have $\mathcal{F}_x
+\otimes_{\mathcal{O}_{X,x}} \mathcal{M}_x \cong \mathcal{O}_{X,x}$. Here,
+$\mathcal{O}_{X,x}$ is the local ring (say, with maximal ideal $\mathfrak{m}$
+and residue field $k = A/\mathfrak{m}$) while $F=\mathcal{F}_x$ and $M=\mathcal{M}_x$
+are finitely generated $A$-modules. 
+
+Thus, we rewrite stalk-level isomorphism to $F \otimes_A M \cong A$. Tensor
+it with $k$ to get $(F \otimes_A k) \otimes_k (M \otimes_A k) \cong k$
+or $F/\mathfrak{m}F \otimes_k M/\mathfrak{m}M \cong k$. Thus, 
+$\dim_k(F/\mathfrak{m}F) = \dim_k(M/\mathfrak{m}M) = 1$.
+Consequently, both $F$ and $M$ are generated by a single value in $A$.
+Thus $F \cong A/I$ and $M \cong A/J$ for some ideals $I,J \subseteq A$
+(Nakayama Lemma). Since $F \otimes_A M \cong A$, we get $A/(I+J) \cong A$,
+thus $I+J=0$ or $I=J=0$.
+
+Consequently, we have shown that $\mathcal{F}_x = \mathcal{O}_{X,x}$.
+I believe using the fact that $X$ is noetherian, one can lift it up to 
+an isomorphism $\mathcal{F}|_V \cong \mathcal{O}_V$.
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

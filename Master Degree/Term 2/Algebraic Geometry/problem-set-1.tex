@@ -1,0 +1,157 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Algebraic Geometry Problem Set \#1}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $f \in k[X]$ (with $\text{char}(k) \neq 2$) be a polynomial of degree $\geq 1$.
+    Show that the plane curve
+    \begin{equation*}
+        Y = \{(x,y): y^2 = f(x)\} \subseteq k^2
+    \end{equation*}
+    is irreducible, and that it is smooth if and only if $f(X)$ has no repeated 
+    roots. Show that
+    \begin{equation*}
+        Y = \{(x,y): y^2 = x^3 + ax + b\} \subseteq k^2
+    \end{equation*}
+    is smooth if and only if $4a^3+27b^2 \neq 0$.
+\end{problem}
+
+\textbf{Solution.} \textit{Part (i).} Recall that $Y=V(g)$ (with $g(x,y) :=
+y^2-f(x) \in k[x,y]$) is irreducible iff the coordinate ring $\mathcal{O}(Y) =
+k[x,y]/\sqrt{(g)}$ is a domain. Note that $y^2-f(x)$ cannot be split into two
+factors in $k[x,y]$ unless $f$ is not square-free, thus $\sqrt{(g)} = (g)$ is
+prime and $Y$ is irreducible.
+
+Let us now show that $Y$ is smooth iff $f(X)$ has no repeated roots. Note that
+by definition for $Y$ to be smooth one needs to have both $\partial g/\partial
+x$ and $\partial g/\partial y$ not vanish at any point of $k^2$. Note that the
+condition $\partial g/\partial y=0$ implies $y=0$, while the derivative w.r.t.
+$x$ implies $f'(x_0) \neq 0$ for any value of $x_0$ such that $f(x_0)=0$.
+However, this is exactly equivalent to $f$ not having repeated roots.
+
+\textit{Part (ii).} From \textit{part (i)} if suffices to study when $f_{a,b}(X)
+:= X^3 + aX + b$ has repeated roots. Namely, if $x_0$ were such a repeated root,
+then
+\begin{equation*}
+    \begin{cases}
+        x_0^3 + ax_0 + b = 0, \\
+        3x_0^2 + a = 0.
+    \end{cases}
+\end{equation*}
+
+From the second equation we have $x_0^2 = -a/3$. Substituting this expression
+into the first equation, we get $\frac{2}{3}ax_0 = -b$ or simply $x_0 = -3b/2a$.
+Thus, $9b^2/4a^2 = -a/3$, which exactly means $4a^3+27b^2=0$.
+
+\begin{problem}[Exercise 2]
+    Show that $Y=\{(t,t^2,t^3): t \in k\} \subseteq k^3$ is an irreducible
+    algebraic set of dimension $1$. Find generators of the ideal
+    $\mathcal{I}(Y)$. Show that $k[X,Y,Z]/(\mathcal{I}(Y))$ is isomorphic to a
+    polynomial ring in one variable over $k$.
+\end{problem}
+
+\textbf{Solution.} We want to write $Y$ as a vanishing set of polynomial
+equations. For instance, $Y := V(y-x^2,z-x^3)$ should work. To show $Y$ is
+irreducible, we want to show that the coordinate ring $\mathcal{O}(Y) =
+k[x,y,z]/\sqrt{(y-x^2,z-x^3)}$ is a domain, or equivalently that $\mathcal{I}(Y)
+= \sqrt{(y-x^2,z-x^3)}$ is prime. But clearly $(y-x^2,z-x^3)$ is a prime ideal:
+define map $k[x,y,z] \to k[t]$ by $x \mapsto t$, $y \mapsto t^2$, $z \mapsto
+t^3$; its kernel is precisely $(y-x^2,z-x^3)$ while the image is $k[t]$ which is
+a domain. Thus, $\mathcal{I}(Y) = (y-x^2,z-x^3)$, and moreover according to the
+map above, $k[x,y,z]/(\mathcal{I}(Y)) \cong k[t]$. It is then clear that
+$\text{dim}(Y)=\text{dim}(k[t]) = 1$.
+
+\begin{problem}[Exercise 3]
+    Let $X$ be a Noetherian topological space.
+    \begin{enumerate}
+        \item[(a)] Show that every subset $Z \subseteq X$ is Noetherian in its 
+        induced topology.
+        \item[(b)] Show that $X$ is quasi-compact.
+        \item[(c)] Show that if $X$ is also Hausdorff, then it is finite and
+        discrete. 
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} 
+
+\textit{Part (a).} Consider the descending chain $F_0 \supseteq F_1 \supseteq
+F_2 \supseteq \dots$ of closed subsets of $Z$. Each $F_i$ is closed in $Z$, thus
+has a form $F_i = Z \cap C_i$ for closed $C_i \subseteq X$. Chain $C_0 \supseteq
+C_1 \supseteq C_2 \supseteq \dots$ stabilizes since $X$ is Noetherian. But then
+by intersecting this chain with $Z$, we get that $F_0 \supseteq F_1 \supseteq
+F_2 \supseteq \dots$ also stabilizes.
+
+\textit{Part (b).} Suppose $\{U_{\alpha}\}_{\alpha \in I}$ is an open cover of
+$X$. Assume it is not finite. Then, for every finite subset $J \subseteq I$, one
+has that $Q_J := \bigcap_{\beta \in J}(X \setminus U_{\beta})$ is a closed
+proper subset of $X$. Thus, we have found an infinite family of closed sets
+$\{Q_J: J \subseteq I, J \; \text{finite}\}$ that forms a strictly descending
+chain, which contradicts the Noetherian property of $X$.
+
+\textit{Part (c).} Every subspace of $X$ is Noetherian by (a) and consequently
+quasi-compact by (b). Since it is also Hausdorff, it is compact, and thus
+moreover closed. Thus, every subspace is closed and hence the topology is
+discrete. Since in such case $\bigcup_{x \in X}\{x\}$ is an open cover of $X$,
+we can find a finite subcover, meaning $X$ is finite.
+
+\begin{problem}[Exercise 4]
+    Let $X$ be a topological space.
+    \begin{enumerate}
+        \item[(a)] If $Y \subseteq X$ is a subspace, then $\dim(Y) \leq \dim(X)$.
+        \item[(b)] Give an example of a topological space $X$ and a dense open 
+        subset $U \subseteq X$ with $\dim(U) < \dim(X)$.
+        \item[(c)] Suppose that $X$ is irreducible and $\dim(X) < \infty$. If $Y
+        \subseteq X$ is a closed subset with $\dim(Y) = \dim(X)$, then $Y=X$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} 
+
+\textit{Part (a).} Let $Z_0 \subsetneq Z_1 \subsetneq Z_2 \subsetneq \dots
+\subsetneq Z_n$ be a chain of irreducible closed subsets of $Y$. Closure of an
+irreducible set is irreducible\footnote{Commutative Algebra course, Problem Set
+\#2 :)}, thus $\overline{Z}_0 \subsetneq \overline{Z}_1 \subsetneq \dots
+\subsetneq \overline{Z}_n$ is a chain of irreducible closed subsets of $X$.
+Notice that since $\overline{Z}_i \cap Z = Z_i$, $\overline{Z}_i =
+\overline{Z}_{i+1}$ implies $Z_i=Z_{i+1}$, and so the length of both chains are
+the same. Thus, $\dim(Y) \leq \dim(X)$.
+
+\textit{Part (b).} To be honest I had to look it up. The most straightforward
+example seems to be the Sierpinski space: the set $X=\{0,1\}$ with the topology
+$\{\emptyset, \{1\}, \{0,1\}\}$. Then, the subset $U = \{1\} \subseteq X$ works:
+it is a dense open subset of $X$ of dimension $0$ (while $X$ has a dimension of
+$1$).
+
+\textit{Part (c).} Assume $Z_1 \subsetneq Z_2 \subsetneq Z_3 \subsetneq \dots
+\subsetneq Z_d$ be a maximal chain of irreducible closed subsets of $Y$ of
+length $d:=\dim(Y)$. Suppose $Z_d \neq X$. Then $Z_1 \subsetneq Z_2 \subsetneq
+\dots \subsetneq Z_d \subsetneq X$ is a valid chain of irreducible closed sets
+of $X$ of length $d+1$, which is not possible. Thus, $Z_d=X \subseteq Y$,
+implying $X=Y$.
+
+
+\begin{problem}[Exercise 5]
+    Show that every two curves in the projective plane $\mathbb{P}^2$ intersect.
+\end{problem}
+
+\textbf{Solution.} Consider two curves $X = V_{\mathbb{P}}(f)$ and $Y =
+V_{\mathbb{P}}(g)$ (for homogeneous polynomials $f,g \in k[x,y,z]$). Assume it
+so happens that $X \cap Y = V_{\mathbb{P}}(f,g) = \emptyset$. Then, according to
+projective Nullstellensatz\footnote{See
+\url{https://ziyuzhang.github.io/ma40188/Lecture08.pdf}, Theorem 4.24 for
+reference.}, $\sqrt{(f,g)} \supseteq (x,y,z)$. Since $(x,y,z)$ is a maximal
+ideal, $\sqrt{(f,g)} = (x,y,z)$. But notice that the dimension of $\sqrt{(f,g)}$
+is at most $2$ while $(x,y,z)$ has a dimension $3$. Contradiction.
+
+\end{document}

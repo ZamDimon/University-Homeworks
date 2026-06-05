@@ -1,0 +1,363 @@
+\documentclass{template}
+
+\usepackage{calrsfs}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Algebraic Geometry Cheat Sheet}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\tableofcontents
+
+\newpage
+
+\section{Definitions}
+
+\subsection{Affine and Projective Sets}
+
+Further assume $k = \overline{k}$ (\textit{i.e.}, $k$ is algebraically closed).
+
+\begin{definition}
+    We define affine and projective algebraic sets as follows:
+    \begin{itemize}
+        \item An \textbf{affine algebraic set} is a subset $Z \subseteq k^n$ of 
+    the form $V(I)$ for $I \subseteq k[T_1,\dots,T_n]$.
+        \item A \textbf{projective algebraic set} is a subset $Z \subseteq \mathbb{P}^n(k)$
+    of form $V_{\mathbb{P}}(I)$ for homogeneous ideal $I \subseteq k[T_1,\dots,T_n]$ where 
+    $\mathbb{P}^n(k) = (k^{n+1}\setminus 0)/k^{\times}$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    Let $X \subseteq k^n$ be an algebraic set, $U \subseteq X$ an open subset,
+    and let $f: U \to k$ be a function. We say that $f$ is a \textbf{regular function}
+    on $U$ if
+    \begin{equation*}
+        \forall_{x \in U} \; \exists_{x \ni V \subseteq U} \; \exists_{p,q \in k[T_1,\dots,T_n]} \; \forall_{y \in V} \; q(y) \neq 0 \; \text{and} \; f(y) = p(y)/q(y).
+    \end{equation*}
+\end{definition}
+
+\begin{definition}
+    A \textbf{space with functions} (swf) is a topological space $X$ together 
+    with an assigment, for every open $U \subseteq X$, of a $k$-subalgebra 
+    $\mathcal{O}(U)$ of the ring of all functions $U \to k$ such that:
+    \begin{enumerate}
+        \item[(a)] Being regular is a local propery. That is, if $U = \bigcup_{\alpha \in I} U_{\alpha}$
+        is an open cover and $f: U \to k$ is a function, then $f \in \mathcal{O}(U)$ iff 
+        $f|_{U_{\alpha}} \in \mathcal{O}(U_{\alpha})$ for each $\alpha \in I$.
+        \item[(b)] If $U \subseteq X$ is an open subset and $f \in \mathcal{O}(U)$, then 
+        the set $D(f) = \{x \in U: f(x) \neq 0\} \subseteq U$ is an open subset of $U$
+        and $(f|_{D(f)})^{-1} \in \mathcal{O}(D(f))$.
+    \end{enumerate}
+
+    A \textbf{morphism of swf's} is a continuous map $\phi: Y \to X$ such that
+    the pullbacks of regular functions are regular: for every open $U \subseteq
+    X$ and every regular function $f \in \mathcal{O}(U)$, the function $f \circ
+    \phi \in \mathcal{O}(\phi^{-1}(U))$. Note that $\phi$ induces $k$-algebra
+    homomorphism $\phi^*: \mathcal{O}(X) \to \mathcal{O}(Y)$.
+\end{definition}
+
+\begin{example}
+    Let $k=\mathbb{R}$ or $k=\mathbb{C}$ and let $X$ be a topological space.
+    Then, 
+    $$\mathcal{O}(U) = C(U;k) = \{f: U \to k, \text{$f$ is continuous}\}$$
+    gives $X$ a structure of a space with functions.
+\end{example}
+
+\begin{definition}
+    An \textbf{algebraic set} $X$ over $k$ is a space with functions $X$ admitting
+    a finite open cover $X = U_1 \cup \dots \cup U_n$ where each $U_i$ is isomorphic
+    to an swf to an affine algebraic set. We call $X$ a \textbf{variety} if it 
+    is irreducible (i.e., if for every pair of closed subsets $Y_1,Y_2 \subseteq X$
+    with $X = Y_1 \cup Y_2$ we have $X=Y_1$ or $X=Y_2$).
+\end{definition}
+
+\begin{example}
+    A couple of examples:
+    \begin{itemize}
+        \item The projective space $\mathbb{P}^n$ has the standard cover 
+        $U_0 \cup \dots \cup U_n$ by affine spaces. Every locally closed 
+        subset (i.e. closed subset $Z$ of $\mathbb{P}^n$ such that $Z \cap U_i$
+        are regular) of $\mathbb{P}^n$ is an swf and an algebraic set.
+        \item The punctured plane $\mathbb{A}^2 \setminus 0$ is not affine.
+    \end{itemize}
+\end{example}
+
+\subsection{Some Topology Facts}
+
+\begin{definition}
+    For a topological space $X$, the \textbf{dimension} $\dim(X)$ is the 
+    supremum of the set of integers $n \geq 0$ for which there exists a chain of 
+    distinct closed irreducible subsets $Z_0 \subsetneq Z_1 \subsetneq \dots \subsetneq Z_n$.
+\end{definition}
+
+\begin{definition}
+    We say that $X$ is \textbf{Noetherian} if every decreasing sequence 
+    $F_0 \supseteq F_1 \supseteq \dots$ of closed subsets stabilizes.
+\end{definition}
+
+\begin{lemma}
+    Let $X$ be a Noetherian topological space. Then there exist closed irreducible
+    subsets $Z_1,\dots,Z_r \subseteq X$ such that $Z_i \not\subseteq Z_j$ for $i \neq j$ and 
+    $X = Z_1 \cup \dots \cup Z_r$. They are unique up to permutation.
+\end{lemma}
+
+\begin{definition}
+    The closed irreducible subsets $Z_1,\dots,Z_r \subseteq X$ in the lemma are 
+    called the \textbf{irreducible components} of $X$.
+\end{definition}
+
+\subsection{Separated and complete algebraic sets}
+
+\begin{definition}
+    A morphism of swf's $Y \to X$ is an \textbf{immersion} if it is a homeomorphism
+    onto its image and the swf structure on $Y$ coincides on the image. A \textbf{closed}
+    (resp. \textbf{open}, resp. \textbf{locally closed}) immersion is an immersion
+    whose image is closed (resp. open, resp. locally closed) in $X$.
+\end{definition}
+
+\begin{example}
+    Consider the map $f: \mathbb{A}^1 \to \mathbb{A}^2, t \mapsto (t^2,t^3)$. It
+    is a homeomorphism onto its image, which is the cuspidal curve
+    $C=V(Y^2-X^3)$. However, it is not an immersion, since the map on coordinate
+    rings (note that coordinates rings are given by $\mathcal{O}(C)=k[X,Y]/(Y^2-X^3)$ and
+    $\mathcal{O}(\mathbb{A}^1)=k[T]$) is 
+    \begin{equation*}
+        f^*: k[X,Y]/(Y^2-X^3) \to k[T], \quad X \mapsto T^2, Y \mapsto T^3
+    \end{equation*}
+    is not an isomorphism.
+\end{example}
+
+\begin{definition}
+    An algebraic set $X$ is \textbf{separated} if the diagonal $\Delta := \{(x,x): x \in X\} \subseteq X \times X$
+    is a closed subset of $X \times X$.
+\end{definition}
+
+\begin{definition}
+    An algebraic set $X$ is \textbf{complete} if $X$ is separated and for every 
+    algebraic set $Y$, the projection map $\pi_Y: X \times Y \to Y$ is closed.
+\end{definition}
+
+\begin{example}
+    A couple of examples:
+    \begin{itemize}
+        \item If $X$ is affine, then $X$ is separated. Indeed, exists $X \hookrightarrow \mathbb{A}^n$
+        and $\mathbb{A}^n$ is separated, as its diagonal in $\mathbb{A}^n \times \mathbb{A}^n$ (with coordinates $X_1,\dots,X_n,Y_1,\dots,Y_n$)
+        is cut out by equations $X_i=Y_i$ and hence is closed. However, $\mathbb{A}^n$ is \textbf{not} 
+        complete: take $Y := \mathbb{A}^1$ with coordinate $T$ and the closed subset $Z=V(fT-1) \subseteq X \times Y$.
+        Its projection onto $Y$ is then an infinite subset which does not contain zero, and 
+        hence cannot be closed.
+        \item The projective space $\mathbb{P}^n$ is both separated (one sees this using 
+        Segre embedding $\mathbb{P}^n \times \mathbb{P}^n \to \mathbb{P}^{n^2+2n}$) and 
+        complete. Moreover, any projective algebraic set is complete.
+    \end{itemize}
+\end{example}
+
+\subsection{Function Fields, Rational Maps}
+
+\begin{definition}
+    Let $X$ be an algebraic set and let $Z \subseteq X$ be an irreducible closed 
+    subset. We define the \textbf{stalk at $Z$} (also called the \textbf{local ring} at $Z$)
+    as the filtered colimit
+    \begin{equation*}
+        \mathcal{O}_{X,Z} = \varinjlim_{U \cap Z \neq \emptyset} \mathcal{O}(U).
+    \end{equation*}
+    The ring $\mathcal{O}_{X,\{x\}}$, further simply denoted as $\mathcal{O}_{X,x}$ is 
+    called a \textbf{germ} of regular functions in a neighbourhood of $x$. 
+    The ring $\mathcal{O}_{X,X}$ (when $X$ is a variety), denoted by $k(X)$,
+    is called a \textbf{function field} of $X$.  
+\end{definition}
+
+\begin{example}
+    Let $X=V(z^2-xy) \subseteq \mathbb{A}^3$. Let $x_0=(1,1,1) \in X$. 
+    We look at the stalk $\mathcal{O}_{X,x_0}$. Consider two functions:
+    \begin{itemize}
+        \item $f = x/z$ which is defined on open $U = D(z)$, $x_0 \in U$;
+        \item $g = z/y$ which is defined on open $V = D(y)$, $x_0 \in V$;
+    \end{itemize}
+    then $(U,f)$ and $(V,g)$ are the same elements in $\mathcal{O}_{X,x_0}$.
+    Indeed, at intersection $U \cap V = D(YZ)$ one notices $x/z=z/y$ 
+    and so $f|_{U \cap V} = g|_{U \cap V}$.
+\end{example}
+
+\begin{definition}
+    Let $X$ and $Y$ be varieties. A \textbf{rational map} from $Y$ to $X$
+    is an equivalence class of pairs $(U,f)$ where $U \subseteq Y$ is a 
+    non-empty open subset and where $f: U \to X$ is a map of varieties,
+    where we identify $(U,f)$ and $(U',f')$ if $f=f'$ on some non-empty 
+    open $U'' \subseteq U \cap U'$. We call a rational map $(U,f)$
+    \textbf{dominant} if $f(U)$ is dense in $X$.
+\end{definition}
+
+\begin{example}
+    A couple of examples:
+    \begin{itemize}
+        \item Let $Y=V(x^2+y^2-1) \subseteq \mathbb{A}^2$ and let $X=\mathbb{A}^1$.
+    Define two rational maps:
+    \begin{align*}
+        f: Y \dashrightarrow X, \; &(x,y) \mapsto x/(1-y), \; U = Y \setminus \{(0,1)\}, \\
+        g: Y \dashrightarrow X, \; &(x,y) \mapsto (1+y)/x, \; V = Y \setminus \{(0,\pm 1)\}.
+    \end{align*}
+    One checks that $(U,f)$ and $(V,g)$ define the same rational map.
+        \item Let $Y=\mathbb{P}^2$ and $X=\mathbb{P}^1$. Define $g: Y \to X$ as
+    $[x:y:z] \mapsto [x:y]$. The map is defined on the open set $U =
+    \mathbb{P}^2 \setminus \{[0:0:1]\}$. It is a dominant map.
+        \item Let $Y=\mathbb{A}^1$ and $X=\mathbb{A}^2$. Define $h: Y \dashrightarrow X$
+        by $t \mapsto (t,1/t)$. The map is defined on open $\mathbb{A}^1 \setminus \{0\}$
+        and its image is $V(xy-1) \subseteq \mathbb{A}^2$. Clearly it is not dominant
+        as the image is closed proper subset of $\mathbb{A}^2$.
+    \end{itemize}
+\end{example}
+
+\begin{definition}
+    A rational map $f: Y \dashrightarrow X$ is \textbf{birational} if it is dominant
+    and if it admits an inverse, or equivalently if there exist non-empty opens
+    $V \subseteq Y$ and $U \subseteq X$ such that $f$ induces an isomorphism
+    $V \cong U$ (or $k(X) \cong k(Y)$.) We say that $X$ and $Y$ are \textbf{birational}
+    if there exists a birational rational map from $Y$ to $X$. We say that 
+    a variety $X$ is \textbf{rational} if it is birational to $\mathbb{P}^n$ for 
+    some $n \geq 0$.
+\end{definition}
+
+\begin{example}
+    A couple of examples:
+    \begin{itemize}
+        \item Let $X=V(f) \subseteq \mathbb{P}^3$ be an irreducible quadric
+    surface (so $f \in k[T_0,\dots,T_3]$ is an irreducible homogeneous
+    polynomial of degree two). Then, $X$ is rational.
+        \item The cubic plane curve $V(y^2-x^3-x)$ is not rational.
+    \end{itemize}
+\end{example}
+
+\subsection{Smooth Varieties}
+
+\begin{definition}
+    Let $X$ be an algebraic set and let $x \in X$. We say that $X$ is
+    \textbf{nonsingular} at $x$ if $\mathcal{O}_{X,x}$ is a regular local ring.
+    If every point is nonsingular, then $X$ is called \textbf{smooth}.
+\end{definition}
+
+\begin{definition}
+    Let $A$ be a finitely generated and reduced $k$-algebra. Let $x \in \text{MSpec}(A) = \text{Hom}_k(A,k)$
+    be a point of the corresponding affine algebraic set. The \textbf{Zariski cotangent space} at $x$ is the vector space over $k$
+    \begin{equation*}
+        T_x = (\mathfrak{m}_x / \mathfrak{m}_x^2)^{\vee} = \text{Hom}_k(\mathfrak{m}_x/\mathfrak{m}_x^2, k).
+    \end{equation*}
+\end{definition}
+
+\subsection{Locally ringed spaces and schemes}
+
+\begin{definition}
+    \begin{itemize}
+        \item A \textbf{ringed space} is a pair $(X,\mathcal{O}_X)$ where $X$ is a topological
+    space and $\mathcal{O}_X$ is a sheaf of rings on $X$.
+        \item A \textbf{locally ringed space} is a ringed space $(X,\mathcal{O}_X)$ such 
+        that for each $x \in X$, the stalk $\mathcal{O}_{X,x}$ is a local ring.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    \begin{itemize}
+        \item An \textbf{affine scheme} is a locally ringed space $(X,\mathcal{O}_X)$
+        isomorphic to $(\text{Spec}(A), \mathcal{O}_{\text{Spec}(A)})$ for some 
+        ring $A$ (note that then $A=\mathcal{O}_X(X)$).
+        \item A \textbf{scheme} is a locally ringed space $(X,\mathcal{O}_X)$ which 
+        is locally isomorphic to an affine scheme; \textit{i.e.}, there exists an 
+        open cover $X = \bigcup_{\alpha \in I}U_{\alpha}$ such that each 
+        $(U_{\alpha},\mathcal{O}_X|_{U_{\alpha}})$ is an affine scheme.
+        \item A \textbf{morphism of ringed spaces} $(Y,\mathcal{O}_Y) \to (X,\mathcal{O}_X)$ is a pair $(\phi,\phi^*)$ where $\phi: Y \to X$ is a continuous map and 
+        where $\phi^*: \mathcal{O}_X \to \phi_*\mathcal{O}_Y$ is a homomorphism of sheaves of rings on $X$.
+        \item A \textbf{morphism of locally ringed spaces} $(Y,\mathcal{O}_Y) \to (X,\mathcal{O}_X)$ is 
+        a map of ringed spaces $\phi: Y \to X$ such that for every $y \in Y$, the induced map $\phi^*: \mathcal{O}_{X,\phi(x)} \to \mathcal{O}_{Y,y}$ is a local ring homomorphism (maps maximal ideals into maximal ideals).
+    \end{itemize}
+\end{definition}
+
+\subsection{Properties of Schemes and Morphisms of Schemes}
+
+\begin{definition}
+    Let $X$ be a scheme.
+    \begin{enumerate}
+        \item[(a)] We say that $X$ is \textbf{reduced} if $\mathcal{O}_X(U)$ is reduced 
+        for every open $U \subseteq X$, and that $X$ is \textbf{integral} if it 
+        is reduced and irreducible (equivalently, $\mathcal{O}_X(U)$ is a domain 
+        for every non-empty open $U \subseteq X$).
+        \item[(b)] We say that $X$ is \textbf{noetherian} if it admits a finite open 
+        cover $X=U_1 \cup \dots \cup U_r$ with $U_i \cong \text{Spec}(A_i)$ where 
+        the rings $A_1,\dots,A_r$ are noetherian.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Morphisms of schemes]
+    Let $f: Y \to X$ be a morphism of schemes. We say that $f$ is
+    \begin{enumerate}
+        \item[(a)] \textbf{affine} is for every affine open $U \subseteq X$, the preimage $f^{-1}(U) \subseteq Y$ is affine;
+        \item[(b)] \textbf{open immersion} if it induces an isomorphism from $Y$ onto the open subscheme of $X$;
+        \item[(c)] \textbf{closed immersion} if it induces a homeomorphism from $Y$ onto a closed subset of $X$ and the map $\mathcal{O}_X \to f_*\mathcal{O}_Y$ is surjective;
+        \item[(d)] \textbf{finite} if it is affine and for every affine open $U \subseteq X$, the map $\mathcal{O}_X(U) \to \mathcal{O}_Y(f^{-1}(U))$ is finite;
+        \item[(e)] \textbf{locally of finite type} for every $y \in Y$ there exist affine open neighbourhoods $y \in V$ and $f(x) \in U$ such that $f(V) \subseteq U$ and the map $f^*: \mathcal{O}_X(U) \to \mathcal{O}_Y(V)$ is of finite type;
+        \item[(f)] \textbf{of finite type} if it is locally of finite type and quasi-compact.    
+    \end{enumerate}
+\end{definition}
+
+\begin{example}
+    A couple of illustrating examples:
+    \begin{enumerate}
+        \item[(a)] Let $Y=\mathbb{A}^3(k)$ and $X=\mathbb{A}^2(k)$ with the projection map $(x,y,z) \mapsto (x,y)$.
+        This induces the homomorphism of shaves of rings $k[x,y] \to k[x,y,z]$, which is affine.
+        \item[(b)] Let $Y = X \setminus \{0\}$ and $X=\mathbb{A}^1(k)$ with inclusion map. This map is an open immersion for obvious reasons.
+        \item[(c)] Let $Y = V(y-x^2)$ and $X=\mathbb{A}^2(k)$. The morphism $f: Y \to X, (x,y) \mapsto x$ induces a morphism 
+        $k[x] \to k[x,y]/(y^2-x)$ which is a closed immersion.
+    \end{enumerate}
+\end{example}
+
+\subsection{Coherent sheaves, Picard Group}
+
+\begin{definition}
+    Let $\mathcal{O}$ be a sheaf of rings on a topological space $X$. 
+    An \textbf{$\mathcal{O}$-module} is a sheaf of abelian groups $\mathcal{M}$
+    together with a map of sheaves $\mathcal{O} \times \mathcal{M} \to \mathcal{M}$
+    giving $\mathcal{M}(U)$ the structure of an $\mathcal{O}(U)$-module for every 
+    open $U \subseteq X$. 
+\end{definition}
+
+\begin{example}
+    If $X$ is a $C^{\infty}$-manifold and $\mathcal{O}$ is the sheaf of smooth 
+    real-valued functions on $X$, the sheaf $\mathcal{M}$ of differential 1-forms
+    on $X$ has a natural structure of an $\mathcal{O}$-module.
+\end{example}
+
+\begin{example}
+    Let $X = \text{Spec}(A)$ be an affine scheme and let $M$ be an $A$-module.
+    We can turn $M$ into an $\mathcal{O}_X$-module $\widetilde{M}$ such that 
+    $\widetilde{M}(D(f)) = M[f^{-1}]$.
+\end{example}
+
+\begin{definition}
+    Let $X$ be either a scheme or an algebraic set. A $\mathcal{O}_X$-module 
+    $\mathcal{F}$ is \textbf{quasi-coherent} if there exists an affine open cover 
+    $X=\bigcup_{\alpha \in I}U_{\alpha}$ such that $\mathcal{F}|_{U_{\alpha}}$ is of 
+    the form $\widetilde{M}_{\alpha}$ for some $\mathcal{O}(U_{\alpha})$-module 
+    $M_{\alpha}$. If $X$ is either an algebraic set or locally noetherian, we say 
+    that $\mathcal{F}$ is \textbf{coherent} if same holds for $M_{\alpha}$ being 
+    finitely generated $\mathcal{O}(U_{\alpha})$-module.
+\end{definition}
+
+\begin{example}
+    
+\end{example}
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

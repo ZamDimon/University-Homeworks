@@ -1,0 +1,357 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Algebraic Geometry Problem Set \#3}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $G$ be an algebraic group. Show that $G$ is
+    \begin{enumerate}
+        \item[(a)] separated,
+        \item[(b)] non-signular. 
+    \end{enumerate}
+
+    \underline{\textit{Hint for (a).}} Use the multiplication map $\mu: G \times G \to G$ to describe the diagonal.
+\end{problem}
+
+\textbf{Solution.} Recall that $G$ is an algebraic group if $G$ is an algebraic
+variety with an identity element $e \in G$ and morphisms of algebraic varieties
+$\mu: G \times G \to G$ and $\iota: G \to G$ that satisfy the group axioms. 
+
+\textcolor{blue!70!black}{\textit{Part (a).}} To show that $G$ is separated we need to show (by definition)
+that the diagonal $\Delta = \{(g,g): g \in G\} \subseteq G \times G$ is a closed
+subset of $G \times G$. Now notice that 
+\begin{equation*}
+    \Delta = \ker\Big(G \times G \to G: (g,h) \mapsto \mu(g,\iota(h))\Big).
+\end{equation*}
+
+Since kernels of the morphisms are closed, then so is $\Delta$.
+
+\textcolor{blue!70!black}{\textit{Part (b).}} For any $g \in G$, consider the morphism of varieties
+$\tau_g: G \to G$ given by $h \mapsto gh$. Note that this is an isomorphism
+since the inverse is given by $\tau_{g^{-1}}$. This isomorphism induces the
+isomorphism of local rings $\tau_g^{\#}: \mathcal{O}_{G,\tau(h)}
+\xrightarrow{\sim} \mathcal{O}_{G,h}$ for any point $h \in G$. \textbf{Conclusion:} 
+all local rings $\mathcal{O}_{G,g}$ (for $g \in G$) are isomorphic. 
+
+Now recall that the set of non-singular points of $G$ is a non-empty open 
+subset. Thus, take some smooth point $s \in G$ and since any local ring is 
+isomorphic to a \textit{regular} local ring $\mathcal{O}_{G,s}$, we 
+conclude that $G$ is non-singular. 
+
+\begin{problem}[Exercise 2]
+    Let $G=\mathbb{G}_m^a$ and $H=\mathbb{G}_m^b$.
+    \begin{enumerate}
+        \item[(a)] Prove that every map $f: G \to H$ with $f(1)=1$ is a group homomorphism.
+        \item[(b)] Prove that group homomorphisms $G \to H$ form a group $\cong\text{Hom}(\mathbb{Z}^b, \mathbb{Z}^a)$.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} Recall that $\mathbb{G}_m$ is the punctured affine line 
+$\mathbb{A}^{1} \setminus \{0\} = k^{\times}$ where the group structure is given 
+by multiplication. Naturally, $\mathbb{G}_m^n$ is a set $(k^{\times})^n$
+where the multiplication is defined element-wise. 
+
+\textcolor{blue!70!black}{\textit{Part (a).}} Since the morphism $f$ is defined by $b$ separate coordinate
+functions: $f(x_1,\dots,x_a) =
+(f_1(x),f_2(x),\dots,f_b(x))$, it suffices to show
+that $\chi: G \to \mathbb{G}_m$ with $\chi(1)=1$ is a homomorphism. Key 
+observation we make:
+\begin{equation*}
+    \mathcal{O}(\mathbb{G}_m^n) \cong k[T_1^{\pm 1}, T_2^{\pm 1}, \dots, T_n^{\pm 1}]. \hspace{10px} \textcolor{gray}{\textit{(i.e., Laurent polynomials in $n$ variables.)}}
+\end{equation*}
+
+We finish off this part by presenting three claims (with \textit{Claim \#3} proving 
+\textit{part (a)}).
+\begin{enumerate}[label=\textbf{Claim \#\arabic*}, align=left]
+    \item $\text{Hom}_{\text{Var}}(G,\mathbb{G}_m) \cong \mathcal{O}(G)^{\times}$ (in the category of varieties).
+    \item $\mathcal{O}_G^{\times}$ are precisely elements $\gamma \cdot T_1^{e_1}\dots T_a^{e_a}$.
+    \item $\text{Hom}_{\text{AlgGrp}}(G,\mathbb{G}_m) \cong \mathbb{Z}^a$ (in the category of algebraic groups).
+\end{enumerate}
+
+\textbf{Proof of claims.}
+
+\textit{Claim \#1.} Any morphism of varieties $\varphi \in
+\text{Hom}(G,\mathbb{G}_m)$ corresponds to the $k$-algebra homomorphism
+$\varphi^{\#}: \mathcal{O}(\mathbb{G}_m) \to \mathcal{O}(G)$ (or due to
+observation, equivalently, $\varphi^{\#}: k[T^{\pm 1}] \to k[T_1^{\pm
+1},\dots,T_a^{\pm 1}]$). This homomorphism is fully determined by where it sends
+$T$. Since $T \in \mathcal{O}(\mathbb{G}_m)^{\times}$ is invertible,
+$\varphi^{\#}(T) \in \mathcal{O}(G)^{\times}$. Therefore, picking $\varphi$
+boils down to picking element from $\mathcal{O}(G)^{\times}$.
+
+\textit{Claim \#2.} This is a basic fact from the commutative algebra course.
+
+\textit{Claim \#3.} Take a morphism of varieties $\chi: G \to \mathbb{G}_m$.
+From \textit{Claim \#1} and \textit{Claim \#2}, this morphism is of form
+$\chi(T_1,\dots,T_a) = \gamma \cdot T_1^{e_1}\dots T_a^{e_a}$ (for $\gamma \in
+k^{\times}$). This morphism is a homomorphism iff
+$\chi(x_1,\dots,x_a)\chi(y_1,\dots,y_a) = \chi(x_1y_1,\dots,x_ay_a)$ for every
+tuple $x,y \in G$. Plug in the expression of $\chi$ to get:
+\begin{align*}
+    \chi(x_1y_1,\dots,x_ay_a) &= \gamma x_1^{e_1}\dots x_a^{e_a}y_1^{e_1}\dots y_a^{e_a}, \\
+    \chi(x_1,\dots,x_a)\chi(y_1,\dots,y_a) &= \gamma^2x_1^{e_1}\dots x_a^{e_a}y_1^{e_1}\dots y_a^{e_a}.
+\end{align*}
+Thus $\chi \in \text{Hom}_{\text{AlgGrp}}(G,\mathbb{G}_m)$ iff $\gamma=1$ (iff
+$\chi(1)=1$). Hence, $\chi$ is determined by the exponents $(e_1,\dots,e_a)$
+picked from the lattice $\mathbb{Z}^a$.
+
+\textcolor{blue!70!black}{\textit{Part (b).}} To give a map $G \to H$ means
+giving $b$ group homomorphisms $G \to \mathbb{G}_m$, which from \textit{part
+(a)} (\textit{Claim \#3}) boils down to picking the point on $\mathbb{Z}^a$.
+Therefore, we need to pick the matrix $\mathbb{Z}^{b \times a}$ which is 
+equivalent to picking the morphism from $\text{Hom}(\mathbb{Z}^b, \mathbb{Z}^a)$.
+
+\begin{problem}[Exercise 3]
+    Let $Y \subseteq \mathbb{P}^2$ be a nonsingular projective plane curve
+    defined by the homogeneous equation $f(x,y,z)=0$ (for $f \in k[x,y,z]$
+    square-free, homogeneous of degree $d>1$). Let $X=V(f) \subseteq
+    \mathbb{A}^3$ be the ``affine cone'' of $Y$.
+    \begin{enumerate}
+        \item[(a)] Show that the origin $0 \in \mathbb{A}^3$ is the unique singular point of $X$.
+        \item[(b)] Show that the strict transform $\widetilde{X}$ in the blowup of $\mathbb{A}^3$ at the origin is non-singular.
+        \item[(c)] Show that the tangent cone $\widetilde{X} \cap \pi^{-1}(0) \subseteq \mathbb{P}^2$ is equal to $Y$.  
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} Further let $f(x,y,z):=\sum_{\alpha+\beta+\gamma=d}c_{\alpha\beta\gamma}x^{\alpha}y^{\beta}z^{\gamma}$.
+
+\textcolor{blue!70!black}{\textit{Part (a).}} Suppose $(x_0,y_0,z_0) \in \mathbb{A}^3 \setminus \{0\}$ is a
+non-zero singular point of $X$. Since it is non-zero, it corresponds to the
+point in $\mathbb{P}^2$ which lies on $Y$. As all derivatives vanish, this is a
+singular point on $Y$, contradicting the fact that $Y$ is nonsingular.
+
+Finally, checking that $0 \in \mathbb{A}^3$ is indeed a singular point is
+straightforward.
+
+\textcolor{blue!70!black}{\textit{Part (b)}} \textit{(here, I follow lecture
+notes, Section 6.4).} Let the blowup of $\mathbb{A}^3$ be $\mathcal{B} = \{(a,x)
+\in \mathbb{P}^2 \times \mathbb{A}^3: x \in L_a\}$ and let $\pi: \mathcal{B} \to
+\mathbb{A}^{3}$ be the projection map $(L,x) \mapsto x$. Note that since
+$\mathbb{P}^2$ is the union of three copies $U_0,U_1,U_2$ of the affine space
+$\mathbb{A}^3$, we can view $\mathcal{B}$ as the union of three open affine
+subvarieties $\mathcal{B}_i := \mathcal{B} \cap (U_i \times \mathbb{A}^3)$. Let
+coordinates of $\mathbb{A}^3$ be $(x,y,z)$, while coordinates of $\mathbb{P}^2$
+be $(U:V:W)$.
+\begin{itemize}
+    \item The coordinates on $\mathcal{B}_0$ are $(x,y,z)$ and $v=V/U$, $w=W/U$.
+    The equation of $\mathcal{B}$ requires $xV=yU$, $xW=zU$, and $yW=zV$, which
+    reduces to $xv=y$, $xw=z$, and $yw=zv$ (where the last one is redundant).
+    Thus, our chart is given by $\mathcal{B}_0=V(y-xv,z-xw) \subseteq
+    \mathbb{A}^5$. Note that we have $\mathcal{B}_0 \cong \mathbb{A}^3$
+    with coordinates $x,v,w$ and the map $\pi|_{\mathcal{B}_0}$ is the map 
+    $(x,v,w) \mapsto (x,vx,wx)$.
+    \item $\mathcal{B}_1 \cong \mathbb{A}^3$ with coordinates $y,u=U/V,w=W/V$,
+    with $x=uy$ and $z=wy$.
+    \item $\mathcal{B}_2 \cong \mathbb{A}^3$ with coordinates $z,u=U/W,v=V/W$,
+    with $x=uz$ and $y=vz$.
+\end{itemize}
+
+Recall that the strict transform $\widetilde{X} \subseteq
+\mathcal{B}$ is defined as
+\begin{equation*}
+    \widetilde{X} = \overline{\pi^{-1}(X \setminus \{0\})}.
+\end{equation*}
+
+Note that the origin of $\widetilde{X}$ is smooth iff it is smooth in every
+chart\footnote{To be honest, I do not quite understand how to show this
+formally.} $\mathcal{B}_0$, $\mathcal{B}_1$, and $\mathcal{B}_2$. Thus, let us
+check every chart.
+
+\textit{Chart $\mathcal{B}_0$.} Substitute $y := vx$ and $z := wx$, we get
+\begin{align*}
+    f(x,vx,wx) &= \sum_{\alpha+\beta+\gamma=d}c_{\alpha\beta\gamma}x^{\alpha}(vx)^{\beta}(wx)^{\gamma} \\
+    &= \sum_{\alpha+\beta+\gamma=d}c_{\alpha\beta\gamma}x^{\alpha+\beta+\gamma}v^{\beta}w^{\gamma} \\
+    &= x^d\sum_{\alpha+\beta+\gamma=d}c_{\alpha\beta\gamma}v^{\beta}w^{\gamma} \\
+    &= x^d \widetilde{f}_0(v,w).
+\end{align*} 
+
+Thus, $\widetilde{X} \cap \mathcal{B}_0$ is the curve $V(\widetilde{f}_0)$. But
+notice that $\widetilde{f}_0(v,w)$ is nothing but $f(1,v,w)$. Thus, if we had
+some singular point $(x,v,w)$, then $(1:v:w)$ would be a singular point of $Y$
+in $\mathbb{P}^2$, which is impossible by definition of $Y$.
+
+\textit{Chart $\mathcal{B}_1$.} Here, $\widetilde{X} \cap \mathcal{B}_1 \cong
+V(\widetilde{f}_1)$ with $\widetilde{f}_1=f(u,1,w)$. Similarly we do not 
+have any singularities here. 
+
+\textit{Chart $\mathcal{B}_2$.} Here, $\widetilde{X} \cap \mathcal{B}_2 \cong
+V(\widetilde{f}_2)$ with $\widetilde{f}_2=f(u,v,1)$. No singularities here
+either.  
+
+Thus we conclude that $\widetilde{X}$ is smooth.
+
+\textcolor{blue!70!black}{\textit{Part (c)}}. To find the tangent cone, we need
+to intersect each chart with $\pi^{-1}(0)$ restricted to this chart.
+Specifically, it means that in $\mathcal{B}_0$ we set $x=0$, in $\mathcal{B}_1$
+we set $y=0$, while in $\mathcal{B}_2$ we set $z=0$. But note that corresponding
+coordinates do not appear in the expressions of $\widetilde{f}_0$,
+$\widetilde{f}_1$, and $\widetilde{f}_2$, respectively! Thus:
+\begin{align*}
+    \widetilde{X} \cap \mathcal{B}_0 &= \{(1:v:w): f(1,v,w)=0\}, \\
+    \widetilde{X} \cap \mathcal{B}_1 &= \{(u:1:w): f(u,1,w)=0\}, \\
+    \widetilde{X} \cap \mathcal{B}_2 &= \{(u:v:1): f(u,v,1)=0\}.
+\end{align*}
+
+Hence, the union of these three patches is exactly $Y=V(f) \subseteq
+\mathbb{P}^2$.
+
+\begin{problem}[Exercise 4]
+    A sheaf $\mathcal{F}$ on a topological space $X$ is called \textit{flasque} (aka \textit{flabby}) if 
+    for every inclusion $V \subseteq U$ of open sets, the restriction map $\mathcal{F}(U) \to \mathcal{F}(V)$
+    is surjective.
+    \begin{enumerate}
+        \item[(a)] Show that a constant sheaf on an irreducible topological space is flasque.
+        \item[(b)] Suppose that $0 \to \mathcal{F}' \to \mathcal{F} \to \mathcal{F}'' \to 0$ is an exact sequence 
+        of sheaves and that $\mathcal{F}'$ is flasque. Show that for every open $U \subseteq X$, the sequence $0 \to \mathcal{F}'(U) \to \mathcal{F}(U) \to \mathcal{F}''(U) \to 0$ is exact.
+        \item[(c)] Let $f: Y \to X$ be a continuous map and let $\mathcal{F}$ be a flasque sheaf on $Y$. Show that the sheaf $f_*\mathcal{F}$ on $X$ is flasque.
+        \item[(d)] For any sheaf $\mathcal{F}$, the sheaf $D(\mathcal{F})$ of discontinuous sections of $\mathcal{F}$ is flasque. 
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textcolor{blue!70!black}{\textit{Part (a)}}. For an irreducible topological 
+space, the global section of the constant sheaf $k_X$ is given by:
+\begin{equation*}
+    k_X(U) = \begin{cases}
+        k, & \text{if} \; U \neq \emptyset \\
+        \{0\}, & \text{if} \; U = \emptyset.
+    \end{cases}
+\end{equation*}
+
+Thus, we have three cases:
+\begin{itemize}
+    \item \underline{Case \#1.} $V=\emptyset$, $U$ is any open. Then, $k \to \{0\}$ is clearly surjective.
+    \item \underline{Case \#2.} $V,U$ any non-empty opens. Then, the restriction map $k \to k$ is an identity map $\text{id}_k$, which is surjective.
+    \item \underline{Case \#3.} $U=\emptyset$, $V=\emptyset$. Then, the map $\{0\} \to \{0\}$ is surjective as well.
+\end{itemize}
+
+\textcolor{blue!70!black}{\textit{Part (b)}}. Recall that the global section
+function $\Gamma(\cdot,\mathcal{F})$ is left-exact, so we already know that $0
+\xrightarrow{\alpha} \mathcal{F}'(U) \xrightarrow{\beta} \mathcal{F}(U) \to
+\mathcal{F}''(U)$ is exact. So the real question of this part is to show that
+the map $\mathcal{F}(U) \to \mathcal{F}''(U)$ is surjective given $\mathcal{F}'$
+is flasque.
+
+Take some section $s'' \in \mathcal{F}''(U)$. We want to construct $s \in
+\mathcal{F}(U)$ whose image in $\mathcal{F}''(U)$ is $s''$. Since taking stalk
+$\cdot_x$ is an exact functor (for any $x \in U$), there exists an open
+neighbourhood $V_x \subseteq U$ and $s_x \in \mathcal{F}(V_x)$ with $s_x \mapsto
+s''|_{V_x}$. So \textit{locally} $s''$ lifts to sections of $\mathcal{F}$, so now we
+need to somehow glue local sections into a global section of $U$ using 
+the flasqueness of $\mathcal{F}'$.
+
+That said, consider the open convering $\{V_x\}_{x \in U}$ of $U$ with
+corresponding ``lifted'' local sections $\{s_x \in \mathcal{F}(V_x)\}_{x \in
+U}$. On overlaps $V_x \cap V_y \neq \emptyset$, the differences of sections
+$s_x-s_y \in \text{ker}(\mathcal{F}(V_x \cap V_y) \to \mathcal{F}''(V_x \cap
+V_y))$ (since the images of $s_x$ and $s_y$ agree on $V_x \cap V_y$). Using
+exactness of the sequence of sheaves, this implies there exists some $s_{xy}'
+\in \mathcal{F}'(V_x \cap V_y)$ such that $r_{x,y} \mapsto (s_x - s_y)|_{V_x
+\cap V_y}$. But since $\mathcal{F}'$ is flasque, restriction maps
+$\mathcal{F}'(V_x) \to \mathcal{F}'(V_x \cap V_y)$ are surjective. Thus, we can
+lift $s_{xy}'$ up to some $\widetilde{s}_{xy}' \in \mathcal{F}'(V_x)$ such that
+$\widetilde{s}_{xy}'|_{V_x \cap V_y} = s_{xy}$.
+
+Finally, we define \textcolor{orange!85!black}{$\widetilde{s}_x := s_x -
+\alpha(\widetilde{s}_{xy}')$}. Then, one checks $\widetilde{s}_x|_{V_x \cap V_y}
+= \widetilde{s}_y|_{V_x \cap V_y}$, so we can glue them together to get $s \in
+\mathcal{F}(U)$ with $s|_{V_x}=\widetilde{s}_x$. Finally, $s$ maps precisely to
+$s''$ by the map $\mathcal{F}(U) \to \mathcal{F}''(U)$, as was required.
+
+\textcolor{blue!70!black}{\textit{Part (c)}}. Consider any two opens $V
+\subseteq U \subseteq X$. Since $f$ is continuous, $f^{-1}(V) \subseteq
+f^{-1}(U)$, thus $\mathcal{F}(f^{-1}(U)) \to \mathcal{F}(f^{-1}(V))$ is
+surjective since $\mathcal{F}$ is flasque. However, this is exactly the map
+$f_*\mathcal{F}(U) \to f_*\mathcal{F}(V)$, which we've shown is surjective.
+
+\textcolor{blue!70!black}{\textit{Part (d)}}. Recall that $D(\mathcal{F})(U) =
+\prod_{x \in U}\mathcal{F}_x$. Note that for $V \subseteq U$, the map $\prod_{x
+\in U}\mathcal{F}_x \to \prod_{x \in V}\mathcal{F}_x$ is simply the projection
+(i.e., we forget coordinates outside $V$). Therefore, take any element $(s_x)_{x
+\in V} \in \prod_{x \in V}\mathcal{F}_x$ and define the inverse by keeping the
+same $s_x$ for all $x \in V$, while for $U \setminus V$ choose your favourite
+germ :)
+
+\begin{problem}[Exercise 5]
+    Let $X$ be an algebraic set and let $\mathcal{O}_X$ be its sheaf of regular
+    functions. Let $Y \subseteq X$ be a closed subset and let $i: Y
+    \hookrightarrow X$ be the inclusion.
+    \begin{enumerate}
+        \item[(a)] For each open subset $U \subseteq X$, let $\mathcal{I}_Y(U)$
+        be the ideal in the ring $\mathcal{O}_X(U)$ consisting of those regular 
+        functions which vanish at all points of $Y \cap U$. Show that the presheaf 
+        $U \mapsto \mathcal{I}_Y(U)$ is a sheaf. It is called the \textit{sheaf 
+        of ideals} $\mathcal{I}_Y$ of $Y$, and it is a subsheaf of the sheaf of rings 
+        $\mathcal{O}_X$.
+        \item[(b)] Show that the quotient sheaf $\mathcal{O}_X/\mathcal{I}_Y$ is 
+        isomorphic to $i_*\mathcal{O}_Y$, so that we have a short exact sequence
+        $0 \to \mathcal{I}_Y \to \mathcal{O}_X \to i_*\mathcal{O}_Y \to 0$.
+        \item[(c)] Consider the case $X=\mathbb{P}^1$ and $Y=\{x,y\}$ for distinct 
+        points $x,y \in X$. Show that $\mathcal{O}_X(X) \to (i_*\mathcal{O}_Y)(X)$
+        is not surjective.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textcolor{blue!70!black}{\textit{Part (a).}} For $V \subseteq U$, the
+restriction maps $\mathcal{I}_Y(U) \to \mathcal{I}_Y(V)$ are still the usual
+restrictions $s \mapsto s|_V$ (note that if $s$ vanishes on $Y \cap U$, it
+definitely vanishes on the subset $Y \cap V \subseteq Y \cap U$).
+
+Now we prove the gluing axiom. Assume that $\{U_{\alpha}\}$ is an open cover of
+any open $U$ and $\{s_{\alpha} \in \mathcal{I}_Y(U_{\alpha})\}$ satisfy
+$s_{\alpha}|_{U_{\alpha} \cap U_{\beta}} = s_{\beta}|_{U_{\alpha} \cap
+U_{\beta}}$ in $\mathcal{I}_Y(U_{\alpha} \cap U_{\beta})$. Now, invoking the
+gluing axiom of sheaf $\mathcal{O}_X$, we construct $s \in \mathcal{O}_X(U)$
+such that $s|_{U_{\alpha}} = s_{\alpha}$. Since each $s_{\alpha}$ vanishes on $Y
+\cap U_{\alpha}$, $s$ vanishes on $\bigcup_{\alpha} (Y \cap U_{\alpha}) = Y \cap U$, 
+hence $f \in \mathcal{I}_Y(U)$.
+
+\textcolor{blue!70!black}{\textit{Part (b).}} By definition,
+$(i_*\mathcal{O}_Y)(U) = \mathcal{O}_Y(U \cap Y)$. Thus, the map $\varphi:
+\mathcal{O}_X \to i_*\mathcal{O}_Y$ sends $s \in \mathcal{O}_X(U)$ to $s|_{U
+\cap Y} \in \mathcal{O}_X(U \cap Y)$. By definition, $\text{ker}(\mathcal{O}_X
+\to i_*\mathcal{O}_Y)$ are those regular functions that vanish on the
+intersection $U \cap Y$, which is exactly $\mathcal{I}_Y(U)$. Therefore, we
+already know exactness of $0 \to \mathcal{I}_Y \to \mathcal{O}_X
+\xrightarrow{\varphi} i_*\mathcal{O}_Y$. What remains to show is that $\varphi$
+is surjective. It suffices to do this at some stalk $y \in Y$ (for $y \in X
+\setminus Y$ the stalk $(i_*\mathcal{O}_Y)_y$ is trivially zero, so the map is
+surjective). Notice that $(i_*\mathcal{O}_Y)_y \cong \mathcal{O}_{Y,y}$. Indeed,
+\begin{equation*}
+    (i_*\mathcal{O}_Y)_y = \varinjlim_{U \ni y}(i_*\mathcal{O}_Y)(U) \cong \varinjlim_{U \ni y}\mathcal{O}_Y(U \cap Y) \cong \varinjlim_{V \ni y}\mathcal{O}_Y(V) = \mathcal{O}_{Y,y}.
+\end{equation*}
+
+Thus, we reduced the problem to considering the natural restriction map on germs
+$\mathcal{O}_{X,y} \to \mathcal{O}_{Y,y}$, but this map in turn is clearly
+surjective.
+
+The isomorphism thus follows from the exactness of the sequence.
+
+\textcolor{blue!70!black}{\textit{Part (c).}} Recall that $\mathcal{O}_X(X)
+\cong k$ (global regular functions on a projective variety are constants) while
+$(i_*\mathcal{O}_Y)(X) = \mathcal{O}_Y(Y) \cong k \times k$ (regular functions
+on two points is simply choosing a value in $k$ for $x$ and $y$). Thus, the map
+$\mathcal{O}_X(X) \to (i_*\mathcal{O}_Y)(X)$ is simply a map $k \to k \times k$
+given by $\gamma \mapsto (\gamma,\gamma)$, which is not surjective.
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

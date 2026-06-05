@@ -1,0 +1,218 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Algebraic Geometry Problem Set \#5}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $n \geq 1$. Does there exist a surjective map $\mathbb{A}^n \to \mathbb{P}^n$?
+\end{problem}
+
+\textit{Remark.} Further assume that the underlying field $k$ is algebraically closed.
+
+\textbf{Solution.} Yes, it exists. For starters, assume $n=1$.
+Then, we construct the map $\mathbb{A}^1 \to \mathbb{P}^1$ by $x \mapsto [1+x:x^2]$. 
+It is clearly a well-defined morphism.
+To prove it is surjective, let us find the preimage of $[X_0:X_1]$.
+If $x \in \mathbb{A}^1$ is the pre-image, then there exists $\lambda \in k^{\times}$ such that $1+x=\lambda X_0$ and $x^2=\lambda X_1$.
+Simplifying, this yields $X_0x^2-X_1x-X_1=0$ which always has a solution over an algebraically closed $k$.
+
+For general case $\mathbb{A}^n \to \mathbb{P}^n$, define
+\begin{equation*}
+    (x_1,\dots,x_n) \mapsto [1+x_1+\dots+x_n:x_1^2:\dots:x_n^2].
+\end{equation*}
+
+Let us find the preimage of $[X_0:\dots:X_n]$. For some $\lambda \in k^{\times}$, we must have
+\begin{equation*}
+    \begin{cases}
+        x_i^2 = \lambda X_i, \; i=1,\dots,n \\
+        1+\sum_{i=1}^n x_i = \lambda X_0.
+    \end{cases}
+\end{equation*}
+
+According to first $n$ equations, we will search for a solution such that $x_i=\mu Z_i$ where $\mu^2=\lambda$ and $Z_i^2=X_i$.
+``Square roots'' here make sense as $k$ is algebraically closed. Substituting this into the last equation, we obtain
+\begin{equation*}
+    1+\sum_{i=1}^n \mu Z_i = \mu^2 X_0 \Rightarrow X_0\mu^2 - \left(\sum_{i=1}^n Z_i\right)\mu - 1 = 0,
+\end{equation*}
+
+which is a quadratic equation in $\mu$. Note that $\mu=0$ is definitely not the possible root of this equation.
+If $X_0 \neq 0$, this is a quadratic equation that over $k$ has a solution.
+If $X_0=0$, we obtain the linear equation $\left(\sum_{i=1}^n Z_i\right)\mu=-1$. 
+This equation has a solution iff $\sum_{i=1}^n Z_i \neq 0$. 
+Note that we can always pick square roots $Z_i$ to make this sum non-zero (note that all $Z_i$'s cannot vanish to $0$ simultaneously as $X_0=0$.)
+
+\begin{problem}[Exercise 2]
+    Compute the zeta function $\zeta_{\mathbb{P}^n}(s)$ of the projective space $\mathbb{P}^n$ over a finite field $\mathbb{F}_q$.
+\end{problem}
+
+\textbf{Solution.} Recall that the zeta function is defined as
+\begin{equation*}
+    \zeta_X(T) := \exp\left(\sum_{m \geq 1} \frac{N_m}{m}T^m\right), \quad N_m = \#X(\mathbb{F}_{q^m}).
+\end{equation*}
+
+For $X=\mathbb{P}^n$, we have $\#\mathbb{P}^n(\mathbb{F}_{q^m}) = \sum_{j=0}^n q^{jm}$.
+Indeed, $\#\mathbb{P}^n(\mathbb{F}_{q^m})$ is the number of equivalence classes in $(\mathbb{F}_{q^m}^{n+1} \setminus 0) / \mathbb{F}_{q^m}^{\times}$,
+which is precisely $(q^{m(n+1)}-1)/(q^m-1)$. 
+
+Plug this result into the zeta function definition:
+\begin{align*}
+    \zeta_{\mathbb{P}^n}(T) &= \exp\left(\sum_{m \geq 1}\sum_{j=0}^n q^{jm}\frac{T^m}{m} \right) = \exp\left(\sum_{j=0}^n\sum_{m \geq 1} \frac{(q^j)^mT^m}{m} \right) \\
+    &= \exp\left(\sum_{j=0}^n\left[-\log(1-q^jT)\right]\right) = \exp\left(-\log\left(\prod_{j=0}^n(1-q^jT)\right)\right) \\
+    &= \frac{1}{\prod_{j=0}^n (1-q^jT)}.
+\end{align*}
+
+Alternatively, by plugging in $T:=q^{-s}$, we get $\zeta_{\mathbb{P}^n}(s) = 1/\prod_{j=0}^n (1-q^{j-s})$.
+
+\begin{problem}[Exercise 3]
+    Compute $H^1(S^1,\underline{\mathbb{Z}})$ directly from our definition of cohomology. (Here $S^1$ is the circle.)
+\end{problem}
+
+\textbf{Solution.} Recall that the cohomology is defined through exact sequence
+\begin{equation*}
+    0 \to \Gamma(S^1, D^0(\underline{\mathbb{Z}})) \xrightarrow{d^0} \Gamma(S^1, D^1(\underline{\mathbb{Z}})) \xrightarrow{d^1} \Gamma(S^1, D^2(\underline{\mathbb{Z}}))
+\end{equation*}
+and $H^1(S^1,\underline{\mathbb{Z}}) = \ker(d^1) / \text{im}(d^0)$. Also note that we have an exact sequence:
+\begin{equation*}
+    0 \to Q(\underline{\mathbb{Z}}) \to D^1(\underline{\mathbb{Z}}) \to D^2(\underline{\mathbb{Z}}),
+\end{equation*}
+which, thanks to right-exactness of $\Gamma(S^1, -)$, results in 
+\begin{equation*}
+    0 \to \Gamma(S^1, Q(\underline{\mathbb{Z}})) \to \Gamma(S^1, D^1(\underline{\mathbb{Z}})) \xrightarrow{d^1} \Gamma(S^1, D^2(\underline{\mathbb{Z}})).
+\end{equation*}
+
+Thus we see that $\ker(d^1) \cong \Gamma(S^1, Q(\underline{\mathbb{Z}}))$ and so
+\begin{equation*}
+    H^1(S^1, \underline{\mathbb{Z}}) = \frac{\Gamma(S^1, Q(\underline{\mathbb{Z}}))}{\text{im}[\Gamma(S^1, D^0(\underline{\mathbb{Z}})) \to \Gamma(S^1, Q(\underline{\mathbb{Z}}))]}
+\end{equation*}
+
+Now let us figure out what these global sections represent. 
+
+\textcolor{blue!70!black}{$\Gamma(S^1, D^0(\underline{\mathbb{Z}}))$.} Note that
+$D^0(\underline{\mathbb{Z}})$ are arbitrary functions $S^1 \to \mathbb{Z}$,
+global section $\Gamma(S^1, D^0(\underline{\mathbb{Z}}))$ is an arbitrary
+function. 
+
+\textcolor{blue!70!black}{$\Gamma(S^1, Q(\underline{\mathbb{Z}}))$.} Recall 
+that $Q(\underline{\mathbb{Z}}) = D^0(\underline{\mathbb{Z}})/\underline{\mathbb{Z}}$.
+A global section $s \in \Gamma(S^1, Q(\underline{\mathbb{Z}}))$ is represented 
+by a collection of local arbitrary functions $f_{\alpha}: U_{\alpha} \to \mathbb{Z}$ on an 
+open cover $\{U_{\alpha}\}$. The rule is that $f_{\alpha}-f_{\beta}$ must be a 
+locally constant integer-valued function.
+
+To compute the quotient, we need to find sections on $Q(\underline{\mathbb{Z}})$
+that cannot be lifted to a global section of $D^0(\underline{\mathbb{Z}})$. We
+do the standard procedure: cover $S^1$ with two intervals $U_0$ and $U_1$
+overlapping in two disjoint smaller intervals $U_{01}^{\pm}$. Now we build the
+global section $s_n \in \Gamma(S^1, Q(\underline{\mathbb{Z}}))$ through two
+functions $f_U: U \to \mathbb{Z}$ and $f_V: V \to \mathbb{Z}$. Let $f_U \equiv
+0$, $f_V|_{U_{01}^+}=0$, $f_V|_{U_{10}^-}=n \in \mathbb{Z}$. The rest on
+$f_V$ can be arbitrary.
+
+When is $s_n$ the image of $\Gamma(S^1, D^0(\underline{\mathbb{Z}}))$?
+It happens iff there is a single global function $F: S^1 \to \mathbb{Z}$ that maps down to $s_n$.
+Specifically, $F|_{U}=\alpha \in \mathbb{Z}$ and $F|_{V} = f_V + \beta$ for $\alpha,\beta \in \mathbb{Z}$.
+For $F$ to be a well-defined global function, these formulas must agree of overlaps, meaning $\alpha=\beta$ (for $U_{10}^+$)
+and $c_1=n+c_2$ (on $U_{10}^-$). Combining those gives $n=0$.
+
+Thus, sections that cannot be lifted are determined by $n \in \mathbb{Z}$, 
+which gives an isomorphism $H^1(S^1,\underline{\mathbb{Z}}) \cong \mathbb{Z}$.
+
+\begin{problem}[Exercise 4]
+    Let $X$ be a noetherian topological space and let $\{\mathcal{F}_{\alpha}\}$ be an inductive system of abelian sheaves on $X$.
+    Show that the presheaf $U \mapsto \varinjlim \mathcal{F}_{\alpha}(U)$ is a sheaf, denoted by $\varinjlim \mathcal{F}_{\alpha}$.
+    In particular, the natural map
+    \begin{equation*}
+        \varinjlim \Gamma(X, \mathcal{F}_{\alpha}) \to \Gamma(X, \varinjlim \mathcal{F}_{\alpha})
+    \end{equation*}
+    is an isomorphism.
+\end{problem}
+
+\textbf{Solution.} In what follows, let $\mathcal{F} := \varinjlim \mathcal{F}_{\alpha}$.
+
+Let $U \subseteq X$ and let $\{U_i\}$ be an open cover.
+Suppose $s,t \in \mathcal{F}(U)$ have the same restrictions to each $U_i$.
+By definition of the colimit, there exist $\alpha$ and representatives
+$s_{\alpha},t_{\alpha} \in \mathcal{F}_{\alpha}(U)$ mapping to $s,t$. Their restrictions
+agree in $\mathcal{F}(U_i)$ so for each $i$ there exists $\beta_i \geq \alpha$ such that 
+$s_{\alpha}|_{U_i} = t_{\alpha}|_{U_i}$ in $\mathcal{F}_{\beta_i}(U_i)$.
+Now use the fact that $X$ is noetherian: every open subset is quasi-compact.
+We may assume that $U = \bigcup_{i=1}^n U_i$. Then, $s_{\alpha},t_{\alpha} \mapsto s_{\beta},t_{\beta} \in \mathcal{F}_{\beta}(U)$,
+and their restrictions agree on all $U_i$. Since $\mathcal{F}_{\beta}$ is a sheaf, $s_{\beta}=t_{\beta}$ hence $s=t$ in the colimit.
+
+For gluing, let again $\{U_i\}$ be an open cover of $U$ and suppose we are given 
+compatible sections $s_i \in \mathcal{F}(U_i)$. Again, use the fact that the cover 
+is finite, so choose $s_i \in \mathcal{F}_{\alpha_i}(U_i)$. Since the system is 
+directed, there exists $\alpha$ dominating all $\alpha_i$, so view all $s_i$
+as elements of $\mathcal{F}_{\alpha}(U_i)$. Compatibility means that for 
+each $i,j$ we have $s_i|_{U_{ij}} = s_j|_{U_{ij}}$. Thus for each pair 
+$i,j$ there exists $\beta_{ij} \geq \alpha$ such that they agree in $\mathcal{F}_{\beta_{ij}}(U_{ij})$.
+Since there are finitely many pairs, choose $\beta$ dominating all $\beta_{ij}$.
+Then all $s_i$ become sections in $\mathcal{F}_{\beta}(U_i)$ that agree on overlaps.
+Because $\mathcal{F}_{\beta}$ is a sheaf, there exists $s_{\beta} \in \mathcal{F}_{\beta}(U)$
+such that $s_{\beta}|_{U_i} = s_i$. This defines a section $s \in \mathcal{F}(U)$, as needed.
+
+Isomorphism is now quite evident. By definition of the colimit sheaf,
+$\Gamma(X, \varinjlim \mathcal{F}_{\alpha}) = (\varinjlim \mathcal{F}_{\alpha})(X)$.
+Since our presheaf is a sheaf, $(\varinjlim \mathcal{F}_{\alpha})(X) = \varinjlim \mathcal{F}_{\alpha}(X)$.
+Done.
+
+\begin{problem}[Exercise 5]
+    Let $D$ be a prime divisor on a smooth variety $X$.
+    Show that $\text{Pic}(X \setminus D) \cong \text{Pic}(X) / \langle \mathcal{O}_X(D) \rangle$
+    where $\langle \mathcal{O}_X(D) \rangle = \{\mathcal{O}_X(nD): n \in \mathbb{Z}\}$ is the subgroup generated by the class of $\mathcal{O}_X(D)$.
+    Use this to compute $\text{Pic}(U)$ where $U = D(f) \subseteq \mathbb{P}^2$ is the complement of an irreducible curve of degree $d$.
+\end{problem}
+
+\textbf{Solution.} Start with the exact sequence
+\begin{equation*}
+    1 \to \mathcal{O}(X)^{\times} \to k(X)^{\times} \xrightarrow{\text{div}} \text{Div}(X) \to \text{Pic}(X) \to 1.
+\end{equation*}
+
+Let $U := X \setminus D$. Note that $k(U)=k(X)$, thus
+\begin{equation*}
+    k(X)^{\times} \xrightarrow{\text{div}_U} \text{Div}(U) \to \text{Pic}(U) \to 1.
+\end{equation*}
+
+Note that the restriction of a divisor $E=\sum a_iD_i$ is defined as 
+$E|_U = \sum a_i(D_i \cap U)$. Since $D$ is a prime divisor, $D$ is 
+the only prime divisor of $X$ that does not intersect $U$. Thus, 
+$\text{Div}(X) \to \text{Div}(U)$ is surjective and its kernel is $\mathbb{Z}D$, thus
+\begin{equation*}
+    \text{Div}(U) \cong \text{Div}(X)/\mathbb{Z}D.
+\end{equation*}
+
+The restriction map of divisors induces a surjective morphism $\rho:
+\text{Pic}(X) \to \text{Pic}(U)$. A divisor $E \in \text{Div}(X)$ is in 
+the kernel of $\rho$ iff its restriction $E|_{U}$ is a principal divisor 
+on $U$, i.e. $E|_U = \text{div}_U(g)$ for $g \in k(X)^{\times}$.
+Thus, in $\text{Div}(X)$, we have $E = \text{div}_X(g) + nD$ for some $n \in \mathbb{Z}$.
+Thus the class of $E$ in $\text{Pic}(X)$ is simply $nD$. Thus 
+$\text{Pic}(U) = \text{Pic}(X)/\langle D \rangle$.
+
+Now let us compute $\text{Pic}(U)$ where $U = D(f) \subseteq \mathbb{P}^2$ is the complement of an irreducible curve of degree $d$.
+Let $X=\mathbb{P}^2$ and $D=V(f)$ so that $U = X \setminus D$. 
+Recall that $\text{Pic}(\mathbb{P}^2)\cong \mathbb{Z}$ and 
+$\mathcal{O}_{\mathbb{P}^2}(D) \cong \mathcal{O}(d)$.
+Therefore,
+\begin{equation*}
+    \text{Pic}(U) \cong \mathbb{Z} / \langle \mathcal{O}(d) \rangle = \mathbb{Z}/d\mathbb{Z}.
+\end{equation*}
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

@@ -1,0 +1,284 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Algebraic Geometry Problem Set \#2}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $X \subseteq \mathbb{A}^n$ be an affine algebraic set endowed with an
+    action of a finite group $G$. Let $A = \mathcal{O}(X)$ be the corresponding
+    algebra, so that $G$ acts on $A$ by $k$-algebra automorphisms (i.e., $(g \star
+    f)(x) = f(g^{-1}x)$ for $f \in A$). Let 
+    \begin{equation*}
+        B = A^G = \{f \in A: g \star f = f \; \text{for all $g \in G$}\} \subseteq A
+    \end{equation*}
+    be the subring of invariants. Last semester, we deduced from the Artin-Tate
+    lemma that $B$ is a finitely generated $k$-algebra. This allows us to
+    consider $Y=\text{MSpec}(B)$, the affine algebraic set with
+    $\mathcal{O}(Y)=B$. Let $\pi: X \to Y$ be the morphism induced by the
+    inclusion $B \hookrightarrow A$. Show that
+    \begin{enumerate}
+        \item[(a)] $Y=X/G$ is the orbit space (that is, $\pi(x)=\pi(x')$ iff $x'=gx$ for some $g \in G$);
+        \item[(b)] for every morphism $f: X \to Z$ to an affine algebraic set $Z$ such 
+        that $f \circ g = f$ for every $g \in G$ there exists a unique $\overline{f}: Y \to Z$
+        such that $f = \overline{f} \circ \pi$. 
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} 
+
+\textcolor{blue!70!black}{\textit{Part (a).}} We need to first understand what
+condition $\pi(x)=\pi(x')$ even means. Note that each point $x \in X$
+corresponds to the maximal ideal $\mathfrak{m}_x \subseteq A$, and so the
+morphism $\pi$ sends $\mathfrak{m}_x \mapsto \mathfrak{m}_x \cap A^G$. Thus,
+$\pi(x)=\pi(x')$ means that $f(x)=f(x')$ holds for every $f \in A^G$.
+
+Now we prove two directions. First assume $x'=gx$. Take any $f \in A^G$. Then,
+$f(x') = f(gx) = (g^{-1} \star f)(x) = f(x)$ (the last equality follows from
+invariance). 
+
+The remaining direction is much less trivial. Assume $x,x' \in X$ are two points
+with disjoint orbits $Gx$ and $Gx'$. The idea of the remaining part of the proof
+is to construct some carefully chosen invariant $F \in A^G$ such that $F(x) \neq
+F(x')$.
+
+Since $G$ is finite, both orbits are closed sets in the Zariski topology.
+Consequently, we can construct the regular function $s \in A$ such that
+\begin{equation*}
+    s(z) = \begin{cases}
+        1, \quad z \in Gx, \\
+        0, \quad z \in Gx', \\
+        \text{whatever in the remaining points}.
+    \end{cases}
+\end{equation*}
+
+Our candidate then is $F := \prod_{g \in G} (g \star s)$. Check all criteria:
+\begin{enumerate}
+    \item \underline{$F \in A^G$}: indeed, $g \star F = g \star \prod_{h \in G}
+    h \star s = \prod_{h \in G}g \star h \star s = \prod_{h \in G} (gh) \star
+    s$. Now note that the function $h \mapsto gh$ is a bijection, thus by
+    reindexing the product we obtain the desired: $g \star F = F$.
+    \item \underline{$F(x)=1$}: note that $F(x) = \prod_{g \in G} s(g^{-1}x) =
+    \prod_{y \in Gx}s(y) = 1$.
+    \item \underline{$F(x')=0$}: similarly $F(x') = \prod_{g \in G}s(g^{-1}x') =
+    \prod_{y' \in Gx'}s(y') = 0$.
+\end{enumerate}
+
+\textcolor{blue!70!black}{\textit{Part (b).}} We need to check the following
+universal property:
+\[
+\begin{tikzcd}[row sep=large, column sep=large]
+    X \arrow[-Stealth]{r}{\pi} 
+    \arrow[-Stealth]{rd}[swap]{f} & Y \arrow[-Stealth, dashed]{d}{\exists! \overline{f}}  \\
+    & Z 
+\end{tikzcd}
+\]
+
+Here, the morphism $f: X \to Z$ satisfies $f \circ g = f \; \forall_{g \in G}$.
+
+Recall that this morphism induces the $k$-algebra homomorphism between the
+coordinate rings $f^*: \mathcal{O}(Z) \to \mathcal{O}(X)$, thus defining the diagram:
+\[
+\begin{tikzcd}[row sep=large, column sep=large]
+    A^G \arrow[-Stealth, hook]{r}{\iota} & A \\
+    & \mathcal{O}(Z) \arrow[-Stealth]{u}[swap]{f^*}
+    \arrow[-Stealth, dashed]{lu}{\overline{f}^*}
+\end{tikzcd}
+\]
+
+Now let us consider the image of $f^*$. Take any $\phi \in \mathcal{O}(Z)$
+and $x \in X$, $g \in G$. Then,
+\begin{equation*}
+    (g \star f^*(\phi))(x) = f^*(\phi)(g^{-1}x) = \phi(f(g^{-1}x)) = \phi(f(x)) = f^*(\phi)(x).
+\end{equation*}
+
+Thus, $g \star f^*(\phi) = f^*(\phi)$ for all $g \in G$ and thus
+$f^*(\mathcal{O}(Z)) \subseteq A^G$. Since the image factors through $A^G$,
+$f^*$ uniquely factors as $\mathcal{O}(Z) \xrightarrow{\overline{f}^*} A^G
+\hookrightarrow A$. Finally note that we can pull back from statement $f^* =
+\iota \circ \overline{f}^*$ to $f = \overline{f} \circ \pi$, which was 
+needed to prove.
+
+\begin{problem}[Exercise 2]
+    Let $k=\mathbb{C}$. For which values of the parameter $\lambda$ is the
+    following hypersurface $X \subseteq \mathbb{P}^n$ non-singular?
+    \begin{equation*}
+        \lambda(X_0^{n+1} + \dots + X_n^{n+1}) = (n+1)X_0\dots X_n
+    \end{equation*}
+\end{problem}
+
+\textbf{Solution.} We apply the Jacobian criterion for $\mathbb{P}^n$. Note that
+$X=V(f)$ where 
+\begin{equation*}
+    f(X_0,\dots,X_n) = \lambda\sum_{j=0}^n X_j^{n+1} - (n+1)\prod_{j=0}^n X_j.
+\end{equation*}
+
+Find partial derivatives:
+\begin{equation*}
+    \frac{\partial f}{\partial X_i}(X_0,\dots,X_n) = \lambda(n+1)X_i^n - (n+1)\prod_{j \neq i}X_j.
+\end{equation*}
+
+Thus, all singular points $(X_0: \ldots : X_n)$ must satisfy:
+\begin{enumerate}[(a)]
+    \item $\lambda\sum_{j=0}^n X_j^{n+1} = (n+1)\prod_{j=0}^n X_j$;
+    \item $\lambda X_i^n = \prod_{j \neq i}X_j$ (for all $0 \leq i \leq n$).
+\end{enumerate}
+
+Note that condition \textit{(b)} always implies condition \textit{(a)}. Indeed,
+\begin{equation*}
+    \lambda\sum_{j=0}^n X_j^{n+1} = \sum_{j=0}^n X_j \cdot (\lambda X_j^n) = \sum_{j=0}^n X_j \prod_{k \neq j}X_k = \sum_{j=0}^n \prod_{k=0}^n X_k = (n+1) \prod_{j=0}^n X_j.
+\end{equation*}
+
+Thus it suffices to consider only condition \textit{(b)}. Notice that diving
+$i^{\text{th}}$ equation by the first yields $X_i^n/X_0^n = X_0/X_i$.
+Consequently, $(X_i/X_0)^{n+1}=1$ or $X_i = \zeta_i X_0$ for $(n+1)^{\text{th}}$
+root of unity $\zeta_i$. Substituting this to any of equations, one gets:
+\begin{equation*}
+    \lambda X_0^n\zeta_i^n = \prod_{j \neq i}X_0\zeta_j \Rightarrow \textcolor{blue!70!black}{\lambda = \prod_{j=0}^n \zeta_j}.
+\end{equation*}
+
+Since product of roots of unity is again a root of unity, so is $\lambda$.
+Consequently, $X$ is non-singular iff $\textcolor{blue!70!black}{\lambda^{n+1}
+\neq 1}$.
+
+\textbf{Answer.} $\lambda$ must not be the $(n+1)$th root of unity nor $0$.
+
+\begin{problem}[Exercise 3]
+    Let $X$ be a variety and let $X_1,\dots,X_n \subseteq X$ be constructible 
+    subsets such that $X = \bigcup_{i=1}^n X_i$. Show that one of the $X_i$
+    contains a non-empty open subset of $X$.
+\end{problem}
+
+\textbf{Solution.} By taking the closure of $X=\bigcup_{i=1}^n X_i$, we obtain
+$\overline{X}=X = \bigcup_{i=1}^n \overline{X}_i$. Since $X$ is an irreducible
+topological space, it cannot be covered by a finite union of proper closed
+subsets. Therefore, at least one of such sets is dense: say, $\overline{X}_k =
+X$. Since $X_k$ is constructible, we know that $X_k = \bigcup_{i=1}^m L_i$ where
+$L_i = U_i \cap C_i$ ($U_i$ is open and $C_i$ is closed). Again, by taking the
+closure, we obtain $X = \bigcup_{i=1}^m \overline{L}_i$. Applying the same
+argument once more, one of $L_i$ is dense: say, $\overline{L}_r=X$. But now
+notice the following three facts:
+\begin{enumerate}
+    \item Since $U_r \cap C_r \subseteq C_r$, we have $\overline{L}_r \subseteq C_r$.
+    \item Since $\overline{L}_r=X$, we have $X \subseteq C_r$, so $X=C_r$.
+    \item Consequently, $L_r = U_r \cap C_r = U_r \cap X = U_r$.
+\end{enumerate}
+
+Thus, our sought non-empty open subset of $X$ is precisely $L_r$ (note that it
+is non-empty since $L_r$ is both dense and open).
+
+\begin{problem}[Exercise 4]
+    Let $X=V(f) \subseteq \mathbb{P}^2$ be a conic (so $f \in k[X,Y,Z]$ is an 
+    irreducible homogeneous polynomial of degree $2$). Show $X \cong \mathbb{P}^1$.
+\end{problem}
+
+\textbf{Solution.} We prove this fact in two steps:
+\begin{itemize}
+    \item \textbf{Step 1.} $X \cong V(X^2+Y^2+Z^2) =: C$
+    (\textit{\textcolor{gray}{i.e., all conics are isomorphic, so we do not care
+    which one to pick}});
+    \item \textbf{Step 2.} $C \cong \mathbb{P}^1$
+    (\textit{\textcolor{gray}{seems easiest to show this fact for
+    $X^2+Y^2+Z^2=0$}}).  
+\end{itemize}
+
+\textbf{Step 1.} Letting $\mathbf{X}=(X,Y,Z)^{\top}$, write $f$ as a quadratic
+form $f(\mathbf{X}) = \mathbf{X}^{\top}A\mathbf{X}$. Now notice the following:
+since $A$ is a symmetric matrix, $A$ can be diagonalized (excluding the case
+$\text{char}(k)=2$). Therefore, there exists the linear transformation
+$\mathbf{X} \mapsto P\mathbf{X}$ (for some $P \in k^{3 \times 3}$) such that
+\begin{equation*}
+    f(P\mathbf{X}) = \mathbf{X}^{\top}D\mathbf{X}, \quad D = \begin{bmatrix}
+        \lambda_X & 0 & 0 \\
+        0 & \lambda_Y & 0 \\
+        0 & 0 & \lambda_Z
+    \end{bmatrix}.
+\end{equation*}
+
+Moreover, since $f$ is irreducible, $\lambda_X, \lambda_Y, \lambda_Z \neq 0$.
+Therefore, by applying $(X:Y:Z) \mapsto
+(X/\sqrt{\lambda_X}:Y/\sqrt{\lambda_Y}:Z/\sqrt{\lambda_Z})$, we deduce $X \cong
+V(X^2+Y^2+Z^2)$.
+
+\textit{Remark.} Can it so happen that either of $\lambda_X$, $\lambda_Y$, or
+$\lambda_Z$ is $0$? Notice that $f(X,Y)=\lambda_XX^2+\lambda_YY^2$ is clearly
+reducible:
+$f(X,Y)=(\sqrt{\lambda_X}X+i\sqrt{\lambda_Y}Y)(\sqrt{\lambda_X}X-i\sqrt{\lambda_Y}Y)$.
+Thus, we need to have at least three variables for $f$ to be irreducible.
+
+\textbf{Step 2.} Define the map $\phi: \mathbb{P}^1 \to C$ as
+\begin{equation*}
+    (U:V) \mapsto (U^2-V^2:2UV:i(V^2+U^2)),
+\end{equation*}
+where $i^2=-1$. One easily checks that this map is an isomorphism: first,
+clearly $\phi(\mathbb{P}^1) \subseteq C$ (substitute into equation of $C$ and
+simplify). Next, one checks that the inverse map is given by $\psi: C \to
+\mathbb{P}^1, (X:Y:Z) \mapsto (X+iY:Z)$ and is regular.
+
+\begin{problem}[Exercise 5]
+    Assume $\text{char}(k) \neq 2$. Let $X=V(f) \subseteq \mathbb{P}^3$ be an
+    irreducible quadric surface (so $f \in k[T_0,\dots,T_3]$ is an irreducible
+    homogeneous polynomial of degree two). Show that $X$ is rational.
+\end{problem}
+
+\textbf{Solution.} As the hint suggests, we first show the following.
+
+\textcolor{blue!70!black}{\textbf{Proposition.}} $X$ is isomorphic to either a
+surface $V(T_0T_1-T_2T_3)$ or $V(T_0T_1-T_2^2)$.
+
+\textbf{Proof of proposition.} Using the same argument as in \textit{Exercise
+4}, any quadric is isomorphic to either $T_0^2+T_1^2+T_2^2+T_3^2=0$ or
+$T_0^2+T_1^2+T_2^2=0$ (the one- and two-degree cases will trivially result in
+reducible polynomial $f$). 
+
+Using the following linear change of variables for the four-degree case:
+\begin{equation*}
+    T_0 := \frac{U+V}{2}, \quad T_1 := \frac{U-V}{2i}, \quad T_2 := \frac{W+Z}{2}, \quad T_3 := \frac{W-Z}{2i},
+\end{equation*}
+one obtains exactly equation $UV-ZW=0$. 
+
+For the three-degree case the substitution is even simpler:
+\begin{equation*}
+    T_0 := \frac{U+V}{2}, \quad T_1 = \frac{U-V}{2i}, \quad T_2 := iW,
+\end{equation*}
+resulting in the equation $UV-W^2=0$.
+
+\textcolor{blue!70!black}{\textbf{Proof of Exercise.}} First consider the case
+$X \cong V(T_0T_1 - T_2^2)$. We shall build the birational map $\mathbb{P}^2 \dashrightarrow
+X$. We propose the following map:
+\begin{equation*}
+    (U:V:W) \mapsto (U^2: V^2: UV : VW).
+\end{equation*}
+
+To prove it is birational, we need to show that it admits the rational inverse
+$X \dashrightarrow \mathbb{P}^2$. But this map is very simple:
+$(T_0:T_1:T_2:T_3) \mapsto (T_2:T_1:T_3)$.
+
+Now assume $X \cong V(T_0T_1-T_2T_3)$. Here, the map $\mathbb{P}^2 \dashrightarrow X$
+will be defined as:
+\begin{equation*}
+    (U:V:W) \mapsto (UW:VW:UV:W^2).
+\end{equation*}
+
+The rational inverse $X \dashrightarrow \mathbb{P}^2$ is then given by
+\begin{equation*}
+    (T_0:T_1:T_2:T_3) \mapsto (T_0:T_1:T_3).
+\end{equation*}
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

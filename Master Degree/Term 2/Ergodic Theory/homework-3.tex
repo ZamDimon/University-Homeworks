@@ -1,0 +1,307 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Dynamical Systems Homework \#3}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $(X,\mathcal{B},\mu,T)$ be a measure-preserving system. Recall the
+    definition of the invertible extension $(\widetilde{X},
+    \widetilde{\mathcal{B}}, \widetilde{\mu}, \widetilde{T})$ from the exercise
+    classes, and the factor map $\pi: \widetilde{X} \to X$. Show that
+    $(\widetilde{X}, \widetilde{\mathcal{B}}, \widetilde{\mu}, \widetilde{T})$
+    has the following universal property: if $(Y,\mathcal{C},\nu,S)$ is an 
+    invertible measure-preserving system and $\phi: Y \to X$ is a factor map,
+    then there exists a unique factor map $\widetilde{\phi}: Y \to \widetilde{X}$
+    such that $\phi = \pi \circ \widetilde{\phi}$.
+\end{problem}
+
+\textbf{Solution.} Recall the definition of an invertible extension
+$(\widetilde{X}, \widetilde{\mathcal{B}}, \widetilde{\mu}, \widetilde{T})$:
+\begin{itemize}
+    \item The space is $\widetilde{X} = \{x \in X^{\mathbb{Z}}: x_{n+1} = T(x_n) \; \forall_{n \in \mathbb{Z}}\}$.
+    \item The transformation is $\widetilde{T}((x_k)_{k \in \mathbb{Z}}) = (x_{k+1})_{k \in \mathbb{Z}}$.
+    \item For any $I \subseteq \mathbb{Z}$, $\{A_i\}_{i \in I} \subseteq \mathcal{B}$, the measure is:
+    \begin{equation*}
+        \widetilde{\mu}\left(\left\{ x \in \widetilde{X}: x_i \in A_i, i \in I \right\}\right) = \prod_{i \in I}\mu(A_i).
+    \end{equation*}
+    \item $\widetilde{\mathcal{B}}$ is the smallest $\sigma$-algebra where $E \in \widetilde{\mathcal{B}}$ implies $T^{-1}(E) \in \widetilde{\mathcal{B}}$ and $\pi: (x_k)_{k \in \mathbb{Z}} \mapsto x_0$ is measurable.
+\end{itemize}
+
+Now, suppose we are given the factor map $\phi: Y \to X$. We need first to define 
+the map $\widetilde{\phi}: Y \to \widetilde{X}$. The map is quite simple:
+\begin{equation*}
+    \widetilde{\phi}: Y \to \widetilde{X}, \quad y \mapsto (\phi \circ S^n(y))_{n \in \mathbb{Z}}.
+\end{equation*}
+
+Let us check whether the map is well-defined. First, is $\widetilde{\phi}(y)$ 
+an element of $\widetilde{X}$ in the first place? We check whether $T(x_n)=x_{n+1}$:
+\begin{equation*}
+    T(x_n) = T \circ \phi \circ S^n(y) = \phi \circ S \circ S^n(y) = \phi \circ S^{n+1}(y) = T(x_{n+1}).
+\end{equation*}
+
+To show that $\widetilde{\phi}$ is a factor map, we check \textit{(a)} compatibility with $\pi$,
+\textit{(b)} commutation with dynamics, and \textit{(c)} measure preservation.
+
+\underline{\textit{Part (a).}} We need $\pi \circ \widetilde{\phi} = \phi$. Expanding
+definition of $\pi$, we have $\pi \circ \widetilde{\phi}(y) = \phi \circ S^0(y) = \phi(y)$.
+
+\underline{\textit{Part (b).}} We need $\widetilde{\phi} \circ S = \widetilde{T} \circ \widetilde{\phi}$.
+On the one hand, $(\widetilde{\phi} \circ S(y))_k = \phi \circ S^k \circ S(y) = \phi \circ S^{k+1}(y)$.
+On the other hand, $(\widetilde{T} \circ \widetilde{\phi}(y))_k = \widetilde{T}((\phi \circ S^n(y))_{n \in \mathbb{Z}})_k = \phi \circ S^{k+1}(y)$.
+
+\underline{\textit{Part (c).}} We must show $\widetilde{\phi}_*\nu =
+\widetilde{\mu}$. It suffices to check this on the basic cylinder sets, i.e.
+$C_k(A) := \{x \in \widetilde{X}: x_k \in A\}$ for $A \in \mathcal{B}$.
+By the definition, $\widetilde{\mu}(C_k) = \mu(A)$. Now, compute the preimage
+under $\widetilde{\phi}$:
+\begin{equation*}
+    \widetilde{\phi}^{-1}(C_k(A)) = \{y \in Y: \widetilde{\phi}(y)_k \in A\} = \{y \in Y: \phi \circ S^k(y) \in A\} = S^{-k} \circ \phi^{-1}(A).
+\end{equation*}
+
+Now measure this set: $\nu(\widetilde{\phi}^{-1}(C_k(A))) = \nu(S^{-k} \circ \phi^{-1}(A))$. Since $S$ is measure-preserving,
+this simplifies to $\nu(\widetilde{\phi}^{-1}(C_k(A))) = \nu(\phi^{-1}(A)) = \mu(A) = \widetilde{\mu}(C_k(A))$.
+
+Finally, we show uniqueness. Suppose we have constructed another map $\psi: Y \to \widetilde{X}$ satisfying $\pi \circ \psi = \phi$.
+From the projection condition, $\psi(y)_0 = \phi(y)$. Since $\psi$ is a factor map,
+$\psi \circ S^k(y) = \widetilde{T}^k \circ \psi$. Look at zero coordinates 
+at both sides (\textit{i.e.}, apply $\pi$): $\phi \circ S^k(y) = \psi(y)_k$.
+Thus, this forces $\psi$ to be the map we defined earlier.
+
+\begin{problem}[Exercise 2]
+    For each $\alpha,\beta \in \mathbb{R}$, determine whether or not the system 
+    $(\mathbb{R}/\mathbb{Z}, (x,y) \mapsto (x+\alpha,y+\beta))$ is (a) ergodic, 
+    (b) weakly mixing.
+\end{problem}
+
+\textbf{Solution.} We use Fourier techniques. First, we notice that this system
+is never weakly mixing. Indeed, recall that the system is weakly mixing if and
+only if the Koopman operator $U_T: f \mapsto f \circ T$ has no non-trivial
+eigenfunctions. However, take $\chi_{n,m}(x,y) := e^{2\pi i(nx+my)}$
+(orthonormal basis of $L^2(\mathbb{R}^2/\mathbb{Z}^2)$). Then,
+\begin{equation*}
+    U_T\chi_{n,m} = e^{2\pi i (n\alpha+m\beta)}\chi_{n,m},
+\end{equation*}
+so $\{\chi_{n,m}\}_{n,m \in \mathbb{Z}}$ are non-trivial eigenfunctions of $U_T$.
+
+For ergodicity, let $f(x,y) = \sum_{n,m \in \mathbb{Z}}
+\widehat{f}_{n,m}\chi_{n,m}(x,y)$. If the system is ergodic, $U_Tf = f$ has only
+constant solutions (i.e. $\widehat{f}_{n,m}=0$ for $(n,m) \neq (0,0)$). So,
+\begin{equation*}
+    \sum_{n,m \in \mathbb{Z}}\widehat{f}_{n,m}\chi_{n,m}(\alpha,\beta)\chi_{n,m}(x,y) = \sum_{n,m \in \mathbb{Z}} \widehat{f}_{n,m}\chi_{n,m}(x,y),
+\end{equation*}
+
+which forces $\widehat{f}_{n,m}\chi_{n,m}(\alpha,\beta) = \widehat{f}_{n,m}$.
+Thus we see that the given system is ergodic iff $e^{2\pi i (n\alpha +
+m\beta)}=1$ only when $(n,m)=(0,0)$. This happens precisely when
+$\{1,\alpha,\beta\}$ are rationally independent.
+
+\begin{problem}[Exercise 3]
+    For each $a,b,c,d \in \mathbb{Z}$ with $ad \neq bc$, determine whether or not 
+    the system $(\mathbb{R}^2/\mathbb{Z}^2, (x,y) \mapsto (ax+by,cx+dy))$ is (a) ergodic,
+    (b) weakly mixing.
+\end{problem}
+
+\textbf{Solution.} We view our map as $T: \begin{pmatrix} x \\ y \end{pmatrix}
+\mapsto \mathbf{A}\begin{pmatrix} x \\ y \end{pmatrix}$ where $\mathbf{A} =
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}$. Here, condition $ad \neq bc$
+means that $\det \mathbf{A} \neq 0$. Note that our system is a compact abelian
+group, thus we might apply \textit{Proposition 3.26} from the lecture notes: it
+is ergodic iff for all $N \in \mathbb{N}$ and non-unit characters $\chi_{n,m}$,
+we have $U_T^N\chi_{n,m} \neq \chi_{n,m}$. Here, non-unit characters are
+precisely $\chi_{n,m}(x,y) = e^{2\pi i(nx+my)}$ as in the previous exercise
+(since characters are precisely an orthonormal basis for
+$L^2(\mathbb{R}^2/\mathbb{Z}^2)$ thanks to \textit{Proposition 3.20}.) Now
+notice:
+\begin{equation*}
+    U_T\chi_{n,m} = e^{2\pi i(n(ax+by)+m(cx+dy))} = e^{2\pi i((an+cm)x+(bn+dm)y)} = \chi_{(n,m)\mathbf{A}},
+\end{equation*}
+
+Consequently, $U_T^N\chi_{n,m}=\chi_{(n,m)\mathbf{A}^N}=\chi_{n,m}$ only when
+$\mathbf{A}^N = \mathbb{I}_2$. From the linear algebra, we now that this 
+never happens for every $N \in \mathbb{N}$ iff neither eigenvalue of $\mathbf{A}$
+is a root of unity.
+
+Now we consider the weak mixing. The system is weakly mixing iff $U_T$ has 
+no non-trivial eigenfunctions. Thus, substitute everything into $U_Tf=\lambda f$
+assuming $f(x,y)=\sum_{n,m \in \mathbb{Z}}\widehat{f}_{n,m}\chi_{n,m}(x,y)$:
+\begin{equation*}
+    \sum_{n,m \in \mathbb{Z}}\widehat{f}_{n,m}\chi_{(n,m)\mathbf{A}}(x,y) = \sum_{n,m \in \mathbb{Z}}\lambda\widehat{f}_{n,m}\chi_{n,m}(x,y),
+\end{equation*}
+which forces $\widehat{f}_{(n,m)\mathbf{A}} = \lambda \widehat{f}_{n,m}$. Since
+$|\lambda|=1$, this forces all coefficients with indices in orbit
+$\{(n,m)\mathbf{A}^N\}_{N \in \mathbb{Z}}$ to be equal. However, notice that if
+this orbit is infinite, this would imply that all but $\widehat{f}_{0,0}$
+coefficients are zero as $\sum_{n,m \in \mathbb{Z}}|\widehat{f}_{n,m}|^2 <
+\infty$, and thus the system is weakly mixing. The orbit is \textit{finite}
+when $(n,m)\mathbf{A}^N = (n,m)$ for some $N \in \mathbb{N}$. But notice that 
+this is exactly the condition when ergodicity fails. Thus, the system is 
+weakly mixing iff no eigenvalue of $\mathbf{A}$ is a root of unity.
+
+\begin{problem}[Exercise 4]
+    Let $(X,\mathcal{B},\mu,T)$ be a measure-preserving system, and let $1 \leq p < \infty$.
+    Show that for each $f \in L^p(X,\mu)$ we have 
+    \begin{equation*}
+        \frac{1}{N}\sum_{n=0}^{N-1} f \circ T^n \xrightarrow[N \to \infty]{L^p} \widetilde{f},
+    \end{equation*} 
+    for some invariant $\widetilde{f} \in L^p(X,\mu)$.
+\end{problem}
+
+\textbf{Solution.} In what follows, as suggested, I mimic the idea of
+Corollary~2.22 from the textbook. For convenience, further denote ergodic averages by
+\begin{equation*}
+    A_Ng := \frac{1}{N}\sum_{n=0}^{N-1} g \circ T^n.
+\end{equation*}
+
+By the $L^2$ Mean Ergodic Theorem, we know that for any $g \in L^{\infty}(X,\mu)
+\subseteq L^2(X,\mu)$, the ergodic averages $A_Ng$ converge in $L^2(X,\mu)$ to
+some $T$-invariant $\widetilde{g} \in L^2(X,\mu)$. We first claim that
+$\widetilde{g} \in L^{\infty}(X,\mu)$. Indeed, $\|A_Ng\|_{\infty} \leq \|g\|_{\infty}$ and thus
+\begin{equation*}
+    |\langle A_Ng, \chi_B \rangle| \leq \|g\|_{\infty}\mu(B) \; \text{for all $B \in \mathcal{B}$.}
+\end{equation*}
+
+Since $A_Ng \to \widetilde{g}$ in $L^2(X,\mu)$, we obtain $|\langle \widetilde{g}, \chi_B \rangle| \leq \|g\|_{\infty}\mu(B)$ 
+for $B \in \mathcal{B}$, implying $\|\widetilde{g}\|_{\infty} \leq \|g\|_{\infty}$, as required.
+
+Now we establish $A_Ng \to \widetilde{g}$ in $L^p(X,\mu)$. Consider two cases.
+
+\textbf{Case \#1. $1 \leq p \leq 2$.} In such case $\|\cdot\|_p \leq \|\cdot\|_2$, and 
+thus $L^2$ convergence immediately implies $L^p$ convergence.
+
+\textbf{Case \#2. $p>2$.} Here, we use the fact that both $A_Ng$ and $\widetilde{g}$ are bounded by $\|g\|_{\infty}$:
+\begin{equation*}
+    \int_X |A_Ng - \widetilde{g}|^pd\mu = \int_X |A_Ng - \widetilde{g}|^{p-2}|A_Ng - \widetilde{g}|^2d\mu \leq (2\|g\|_{\infty})^{p-2}\|A_Ng - \widetilde{g}\|_2^2.
+\end{equation*}
+
+Since $\|A_Ng-\widetilde{g}\|_2 \to 0$, we deduce $A_Ng \to \widetilde{g}$ in $L^p(X,\mu)$.
+
+Thus, we have demonstrated that the theorem holds for a dense set of functions
+$L^{\infty}(X,\mu) \subseteq L^p(X,\mu)$. Now we extend the argument to the
+whole $L^p(X,\mu)$. Let $f \in L^p(X,\mu)$ and fix $\varepsilon>0$. Since
+$L^{\infty}(X,\mu)$ is dense in $L^p(X,\mu)$, choose $g \in L^{\infty}(X,\mu)$
+such that $\|f-g\|_p < \varepsilon$. Now note that $\|f \circ T\|_p = \|f\|_p$.
+Consequently, $\|A_Nf\|_p \leq \|f\|_p$. This gives $\|A_Nf - A_Ng\|_p \leq
+\|f-g\|_p < \varepsilon$. By the previous result, $A_Ng$ converges in
+$L^p(X,\mu)$, meaning there exists $N_0$ such that $\|A_Ng - A_Mg\|_p <
+\varepsilon$ for all $N,M \geq N_0$. Thus,
+\begin{equation*}
+    \|A_Nf - A_Mf\|_p \leq \|A_Nf - A_Ng\|_p + \|A_Ng - A_Mg\|_p + \|A_Mg - A_Mf\|_p < 3\varepsilon
+\end{equation*}
+whenever $N,M \geq N_0$. Thus, $A_Nf$ form a Cauchy sequence in $L^p(X,\mu)$,
+meaning that it converges to some $\widetilde{f} \in L^p(X,\mu)$.
+
+What is left to show that $\widetilde{f}$ is $T$-invariant. Since $U_T(A_Nf) = A_Nf \circ T$, we have 
+\begin{equation*}
+    \|A_Nf \circ T - A_Nf\|_p = \left\|\frac{1}{N}f \circ T^N - \frac{1}{N}f\right\|_p \leq \frac{2}{N}\|f\|_p \xrightarrow[N \to \infty]{} 0.
+\end{equation*}
+
+Since $A_Nf \to \widetilde{f}$ in $L^p(X,\mu)$ and $U_T$ is continuous, the left
+side converges to $\|\widehat{f} \circ T - \widehat{f}\|_p$ which was shown to
+be $0$. Thus, $\widetilde{f} \circ T = \widetilde{f}$.
+
+\begin{problem}[Exercise 5]
+    For $k \geq 1$, let $\mathcal{Z}_k = (\mathbb{Z}/k\mathbb{Z}, \mathcal{P}(\mathbb{Z}/k\mathbb{Z}), \lambda_k, x \mapsto x+1)$ denote 
+    the cyclic shift on $k$ elements. Let $\mathcal{X}=(X,\mathcal{B},\mu,T)$ be a measure-preserving system.
+    Define the product $\mathcal{X} \times_* \mathcal{Z}_k$ as the dynamical system under natural probability space 
+    and transformation $T^{(k)}$ given by 
+    \begin{equation*}
+        T^{(k)}(x,i) := \begin{cases}
+            (x,i+1), \, 0 \leq i < k-1, \\
+            (T(x), 0), \, i=k-1.
+        \end{cases}
+    \end{equation*} 
+    \begin{enumerate}
+        \item[(a)] Show that $\mathcal{X} \times_* \mathcal{Z}_k$ is ergodic if and only if $\mathcal{X}$ is ergodic.
+        \item[(b)] Show that $\mathcal{X} \times_* \mathcal{Z}_k$ is totally ergodic if and only if $\mathcal{X}$ is totally ergodic and $k=1$.
+        \item[(c)] Show that each measure-preserving system $\mathcal{Y} =
+        (Y,\mathcal{C},\nu,S)$ that is ergodic but not totally ergodic is isomorphic to some
+        system of the form $\mathcal{X} \times_* \mathcal{Z}_k$ with $k>1$.  
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} 
+
+\underline{\textit{Part (a).}} We will use Fourier-based approach, as usual. Recall that the
+orthonormal basis for $L^2(\mathbb{Z}/k\mathbb{Z})$ is $\{\chi_m\}_{m<k}$ where
+$\chi_m(j) = e^{2\pi i mj/k}$. Therefore, any function $F \in L^2(X \times (\mathbb{Z}/k\mathbb{Z}))$
+can be uniquely expanded as follows:
+\begin{equation*}
+    F(x,j) = \sum_{k=0}^{m-1} f_m(x)\chi_m(j) \; \text{where} \; f_0, \dots, f_{m-1} \in L^2(X).
+\end{equation*}
+
+Now consider the equation $U_{T^{(k)}}F = F$. For all $j<k-1$, this reduces to the
+equation $F(x,j+1)=F(x,j)$. Since in such case $F(x,j)=F(x,0)$ for all $j <
+k-1$, $F$ does not depend on the second coordinate. Thus, let $F(x,\cdot) \equiv
+f(x) \in L^2(X,\mu)$. The equation for $j=k-1$ then corresponds to $f(Tx) = f(x)$
+or $U_Tf=f$. 
+
+From here, the result is clear: if $\mathcal{X}$ is ergodic, $f$ must be a constant,
+forcing $F$ to be a constant, so $\mathcal{X} \times_* \mathcal{Z}_k$ is ergodic.
+Conversely, any invariant $f$ generates the invariant $F$, which must be constant,
+making $f$ constant as well, thus $\mathcal{X}$ is ergodic.
+
+\underline{\textit{Part (b).}} Recall that total ergodicity is equivalent to
+stating that Koopman operator has no eigenvalues other than $1$. Suppose $k>1$.
+Let $\lambda := e^{2\pi i/k}$. We claim that it is an eigenvalue of
+$U_{T^{(k)}}$ with the corresponding eigenfunction $g(x,j) = \lambda^j$. Indeed,
+for $j<k-1$, $U_{T^{(k)}}g(x,j) = g(x,j+1)=\lambda^{j+1}=\lambda g(x,j)$. For
+$j=k-1$, we have $U_{T^{(k)}}g(x,k-1) = g(T(x),0)=1$. Notice that this is
+precisely $\lambda g(x,k-1)$ since $\lambda \cdot \lambda^{k-1} = \lambda^k =
+1$ (as $\lambda$ is a primitive $k$th root of unity).
+
+Thus, total ergodicity is possible only for $k=1$, for which the statement is
+trivial.
+
+\underline{\textit{Part (c).}} Since $\mathcal{Y}$ is ergodic but not totally
+ergodic, the Koopman operator $U_S$ on $L^2(Y,\nu)$ must have a non-trivial
+eigenvalue which is a root of unity. Let $k>1$ be the smallest positive integer
+such that $\lambda=e^{2\pi i/k}$ is an eigenvalue of $U_S$. Then, there exists
+an eigenfunction $h \in L^2(Y,\nu)$ such that $h \circ S = e^{2\pi i/k}h$.
+
+This equation results in an important observation.
+\begin{proposition}
+    For any measure-preserving system $\mathcal{Y}=(Y,\mathcal{C},\nu,S)$ that is ergodic but not totally ergodic, the following statements are true:
+    \begin{enumerate}
+        \item[(a)] There exists a non-trivial $\varphi \in L^2(Y,\nu)$ such that $\varphi^k=1$ $\nu$-a.e. for some $k>1$.
+        \item[(b)] Using notation from (a), $Y$ can be partitioned into $k$ sets $Y_0,\dots,Y_{k-1}$ where $Y_j := \{y \in Y: \varphi(y) = e^{2\pi ij/k}\}$. Moreover, $S(Y_j) = Y_{(j+1) \, \text{mod} \, k}$. 
+    \end{enumerate}
+\end{proposition}
+
+Statement \textit{(a)} follows from the fact that as $\mathcal{Y}$ is ergodic
+and $|h \circ S| = |h|$, $|h|$ is a constant. Without loss of generality, assume
+this constant is $1$ for a function $\varphi$. Moreover, since $\varphi^k \circ
+S = (e^{2\pi i/k})^k \varphi^k = \varphi^k$, the function $\varphi^k$ is a
+constant. Again, since $|\varphi|=1$, without loss of generality we might 
+assume $\varphi^k=1$ $\nu$-a.e.
+
+Given \textit{(a)}, the statement \textit{(b)} is now trivial.
+
+This proposition allows us to define the following measure-preserving system:
+$\mathcal{X} := (Y_0, k \nu|_{Y_0}, S^k|_{Y_0})$. The isomorphism is then defined as
+\begin{equation*}
+    \phi: \mathcal{X} \times (\mathbb{Z}/k\mathbb{Z}) \to Y, \quad (y_0,j) \mapsto S^j(y_0).
+\end{equation*}
+
+First, this is a measure-preserving map: if one takes an open $E \in
+\mathcal{C}$ (without loss of generality assume $E \subseteq Y_j$ for some $j$),
+then $\phi^{-1}(E) = S^{-j}(E) \times \{j\}$. Thus, $k\nu|_{Y_0}(\phi^{-1}(E)) =
+\nu(S^{-j}(E)) = \nu(E)$. It is also a bijection since the inverse map
+$\phi^{-1}$ is given by mapping $y \in Y$ to $(S^{-j},j)$ where $\varphi(y) \in
+Y_j$. Finally, $\phi \circ T^{(k)} = S \circ \phi$ also checks fine.
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{alphaurl}
+\bibliography{refs}
+
+\end{document}

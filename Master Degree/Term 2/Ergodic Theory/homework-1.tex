@@ -1,0 +1,580 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Dynamical Systems Homework \#1}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Consider the following dynamical systems:
+    \begin{enumerate}
+        \item[(i)] $X=\mathbb{R}^2/\mathbb{Z}^2$, $T(x,y) = (x+\alpha,y+\beta)$ (for $\alpha,\beta \in \mathbb{R}/\mathbb{Z}$);
+        \item[(ii)] $X=\mathbb{R}^2/\mathbb{Z}^2$, $T(x,y) = (ax, by)$ (for $a,b \in \mathbb{Z}$). 
+    \end{enumerate}
+    For each system, determine (depending on the parameters):
+    \begin{enumerate}
+        \item[(a)] Are there any fixed points?
+        \item[(b)] Are there any points with least period 2?
+        \item[(c)] Is the system minimal?
+        \item[(d)] Is the system transitive?
+        \item[(e)] Is the system topologically ergodic?
+        \item[(f)] Is the system topologically weakly mixing?
+        \item[(g)] Is the system topologically strongly mixing?
+        \item[(h)] Is the system equicontinuous?       
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.} 
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(i)}.}}
+
+\textit{Part (a).} Fixed point $(x_0,y_0) \in \mathbb{R}^2/\mathbb{Z}^2$ must
+satisfy $x_0+\alpha=x_0$ and $y_0+\beta=y_0$. If $\alpha,\beta \in \mathbb{Z}$,
+then any point is a fixed point (in fact, the map $T$ is such case is simply an
+identity map). Otherwise, $T$ has no fixed points.
+
+\underline{Further assume $\alpha,\beta \not\in \mathbb{Z}$, otherwise the map
+$T$ is trivial.}
+
+\textit{Part (b).} Note than $T^n(x,y) = (x+n\alpha,y+n\beta)$. If the point
+$(x_0,y_0)$ is a point with least period $2$, then by definition $T^2(x_0,y_0) =
+(x_0,y_0)$ (note that the point cannot have a period $1$ since we assumed
+$\alpha,\beta \not\in \mathbb{Z}$), which translates to $2\alpha=0$ and
+$2\beta=0$. This means that \textcolor{green!50!black}{$(\alpha,\beta) \in
+\{0,1/2\}$}. Otherwise, $T$ has no points with least period $2$.
+
+\textit{Part (c).} The system is minimal iff for any $(x,y) \in
+\mathbb{R}^2/\mathbb{Z}^2$ we have $X=\overline{\mathcal{O}(x,y)}$. Note that is
+suffices to consider when the orbit of point $(0,0)$ is dense (since for any
+other point $(a,b) \in \mathbb{R}^2/\mathbb{Z}^2$, the homeomorphism
+$\varphi_{a,b}: (x,y) \mapsto (x+a,y+b)$ maps the orbit of $(0,0)$ onto the
+orbit of $(a,b)$, thus maps dense orbit to a dense orbit). The orbit of $(0,0)$
+is precisely $\{(n\alpha,n\beta): n \in \mathbb{Z}\}$. We claim that this set is
+dense iff \textcolor{green!50!black}{$\{1,\alpha,\beta\}$ are linearly
+independent over $\mathbb{Q}$} (e.g., there is no $n,m \in \mathbb{Z}\setminus
+\{0\}$ such that $n\alpha+m\beta \in \mathbb{Z}$). Indeed, irrationality of both
+$\alpha$ and $\beta$ is required since otherwise one of the components will not
+be dense. However, this condition is not sufficient (take, e.g., $\alpha :=
+\sqrt{2}$ and $\beta := 2\sqrt{2}$): we need to ensure that we do not get the
+closed curve. This can only happen if $\alpha/\beta \in \mathbb{Q}$.
+
+\textit{Part (d).} If $\{1,\alpha,\beta\}$ are linearly independent over
+$\mathbb{Q}$, then as we have just shown, $(X,T)$ is minimal and thus is
+transitive and topologically ergodic. If these elements were not linearly
+independent, then as we have shown, there would be no dense orbits, and thus the
+system cannot be transitive. 
+
+\textit{Part (e--g).} Since topological ergodicity is equivalent to
+transitivity, the answer is the same as in \textit{(d)}. 
+
+As we will see, the system is equicontinuous and thus is not topologically
+weakly mixing (and consequently not strongly mixing) for any choice of
+$\alpha,\beta$.
+
+\textit{Part (h).} Recall that the definition of $(X,T)$ being equicontinuous
+is as follows:
+\begin{equation*}
+    \forall_{(x_0,y_0) \in \mathbb{R}^2/\mathbb{Z}^2} \; \forall_{\varepsilon>0} 
+    \; \exists_{U \ni (x_0,y_0)} \; d(T^n(x_0,y_0), T^n(x_1,y_1)) < \varepsilon \; \forall_{(x_1,y_1) \in U} \; \forall_{n \in \mathbb{Z}_{\geq 0}}
+\end{equation*} 
+
+Since our space is a compact metric space,
+\begin{equation*}
+    \forall_{\varepsilon > 0} \; \exists_{\delta > 0} \; d((x_0,y_0),(x_1,y_1))<\delta \Rightarrow d(T^n(x_0,y_0), T^n(x_1,y_1))<\varepsilon \; \forall_{n \in \mathbb{Z}_{\geq 0}}
+\end{equation*}
+
+But note that since translation is a distance-preserving function,
+$d((x_0,y_0),(x_1,y_1))=d(T^n(x_0,y_0),T^n(x_1,y_1))$, thus this condition is trivially
+satisfied (for $\delta := \varepsilon$). Thus $(X,T)$ is equicontinuous
+\textcolor{green!50!black}{for any values of $\alpha,\beta$.}
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(ii)}.}}
+
+\textit{Part (a).} Fixed point $(x_0,y_0) \in \mathbb{R}^2/\mathbb{Z}^2$ must
+satisfy $ax_0=x_0$ and $by_0=y_0$, which is equivalent to requiring $(a-1)x_0
+\in \mathbb{Z}$ and $(b-1)y_0 \in \mathbb{Z}$. Note that for either $a=1$ or
+$b=1$, $T$ acts as an identity to the corresponding component. Therefore, we 
+have four cases:
+\begin{enumerate}
+    \item[(a)] if $a=b=1$, $T$ is an identity, so all points are fixed;
+    \item[(b)] if $a=1,b\neq 1$, then fixed points are $(\mathbb{R}/\mathbb{Z})
+    \times \{\frac{m}{b-1}: m \in \mathbb{Z}\}$; there are in total
+    $|b-1|$ such fixed points;
+    \item[(c)] if $a \neq 1, b = 1$, then fixed points are $\{\frac{n}{a-1}: n \in \mathbb{Z}\} \times (\mathbb{R}/\mathbb{Z})$;
+    there are in total $|a-1|$ such fixed points;
+    \item[(d)] if $a,b \neq 1$, then fixed points are $\{\frac{n}{a-1},\frac{m}{b-1}: n,m
+    \in \mathbb{Z}\}$; there are in total $|(a-1)(b-1)|$ such fixed
+    points.
+\end{enumerate}
+
+\textit{Part (b).} Note that $T^n(x,y)=(a^nx,b^ny)$. The point $(x_0,y_0)$ of
+minimal period $2$ must satisfy $a^2x_0=x_0$ and $b^2y_0=y_0$, implying
+$(a^2-1)x_0=(a+1)(a-1)x_0 \in \mathbb{Z}$ and $(b^2-1)y_0=(b-1)(b+1)y_0 \in
+\mathbb{Z}$. However, these points cannot be fixed: in other words, such points
+are of form $(\frac{n}{a^2-1},\frac{m}{b^2-1})$ where at least one of the
+conditions fail: $(a+1)\mid n$ or $(b+1)\mid m$.
+
+We also need to handle special cases when $a = \pm 1$ and $b = \pm 1$. Notice
+that when $a=1$, no point can have period $2$ in $x$-coordinate, while for
+$a=-1$, every point has period $2$ in $x$-coordinate. Same holds for $b$.
+
+\textit{Part (c).} The system is never minimal. Indeed, if either $a$ or $b$ is
+not $1$, then from \textit{part (a)} we know that the system has fixed points.
+If $a=b=1$, then $T$ is the identity map which clearly implies the system is not
+minimal either.
+
+\textit{Part (d).} We need to understand when the orbit's closure
+$\overline{\mathcal{O}(x_0,y_0)}$ of some $(x_0,y_0) \in
+\mathbb{R}^2/\mathbb{Z}^2$ is dense. Clearly, if $|a|=|b|=1$, all orbits are
+finite and thus not dense, so the system is not transitive. However, when both
+$|a|, |b| \geq 2$, then notice that any open set $U$ after applying $T$
+stretches and eventually intersects any open set $V$ (thus making $T^n(U) \cap V
+\neq \emptyset$). If either of $|a|$ or $|b|$ is $1$, then one of the
+coordinates is periodic, and the orbit stays inside closed circles. Thus, the
+closure is not dense.
+
+\textbf{Conclusion}: $(X, T)$ is transitive iff $|a| \geq 2$ and $|b| \geq 2$.
+
+\textit{Part (e).} Equivalent to \textit{part (d).}
+
+\textit{Part (f).} The system is weakly mixing whenever $(X \times X, T \times
+T)$ is topologically ergodic, or simply transitive in our case. So in other
+words, we are given the system $\mathbb{R}^4/\mathbb{Z}^4$ with the map
+$T:(x,y,z,w) \mapsto (\alpha x, \beta y, \alpha z, \beta w)$ and we need to
+decide whether this system has a transitive point. However, this is clearly the
+case as long as $|a|, |b| \geq 2$ (with the similar reasoning to \textit{part
+(d)}). So the conclusion is equivalent to \textit{part (d)}.
+
+\textit{Part (g).}  The system is similarly strongly mixing whenever $|a|, |b|
+\geq 2$.
+
+\textit{Part (h).} Recall that for $(X,T)$ to be equicontinuous, one has to have
+\begin{equation*}
+    \forall_{\varepsilon > 0} \; \exists_{\delta > 0} \; d((x_0,y_0),(x_1,y_1))<\delta \Rightarrow d((a^nx_0,b^ny_0), (a^nx_1,b^ny_1))<\varepsilon \; \forall_{n \in \mathbb{Z}_{\geq 0}}
+\end{equation*}
+
+However, notice that if either $|a| \geq 2$ or $|b| \geq 2$, then the distance
+between two points (in the corresponding coordinate) exponentially increases
+(modulo 1). For instance, consider two very close points $(x_0,y_0)$ and
+$(x_0+\delta,y_0)$ for some $\delta \ll 1$. After $n$ iterations, the distance
+in the first distance becomes $|a|^n\delta$, which grows exponentially (albeit
+wrapped around the circle).  
+
+When both $|a|=|b|=1$, then the map $T$ is distance-preserving, thus the 
+system is equicontinuous.
+
+\textbf{Conclusion.} $(X,T)$ is equicontinuous iff $|a|=|b|=1$.
+
+\newpage
+
+\begin{problem}[Exercise 2]
+    Let $(X,T)$ be a topological dynamical system, and assume that $X$
+    is compact and metrizable, with a metric $d$.
+    \begin{enumerate}
+        \item[(a)] Let $d'$ be another metric on $X$. Show that $(X,T)$ is 
+        equicontinuous with respect to $d$ iff $(X,T)$ is equicontinuous with 
+        respect to $d'$.
+        \item[(b)] Show that $(X,T)$ is equicontinuous iff the following condition 
+        is satisfied:
+        \begin{equation*}
+            \forall_{\varepsilon>0} \; \exists_{K \subseteq \mathbb{N}, K \; \text{finite}} \; \forall_{n \in \mathbb{N}} \; \exists_{k \in K} \; d(T^n(x), T^k(x)) < \varepsilon \; \forall_{x \in X}.
+        \end{equation*}
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(a)}.}} Recall that on a compact 
+space, two compatible metrics are uniformly equivalent, i.e.,
+\begin{equation*}
+    \textcolor{gray}{(1)}: \forall_{\varepsilon>0} \; \exists_{\delta>0} \; \{d'(x,y) < \delta\} \Rightarrow \{d(x,y) < \varepsilon\}.
+\end{equation*}
+
+Fix $\varepsilon>0$ and choose $\delta := \varepsilon'$ that satisfies the above inequality. By 
+equicontinuity in metric $d$, there exists $\delta>0$ such that
+\begin{equation*}
+    \textcolor{gray}{(2)}: \{d(x,y) < \delta\} \Rightarrow \{d(T^n(x), T^n(y))<\varepsilon'\} \; \forall_{n \in \mathbb{N}}. 
+\end{equation*}
+
+Again by uniform equivalence, choose $\delta'>0$ such that
+\begin{equation*}
+    \textcolor{gray}{(3)}: \{d'(x,y) < \delta'\} \Rightarrow \{d(x,y) < \delta\}.
+\end{equation*}
+
+Then, for any $x,y \in X$, we have
+\begin{align*}
+    \{d'(x,y)<\delta'\} 
+    &\xRightarrow{\textcolor{gray}{(3)}} \{d(x,y)<\delta\} \\
+    &\xRightarrow{\textcolor{gray}{(2)}} \{d(T^n(x), T^n(y)) < \varepsilon'\} \; \forall_{n \in \mathbb{N}} \\
+    &\xRightarrow{\textcolor{gray}{(1)}} \{d'(T^n(x), T^n(y)) < \varepsilon\} \; \forall_{n \in \mathbb{N}}.
+\end{align*}
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(b)}.}} We prove two directions.
+
+\underline{\textit{Equicontinuous $\Rightarrow$ finite covering in $d_{\infty}$.}} Fix some
+$\varepsilon > 0$. By equicontinuity, for each $x \in X$ there exists $\delta>0$
+such that
+\begin{equation*}
+    \textcolor{gray}{(1)}: \{d(x,y) < \delta\} \Rightarrow \{d(T^n(x), T^n(y)) < \varepsilon/3\} \; \forall_{n \in \mathbb{N}}.
+\end{equation*}
+
+Since $X$ is compact, we can cover $X$ by finitely many balls of radius
+$\delta$: concretely, let $X = \bigcup_{i=1}^N B(x_i,\delta)$. However, these
+centers on their own do not help much. We need to understand the dynamics of the
+sequence $\{(T^n(x_1),\dots,T^n(x_i))\}_{n \in \mathbb{N}}$ which lies in the
+space $X^N$ (which further denote by $\{\mathbf{x}_n\}_{n \in \mathbb{N}}$).
+
+That said, we consider the space $(X^N,d_{\infty})$ which we equip with the
+metric $d_{\infty}(\mathbf{x},\mathbf{y})=\max_{1 \leq i \leq N}d(x_i,y_i)$.
+Clearly, $X^N$ is compact (say, by Tychonoff's Theorem), so the sequence
+$\{\mathbf{x}_n\}_{n \in \mathbb{N}}$ is totally bounded. In particular this 
+means that we can find a finite set of indices $K \subseteq \mathbb{N}$
+such that $\{\mathbf{x}_k\}_{k \in K}$ is the $(\varepsilon/3)$-covering 
+of our sequence $\{\mathbf{x}_n\}_{n \in \mathbb{N}}$ in $d_{\infty}$ metric. Specifically:
+\begin{equation*}
+    \forall_{n \in \mathbb{N}} \; \exists_{k \in K} \; \{d_{\infty}(\mathbf{x}_n, \mathbf{x}_k) < \varepsilon/3\}.
+\end{equation*}
+
+So by expanding everything we have so far:
+\begin{equation*}
+    \textcolor{gray}{(2)}: \exists_{K \subseteq \mathbb{N}, K \text{ is finite}} \; \forall_{n \in \mathbb{N}} \; \exists_{k \in K} \; \{d(T^n(x_i), T^k(x_i)) < \varepsilon/3\} \; \text{for each $i \in \{1,\dots,N\}$}.
+\end{equation*}
+
+Now, we have all the tools to finish off the statement. Fix $\varepsilon>0$.
+Take $K$ as in \textcolor{gray}{\textit{(2)}}. For every $x \in X$ there exists
+some center of the ball $x_i$ such that $d(x,x_i)<\delta$. For every $n \in
+\mathbb{N}$ choose $k$ as in \textcolor{gray}{\textit{(2)}}. Then, apply the
+triangle inequality:
+\begin{equation*}
+    d(T^n(x), T^k(x)) \leq 
+    \underbrace{d(T^n(x),T^n(x_i))}_{< \varepsilon/3 \, \text{by} \, \textcolor{gray}{\textit{(1)}}} 
+    + \underbrace{d(T^n(x_i), T^k(x_i))}_{< \varepsilon/3 \, \text{by} \, \textcolor{gray}{\textit{(2)}}} 
+    + \underbrace{d(T^k(x_i), T^k(x))}_{< \varepsilon/3 \, \text{by} \, \textcolor{gray}{\textit{(1)}}}
+    < \varepsilon.
+\end{equation*}
+
+\underline{\textit{Finite covering in $d_{\infty}$ $\Rightarrow$ Equicontinuous.}} Assume 
+\begin{equation*}
+    \forall_{\varepsilon>0} \; \exists_{K \subseteq \mathbb{N}, K \; \text{finite}} \; \forall_{n \in \mathbb{N}} \; \exists_{k \in K} \; \forall_{x \in X} \; d(T^n(x), T^k(x)) < \varepsilon.
+\end{equation*}
+
+Fix $\varepsilon>0$ and pick any two points $x,y \in X$.
+
+From the fact that $T^k$ is uniformly continuous (in particular for all $k \in
+K$ since $X$ is compact), we find $\delta>0$ such that:
+\begin{equation*}
+    \{d(x,y)<\delta\} \Rightarrow \forall_{k \in K} \; \{\textcolor{red!70!black}{d(T^k(x), T^k(y)) < \varepsilon/3}\}.
+\end{equation*}
+
+Then, for any $n$, pick $k \in K$ with $\textcolor{blue!70!black}{d(T^n(x), T^k(x))<\varepsilon/3}$ and 
+$\textcolor{green!70!black}{d(T^n(y), T^k(y))<\varepsilon/3}$. Finally, apply the triangle inequality:
+\begin{equation*}
+    d(T^n(x), T^n(y)) \leq \textcolor{blue!70!black}{d(T^n(x), T^k(x))} + \textcolor{green!70!black}{d(T^k(x), T^k(y))} + \textcolor{red!70!black}{d(T^k(y), T^n(y))} < \varepsilon,
+\end{equation*}
+hence $(X,T)$ is equicontinuous.
+
+\newpage
+
+\begin{problem}[Exercise 3]
+    Consider the following maps on $\mathbb{R}$:
+    \begin{gather*}
+        T_1(x) = x, \; T_2(x) = -x, \; T_3(x) = x+3, \\ 
+        T_4(x) = 4x, \; T_5(x) = 4x(1-x), \; T_6(x) = 6x(1-x).
+    \end{gather*}
+    Show that no two of the resulting topological dynamical systems $(X,T_i)$ ($1 \leq i \leq 6$) are isomorphic.
+\end{problem}
+
+\textbf{Solution.}
+
+\textit{Idea.} To prove that these topological dynamical systems are distinct,
+we need to find distinguishing invariant of each system. In this problem 
+it suffices to consider periodic points and invariant sets. Formally,
+the following proposition states that these two are indeed invariants 
+of the dynamical system under isomorphism.
+
+\begin{lemma}[Adapted Proposition 1.5.2, \cite{vries2014}]
+    Let $\varphi: (X,T) \xrightarrow{\sim} (Y,S)$ be the isomorphism of dynamical 
+    systems. Then,
+    \begin{enumerate}
+        \item[(a)] point $x$ is periodic in $(X,T)$ iff $\varphi(x)$ is periodic
+        in $(Y,S)$ (moreover, primitive periods of both $x$ and $\varphi(x)$ are the same);
+        \item[(b)] set $A$ in $(X,T)$ is $T$-invariant iff $\varphi(A)$ is
+        $S$-invariant in $(Y,S)$.
+    \end{enumerate}
+\end{lemma}
+
+\textit{Proof.} By considering periodic points, we can differentiate systems
+$T_1,T_2,T_3,T_4$, and (\textit{$T_5$ with $T_6$}) by applying Lemma,
+\textit{part (a)}. To differentiate $T_5$ and $T_6$, we are going to look at the
+invariant sets and apply Lemma, \textit{part (b)}, although this part 
+turned out to be the most challenging in this problem.
+
+\underline{\textit{System $T_1$.}} This is just an identity map, so it is
+clearly distinct from other systems: for instance, since every point is fixed.
+
+\underline{\textit{System $T_2$.}} Note that the only fixed points on this map 
+is $x=0$ and all other points have the primitive period of $2$. No other 
+systems have this characterization.
+
+\underline{\textit{System $T_3$.}} This system, in contrast, has no periodic 
+points (all other systems, in turn, have at least a single periodic point).
+
+\underline{\textit{Systems $T_4$.}} This systems has a fixed point $x=0$ and no
+other periodic points.
+
+\underline{\textit{Systems $T_5$ and $T_6$.}} This one is the hardest. Let us
+consider the general case $f_{\mu}(x) = \mu x(1-x)$ (the so-called
+\textit{logistic map}). By solving equation $f_{\mu}(x)=x$ we get that it always
+(besides the case $\mu=0$) has two solutions: $x_0=0$ and $x_1=1-1/\mu$.
+Although this already differentiates $T_5$ and $T_6$ from the rest of the
+systems, we need another measure to differentiate $T_5$ and $T_6$.
+
+We propose to compute the maximum value of $f_{\mu}$ on the set $[0,1] \subseteq
+X$. Notice that $f_{\mu}'(x) = \mu(1-2x)$, so the extremum point corresponds to
+the value at $x_{\text{ext}} = \frac{1}{2}$ (which lies within $[0,1]$).
+Moreover, $f_{\mu}(x_{\text{ext}}) = \frac{1}{4}\mu$. Thus, we've shown the following:
+
+\textbf{Claim \#1.} The set $[0,1]$ is $f_{\mu}$-invariant iff $0 \leq \mu \leq 4$.
+
+Therefore, the dynamical system $T_5$ has an invariant set with non-empty
+interior. Consequently, by Lemma, \textit{part (b)}, if there were the
+isomorphism between $(X,T_5)$ and $(X,T_6)$, it would correspond to the
+invariant set with non-empty interior in $(X,T_6)$. However, our second claim 
+is as follows.
+
+\textbf{Claim \#2.} The dynamical system $(X,f_{\mu})$ has no invariant sets with non-empty
+interior for $\mu > 2+\sqrt{5}$.
+
+\textit{Proof of claim.} First we observe that the orbit of any point outside
+$[0,1]$ ``explode'' to $-\infty$ (for instance, take any $x_0>1$, then $x_1 :=
+f_{\mu}(x_0)$ becomes negative, and the next iteration will scale $x_1$ by the
+factor $\mu(1-x_1)$, which is clearly more than $1$, and thus will repel the
+point further to $-\infty$). 
+
+Therefore, if we had an invariant set $A \subseteq X$, then the orbit
+$\mathcal{O}(x)$ of any $x \in A$ must remain in $[0,1]$. Let us check whether
+this holds.
+
+Let us check the ``escape region'' $E \subseteq X$, from which we get values
+greater than $1$: i.e., $f_{\mu}(x) > 1$. This yields equation $\mu x^2 - \mu x
++ 1 < 0$ which gives the interval $E = (\ell,r)$ for 
+\begin{equation*}
+    \ell = \frac{1}{2} - \frac{1}{2}\sqrt{1-\frac{4}{\mu}}, \quad r = \frac{1}{2} + \frac{1}{2}\sqrt{1-\frac{4}{\mu}}.
+\end{equation*} 
+
+\textcolor{gray}{\textit{(Note that this is a valid non-empty interval as $\mu>4$)}.}
+
+Therefore, the ``safe regions'' of $f_{\mu}$ are two zones: $L=[0,\ell]$ and
+$R=[r,1]$: if the point happens to be in $(\ell,r)$, it will be sent to
+infinity.
+
+Now take any open interval $(a,b) \subseteq A$. Without loss of generality,
+assume $(a,b) \subseteq L$ or $(a,b) \subseteq R$ (otherwise, if $E \cap (a,b)
+\neq \emptyset$, then clearly $A$ is not invariant). We claim that $f_{\mu}^n((a,b))$
+eventually intersects $E$. Indeed, it suffices to verify that this interval gets
+expanded with each iteration of $f_{\mu}$. To check this, we check the minimum value
+of $|f_{\mu}'|$ in the ``safe'' zone $L \cup R$\footnote{Recall that from Mean
+Value Theorem, $f(x_2)-f(x_1) = f'(c)(x_2-x_1)$ for some $c \in [x_1,x_2]$.}. 
+
+Note that since $f_{\mu}'(x)$ is a linear function, its magnitude strictly
+decreases at $x$ gets closer to the critical point $x_{\text{ext}}=\frac{1}{2}$.
+Thus, the minimum value of $|f_{\mu}'(x)|$ on $L \cup R$ occurs at points $\ell$
+and $r$. One easily checks $|f_{\mu}'(\ell)| = |f_{\mu}'(r)| =
+\sqrt{\mu^2-4\mu}$. If this value exceeds $1$, then the claim is proven. 
+This occurs when $\mu^2-4\mu-1>0$ which reduces to $\mu>2+\sqrt{5}$.
+
+\textbf{Corollary.} $(X,T_6)$ has no invariant sets with non-empty interior.
+
+\textbf{Answer.} See \Cref{tab:system_comparison} below.
+
+\begin{table}[htpb]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{cll}
+        \hline
+        \textbf{System} & \textbf{Periodic Points} & \textbf{Invariant Sets $A$ ($\text{int}(A) \neq \emptyset$)} \\
+        \hline
+        $T_1$ & Every point is a fixed point & N/A \\
+        \hline
+        $T_2$ & $x=0$ is fixed; others have min. period 2 & N/A \\
+        \hline
+        $T_3$ & None & N/A \\
+        \hline
+        $T_4$  & $x=0$ is fixed; no others & N/A \\
+        \hline
+        $T_5$  & Two fixed points ($x=0, x=3/4$) & Yes ($[0,1]$ is invariant) \\
+        \hline
+        $T_6$  & Two fixed points ($x=0, x=5/6$) & None \\
+        \hline
+    \end{tabular}
+    \caption{Comparison of distinguishing invariants for dynamical systems $(X, T_i)$.}
+    \label{tab:system_comparison}
+\end{table}
+
+\newpage
+
+\begin{problem}[Exercise 4]
+    We call a topological dynamical system $(X,T)$ \textit{totally minimal}
+    (resp. \textit{totally transitive}) if $(X,T^d)$ is minimal (resp. transitive)
+    for all $d \geq 1$. 
+    \begin{enumerate}
+        \item[(a)] Show that for $\alpha \in \mathbb{R} \setminus \mathbb{Q}$, the 
+        circle rotation by $\alpha$ is totally minimal.
+        \item[(b)] Show that the doubling map on the circle is totally transitive.
+        \item[(c)] Show that not each minimal (resp. transitive) topological
+        dynamical system is totally minimal (resp. totally transitive). 
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(a)}.}} It is well-known that the
+map $R_{\alpha}: x \mapsto x+\alpha$ (over $\mathbb{R}/\mathbb{Z}$) is minimal
+iff $\alpha \in \mathbb{R}\setminus \mathbb{Q}$. Note that
+$R_{\alpha}^d=R_{d\alpha}$ and $d\alpha$ is clearly irrational as well, thus
+$R_{\alpha}^d$ is also minimal. Hence, $(X,R_{\alpha})$ is totally minimal. 
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(b)}.}} We already know well that
+the doubling map is transitive. In fact, any map $M_{\gamma}: x \mapsto \gamma
+x$ for integer $\gamma \geq 2$ is transitive. The argument is similar to the
+case when $\gamma=2$: we need to show that for any opens $U,V \subseteq
+\mathbb{R}/\mathbb{Z}$ there exists $n \in \mathbb{N}$ such that
+$T_{\gamma}^n(U) \cap V \neq \emptyset$. If $U$ is an open interval of length 
+$\delta>0$, then after $n$ iterations the ``length'' of $T_{\gamma}^n(U)$ is 
+$\gamma^n\delta$. For large enough $n$ this exceeds $1$ and so $T_{\gamma}^n(U)$
+effectively wraps the original $U$ around the circle at least once. Thus,
+as we cover the whole circle, we definitely intersect $V$ at some point.
+
+That said, the $n$th iterate of the doubling map satisfies $M_2^n=M_{2^n}$ which
+is transitive by the argument above for every $n$. Thus, $(X,M_2)$ is totally
+transitive.
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(c)}.}}
+
+\textit{Minimal but not totally minimal.} Let $X=(\mathbb{R}/\mathbb{Z}) \times
+\mathbb{Z}_2$ (where $\mathbb{Z}_2$ is equipped with discrete topology) and $T:
+(x,b) \mapsto (x+\alpha,b+1)$ (with $\alpha \in \mathbb{R}/\mathbb{Z}$).
+Clearly, $T$ is minimal, but is not totally minimal since
+$T^2(x,b)=(x+2\alpha,b)$ is not minimal as it fixes the second coordinate (thus,
+say, $(\mathbb{R}/\mathbb{Z}) \times \{0\}$ is a smaller $T^2$-invariant set).
+
+\textit{Transitive but not totally transitive.} Similarly consider
+$X=(\mathbb{R}/\mathbb{Z}) \times \mathbb{Z}_2$ and $T: (x,b) \mapsto (2x,b+1)$.
+Then, $T$ is transitive while $T^2(x,b)=(4x,b)$ is not since the only possible
+orbits are $(\mathbb{R}/\mathbb{Z}) \times \{0\}$ or $(\mathbb{R}/\mathbb{Z})
+\times \{1\}$.
+
+\newpage
+
+\begin{problem}[Exercise 5]
+    Let $\phi: X \to Y$ be a morphism between topological dynamical systems 
+    $(X,T)$ and $(Y,S)$. Assume that $X$ is locally compact, and let $A \subseteq X$
+    be non-empty, compact and invariant.
+    \begin{enumerate}
+        \item[(a)] Show that $\phi(\mathcal{B}_T(A)) \subseteq \mathcal{B}_S(\phi(A))$,
+        where $\mathcal{B}_T(A)$ denotes the basin of attraction of the set $A$ under 
+        the map $T$.
+        \item[(b)] Show that the inclusion in the previous point can be strict.
+    \end{enumerate}
+\end{problem}
+
+\textbf{Solution.}
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(a)}.}} Recall that the basin of
+attraction is by definition 
+\begin{equation*}
+    \mathcal{B}_T(A) = \{x \in X: \emptyset \neq \omega_T(x) \subseteq A\}.  
+\end{equation*}
+
+We prove this fact by the series of three claims.
+\begin{enumerate}[label=\textbf{Claim \#\arabic*}, align=left]
+    \item Assume $X$ is locally compact. If $x \in X$ and $\omega(x)$ is compact and not empty, then $\overline{\mathcal{O}}(x)$ is compact.
+    \item If $\overline{\mathcal{O}}(x)$ is compact then $\phi(\omega_T(x)) = \omega_S(\phi(x))$.
+    \item Assume $\phi(A)$ is a closed subset of $Y$ and all
+    $\overline{\mathcal{O}}(x)$ for $x \in \mathcal{B}_T(A)$ are compact. Then, $\phi(\mathcal{B}_T(A)) \subseteq \mathcal{B}_S(\phi(A))$.
+\end{enumerate}
+
+\textbf{Proof of claims.}
+
+\textit{Claim \#1.} Since $X$ is locally compact, $\omega(x)$ has an open
+neighbourhood $U$ with compact closure $\overline{U}$. Note that $T^n(x) \in U
+\subseteq \overline{U}$ holds for infinitely many values of $n$. Thus, it
+suffices to show that $T^n(x) \in \overline{U}$ for almost all values of $n$.
+Assume, however, that it is not the case. Then, there is a sequence
+$\{T^{n_i}(x)\}_{i \in \mathbb{N}} \subseteq \overline{U}$ such that
+$T^{n_i+1}(x) \not\in \overline{U}$ for all $i$. The first sequence has an
+accumulation point $z$ in $\omega(x)$, but the second sequence has an
+accumulation point $T(z)$ outside $U$, contradicting invariance of $\omega(x)$.
+
+\textit{Claim \#2.} Note that in general we have $\phi(\omega_T(x)) \subseteq \omega_S(\phi(x))$:
+\begin{align*}
+    \phi(\omega_T(x)) &\triangleq \phi\left(\bigcap_{n \geq 0}\overline{\mathcal{O}}_T(T^n(x))\right) & \textcolor{gray}{\textit{// definition of limit set}} \\
+    & \subseteq \bigcap_{n \geq 0}\phi(\overline{\mathcal{O}}_T(T^n(x))) & \textcolor{gray}{\textit{// use the fact that $\phi$ is continuous}} \\
+    & \subseteq \bigcap_{n \geq 0}\overline{\phi(\mathcal{O}_T(T^n(x)))} & \textcolor{gray}{\textit{// again, since $\phi$ is continuous}} \\
+    & = \bigcap_{n \geq 0}\overline{\mathcal{O}}_S(\phi(T^n(x))) & \textcolor{gray}{\textit{// just a direct observation}} \\
+    & = \bigcap_{n \geq 0}\overline{\mathcal{O}}_S(S^n(\phi(x))) & \textcolor{gray}{\textit{// definition of morphism}} \\
+    & = \omega_S(\phi(x)) & \textcolor{gray}{\textit{// definition of limit set}} \\
+\end{align*}
+
+Note that we remove inclusions at second and third step using the fact that
+$\overline{\mathcal{O}}(x)$ is compact.
+
+\textit{Claim \#3.} By \textit{Claim \#2}, $\omega_S(\phi(x)) =
+\phi(\omega_T(x))$ is a non-empty subset of $\phi(A)$ for all $x \in
+\mathcal{B}_T(A)$, hence $\phi(\mathcal{B}_T(A)) \subseteq
+\mathcal{B}_S(\phi(A))$.
+
+Now simply apply three claims. Since $A$ is compact, then for every point $x \in
+\mathcal{B}_T(A)$, the set $\omega(x)$ is non-empty and compact. By
+\textit{Claim \#1}, $\overline{\mathcal{O}}(x)$ is compact, so by \textit{Claim
+\#3} we have proven the theorem.
+
+\textcolor{blue!70!black}{\textbf{Part \textit{(b)}.}} Take the following
+example:
+
+\begin{itemize}
+    \item \underline{System $(X,T)$.} Let $X = \{0\} \cup [2,3]$ and let
+    \begin{equation*}
+        T(x) = \begin{cases}
+            0, & x = 0, \\
+            1+\frac{1}{2}x, & x \in [2,3].
+        \end{cases}
+    \end{equation*}
+    Set $A=\{0\}$ (so that $\mathcal{B}_T(A)=\{0\}$).
+    \item \underline{System $(Y,S)$.} Let $Y=[0,1]$ and $S(y) = y/2$.
+\end{itemize}
+
+Let the morphism $\phi: (X,T) \to (Y,S)$ be 
+\begin{equation*}
+    \phi(x) = \begin{cases}
+        0, & x=0, \\
+        x-2, & x \in [2,3].
+    \end{cases}
+\end{equation*}
+
+This is a valid morphism: it is continuous and satisfies $\phi(T(x)) =
+S(\phi(x))$.
+
+Finally, note:
+\begin{itemize}
+    \item $\phi(\mathcal{B}_T(A)) = \phi(\{0\}) = \{0\}$.
+    \item $\mathcal{B}_S(\phi(A)) = \mathcal{B}_S(\{0\}) = [0,1]$ as any point
+    of $Y$ converges to $0$.
+\end{itemize}
+
+Thus, we see that $\{0\}=\phi(\mathcal{B}_T(A)) \subsetneq \mathcal{B}_S(\phi(A)) = [0,1]$.
+
+%\nocite{*}
+%\renewcommand{\refname}{}
+\bibliographystyle{alphaurl}
+\bibliography{refs}
+
+\end{document}

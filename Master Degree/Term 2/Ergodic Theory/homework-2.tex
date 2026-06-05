@@ -1,0 +1,211 @@
+\documentclass{template}
+
+\usepackage{mathtools}
+\pgfplotsset{compat=1.18}
+
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+
+\begin{document}
+
+\begin{center}
+    \Large \textcolor{blue!70!black}{\textbf{Dynamical Systems Homework \#2}} \\
+    \normalsize \textit{Dmytro Zakharov}
+\end{center}
+
+\begin{problem}[Exercise 1]
+    Let $\alpha \in \mathbb{R}$ and $\varepsilon>0$. Show that there exists 
+    $n \in \mathbb{N}$ such that $\|n^3\alpha\|<\varepsilon$ (recall that 
+    $\|x\| := \min_{a \in \mathbb{Z}}|a-x|$.)
+\end{problem}
+
+\textbf{Solution.} Here, we mimic the proof from the notes (where this result
+was shown for $\|n\alpha\|$, $\|n^2\alpha\|<\varepsilon$). Consider the skew
+rotation $(X,T)$ for $X=\mathbb{R}^3/\mathbb{Z}^3$ and 
+\begin{equation*}
+    T: X \to X, \; (x,y,z) \mapsto (x+\alpha, y+x, z+y).
+\end{equation*}
+
+One verifies that the $n$th iterate of $T$ is given by:
+\begin{equation*}
+    T^n(x,y,z) = \left( x+n\alpha, y+nx+\binom{n}{2}\alpha, z+ny+\binom{n}{2}x+\binom{n}{3}\alpha \right).
+\end{equation*}
+
+In particular, what interests us most, $T^n(0,0,0) = (n\alpha,
+\binom{n}{2}\alpha, \binom{n}{3}\alpha)$. The point $(0,0,0)$ is recurrent for
+the same reason as in the notes: one notices that $(x,y,z) \mapsto x$ is a
+factor map from $(X,T)$ onto $(\mathbb{R}/\mathbb{Z}, x \mapsto x+\alpha)$, 
+and maps $\phi_{\tau,\nu}: (x,y,z) \mapsto (x,y+\tau,z+\nu)$ for $\tau,\nu \in \mathbb{R}/\mathbb{Z}$
+are automorphisms of $(X,T)$, showing that every point in $(X,T)$ is recurrent.
+
+Consequently, for every $\varepsilon>0$ there exists $n$ such that $\|\binom{n}{k}\alpha\| < \frac{1}{13}\varepsilon$
+for $k=0,1,2$. Now we notice the following key relation:
+\begin{equation*}
+    n^3 = 6\binom{n}{3} + 6\binom{n}{2} + n.
+\end{equation*}
+
+This allows us to immediately establish $\|n^3\alpha\| \leq 6\|\binom{n}{3}\alpha\| + 6\|\binom{n}{2}\alpha\| + \|n\alpha\| < \varepsilon$.
+
+\begin{problem}[Exercise 2]
+    Consider the full one-sided binary shift $(\{0,1\}^{\mathbb{N}},\sigma)$.
+    Construct a point $x \in \{0,1\}^{\mathbb{N}}$ that is recurrent but not 
+    uniformly recurrent. 
+\end{problem}
+
+\textbf{Solution.} We define the point $x$ as follows: let $x_1 = 1$ and $x_{n+1} = x_{n} \parallel 0^{n+1} \parallel x_{n}$
+for each $n \in \mathbb{N}$. Then, let $x$ be the limit of $(x_n)_{n \geq 0}$. So $x$ begins as 
+\begin{equation*}
+    x = 1010010100010100101\dots
+\end{equation*}
+
+In $(\{0,1\}^{\mathbb{N}},\sigma)$, the point $x$ is recurrent if every finite block 
+appears in $x$ infinitely many times. Take some block $b$ in $x$, then it must 
+fully lie inside $x_k$ for some large enough $k$. Since $x_{k+1}$ contains two 
+copies of $x_k$, and then $x_{k+2}$ contains two copies of $x_{k+1}$ (and thus 
+four copies of $x_k$), clearly by induction $x_k$ appears infinitely many times in $x$.
+Since $b \subseteq x_k$, same holds for $b$, and thus $x$ is recurrent.
+
+However, since we introduce increasing gaps $0^{n+1}$ of zeroes between $x_k$'s,
+this point is not uniformly recurrent. More specifically, one can clearly see
+this for a block $b=1$. The distance between the last $1$ of the first $x_n$ and
+the first $1$ of the second $x_n$ in the block $x_{n+1}$ is exactly $n$, which
+can be arbitrary large as $n \to \infty$.
+
+\begin{problem}[Exercise 3]
+    Let $(X,T)$ be the binary adding machine. Verify that $T$ is a homeomorphism,
+    and show that $(X,T)$ is a minimal topological dynamical system.
+\end{problem}
+
+\textbf{Solution.} Recall the definition: binary adding machine is a dynamical
+system $(\{0,1\}^{\mathbb{N}}, T)$ where $T$ is adding $1$ with a carry:
+\begin{align*}
+    T: \{0,1\}^{\mathbb{N}} \to \{0,1\}^{\mathbb{N}}, && \;\;(1,1,\dots,1,0,x_{k+1},\dots) &\mapsto (0,0,\dots,0,1,x_{k+1},\dots), \\
+    &&\;\;(1,1,1,\dots) &\mapsto (0,0,0,\dots).
+\end{align*}
+
+First, we verify that $T$ is a homeomorphism. This map is clearly bijective: the
+inverse map $T^{-1}$ is defined as follows:
+\begin{align*}
+    T^{-1}: \{0,1\}^{\mathbb{N}} \to \{0,1\}^{\mathbb{N}}, && \;\;(0,0,\dots,0,1,x_{k+1},\dots) &\mapsto (1,1,\dots,1,0,x_{k+1},\dots), \\
+    &&\;\;(0,0,0,\dots) &\mapsto (1,1,1,\dots).
+\end{align*}
+
+Next we verify that both $T$ and $T^{-1}$ are continuous. It suffices to check
+preimage on basic cylinders $C(a_1,\dots,a_k) := \{x \in \{0,1\}^{\mathbb{N}}:
+x_1=a_1,\dots,x_k=a_k\}$. Then,
+\begin{equation*}
+    T^{-1}(C(a_1,\dots,a_k)) = \bigcup_{\substack{1 \leq r \leq k \\ (a_i)_{i<r}=0, \, a_r=1}} C(\underbrace{1,\dots,1}_{(r-1) \, \text{times}},0,a_{r+1},\dots,a_k),
+\end{equation*}
+
+which is a finite union of basic cylinders\footnote{To be fully correct, one should also include $C(1,\dots,1)$ in the preimage if all $a_i=0$.}. Thus, the preimage of $T$ for every basis open set is open.
+The construction for $T^{-1}$ is similar.
+
+Now we show minimality, which is equivalent to showing that
+$\mathcal{O}(x)=\{T^n(x)\}_{n \geq 0}$ is dense in $\{0,1\}^{\mathbb{N}}$ for
+every $x \in \{0,1\}^{\mathbb{N}}$. Take any $x$ and cylinder
+$C(a_1,\dots,a_k)$. We need to find $n$ such that $T^n(x) \in C(a_1,\dots,a_k)$.
+But note that the first $k$ coordinates of $T^n(x)$ cycle through all binary
+words of length $k$ as $n$ runs through $0,\dots,2^k-1$: 
+\begin{equation*}
+    \{(T^n(x)_1, \dots, T^n(x)_k): 0 \leq n < 2^k\} = \{0,1\}^k.
+\end{equation*}
+
+Therefore we are guaranteed to find some $n<2^k$ such that $T^n(x) \in
+C(a_1,\dots,a_k)$. This shows that $\mathcal{O}(x)$ is dense and thus
+$(\{0,1\}^{\mathbb{N}}, T)$ is minimal.
+
+\begin{problem}[Exercise 4]
+    Let $(a_n)_{n \in \mathbb{N}}$ be a real-valued sequence such that $a_n \geq 0$
+    and $a_{n+m} \leq a_n + a_m$ for all $n,m \geq 1$. Show that
+    \begin{equation*}
+        \lim_{n \to \infty} \frac{1}{n}a_n = \inf_{n \in \mathbb{N}} \frac{1}{n}a_n.
+    \end{equation*}
+    (In particular, the limit exists and is finite.)
+\end{problem}
+
+\textbf{Solution.} We show two directions. Further let $\alpha := \inf_{n \in \mathbb{N}} \frac{1}{n}a_n$.
+
+$(\geq)$ This direction is easy. By definition of infinum, $\frac{1}{n}a_n \geq
+\alpha$ for all $n$. Therefore, $\liminf_{n \to \infty} \frac{1}{n}a_n \geq \alpha$.
+
+$(\leq)$ Fix $\varepsilon>0$. By definition of infinum, there exists $k \in
+\mathbb{N}$ such that $\frac{1}{k}a_k < \alpha+\varepsilon$. Divide $n$ by $k$
+and write $n=qk+r$ (for $0 \leq r < k$). Using condition $a_{n+m} \leq a_n + a_m$,
+we obtain $a_n \leq qa_k + a_r$. Divide by $n$ and bound expression given $qk/n \leq 1$:
+\begin{equation*}
+    \frac{1}{n}a_n \leq \frac{qk}{n} \cdot \frac{a_k}{k} + \frac{a_r}{n} \leq \frac{a_k}{k} + \frac{C}{n}, \quad \text{where} \; C := \max_{0 \leq r < k}a_r.
+\end{equation*}
+
+By taking limit as $n \to \infty$, we get 
+\begin{equation*}
+    \limsup_{n \to \infty} \frac{1}{n}a_n \leq \frac{a_k}{k} < \alpha + \varepsilon.
+\end{equation*}
+
+Since $\varepsilon$ was arbitrary, $\limsup_{n \to \infty} \frac{1}{n}a_n \leq \alpha$. 
+Combining two directions, we obtain
+\begin{equation*}
+    \alpha \leq \liminf_{n \to \infty} \frac{1}{n}a_n \leq \limsup_{n \to \infty} \frac{1}{n}a_n \leq \alpha,
+\end{equation*}
+implying $\lim_{n \to \infty}\frac{1}{n}a_n = \alpha$.
+
+\begin{problem}[Exercise 5]
+    Let $C \in \mathbb{N}$ and let $T: \mathbb{R}/\mathbb{Z} \to
+    \mathbb{R}/\mathbb{Z}$ be a map with the property that for each $y \in
+    \mathbb{R}/\mathbb{Z}$ there are at most $C$ values of $X$ such that
+    $T(x)=y$. Show that $h(\mathbb{R}/\mathbb{Z},T) \leq \log C$. Find an
+    example where $h(\mathbb{R}/\mathbb{Z},T) = \log C$.
+\end{problem}
+
+\textbf{Solution.} We will use the definition of entropy through
+$(n,\varepsilon)$-separated sets. Specifically, if
+$\text{maxsep}(n,\varepsilon)$ denotes the size of the maximum
+$(n,\varepsilon)$-separated set (\textit{i.e.}, $d_n(x,y) := \max_{0 \leq k < n} d(T^k(x), T^k(y)) \geq \varepsilon$ for
+all $x,y$ in such set), then
+\begin{equation*}
+    h(\mathbb{R}/\mathbb{Z},T) = \lim_{\varepsilon \to 0}\limsup_{n \to \infty} \frac{1}{n} \log\text{maxsep}(n,\varepsilon).
+\end{equation*}
+
+Further denote $X := \mathbb{R}/\mathbb{Z}$. Fix $n \in \mathbb{N}$, $\varepsilon>0$, and let
+$X=\bigcup_{i=1}^{K} X_i$ be the partition of $X$ into $K=K(\varepsilon)$ intervals
+$(X_1,\dots,X_K)$ of diameter below $\varepsilon$ (such partition is finite
+since $X$ is compact). Define the map $\iota_{n,\varepsilon}: X \to
+\Sigma_K^n$ (where $\Sigma_K := \{1,\dots,K\}$) as follows: $\iota_{n,\varepsilon}(x)_k$ is the index of the interval
+where $T^k(x)$ lands ($0 \leq k < n$). 
+
+\textbf{Proposition 1.} $\text{maxsep}(n,\varepsilon) \leq \#\iota_{n,\varepsilon}(X)$.
+
+Indeed, if $\iota_{n,\varepsilon}(x) = \iota_{n,\varepsilon}(y)$ for $x \neq y \in X$, then $x,y$ are not $(n,\varepsilon)$-separated.
+
+\textbf{Proposition 2.} $\#\iota_{n,\varepsilon}(X) \leq K(\varepsilon)C^{n-1}$.
+
+Fix a sequence $(i_0,i_1,\dots,i_{n-1}) \in \Sigma_K^n$. Pick some point
+$z_{n-1}$ such that $T^{n-1}(z_{n-1}) \in X_{i_{n-1}}$. Now we need some point
+$z_{n-2}$ such that $T(z_{n-2}) = z_{n-1}$. According to the problem, the number
+of choices is at most $C$. Consequently, the number of choices for $z_{n-3}$ is
+at most $C^2$. After $n$ backward steps, there are at most $C^{n-1}$ possible
+initial points $x$ such that $\iota_{n,\varepsilon}(x) =
+(i_0,i_1,\dots,i_{n-1})$. Since we did not control the choice of the initial cell $i_{n-1}$,
+we multiply $C^{n-1}$ by $K(\varepsilon)$. 
+
+Using two propositions, we obtain
+\begin{equation*}
+    \text{maxsep}(n,\varepsilon) \leq K(\varepsilon)C^{n-1}.
+\end{equation*}
+
+Apply $\limsup_{n \to \infty}\frac{1}{n}\log(\cdot)$ to both sides:
+\begin{equation*}
+    \limsup_{n \to \infty}\frac{1}{n}\log\text{maxsep}(n,\varepsilon) \leq \limsup_{n \to \infty}\frac{\log K(\varepsilon)}{n} + \limsup_{n \to \infty}\frac{n-1}{n}\log C = \log C
+\end{equation*}
+
+Taking $\varepsilon \to 0$ we finally obtain $h(X,T) \leq \log C$.
+
+\textbf{Example when $h(X,T)=\log C$.} Take $(\mathbb{R}/\mathbb{Z}, x \mapsto
+Cx)$. Each point has exactly $C$ preimages and its entropy is $\log C$ (which
+was proven during our classes).
+
+\nocite{*}
+\renewcommand{\refname}{}
+\bibliographystyle{alphaurl}
+\bibliography{refs}
+
+\end{document}
